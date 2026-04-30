@@ -100,13 +100,7 @@ class User
     {
         return $this->id;
     }
-
-    public function getIdUser(): ?int
-    {
-        return $this->idUser;
-    }
-
-
+    
     public function getFirstname(): ?string
     {
         return $this->firstname;

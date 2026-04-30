@@ -14,8 +14,7 @@ class Alert
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idAlert = null;
+
 
     #[ORM\Column(length: 255)]
     private ?string $type = null;
@@ -47,23 +46,13 @@ class Alert
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[ORM\ManyToOne(inversedBy: 'alerts')]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getIdAlert(): ?int
-    {
-        return $this->idAlert;
-    }
-
-    public function setIdAlert(int $idAlert): static
-    {
-        $this->idAlert = $idAlert;
-
-        return $this;
-    }
-
     public function getType(): ?string
     {
         return $this->type;
@@ -183,4 +172,17 @@ class Alert
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
 }

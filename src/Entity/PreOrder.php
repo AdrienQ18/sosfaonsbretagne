@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PreOrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PreOrderRepository::class)]
@@ -14,9 +16,6 @@ class PreOrder
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $idPreOrder = null;
-
-    #[ORM\Column]
     private ?int $quantity = null;
 
     #[ORM\Column(length: 255)]
@@ -25,21 +24,24 @@ class PreOrder
     #[ORM\Column]
     private ?\DateTime $preOrderDate = null;
 
+    /**
+     * @var Collection<int, Article>
+     */
+    #[ORM\ManyToMany(targetEntity: Article::class, inversedBy: 'preOrders')]
+    private Collection $articles;
+
+    #[ORM\ManyToOne(inversedBy: 'preOrders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdPreOrder(): ?int
-    {
-        return $this->idPreOrder;
-    }
-
-    public function setIdPreOrder(int $idPreOrder): static
-    {
-        $this->idPreOrder = $idPreOrder;
-
-        return $this;
     }
 
     public function getQuantity(): ?int
@@ -74,6 +76,42 @@ class PreOrder
     public function setPreOrderDate(\DateTime $preOrderDate): static
     {
         $this->preOrderDate = $preOrderDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): static
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): static
+    {
+        $this->articles->removeElement($article);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

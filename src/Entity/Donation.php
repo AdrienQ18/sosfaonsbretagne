@@ -14,8 +14,6 @@ class Donation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idDonation = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $amount = null;
@@ -23,21 +21,12 @@ class Donation
     #[ORM\Column]
     private ?\DateTime $donationDate = null;
 
+    #[ORM\ManyToOne(inversedBy: 'donations')]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdDonation(): ?int
-    {
-        return $this->idDonation;
-    }
-
-    public function setIdDonation(int $idDonation): static
-    {
-        $this->idDonation = $idDonation;
-
-        return $this;
     }
 
     public function getAmount(): ?string
@@ -60,6 +49,18 @@ class Donation
     public function setDonationDate(\DateTime $donationDate): static
     {
         $this->donationDate = $donationDate;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

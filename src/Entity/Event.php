@@ -14,8 +14,6 @@ class Event
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idEvent = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -35,21 +33,12 @@ class Event
     #[ORM\Column]
     private ?\DateTime $eventDate = null;
 
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdEvent(): ?int
-    {
-        return $this->idEvent;
-    }
-
-    public function setIdEvent(int $idEvent): static
-    {
-        $this->idEvent = $idEvent;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -120,6 +109,18 @@ class Event
     public function setEventDate(\DateTime $eventDate): static
     {
         $this->eventDate = $eventDate;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

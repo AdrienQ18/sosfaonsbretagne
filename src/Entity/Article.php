@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,8 +16,6 @@ class Article
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idArticle = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -35,22 +35,27 @@ class Article
     #[ORM\Column]
     private ?\DateTime $creationDate = null;
 
+    #[ORM\ManyToOne(inversedBy: 'createArticle')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    /**
+     * @var Collection<int, PreOrder>
+     */
+    #[ORM\ManyToMany(targetEntity: PreOrder::class, mappedBy: 'articles')]
+    private Collection $preOrders;
+
+    public function __construct()
+    {
+        $this->preOrders = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdArticle(): ?int
-    {
-        return $this->idArticle;
-    }
 
-    public function setIdArticle(int $idArticle): static
-    {
-        $this->idArticle = $idArticle;
-
-        return $this;
-    }
 
     public function getName(): ?string
     {
@@ -120,6 +125,45 @@ class Article
     public function setCreationDate(\DateTime $creationDate): static
     {
         $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PreOrder>
+     */
+    public function getPreOrders(): Collection
+    {
+        return $this->preOrders;
+    }
+
+    public function addPreOrder(PreOrder $preOrder): static
+    {
+        if (!$this->preOrders->contains($preOrder)) {
+            $this->preOrders->add($preOrder);
+            $preOrder->addArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removePreOrder(PreOrder $preOrder): static
+    {
+        if ($this->preOrders->removeElement($preOrder)) {
+            $preOrder->removeArticle($this);
+        }
 
         return $this;
     }

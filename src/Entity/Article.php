@@ -26,9 +26,6 @@ class Article
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $price = null;
 
-    #[ORM\Column]
-    private ?int $stock = null;
-
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
@@ -54,7 +51,6 @@ class Article
     {
         return $this->id;
     }
-
 
 
     public function getName(): ?string
@@ -89,18 +85,6 @@ class Article
     public function setPrice(string $price): static
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getStock(): ?int
-    {
-        return $this->stock;
-    }
-
-    public function setStock(int $stock): static
-    {
-        $this->stock = $stock;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\PreOrderStatus;
 use App\Repository\PreOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,8 +19,8 @@ class PreOrder
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[ORM\Column(enumType: PreOrderStatus::class)]
+    private PreOrderStatus $status = PreOrderStatus::PRECOMMANDE_PASSEE;
 
     #[ORM\Column]
     private ?\DateTime $preOrderDate = null;
@@ -56,16 +57,14 @@ class PreOrder
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): PreOrderStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(PreOrderStatus $status): void
     {
         $this->status = $status;
-
-        return $this;
     }
 
     public function getPreOrderDate(): ?\DateTime

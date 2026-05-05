@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\AlertStatus;
 use App\Repository\AlertRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +14,6 @@ class Alert
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
 
 
     #[ORM\Column(length: 255)]
@@ -31,8 +31,8 @@ class Alert
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $localisation = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[ORM\Column(enumType: AlertStatus::class)]
+    private AlertStatus $status = AlertStatus::SIGNALEMENT_PASSEE;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $gpsLatitude = null;
@@ -49,10 +49,14 @@ class Alert
     #[ORM\ManyToOne(inversedBy: 'alerts')]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $cultureType = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getType(): ?string
     {
         return $this->type;
@@ -113,16 +117,14 @@ class Alert
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): AlertStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(AlertStatus $status): void
     {
         $this->status = $status;
-
-        return $this;
     }
 
     public function getGpsLatitude(): ?string
@@ -181,6 +183,18 @@ class Alert
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCultureType(): ?string
+    {
+        return $this->cultureType;
+    }
+
+    public function setCultureType(string $cultureType): static
+    {
+        $this->cultureType = $cultureType;
 
         return $this;
     }

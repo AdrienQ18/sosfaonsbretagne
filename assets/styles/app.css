@@ -1,3 +1,30 @@
-body {
-    background-color: skyblue;
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    min-height: 95vh;
+}
+
+ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.baniere{
+    display: flex;
+    flex-direction: row;
+}
+
+.about{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.text{
+    display: flex;
+    flex-direction: column;
 }

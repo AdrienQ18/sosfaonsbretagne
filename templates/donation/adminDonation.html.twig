@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>Liste de tous les dons</h1>
+    {% for donation in donations %}
+        <table>
+            <tr>
+                <th>Id</th>
+                <td>{{ donation.id }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ donation.amount }} €</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ donation.donationDate | date }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ donation.user.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Prénom</th>
+                <td>{{ donation.user.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ donation.user.email }}</td>
+            </tr>
+        </table>
+    {% endfor %}
+
+
+
+{% endblock %}

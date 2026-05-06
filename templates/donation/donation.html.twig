@@ -1,4 +1,80 @@
-{% extends 'views/nav/nav.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block body %}
-<h1>Donation</h1>
+    <h1>Faire un don</h1>
+    <p>Votre soutien dait toute la différence.</p>
+    <p>Grâce a vous, nous pouvons sauvez plus de faons et continuer nos actions sur le terrain.</p>
+    {{ form_start(formDonation) }}
+    <div id="step-amount" class="donation-amount">
+        <button type="button" class="amount-btn" data-amount="5">5 €</button>
+        <button type="button" class="amount-btn" data-amount="10">10 €</button>
+        <button type="button" class="amount-btn" data-amount="45">45 €</button>
+        <button type="button" class="amount-btn" data-amount="90">90 €</button>
+        <button type="button" class="amount-btn" data-amount="200">200 €</button>
+        <button type="button" class="amount-btn" data-amount="400">400 €</button>
+        <div>
+            {{ form_row(formDonation.amount,{attr:{
+                placeholder: 'Montant libre',
+            }}) }}
+            <span> €</span>
+        </div>
+
+        <button type="button" id="go-to-infos">Faire un don</button>
+
+        <p>Paiment 100% sécurisé</p>
+        <p>Un reçu fiscal vous sera envoyé par email. 60% de votre don est déductible des impôts.</p>
+    </div>
+
+    <div id="step-infos" class="donation-amount" style="display: none">
+
+        {{ form_row(formDonation.firstname) }}
+        {{ form_row(formDonation.lastname) }}
+        {{ form_row(formDonation.email) }}
+        {{ form_row(formDonation.address) }}
+        {{ form_row(formDonation.zipcode) }}
+        {{ form_row(formDonation.city) }}
+
+        <button type="submit" id="submit-donation">Donner</button>
+
+    </div>
+
+
+
+    {{ form_end(formDonation) }}
+
+    <div>
+        <h3>Exemple de don</h3>
+        <p>5 € : Un premier pas pour agir</p>
+        <p>10 € : Aide à financer un repérage de parcelle</p>
+        <p>45 € : Soutient une intervention de sauvetage</p>
+        <p>90 € : Participe à l’équipement des bénévoles</p>
+        <p>200 € : Finance une journée complète de prospection</p>
+        <p>400 € : Aide à financer un drone et vis une immersion à nos côtés</p>
+        <p>Montant libre : Je choisis mon engagement</p>
+    </div>
+
+    <script>
+        const stepAmount = document.querySelector('#step-amount');
+        const stepInfos = document.querySelector('#step-infos');
+        const amountInput = document.querySelector('#{{ formDonation.amount.vars.id }}');
+        const submitBtn = document.querySelector('#submit-donation');
+
+        document.querySelectorAll('.amount-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                amountInput.value = button.dataset.amount;
+                submitBtn.textContent = 'Donner ' + button.dataset.amount + ' €';
+            });
+        });
+
+        document.querySelector('#go-to-infos').addEventListener('click', () => {
+            if (!amountInput.value || Number(amountInput.value) <= 0) {
+                alert('Veuillez choisir ou saisir un montant.');
+                return;
+            }
+
+            stepAmount.style.display = 'none';
+            stepInfos.style.display = 'block';
+
+            submitBtn.textContent = 'Donner ' + amountInput.value + ' €';
+        });
+    </script>
 {% endblock %}

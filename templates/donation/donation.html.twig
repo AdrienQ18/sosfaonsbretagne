@@ -3,7 +3,11 @@
     <h1>Faire un don</h1>
     <p>Votre soutien dait toute la différence.</p>
     <p>Grâce a vous, nous pouvons sauvez plus de faons et continuer nos actions sur le terrain.</p>
-    {{ form_start(formDonation) }}
+    {{ form_start(formDonation, {
+        attr: {
+            'data-turbo': 'false'
+        }
+    }) }}    {{ form_errors(formDonation) }}
     <div id="step-amount" class="donation-amount">
         <button type="button" class="amount-btn" data-amount="5">5 €</button>
         <button type="button" class="amount-btn" data-amount="10">10 €</button>

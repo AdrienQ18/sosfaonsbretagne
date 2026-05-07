@@ -7,23 +7,10 @@
         {% block stylesheets %}
         {% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
     </head>
     <body>
     <div class="container">
         <hearder>
-{#            <a href="{{ path('main_home') }}">#}
-{#                <img src="{{ asset('images/Logo.png') }}" alt="logo sos foans Bretagne">#}
-{#            </a>#}
             {% include 'views/nav/nav.html.twig' %}
         </hearder>
         {% block body %}{% endblock %}

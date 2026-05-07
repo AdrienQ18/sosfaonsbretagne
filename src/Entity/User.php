@@ -6,10 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -85,6 +87,25 @@ class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticate
      */
     #[ORM\OneToMany(targetEntity: PreOrder::class, mappedBy: 'user')]
     private Collection $preOrders;
+
+    public function getRoles(): array
+    {
+        // Si tu utilises une entité Role, tu peux retourner les rôles sous forme de string
+        // Exemple : return [$this->userRole->getName()];
+        // Sinon, retourne un rôle par défaut pour l'instant
+        return ['ROLE_USER'];
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Si tu stockes des données sensibles temporaires, nettoie-les ici
+        // Sinon, laisse vide
+    }
 
     public function __construct()
     {

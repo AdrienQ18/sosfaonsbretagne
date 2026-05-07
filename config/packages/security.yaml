@@ -18,14 +18,7 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-#            custom_authenticator: App\Security\UserAuthenticator
-#            user_checker: APP\Security\UserChecker
-#            form_login:
-#                login_path: app_login
-#                check_path: app_login
-#                default_target_path: main_home  # Nom de la route de la page d'accueil
-#                always_use_default_target_path: true  # Force la redirection vers main_home
-#                enable_csrf: true
+            custom_authenticator: App\Security\UserAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -49,8 +42,8 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+    # - { path: ^/admin, roles: ROLE_ADMIN }
+    # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:

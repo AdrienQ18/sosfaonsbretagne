@@ -3,14 +3,12 @@
 namespace App\Service;
 
 use App\Entity\Donation;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HelloAssoService
 {
     public function __construct(
         private HttpClientInterface $httpClient,
-        private UrlGeneratorInterface $urlGenerator,
     ) {}
 
     public function getAccessToken(): string

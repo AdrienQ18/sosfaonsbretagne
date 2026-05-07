@@ -3,14 +3,12 @@
 namespace App\Service;
 
 use App\Entity\Donation;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HelloAssoService
 {
     public function __construct(
         private HttpClientInterface $httpClient,
-        private UrlGeneratorInterface $urlGenerator,
     ) {}
 
     public function getAccessToken(): string
@@ -51,9 +49,9 @@ class HelloAssoService
                     'totalAmount' => $amountInCents,
                     'initialAmount' => $amountInCents,
                     'itemName' => 'Don SOS Faons Bretagne',
-                    'backUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation',
-                    'errorUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/cancel',
-                    'returnUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/success',
+                    'backUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/cancel/' . $donation->getId(),
+                    'errorUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/cancel/' . $donation->getId(),
+                    'returnUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/success/' . $donation->getId(),
                     'containsDonation' => true,
                     'payer' => [
                         'firstName' => $donation->getFirstname(),

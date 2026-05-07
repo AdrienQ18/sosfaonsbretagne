@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\DonationStatus;
 use App\Repository\DonationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,9 +42,22 @@ class Donation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $zipcode = null;
 
+    #[ORM\Column(enumType: DonationStatus::class)]
+    private ?DonationStatus $status = null;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getStatus(): ?DonationStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?DonationStatus $status): void
+    {
+        $this->status = $status;
     }
 
     public function getAmount(): ?string

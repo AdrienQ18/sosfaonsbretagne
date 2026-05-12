@@ -172,6 +172,16 @@ final class DonationController extends AbstractController
         Request $request,
         HelloAssoWebhookService $helloAssoWebhookService
     ): JsonResponse {
+
+        $receivedSecret = $request->query->get('secret');
+        $expectedSecret = $_ENV['HELLOASSO_WEBHOOK_SECRET'];
+
+        if (!$receivedSecret || !hash_equals($expectedSecret, $receivedSecret)) {
+            return new JsonResponse([
+                'error' => 'Notification non autorisée.',
+            ], 403);
+        }
+
         $payload = json_decode($request->getContent(), true);
 
         /*

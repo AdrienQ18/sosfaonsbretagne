@@ -33,4 +33,14 @@ final class MainController extends AbstractController
     public function galerie(): Response{
         return $this->render('main/galerie.html.twig');
     }
+
+    #[Route('/cgu', name: 'main_cgu')]
+    public function cgu(): Response{
+        return $this->render('main/cgu.html.twig');
+    }
+
+    #[Route('/pdc', name: 'main_pdc')]
+    public function pdc(): Response{
+        return $this->render('main/pdc.html.twig');
+    }
 }

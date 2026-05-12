@@ -56,9 +56,10 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         $usersData = [
-            ['firstname' => 'Adrien', 'lastname' => 'Le Clech', 'email' => 'adrien@leclech.com'],
-            ['firstname' => 'Adrien', 'lastname' => 'Quintard', 'email' => 'adrien@quintard.com'],
-            ['firstname' => 'Laurent', 'lastname' => 'Berthélémy', 'email' => 'laurent@berthelemy.com'],
+            ['firstname' => 'Adrien', 'lastname' => 'Le Clech', 'email' => 'adrien@leclech.com', 'roles'=>['ROLE_ADMIN']],
+            ['firstname' => 'Adrien', 'lastname' => 'Quintard', 'email' => 'adrien@quintard.com','roles'=>['ROLE_ADMIN']],
+            ['firstname' => 'Laurent', 'lastname' => 'Berthélémy', 'email' => 'laurent@berthelemy.com','roles'=>['ROLE_ADMIN']],
+            ['firstname' => 'Eni', 'lastname' => 'Eni', 'email' => 'enistage@enistage.com','roles'=>['ROLE_USER']],
         ];
         $availabilities = $manager->getRepository(Availability::class)->findAll();
         $roles = $manager->getRepository(Role::class)->findAll();
@@ -68,6 +69,7 @@ class AppFixtures extends Fixture
             $user->setFirstname($userData['firstname']);
             $user->setLastname($userData['lastname']);
             $user->setEmail($userData['email']);
+            $user->setRoles($userData['roles']);
             $user->setPassword($this->passwordHasher->hashPassword($user, '123456'));
             $user->setPhone($faker->phoneNumber);
             $user->setAddress($faker->address);

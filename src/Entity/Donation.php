@@ -203,12 +203,12 @@ class Donation
 
     public function getReceiptGeneratedAt(): ?\DateTimeImmutable
     {
-        return $this->receiptGenerateAt;
+        return $this->receiptGeneratedAt;
     }
 
     public function setReceiptGeneratedAt(?\DateTimeImmutable $receiptGenerateAt): static
     {
-        $this->receiptGenerateAt = $receiptGenerateAt;
+        $this->receiptGeneratedAt = $receiptGenerateAt;
 
         return $this;
     }

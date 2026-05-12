@@ -45,6 +45,15 @@ class Donation
     #[ORM\Column(enumType: DonationStatus::class)]
     private ?DonationStatus $status = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $receiptPdfPath = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fiscalReceiptNumber = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $receiptGeneratedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -164,6 +173,42 @@ class Donation
     public function setZipcode(?string $zipcode): static
     {
         $this->zipcode = $zipcode;
+
+        return $this;
+    }
+
+    public function getReceiptPdfPath(): ?string
+    {
+        return $this->receiptPdfPath;
+    }
+
+    public function setReceiptPdfPath(?string $receiptPdfPath): static
+    {
+        $this->receiptPdfPath = $receiptPdfPath;
+
+        return $this;
+    }
+
+    public function getFiscalReceiptNumber(): ?string
+    {
+        return $this->fiscalReceiptNumber;
+    }
+
+    public function setFiscalReceiptNumber(?string $fiscalReceiptNumber): static
+    {
+        $this->fiscalReceiptNumber = $fiscalReceiptNumber;
+
+        return $this;
+    }
+
+    public function getReceiptGeneratedAt(): ?\DateTimeImmutable
+    {
+        return $this->receiptGenerateAt;
+    }
+
+    public function setReceiptGeneratedAt(?\DateTimeImmutable $receiptGenerateAt): static
+    {
+        $this->receiptGenerateAt = $receiptGenerateAt;
 
         return $this;
     }

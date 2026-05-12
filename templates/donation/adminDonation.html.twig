@@ -1,35 +1,47 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
-    <h1>Liste de tous les dons</h1>
-    {% for donation in donations %}
-        <table>
+    <h1>Administration des donations</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Donateur</th>
+            <th>Email</th>
+            <th>Montant</th>
+            <th>Numéro du reçu fiscal</th>
+            <th>Statut</th>
+            <th>Date</th>
+            <th>Reçu fiscal</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for donation in donations %}
             <tr>
-                <th>Id</th>
                 <td>{{ donation.id }}</td>
-            </tr>
-            <tr>
-                <th>Montant</th>
+                <td>{{ donation.firstname }} {{ donation.lastname }}</td>
+                <td>{{ donation.email }}</td>
                 <td>{{ donation.amount }} €</td>
+                <td>{{ donation.fiscalReceiptNumber }}</td>
+                <td>{{ donation.status.value }}</td>
+                <td>{{ donation.donationDate|date('d/m/Y H:i') }}</td>
+                <td>
+                    {% if donation.receiptPdfPath %}
+                        <a href="{{ path('admin_donation_pdf', { id: donation.id }) }}" target="_blank">
+                            Voir le PDF
+                        </a>
+                    {% else %}
+                        Aucun PDF
+                    {% endif %}
+                </td>
             </tr>
+        {% else %}
             <tr>
-                <th>Date</th>
-                <td>{{ donation.donationDate | date }}</td>
+                <td colspan="8">Aucune donation trouvée.</td>
             </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ donation.user.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Prénom</th>
-                <td>{{ donation.user.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ donation.user.email }}</td>
-            </tr>
-        </table>
-    {% endfor %}
-
-
-
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

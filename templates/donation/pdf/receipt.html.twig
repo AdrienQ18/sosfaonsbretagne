@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            margin: 18px 24px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10.5px;
+            color: #222;
+            line-height: 1.25;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #2f5d3a;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+        }
+
+        .logo {
+            width: 85px;
+            margin-bottom: 4px;
+        }
+
+        h1 {
+            font-size: 18px;
+            text-transform: uppercase;
+            margin: 2px 0;
+            color: #2f5d3a;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .article {
+            text-align: center;
+            font-style: italic;
+            margin: 6px 0 10px;
+        }
+
+        .section {
+            border: 1px solid #cfcfcf;
+            padding: 7px 9px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+
+        h2 {
+            font-size: 12px;
+            margin: 0 0 5px;
+            color: #2f5d3a;
+            text-transform: uppercase;
+        }
+
+        .row {
+            margin-bottom: 2px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .two-columns {
+            width: 100%;
+            border-spacing: 0;
+        }
+
+        .two-columns td {
+            vertical-align: top;
+            width: 50%;
+        }
+
+        .left-col {
+            padding-right: 5px;
+        }
+
+        .right-col {
+            padding-left: 5px;
+        }
+
+        .legal {
+            font-size: 9.5px;
+            text-align: justify;
+            margin-top: 6px;
+        }
+
+        .signature {
+            margin-top: 8px;
+            text-align: right;
+        }
+
+        .signature img {
+            width: 95px;
+            margin-bottom: 0;
+        }
+
+        .footer {
+            font-size: 8.5px;
+            color: #555;
+            text-align: justify;
+            border-top: 1px solid #ddd;
+            padding-top: 6px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="header">
+    <img class="logo" src="{{ logoPath }}" alt="Logo SOS Faons Bretagne">
+    <h1>Attestation de don</h1>
+    <p class="subtitle">Reçu fiscal</p>
+    <div class="section">
+        <h2>Référence du reçu</h2>
+
+        <div class="row">
+            <span class="label">Numéro du reçu fiscal :</span>
+            {{ receiptNumber }}
+        </div>
+    </div>
+</div>
+
+<p class="article">Article 200 du Code général des impôts</p>
+
+<div class="section">
+    <h2>Organisme bénéficiaire</h2>
+
+    <div class="row"><span class="label">Association :</span> SOS Faons Bretagne</div>
+    <div class="row"><span class="label">Nature de l'organisme :</span> Association loi 1901</div>
+    <div class="row"><span class="label">Type :</span> Œuvre ou organisme d'intérêt général</div>
+    <div class="row"><span class="label">Famille :</span> Environnement, cadre de vie</div>
+    <div class="row"><span class="label">Objet :</span> Sauver des faons à l'aide d'un drone équipé d'une caméra thermique et évacuer les animaux avant le passage des faucheuses.</div>
+    <div class="row"><span class="label">SIRET :</span> 98764426700013</div>
+    <div class="row"><span class="label">Adresse :</span> 11 Louvel, 35140 Gosné</div>
+    <div class="row"><span class="label">Téléphone :</span> 02 02 02 02 02</div>
+    <div class="row"><span class="label">E-mail :</span> email@sosfaonsbretagne.fr</div>
+</div>
+
+<table class="two-columns">
+    <tr>
+        <td class="left-col">
+            <div class="section">
+                <h2>Donateur</h2>
+
+                <div class="row"><span class="label">Nom :</span> {{ donation.lastname }}</div>
+                <div class="row"><span class="label">Prénom :</span> {{ donation.firstname }}</div>
+                <div class="row"><span class="label">Adresse :</span> {{ donation.address }}</div>
+                <div class="row"><span class="label">Code postal :</span> {{ donation.zipcode }}</div>
+                <div class="row"><span class="label">Ville :</span> {{ donation.city }}</div>
+                <div class="row"><span class="label">E-mail :</span> {{ donation.email }}</div>
+            </div>
+        </td>
+
+        <td class="right-col">
+            <div class="section">
+                <h2>Don effectué</h2>
+
+                <div class="row"><span class="label">Montant du don :</span> {{ donation.amount }} €</div>
+                <div class="row"><span class="label">Date du don :</span> {{ donation.donationDate|date('d/m/Y H:i:s') }}</div>
+                <div class="row"><span class="label">Forme du don :</span> Don manuel</div>
+                <div class="row"><span class="label">Nature du don :</span> Paiement en ligne HelloAsso</div>
+                <div class="row"><span class="label">Mode de paiement :</span> Carte bancaire / HelloAsso</div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div class="legal">
+    <p>
+        Le bénéficiaire certifie sur l'honneur que les dons et versements qu'il reçoit ouvrent droit à la réduction
+        d'impôt prévue à l'article 200 du Code général des impôts.
+    </p>
+    <p>
+        Particulier : vous pouvez bénéficier d'une réduction d'impôt égale à 66 % du montant de votre don,
+        dans la limite de 20 % de votre revenu imposable.
+    </p>
+    <p>
+        Document généré automatiquement. À conserver par le donateur pour ses démarches administratives.
+    </p>
+</div>
+
+<div class="signature">
+    <p>Fait à Gosné, le {{ "now"|date('d/m/Y H:i:s') }}</p>
+    <img src="{{ signaturePath }}" alt="Signature Trésorier">
+    <p><strong>Trésorier / Trésorière</strong></p>
+</div>
+
+<div class="footer">
+    Conformément au Règlement Général sur la Protection des Données, vous disposez d'un droit d'accès,
+    de rectification, d'opposition et de suppression des données vous concernant.
+    Pour exercer vos droits, vous pouvez nous adresser votre demande par mail à l'adresse
+    email@sosfaonsbretagne.fr. Ces informations sont réservées à l'usage exclusif de SOS Faons Bretagne.
+</div>
+
+</body>
+</html>

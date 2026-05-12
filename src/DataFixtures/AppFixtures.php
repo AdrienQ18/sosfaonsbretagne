@@ -11,18 +11,22 @@ use App\Entity\PreOrder;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Enum\AlertStatus;
+use App\Enum\DonationStatus;
 use App\Enum\PreOrderStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Service\DonationPdfService;
 
 
 class AppFixtures extends Fixture
 {
-    public function __construct(private UserPasswordHasherInterface $passwordHasher)
-    {
 
+    public function __construct(
+        private UserPasswordHasherInterface $passwordHasher,
+        private DonationPdfService $donationPdfService,
+    ) {
     }
 
     public function load(ObjectManager $manager): void
@@ -38,6 +42,8 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         $this->addDonations($manager);
+        $manager->flush();
+
         $this->addPreOrders($manager);
         $this->addAlert($manager);
         $this->addEvents($manager);
@@ -131,12 +137,28 @@ class AppFixtures extends Fixture
     {
         $users = $manager->getRepository(User::class)->findAll();
         $faker = Factory::create('fr_FR');
+
         foreach ($users as $user) {
-            $donation = new Donation();
-            $donation->setUser($user);
-            $donation->setAmount($faker->randomFloat(2, 5, 400));
-            $donation->setDonationDate($faker->dateTime());
-            $manager->persist($donation);
+            for ($i = 0; $i < rand(1, 10); $i++) {
+                $donation = new Donation();
+
+                $donation->setUser($user);
+                $donation->setFirstname($user->getFirstname());
+                $donation->setLastname($user->getLastname());
+                $donation->setEmail($user->getEmail());
+                $donation->setAddress($user->getAddress());
+                $donation->setCity($user->getCity());
+                $donation->setZipcode($user->getZipcode());
+
+                $donation->setAmount($faker->randomFloat(2, 5, 400));
+                $donation->setDonationDate($faker->dateTime());
+                $donation->setStatus(DonationStatus::DONATION_VALIDEE);
+
+                $manager->persist($donation);
+                $manager->flush();
+
+                $this->donationPdfService->generateFiscalReceipt($donation);
+            }
         }
     }
 
@@ -165,6 +187,7 @@ class AppFixtures extends Fixture
             }
         }
     }
+
     public function addAlert(ObjectManager $manager): void
     {
         $users = $manager->getRepository(User::class)->findAll();

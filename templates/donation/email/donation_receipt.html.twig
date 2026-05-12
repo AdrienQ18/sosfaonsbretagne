@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f4f6f5;
+            font-family: Arial, sans-serif;
+            color: #1f2d24;
+        }
+
+        .email-wrapper {
+            width: 100%;
+            background: #f4f6f5;
+            padding: 30px 0;
+        }
+
+        .email-container {
+            width: 600px;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .email-header {
+            background: #2f5d3a;
+            padding: 24px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .email-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .email-header p {
+            margin: 8px 0 0;
+        }
+
+        .email-content {
+            padding: 28px;
+        }
+
+        .donation-table {
+            width: 100%;
+            margin: 24px 0;
+            border: 1px solid #d9e2dc;
+            border-radius: 8px;
+            border-collapse: collapse;
+        }
+
+        .donation-table td {
+            padding: 14px;
+            border-bottom: 1px solid #d9e2dc;
+        }
+
+        .donation-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .signature {
+            margin-top: 28px;
+        }
+
+        .email-footer {
+            background: #eef3f0;
+            padding: 18px 28px;
+            font-size: 12px;
+            color: #5f6f66;
+        }
+
+        .email-footer p {
+            margin: 0;
+        }
+
+        .footer-spacing {
+            margin-top: 8px !important;
+        }
+        .logo {
+            width: 90px;
+            height: auto;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+
+<body>
+<table class="email-wrapper" cellpadding="0" cellspacing="0">
+    <tr>
+        <td align="center">
+
+            <table class="email-container" cellpadding="0" cellspacing="0">
+
+                <tr>
+                    <td class="email-header">
+                        <img src="cid:logo" alt="Logo SOS Faons Bretagne" class="logo">
+
+                        <h1>Merci pour votre don</h1>
+                        <p>SOS Faons Bretagne</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="email-content">
+
+                        <p>
+                            Bonjour {{ donation.firstname }} {{ donation.lastname }},
+                        </p>
+
+                        <p>
+                            Toute l’équipe de <strong>SOS Faons Bretagne</strong>
+                            vous remercie sincèrement pour votre don de
+                            <strong>{{ donation.amount }} €</strong>.
+                        </p>
+
+                        <p>
+                            Votre soutien nous aide à poursuivre nos actions de protection
+                            des faons et d’accompagnement des agriculteurs sur le terrain.
+                        </p>
+
+                        <table class="donation-table" cellpadding="0" cellspacing="0">
+
+                            <tr>
+                                <td>
+                                    <strong>Montant du don :</strong>
+                                    {{ donation.amount }} €
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Date du don :</strong>
+                                    {{ donation.donationDate|date('d/m/Y') }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <strong>Numéro du reçu fiscal :</strong>
+                                    {{ donation.fiscalReceiptNumber }}
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <p>
+                            Vous trouverez votre reçu fiscal en pièce jointe de cet email.
+                        </p>
+
+                        <p>
+                            Encore merci pour votre confiance et votre générosité.
+                        </p>
+
+                        <p class="signature">
+                            L’équipe <strong>SOS Faons Bretagne</strong>
+                        </p>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="email-footer">
+
+                        <p>
+                            Cet email a été généré automatiquement suite à la validation
+                            de votre don.
+                        </p>
+
+                        <p class="footer-spacing">
+                            SOS Faons Bretagne — email@sosfaonsbretagne.fr
+                        </p>
+
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

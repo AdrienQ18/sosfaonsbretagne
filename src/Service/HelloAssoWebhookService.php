@@ -9,12 +9,22 @@ use Doctrine\ORM\EntityManagerInterface;
 class HelloAssoWebhookService
 {
     public function __construct(
-        private DonationRepository $donationRepository,
+        private DonationRepository     $donationRepository,
         private EntityManagerInterface $entityManager,
-    ) {}
+        private DonationPdfService     $donationPdfService,
+        private DonationMailerService  $donationMailerService,
+    )
+    {
+    }
 
     /**
      * Traite une notification webhook envoyée par HelloAsso.
+     *
+     * Cette méthode :
+     * - récupère l'identifiant de donation envoyé dans les metadata
+     * - vérifie l'existence de la donation
+     * - met à jour son statut selon l'état du paiement
+     * - génère le reçu fiscal uniquement si le paiement est validé
      */
     public function handle(array $payload): array
     {
@@ -49,6 +59,11 @@ class HelloAssoWebhookService
 
         if ($paymentState === 'Authorized' || $paymentState === 'Paid') {
             $donation->setStatus(DonationStatus::DONATION_VALIDEE);
+
+            $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);
+
+            $this->donationMailerService->sendFiscalReceipt($donation, $pdfPath);
+
         } elseif (
             $paymentState === 'Refused'
             || $paymentState === 'Canceled'

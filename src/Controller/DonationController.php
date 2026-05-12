@@ -33,10 +33,11 @@ final class DonationController extends AbstractController
      */
     #[Route('/donation', name: 'donation', methods: ['GET', 'POST'])]
     public function indexDonation(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManager,
-        HelloAssoService $helloAssoService
-    ): Response {
+        HelloAssoService       $helloAssoService
+    ): Response
+    {
         $newDonation = new Donation();
 
         /*
@@ -128,12 +129,9 @@ final class DonationController extends AbstractController
     #[Route('/donation/success/{id}', name: 'donation_success')]
     public function success(): Response
     {
-        $this->addFlash(
-            'success',
-            'Paiement terminé. Votre don est en cours de validation.'
-        );
+        $this->addFlash('success', 'Paiement terminé. Votre don est en cours de validation.');
 
-        return $this->redirectToRoute('donation');
+        return $this->redirect('http://localhost/sosfaonsbretagne/public/donation');
     }
 
     /**
@@ -142,58 +140,105 @@ final class DonationController extends AbstractController
      * Ici, on passe la donation en refusée car le paiement n'a pas été finalisé.
      */
     #[Route('/donation/cancel/{id}', name: 'donation_cancel')]
-    public function cancel(
-        Donation $donation,
-        EntityManagerInterface $entityManager
-    ): Response {
+    public function cancel(Donation $donation, EntityManagerInterface $entityManager): Response
+    {
         $donation->setStatus(DonationStatus::DONATION_REFUSEE);
-
         $entityManager->flush();
 
         $this->addFlash('error', 'Paiement annulé.');
 
-        return $this->redirectToRoute('donation');
+        return $this->redirect('http://localhost/sosfaonsbretagne/public/donation');
     }
 
     /**
-     * Webhook appelé automatiquement par HelloAsso.
+     * Webhook appelé automatiquement par HelloAsso après un événement de paiement.
      *
-     * Cette route reçoit les notifications de paiement envoyées par HelloAsso.
-     * Elle délègue ensuite le traitement au HelloAssoWebhookService.
+     * Cette route ne doit pas être appelée par un utilisateur classique.
+     * Elle est appelée par HelloAsso en POST quand un paiement est validé,
+     * refusé, annulé ou mis à jour.
      *
-     * C'est cette route qui doit valider réellement une donation après paiement.
-     *
-     * TODO sécurité :
-     * Vérifier la signature ou l'authenticité de la notification HelloAsso
-     * si l'API fournit un mécanisme prévu pour cela.
+     * Étapes :
+     * 1. On récupère le secret présent dans l'URL.
+     * 2. On compare ce secret avec celui stocké dans .env.local.
+     * 3. Si le secret est absent ou incorrect, on refuse la requête.
+     * 4. On décode le contenu JSON envoyé par HelloAsso.
+     * 5. On enregistre temporairement le contenu reçu dans un fichier de debug.
+     * 6. Si le JSON est invalide, on retourne une erreur.
+     * 7. Si tout est correct, on délègue le traitement au service HelloAssoWebhookService.
+     * 8. Le service mettra à jour le statut de la donation.
      */
     #[Route('/helloasso/webhook', name: 'helloasso_webhook', methods: ['POST'])]
     public function helloAssoWebhook(
-        Request $request,
+        Request                 $request,
         HelloAssoWebhookService $helloAssoWebhookService
-    ): JsonResponse {
-        $payload = json_decode($request->getContent(), true);
+    ): JsonResponse
+    {
+        /*
+         * Récupère le secret envoyé dans l'URL du webhook.
+         *
+         * Exemple d'URL configurée côté HelloAsso :
+         * /helloasso/webhook?secret=MON_SECRET
+         */
+        $receivedSecret = $request->query->get('secret');
 
         /*
-         * Log temporaire des webhooks reçus.
+         * Récupère le secret attendu depuis les variables d'environnement.
          *
-         * TODO :
-         * À supprimer ou remplacer par un vrai logger avant la mise en production.
+         * Ce secret est défini dans .env.local :
+         * HELLOASSO_WEBHOOK_SECRET=MON_SECRET
          */
-        file_put_contents(
-            $this->getParameter('kernel.project_dir') . '/var/helloasso-webhook.json',
-            $request->getContent() . PHP_EOL,
-            FILE_APPEND
-        );
+        $expectedSecret = $_ENV['HELLOASSO_WEBHOOK_SECRET'];
 
+        /*
+         * Vérifie que le secret existe et qu'il correspond au secret attendu.
+         *
+         * hash_equals() est utilisé pour comparer deux valeurs sensibles
+         * de manière plus sûre qu'un simple ===.
+         */
+        if (!$receivedSecret || !hash_equals($expectedSecret, $receivedSecret)) {
+            return new JsonResponse([
+                'error' => 'Notification non autorisée.',
+            ], 403);
+        }
+
+
+        /*
+         * Récupère le contenu brut envoyé par HelloAsso,
+         * puis le transforme en tableau PHP.
+         */
+        $payload = json_decode($request->getContent(), true);
+
+
+        /*
+         * Si le JSON est vide ou invalide, on retourne une erreur 400.
+         */
         if (!$payload) {
             return new JsonResponse([
                 'error' => 'Le contenu reçu est invalide ou vide.',
             ], 400);
         }
 
+        /*
+         * Délègue toute la logique métier au service.
+         *
+         * Le service va :
+         * - retrouver la donation grâce au donation_id
+         * - lire le statut du paiement
+         * - passer le don en validé ou refusé
+         * - générer le PDF si le paiement est validé
+         * - envoyer le reçu fiscal par email
+         */
         $result = $helloAssoWebhookService->handle($payload);
 
+        /*
+         * Retourne la réponse JSON au format attendu.
+         *
+         * $result contient par exemple :
+         * [
+         *     'status' => 200,
+         *     'message' => 'Statut de la donation mis à jour.'
+         * ]
+         */
         return new JsonResponse($result, $result['status']);
     }
 
@@ -207,13 +252,15 @@ final class DonationController extends AbstractController
      */
     #[Route('/donation/{id}/pdf-test', name: 'donation_pdf_test')]
     public function testPdf(
-        Donation $donation,
+        Donation           $donation,
         DonationPdfService $donationPdfService
-    ): Response {
+    ): Response
+    {
         $path = $donationPdfService->generateFiscalReceipt($donation);
 
         return new Response('PDF généré ici : ' . $path);
     }
+
     #[Route('/mail/test', name: 'mail_test')]
     public function testMail(MailerInterface $mailer): Response
     {

@@ -47,6 +47,7 @@ final class DonationController extends AbstractController
          * Cela évite qu'un changement futur du profil utilisateur modifie
          * les informations historiques du reçu fiscal.
          */
+        /** @var \App\Entity\User|null $user */
         $user = $this->getUser();
 
         if ($user) {

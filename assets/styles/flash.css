@@ -1,0 +1,35 @@
+.flash {
+    position: fixed;
+    top: 7rem;
+    right: 1rem;
+    z-index: 2500;
+    max-inline-size: min(25ch, 90vw);
+    padding: 10px 14px;
+    border-radius: 0.75rem;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    animation: toast 3.3s ease forwards;
+}
+
+.flash-success { background-color: rgba(38, 154, 0, 0.77); }
+.flash-error { background-color: rgba(200, 40, 40, 0.9); }
+.flash-warning { background-color: rgba(214, 142, 0, 0.9); }
+
+@keyframes toast {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    15%, 85% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}

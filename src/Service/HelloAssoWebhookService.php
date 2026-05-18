@@ -58,6 +58,13 @@ class HelloAssoWebhookService
         $paymentState = $payload['data']['state'] ?? null;
 
         if ($paymentState === 'Authorized' || $paymentState === 'Paid') {
+
+            if ($donation->getStatus() === DonationStatus::DONATION_VALIDEE) {
+                return [
+                    'status' => 200,
+                    'message' => 'Donation déjà validée.',
+                ];
+            }
             $donation->setStatus(DonationStatus::DONATION_VALIDEE);
 
             $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);

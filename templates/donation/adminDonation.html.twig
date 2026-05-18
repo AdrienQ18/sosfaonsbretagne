@@ -2,18 +2,39 @@
 
 {% block body %}
     <h1>Administration des donations</h1>
+    {{ form_start(filterForm, {
+        attr: {
+            id: 'donation-filter-form'
+        }
+    }) }}
 
+    {{ form_row(filterForm.search) }}
+    {{ form_row(filterForm.donorType) }}
+    {{ form_row(filterForm.status) }}
+    {{ form_row(filterForm.email) }}
+    {{ form_row(filterForm.companySiret) }}
+    <button
+        type="button"
+        id="reset-filters"
+    >
+        Réinitialiser
+    </button>
+    {{ form_end(filterForm) }}
     <table>
         <thead>
         <tr>
             <th>ID</th>
-            <th>Donateur</th>
+            <th>Type</th>
+            <th>Donateur / Contact</th>
             <th>Email</th>
+            <th>Adresse</th>
             <th>Montant</th>
             <th>Numéro du reçu fiscal</th>
             <th>Statut</th>
             <th>Date</th>
             <th>Reçu fiscal</th>
+            <th>Entreprise</th>
+            <th>SIRET</th>
         </tr>
         </thead>
 
@@ -21,12 +42,34 @@
         {% for donation in donations %}
             <tr>
                 <td>{{ donation.id }}</td>
+
+                <td>
+                    {% if donation.donorType.value == 'entreprise' %}
+                        Entreprise
+                    {% else %}
+                        Particulier
+                    {% endif %}
+                </td>
+
                 <td>{{ donation.firstname }} {{ donation.lastname }}</td>
+
                 <td>{{ donation.email }}</td>
+
+                <td>
+                    {{ donation.address }}<br>
+                    {{ donation.zipcode }} {{ donation.city }}
+                </td>
+
                 <td>{{ donation.amount }} €</td>
-                <td>{{ donation.fiscalReceiptNumber }}</td>
+
+                <td>
+                    {{ donation.fiscalReceiptNumber ?? 'Non généré' }}
+                </td>
+
                 <td>{{ donation.status.value }}</td>
+
                 <td>{{ donation.donationDate|date('d/m/Y H:i') }}</td>
+
                 <td>
                     {% if donation.receiptPdfPath %}
                         <a href="{{ path('admin_donation_pdf', { id: donation.id }) }}" target="_blank">
@@ -36,12 +79,65 @@
                         Aucun PDF
                     {% endif %}
                 </td>
+
+                <td>
+                    {{ donation.companyName ?? '-' }}
+                </td>
+
+                <td>
+                    {{ donation.companySiret ?? '-' }}
+                </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">Aucune donation trouvée.</td>
+                <td colspan="12">Aucune donation trouvée.</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <div class="pagination">
+        {{ knp_pagination_render(donations) }}
+    </div>
 {% endblock %}
+
+{% block extraJs %}
+    {{ parent() }}
+
+    <script>
+        const filterForm = document.querySelector('#donation-filter-form');
+
+        document.querySelector('#reset-filters')
+            .addEventListener('click', () => {
+
+                window.location.href =
+                    "{{ path('admin_donation') }}";
+
+            });
+
+        filterForm.querySelectorAll('select').forEach(field => {
+
+            field.addEventListener('change', () => {
+                filterForm.submit();
+            });
+
+        });
+
+        let timeout;
+
+        filterForm.querySelectorAll('input[type="text"]').forEach(field => {
+
+            field.addEventListener('input', () => {
+
+                clearTimeout(timeout);
+
+                timeout = setTimeout(() => {
+                    filterForm.submit();
+                }, 600);
+
+            });
+
+        });
+    </script>
+{% endblock %}
+
+

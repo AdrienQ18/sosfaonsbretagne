@@ -1,0 +1,6 @@
+<h1>Nouveau signalement : {{ alert.type }}</h1>
+<p>Vous avez reçu un nouveau signalement : </p>
+<p><strong>Type :</strong> {{ alert.type }}</p>
+<p>Type de culture : {{ alert.cultureType }}</p>
+<p><strong>Description :</strong> {{ alert.description }}</p>
+<p><strong>Date :</strong> {{ alert.creationDate|date('d/m/Y H:i') }}</p>

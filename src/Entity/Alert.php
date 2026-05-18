@@ -41,7 +41,7 @@ class Alert
     private ?string $gpsLongitude = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $descritption = null;
+    private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
@@ -151,14 +151,14 @@ class Alert
         return $this;
     }
 
-    public function getDescritption(): ?string
+    public function getDescription(): ?string
     {
-        return $this->descritption;
+        return $this->description;
     }
 
-    public function setDescritption(?string $descritption): static
+    public function setDescription(?string $description): static
     {
-        $this->descritption = $descritption;
+        $this->description = $description;
 
         return $this;
     }

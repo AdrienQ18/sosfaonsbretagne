@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Faire un signalement</h1>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+{{ form_row(form.type) }}
+{{ form_row(form.surface) }}
+{{ form_row(form.creationDate) }}
+{{ form_row(form.localisation) }}
+{{ form_row(form.gpsLatitude) }}
+{{ form_row(form.gpsLongitude) }}
+{{ form_row(form.description) }}
+{{ form_row(form.image) }}
+{{ form_row(form.cultureType) }}
+
+<button type="submit" id="submit-alert">Signaler</button>
+    {{ form_end(form) }}
+
+
+{% endblock %}

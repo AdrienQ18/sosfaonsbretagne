@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\Donation;
 use App\Enum\DonationStatus;
 use App\Enum\DonorType;
+use App\Form\DonationFilterType;
 use App\Form\DonationType;
 use App\Repository\DonationRepository;
 use App\Service\DonationPdfService;
 use App\Service\HelloAssoService;
 use App\Service\HelloAssoWebhookService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,10 +36,11 @@ final class DonationController extends AbstractController
      */
     #[Route('/donation', name: 'donation', methods: ['GET', 'POST'])]
     public function indexDonation(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManager,
-        HelloAssoService $helloAssoService
-    ): Response {
+        HelloAssoService       $helloAssoService
+    ): Response
+    {
         $newDonation = new Donation();
         $newDonation->setDonorType(DonorType::PARTICULIER);
 
@@ -87,10 +90,29 @@ final class DonationController extends AbstractController
      * Cette route devra être protégée pour être accessible uniquement aux admins.
      */
     #[Route('/admin/donation', name: 'admin_donation')]
-    public function indexAdminDonation(DonationRepository $donationRepository): Response
+    public function indexAdminDonation(
+        DonationRepository $donationRepository,
+        PaginatorInterface $paginator,
+        Request            $request
+    ): Response
     {
+        $filterForm = $this->createForm(DonationFilterType::class, null, [
+            'method' => 'GET',
+        ]);
+
+        $filterForm->handleRequest($request);
+        $filters = $filterForm->getData() ?? [];
+        $queryBuilder = $donationRepository->searchDonations($filters);
+
+        $donations = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('donation/adminDonation.html.twig', [
-            'donations' => $donationRepository->findAll(),
+            'donations' => $donations,
+            'filterForm' => $filterForm->createView(),
         ]);
     }
 

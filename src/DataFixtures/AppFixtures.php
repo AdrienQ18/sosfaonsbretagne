@@ -12,6 +12,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Enum\AlertStatus;
 use App\Enum\DonationStatus;
+use App\Enum\DonorType;
 use App\Enum\PreOrderStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -144,22 +145,42 @@ class AppFixtures extends Fixture
             for ($i = 0; $i < rand(1, 10); $i++) {
                 $donation = new Donation();
 
-                $donation->setUser($user);
-                $donation->setFirstname($user->getFirstname());
-                $donation->setLastname($user->getLastname());
-                $donation->setEmail($user->getEmail());
-                $donation->setAddress($user->getAddress());
-                $donation->setCity($user->getCity());
-                $donation->setZipcode($user->getZipcode());
+                $isCompanyDonation = $faker->boolean(35);
 
+                $donation->setUser($user);
                 $donation->setAmount($faker->randomFloat(2, 5, 400));
                 $donation->setDonationDate($faker->dateTime());
                 $donation->setStatus(DonationStatus::DONATION_VALIDEE);
+
+                if ($isCompanyDonation) {
+                    $donation->setDonorType(DonorType::ENTREPRISE);
+                    $donation->setCompanyName($faker->company());
+                    $donation->setCompanySiret($faker->numerify('##############'));
+
+                    $donation->setFirstname($faker->firstName());
+                    $donation->setLastname($faker->lastName());
+                    $donation->setEmail($faker->companyEmail());
+
+                    $donation->setAddress($faker->streetAddress());
+                    $donation->setCity($faker->city());
+                    $donation->setZipcode($faker->postcode());
+                } else {
+                    $donation->setDonorType(DonorType::PARTICULIER);
+
+                    $donation->setFirstname($user->getFirstname());
+                    $donation->setLastname($user->getLastname());
+                    $donation->setEmail($user->getEmail());
+                    $donation->setAddress($user->getAddress());
+                    $donation->setCity($user->getCity());
+                    $donation->setZipcode($user->getZipcode());
+                }
 
                 $manager->persist($donation);
                 $manager->flush();
 
                 $this->donationPdfService->generateFiscalReceipt($donation);
+
+                $manager->flush();
             }
         }
     }

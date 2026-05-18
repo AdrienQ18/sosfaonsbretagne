@@ -32,6 +32,12 @@
             color: #ffffff;
         }
 
+        .logo {
+            width: 90px;
+            height: auto;
+            margin-bottom: 12px;
+        }
+
         .email-header h1 {
             margin: 0;
             font-size: 24px;
@@ -49,7 +55,6 @@
             width: 100%;
             margin: 24px 0;
             border: 1px solid #d9e2dc;
-            border-radius: 8px;
             border-collapse: collapse;
         }
 
@@ -60,6 +65,12 @@
 
         .donation-table tr:last-child td {
             border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 16px;
+            margin: 24px 0 8px;
+            color: #2f5d3a;
         }
 
         .signature {
@@ -80,21 +91,17 @@
         .footer-spacing {
             margin-top: 8px !important;
         }
-        .logo {
-            width: 90px;
-            height: auto;
-            margin-bottom: 12px;
-        }
     </style>
+
     <title>Email Donation</title>
 </head>
 
 <body>
-<table class="email-wrapper">
+<table class="email-wrapper" cellpadding="0" cellspacing="0">
     <tr>
-        <td>
+        <td align="center">
 
-            <table class="email-container">
+            <table class="email-container" cellpadding="0" cellspacing="0">
 
                 <tr>
                     <td class="email-header">
@@ -108,23 +115,107 @@
                 <tr>
                     <td class="email-content">
 
-                        <p>
-                            Bonjour {{ donation.firstname }} {{ donation.lastname }},
-                        </p>
+                        {% if donation.donorType.value == 'entreprise' %}
+                            <p>
+                                Bonjour,
+                            </p>
 
-                        <p>
-                            Toute l’équipe de <strong>SOS Faons Bretagne</strong>
-                            vous remercie sincèrement pour votre don de
-                            <strong>{{ donation.amount }} €</strong>.
-                        </p>
+                            <p>
+                                Toute l’équipe de <strong>SOS Faons Bretagne</strong>
+                                remercie sincèrement <strong>{{ donation.companyName }}</strong>
+                                pour son don de <strong>{{ donation.amount }} €</strong>.
+                            </p>
 
-                        <p>
-                            Votre soutien nous aide à poursuivre nos actions de protection
-                            des faons et d’accompagnement des agriculteurs sur le terrain.
-                        </p>
+                            <p>
+                                Votre soutien nous aide à poursuivre nos actions de protection
+                                des faons et d’accompagnement des agriculteurs sur le terrain.
+                            </p>
 
-                        <table class="donation-table">
+                            <h2 class="section-title">Informations entreprise</h2>
 
+                            <table class="donation-table" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <strong>Entreprise :</strong>
+                                        {{ donation.companyName }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>SIRET :</strong>
+                                        {{ donation.companySiret }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>Contact :</strong>
+                                        {{ donation.firstname }} {{ donation.lastname }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>Email :</strong>
+                                        {{ donation.email }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>Adresse :</strong>
+                                        {{ donation.address }},
+                                        {{ donation.zipcode }} {{ donation.city }}
+                                    </td>
+                                </tr>
+                            </table>
+                        {% else %}
+                            <p>
+                                Bonjour {{ donation.firstname }} {{ donation.lastname }},
+                            </p>
+
+                            <p>
+                                Toute l’équipe de <strong>SOS Faons Bretagne</strong>
+                                vous remercie sincèrement pour votre don de
+                                <strong>{{ donation.amount }} €</strong>.
+                            </p>
+
+                            <p>
+                                Votre soutien nous aide à poursuivre nos actions de protection
+                                des faons et d’accompagnement des agriculteurs sur le terrain.
+                            </p>
+
+                            <h2 class="section-title">Informations donateur</h2>
+
+                            <table class="donation-table" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <strong>Donateur :</strong>
+                                        {{ donation.firstname }} {{ donation.lastname }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>Email :</strong>
+                                        {{ donation.email }}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <strong>Adresse :</strong>
+                                        {{ donation.address }},
+                                        {{ donation.zipcode }} {{ donation.city }}
+                                    </td>
+                                </tr>
+                            </table>
+                        {% endif %}
+
+                        <h2 class="section-title">Détail du don</h2>
+
+                        <table class="donation-table" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td>
                                     <strong>Montant du don :</strong>
@@ -146,6 +237,16 @@
                                 </td>
                             </tr>
 
+                            <tr>
+                                <td>
+                                    <strong>Déduction fiscale :</strong>
+                                    {% if donation.donorType.value == 'entreprise' %}
+                                        60 % du montant du don est déductible de l’impôt sur les sociétés.
+                                    {% else %}
+                                        66 % du montant de votre don est déductible des impôts.
+                                    {% endif %}
+                                </td>
+                            </tr>
                         </table>
 
                         <p>
@@ -165,7 +266,6 @@
 
                 <tr>
                     <td class="email-footer">
-
                         <p>
                             Cet email a été généré automatiquement suite à la validation
                             de votre don.
@@ -174,7 +274,6 @@
                         <p class="footer-spacing">
                             SOS Faons Bretagne — email@sosfaonsbretagne.fr
                         </p>
-
                     </td>
                 </tr>
 
@@ -183,6 +282,5 @@
         </td>
     </tr>
 </table>
-
 </body>
 </html>

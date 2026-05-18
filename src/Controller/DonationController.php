@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Donation;
 use App\Enum\DonationStatus;
+use App\Enum\DonorType;
 use App\Form\DonationType;
 use App\Repository\DonationRepository;
 use App\Service\DonationPdfService;
@@ -33,21 +34,13 @@ final class DonationController extends AbstractController
      */
     #[Route('/donation', name: 'donation', methods: ['GET', 'POST'])]
     public function indexDonation(
-        Request                $request,
+        Request $request,
         EntityManagerInterface $entityManager,
-        HelloAssoService       $helloAssoService
-    ): Response
-    {
+        HelloAssoService $helloAssoService
+    ): Response {
         $newDonation = new Donation();
+        $newDonation->setDonorType(DonorType::PARTICULIER);
 
-        /*
-         * Si un utilisateur est connecté, on garde un lien avec son compte.
-         *
-         * On copie aussi ses informations dans Donation afin de conserver
-         * une trace exacte des données utilisées au moment du don.
-         * Cela évite qu'un changement futur du profil utilisateur modifie
-         * les informations historiques du reçu fiscal.
-         */
         /** @var \App\Entity\User|null $user */
         $user = $this->getUser();
 
@@ -65,23 +58,21 @@ final class DonationController extends AbstractController
         $formDonation->handleRequest($request);
 
         if ($formDonation->isSubmitted() && $formDonation->isValid()) {
-            /*
-             * Le don est créé avant le paiement.
-             * À ce stade, il n'est pas encore validé : il est seulement "passé".
-             */
             $newDonation->setDonationDate(new \DateTime());
             $newDonation->setStatus(DonationStatus::DONATION_PASSEE);
 
             $entityManager->persist($newDonation);
             $entityManager->flush();
 
-            /*
-             * Création du paiement HelloAsso.
-             * Le service retourne l'URL vers laquelle l'utilisateur doit être redirigé.
-             */
-            $redirectUrl = $helloAssoService->createDonationCheckout($newDonation);
+            try {
+                $redirectUrl = $helloAssoService->createDonationCheckout($newDonation);
 
-            return $this->redirect($redirectUrl);
+                return $this->redirect($redirectUrl);
+            } catch (\Throwable $e) {
+                $this->addFlash('error', 'Impossible de créer le paiement.');
+
+                return $this->redirectToRoute('donation');
+            }
         }
 
         return $this->render('donation/donation.html.twig', [
@@ -207,7 +198,10 @@ final class DonationController extends AbstractController
          * puis le transforme en tableau PHP.
          */
         $payload = json_decode($request->getContent(), true);
-
+        file_put_contents(
+            $this->getParameter('kernel.project_dir') . '/var/helloasso-debug.json',
+            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+        );
 
         /*
          * Si le JSON est vide ou invalide, on retourne une erreur 400.

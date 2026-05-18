@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Enum\DonationStatus;
+use App\Enum\DonorType;
 use App\Repository\DonationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,7 +45,8 @@ class Donation
 
     #[ORM\Column(enumType: DonationStatus::class)]
     private ?DonationStatus $status = null;
-
+    #[ORM\Column(enumType: DonorType::class)]
+    private ?DonorType $donorType = null;
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $receiptPdfPath = null;
 
@@ -54,9 +56,110 @@ class Donation
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $receiptGeneratedAt = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $companyName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $companySiret = null;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getAmount(): ?string
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(?string $amount): void
+    {
+        $this->amount = $amount;
+    }
+
+    public function getDonationDate(): ?\DateTime
+    {
+        return $this->donationDate;
+    }
+
+    public function setDonationDate(?\DateTime $donationDate): void
+    {
+        $this->donationDate = $donationDate;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(?string $lastname): void
+    {
+        $this->lastname = $lastname;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(?string $firstname): void
+    {
+        $this->firstname = $firstname;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): void
+    {
+        $this->address = $address;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): void
+    {
+        $this->city = $city;
+    }
+
+    public function getZipcode(): ?string
+    {
+        return $this->zipcode;
+    }
+
+    public function setZipcode(?string $zipcode): void
+    {
+        $this->zipcode = $zipcode;
     }
 
     public function getStatus(): ?DonationStatus
@@ -69,112 +172,14 @@ class Donation
         $this->status = $status;
     }
 
-    public function getAmount(): ?string
+    public function getDonorType(): ?DonorType
     {
-        return $this->amount;
+        return $this->donorType;
     }
 
-    public function setAmount(string $amount): static
+    public function setDonorType(?DonorType $donorType): void
     {
-        $this->amount = $amount;
-
-        return $this;
-    }
-
-    public function getDonationDate(): ?\DateTime
-    {
-        return $this->donationDate;
-    }
-
-    public function setDonationDate(\DateTime $donationDate): static
-    {
-        $this->donationDate = $donationDate;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(?string $lastname): static
-    {
-        $this->lastname = $lastname;
-
-        return $this;
-    }
-
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(?string $firstname): static
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?string $address): static
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(?string $city): static
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    public function getZipcode(): ?string
-    {
-        return $this->zipcode;
-    }
-
-    public function setZipcode(?string $zipcode): static
-    {
-        $this->zipcode = $zipcode;
-
-        return $this;
+        $this->donorType = $donorType;
     }
 
     public function getReceiptPdfPath(): ?string
@@ -182,11 +187,9 @@ class Donation
         return $this->receiptPdfPath;
     }
 
-    public function setReceiptPdfPath(?string $receiptPdfPath): static
+    public function setReceiptPdfPath(?string $receiptPdfPath): void
     {
         $this->receiptPdfPath = $receiptPdfPath;
-
-        return $this;
     }
 
     public function getFiscalReceiptNumber(): ?string
@@ -194,11 +197,9 @@ class Donation
         return $this->fiscalReceiptNumber;
     }
 
-    public function setFiscalReceiptNumber(?string $fiscalReceiptNumber): static
+    public function setFiscalReceiptNumber(?string $fiscalReceiptNumber): void
     {
         $this->fiscalReceiptNumber = $fiscalReceiptNumber;
-
-        return $this;
     }
 
     public function getReceiptGeneratedAt(): ?\DateTimeImmutable
@@ -206,10 +207,30 @@ class Donation
         return $this->receiptGeneratedAt;
     }
 
-    public function setReceiptGeneratedAt(?\DateTimeImmutable $receiptGenerateAt): static
+    public function setReceiptGeneratedAt(?\DateTimeImmutable $receiptGeneratedAt): void
     {
-        $this->receiptGeneratedAt = $receiptGenerateAt;
-
-        return $this;
+        $this->receiptGeneratedAt = $receiptGeneratedAt;
     }
+
+    public function getCompanyName(): ?string
+    {
+        return $this->companyName;
+    }
+
+    public function setCompanyName(?string $companyName): void
+    {
+        $this->companyName = $companyName;
+    }
+
+    public function getCompanySiret(): ?string
+    {
+        return $this->companySiret;
+    }
+
+    public function setCompanySiret(?string $companySiret): void
+    {
+        $this->companySiret = $companySiret;
+    }
+
+
 }

@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Donation;
 use App\Enum\DonationStatus;
+use App\Enum\DonorType;
+use App\Form\DonationFilterType;
 use App\Form\DonationType;
 use App\Repository\DonationRepository;
 use App\Service\DonationPdfService;
 use App\Service\HelloAssoService;
 use App\Service\HelloAssoWebhookService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,20 +36,14 @@ final class DonationController extends AbstractController
      */
     #[Route('/donation', name: 'donation', methods: ['GET', 'POST'])]
     public function indexDonation(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManager,
-        HelloAssoService $helloAssoService
-    ): Response {
+        HelloAssoService       $helloAssoService
+    ): Response
+    {
         $newDonation = new Donation();
+        $newDonation->setDonorType(DonorType::PARTICULIER);
 
-        /*
-         * Si un utilisateur est connecté, on garde un lien avec son compte.
-         *
-         * On copie aussi ses informations dans Donation afin de conserver
-         * une trace exacte des données utilisées au moment du don.
-         * Cela évite qu'un changement futur du profil utilisateur modifie
-         * les informations historiques du reçu fiscal.
-         */
         /** @var \App\Entity\User|null $user */
         $user = $this->getUser();
 
@@ -64,23 +61,21 @@ final class DonationController extends AbstractController
         $formDonation->handleRequest($request);
 
         if ($formDonation->isSubmitted() && $formDonation->isValid()) {
-            /*
-             * Le don est créé avant le paiement.
-             * À ce stade, il n'est pas encore validé : il est seulement "passé".
-             */
             $newDonation->setDonationDate(new \DateTime());
             $newDonation->setStatus(DonationStatus::DONATION_PASSEE);
 
             $entityManager->persist($newDonation);
             $entityManager->flush();
 
-            /*
-             * Création du paiement HelloAsso.
-             * Le service retourne l'URL vers laquelle l'utilisateur doit être redirigé.
-             */
-            $redirectUrl = $helloAssoService->createDonationCheckout($newDonation);
+            try {
+                $redirectUrl = $helloAssoService->createDonationCheckout($newDonation);
 
-            return $this->redirect($redirectUrl);
+                return $this->redirect($redirectUrl);
+            } catch (\Throwable $e) {
+                $this->addFlash('error', 'Impossible de créer le paiement.');
+
+                return $this->redirectToRoute('donation');
+            }
         }
 
         return $this->render('donation/donation.html.twig', [
@@ -95,10 +90,29 @@ final class DonationController extends AbstractController
      * Cette route devra être protégée pour être accessible uniquement aux admins.
      */
     #[Route('/admin/donation', name: 'admin_donation')]
-    public function indexAdminDonation(DonationRepository $donationRepository): Response
+    public function indexAdminDonation(
+        DonationRepository $donationRepository,
+        PaginatorInterface $paginator,
+        Request            $request
+    ): Response
     {
+        $filterForm = $this->createForm(DonationFilterType::class, null, [
+            'method' => 'GET',
+        ]);
+
+        $filterForm->handleRequest($request);
+        $filters = $filterForm->getData() ?? [];
+        $queryBuilder = $donationRepository->searchDonations($filters);
+
+        $donations = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('donation/adminDonation.html.twig', [
-            'donations' => $donationRepository->findAll(),
+            'donations' => $donations,
+            'filterForm' => $filterForm->createView(),
         ]);
     }
 
@@ -128,12 +142,9 @@ final class DonationController extends AbstractController
     #[Route('/donation/success/{id}', name: 'donation_success')]
     public function success(): Response
     {
-        $this->addFlash(
-            'success',
-            'Paiement terminé. Votre don est en cours de validation.'
-        );
+        $this->addFlash('success', 'Paiement terminé. Votre don est en cours de validation.');
 
-        return $this->redirectToRoute('donation');
+        return $this->redirect('http://localhost/sosfaonsbretagne/public/donation');
     }
 
     /**
@@ -142,58 +153,108 @@ final class DonationController extends AbstractController
      * Ici, on passe la donation en refusée car le paiement n'a pas été finalisé.
      */
     #[Route('/donation/cancel/{id}', name: 'donation_cancel')]
-    public function cancel(
-        Donation $donation,
-        EntityManagerInterface $entityManager
-    ): Response {
+    public function cancel(Donation $donation, EntityManagerInterface $entityManager): Response
+    {
         $donation->setStatus(DonationStatus::DONATION_REFUSEE);
-
         $entityManager->flush();
 
         $this->addFlash('error', 'Paiement annulé.');
 
-        return $this->redirectToRoute('donation');
+        return $this->redirect('http://localhost/sosfaonsbretagne/public/donation');
     }
 
     /**
-     * Webhook appelé automatiquement par HelloAsso.
+     * Webhook appelé automatiquement par HelloAsso après un événement de paiement.
      *
-     * Cette route reçoit les notifications de paiement envoyées par HelloAsso.
-     * Elle délègue ensuite le traitement au HelloAssoWebhookService.
+     * Cette route ne doit pas être appelée par un utilisateur classique.
+     * Elle est appelée par HelloAsso en POST quand un paiement est validé,
+     * refusé, annulé ou mis à jour.
      *
-     * C'est cette route qui doit valider réellement une donation après paiement.
-     *
-     * TODO sécurité :
-     * Vérifier la signature ou l'authenticité de la notification HelloAsso
-     * si l'API fournit un mécanisme prévu pour cela.
+     * Étapes :
+     * 1. On récupère le secret présent dans l'URL.
+     * 2. On compare ce secret avec celui stocké dans .env.local.
+     * 3. Si le secret est absent ou incorrect, on refuse la requête.
+     * 4. On décode le contenu JSON envoyé par HelloAsso.
+     * 5. On enregistre temporairement le contenu reçu dans un fichier de debug.
+     * 6. Si le JSON est invalide, on retourne une erreur.
+     * 7. Si tout est correct, on délègue le traitement au service HelloAssoWebhookService.
+     * 8. Le service mettra à jour le statut de la donation.
      */
     #[Route('/helloasso/webhook', name: 'helloasso_webhook', methods: ['POST'])]
     public function helloAssoWebhook(
-        Request $request,
+        Request                 $request,
         HelloAssoWebhookService $helloAssoWebhookService
-    ): JsonResponse {
-        $payload = json_decode($request->getContent(), true);
+    ): JsonResponse
+    {
+        /*
+         * Récupère le secret envoyé dans l'URL du webhook.
+         *
+         * Exemple d'URL configurée côté HelloAsso :
+         * /helloasso/webhook?secret=MON_SECRET
+         */
+        $receivedSecret = $request->query->get('secret');
 
         /*
-         * Log temporaire des webhooks reçus.
+         * Récupère le secret attendu depuis les variables d'environnement.
          *
-         * TODO :
-         * À supprimer ou remplacer par un vrai logger avant la mise en production.
+         * Ce secret est défini dans .env.local :
+         * HELLOASSO_WEBHOOK_SECRET=MON_SECRET
          */
+        $expectedSecret = $_ENV['HELLOASSO_WEBHOOK_SECRET'];
+
+        /*
+         * Vérifie que le secret existe et qu'il correspond au secret attendu.
+         *
+         * hash_equals() est utilisé pour comparer deux valeurs sensibles
+         * de manière plus sûre qu'un simple ===.
+         */
+        if (!$receivedSecret || !hash_equals($expectedSecret, $receivedSecret)) {
+            return new JsonResponse([
+                'error' => 'Notification non autorisée.',
+            ], 403);
+        }
+
+
+        /*
+         * Récupère le contenu brut envoyé par HelloAsso,
+         * puis le transforme en tableau PHP.
+         */
+        $payload = json_decode($request->getContent(), true);
         file_put_contents(
-            $this->getParameter('kernel.project_dir') . '/var/helloasso-webhook.json',
-            $request->getContent() . PHP_EOL,
-            FILE_APPEND
+            $this->getParameter('kernel.project_dir') . '/var/helloasso-debug.json',
+            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
         );
 
+        /*
+         * Si le JSON est vide ou invalide, on retourne une erreur 400.
+         */
         if (!$payload) {
             return new JsonResponse([
                 'error' => 'Le contenu reçu est invalide ou vide.',
             ], 400);
         }
 
+        /*
+         * Délègue toute la logique métier au service.
+         *
+         * Le service va :
+         * - retrouver la donation grâce au donation_id
+         * - lire le statut du paiement
+         * - passer le don en validé ou refusé
+         * - générer le PDF si le paiement est validé
+         * - envoyer le reçu fiscal par email
+         */
         $result = $helloAssoWebhookService->handle($payload);
 
+        /*
+         * Retourne la réponse JSON au format attendu.
+         *
+         * $result contient par exemple :
+         * [
+         *     'status' => 200,
+         *     'message' => 'Statut de la donation mis à jour.'
+         * ]
+         */
         return new JsonResponse($result, $result['status']);
     }
 
@@ -207,13 +268,15 @@ final class DonationController extends AbstractController
      */
     #[Route('/donation/{id}/pdf-test', name: 'donation_pdf_test')]
     public function testPdf(
-        Donation $donation,
+        Donation           $donation,
         DonationPdfService $donationPdfService
-    ): Response {
+    ): Response
+    {
         $path = $donationPdfService->generateFiscalReceipt($donation);
 
         return new Response('PDF généré ici : ' . $path);
     }
+
     #[Route('/mail/test', name: 'mail_test')]
     public function testMail(MailerInterface $mailer): Response
     {

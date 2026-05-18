@@ -12,6 +12,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Enum\AlertStatus;
 use App\Enum\DonationStatus;
+use App\Enum\DonorType;
 use App\Enum\PreOrderStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -56,9 +57,10 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         $usersData = [
-            ['firstname' => 'Adrien', 'lastname' => 'Le Clech', 'email' => 'adrien@leclech.com'],
-            ['firstname' => 'Adrien', 'lastname' => 'Quintard', 'email' => 'adrien@quintard.com'],
-            ['firstname' => 'Laurent', 'lastname' => 'Berthélémy', 'email' => 'laurent@berthelemy.com'],
+            ['firstname' => 'Adrien', 'lastname' => 'Le Clech', 'email' => 'adrien@leclech.com', 'roles'=>['ROLE_ADMIN']],
+            ['firstname' => 'Adrien', 'lastname' => 'Quintard', 'email' => 'adrien@quintard.com','roles'=>['ROLE_ADMIN']],
+            ['firstname' => 'Laurent', 'lastname' => 'Berthélémy', 'email' => 'laurent@berthelemy.com','roles'=>['ROLE_ADMIN']],
+            ['firstname' => 'Eni', 'lastname' => 'Eni', 'email' => 'enistage@enistage.com','roles'=>['ROLE_USER']],
         ];
         $availabilities = $manager->getRepository(Availability::class)->findAll();
         $roles = $manager->getRepository(Role::class)->findAll();
@@ -68,6 +70,7 @@ class AppFixtures extends Fixture
             $user->setFirstname($userData['firstname']);
             $user->setLastname($userData['lastname']);
             $user->setEmail($userData['email']);
+            $user->setRoles($userData['roles']);
             $user->setPassword($this->passwordHasher->hashPassword($user, '123456'));
             $user->setPhone($faker->phoneNumber);
             $user->setAddress($faker->address);
@@ -142,22 +145,42 @@ class AppFixtures extends Fixture
             for ($i = 0; $i < rand(1, 10); $i++) {
                 $donation = new Donation();
 
-                $donation->setUser($user);
-                $donation->setFirstname($user->getFirstname());
-                $donation->setLastname($user->getLastname());
-                $donation->setEmail($user->getEmail());
-                $donation->setAddress($user->getAddress());
-                $donation->setCity($user->getCity());
-                $donation->setZipcode($user->getZipcode());
+                $isCompanyDonation = $faker->boolean(35);
 
+                $donation->setUser($user);
                 $donation->setAmount($faker->randomFloat(2, 5, 400));
                 $donation->setDonationDate($faker->dateTime());
                 $donation->setStatus(DonationStatus::DONATION_VALIDEE);
+
+                if ($isCompanyDonation) {
+                    $donation->setDonorType(DonorType::ENTREPRISE);
+                    $donation->setCompanyName($faker->company());
+                    $donation->setCompanySiret($faker->numerify('##############'));
+
+                    $donation->setFirstname($faker->firstName());
+                    $donation->setLastname($faker->lastName());
+                    $donation->setEmail($faker->companyEmail());
+
+                    $donation->setAddress($faker->streetAddress());
+                    $donation->setCity($faker->city());
+                    $donation->setZipcode($faker->postcode());
+                } else {
+                    $donation->setDonorType(DonorType::PARTICULIER);
+
+                    $donation->setFirstname($user->getFirstname());
+                    $donation->setLastname($user->getLastname());
+                    $donation->setEmail($user->getEmail());
+                    $donation->setAddress($user->getAddress());
+                    $donation->setCity($user->getCity());
+                    $donation->setZipcode($user->getZipcode());
+                }
 
                 $manager->persist($donation);
                 $manager->flush();
 
                 $this->donationPdfService->generateFiscalReceipt($donation);
+
+                $manager->flush();
             }
         }
     }

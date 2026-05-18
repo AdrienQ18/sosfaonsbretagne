@@ -54,6 +54,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\ManyToMany(targetEntity: Availability::class, inversedBy: 'users')]
     private Collection $Availabilitys;
 
+    #[ORM\Column]
+    private array $roles = [];
+
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Role $userRole = null;
@@ -90,10 +93,18 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getRoles(): array
     {
-        // Si tu utilises une entité Role, tu peux retourner les rôles sous forme de string
-        // Exemple : return [$this->userRole->getName()];
-        // Sinon, retourne un rôle par défaut pour l'instant
-        return ['ROLE_USER'];
+        $roles = $this->roles;
+
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getUserIdentifier(): string

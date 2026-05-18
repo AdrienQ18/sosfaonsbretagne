@@ -6,8 +6,10 @@ use App\Enum\DonationStatus;
 use App\Enum\DonorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DonationFilterType extends AbstractType
 {
@@ -21,12 +23,12 @@ class DonationFilterType extends AbstractType
 
             ->add('donorType', ChoiceType::class, [
                 'required' => false,
-                'label' => 'Particulier ou Entreprise: ',
                 'placeholder' => 'Tous',
                 'choices' => [
                     'Particulier' => DonorType::PARTICULIER,
                     'Entreprise' => DonorType::ENTREPRISE,
                 ],
+                'choice_value' => fn (?DonorType $choice) => $choice?->value,
             ])
 
             ->add('status', ChoiceType::class, [
@@ -38,6 +40,7 @@ class DonationFilterType extends AbstractType
                     'Refusée' => DonationStatus::DONATION_REFUSEE,
                     'Passée' => DonationStatus::DONATION_PASSEE,
                 ],
+                'choice_value' => fn (?DonationStatus $choice) => $choice?->value,
             ])
 
             ->add('email', TextType::class, [
@@ -48,6 +51,27 @@ class DonationFilterType extends AbstractType
             ->add('companySiret', TextType::class, [
                 'required' => false,
                 'label' => 'Siret: ',
+            ])
+            ->add('dateStart', DateType::class, [
+                'required' => false,
+                'label' => 'Date début',
+                'widget' => 'single_text',
+            ])
+            ->add('dateEnd', DateType::class, [
+                'required' => false,
+                'label' => 'Date fin',
+                'widget' => 'single_text',
             ]);
+    }
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'csrf_protection' => false,
+        ]);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return 'donation_filter';
     }
 }

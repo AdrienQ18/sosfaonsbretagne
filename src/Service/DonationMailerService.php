@@ -27,7 +27,7 @@ class DonationMailerService
                 'donation' => $donation,
             ])
             ->embedFromPath(
-                $this->projectDir . '/public/images/logo.png',
+                $this->projectDir . '/public/images/logo.jpg',
                 'logo'
             )
             ->attachFromPath($pdfPath);

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Donation;
+use App\Enum\DonationStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,9 +20,15 @@ class DonationRepository extends ServiceEntityRepository
 
     public function searchDonations(array $filters): QueryBuilder
     {
-        $queryBuilder = $this->createQueryBuilder('d')
-            ->orderBy('d.donationDate', 'DESC');
+        $queryBuilder = $this->createQueryBuilder('d');
 
+        $this->applyDonationFilters($queryBuilder, $filters);
+
+        return $queryBuilder->orderBy('d.donationDate', 'DESC');
+
+    }
+    private function applyDonationFilters(QueryBuilder $queryBuilder, array $filters): void
+    {
         if (!empty($filters['search'])) {
             $queryBuilder
                 ->andWhere(
@@ -37,13 +44,13 @@ class DonationRepository extends ServiceEntityRepository
                 ->setParameter('search', '%' . $filters['search'] . '%');
         }
 
-        if (!empty($filters['donorType'])) {
+        if (isset($filters['donorType']) && $filters['donorType'] !== '') {
             $queryBuilder
                 ->andWhere('d.donorType = :donorType')
                 ->setParameter('donorType', $filters['donorType']);
         }
 
-        if (!empty($filters['status'])) {
+        if (isset($filters['status']) && $filters['status'] !== '') {
             $queryBuilder
                 ->andWhere('d.status = :status')
                 ->setParameter('status', $filters['status']);
@@ -60,7 +67,30 @@ class DonationRepository extends ServiceEntityRepository
                 ->andWhere('d.companySiret LIKE :companySiret')
                 ->setParameter('companySiret', '%' . $filters['companySiret'] . '%');
         }
+        if (!empty($filters['dateStart'])) {
+            $queryBuilder
+                ->andWhere('d.donationDate >= :dateStart')
+                ->setParameter('dateStart', $filters['dateStart']);
+        }
 
-        return $queryBuilder;
+        if (!empty($filters['dateEnd'])) {
+            $queryBuilder
+                ->andWhere('d.donationDate <= :dateEnd')
+                ->setParameter('dateEnd', $filters['dateEnd']);
+        }
+
+    }
+    public function getValidatedTotalAmount(array $filters): float
+    {
+        unset($filters['status']);
+
+        $queryBuilder = $this->createQueryBuilder('d')
+            ->select('SUM(d.amount)')
+            ->andWhere('d.status = :validatedStatus')
+            ->setParameter('validatedStatus', DonationStatus::DONATION_VALIDEE);
+
+        $this->applyDonationFilters($queryBuilder, $filters);
+
+        return (float) ($queryBuilder->getQuery()->getSingleScalarResult() ?? 0);
     }
 }

@@ -9,6 +9,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DonationRepository::class)]
+#[ORM\Index(name: 'idx_donation_date', columns: ['donation_date'])]
+#[ORM\Index(name: 'idx_donation_status', columns: ['status'])]
+#[ORM\Index(name: 'idx_donor_type', columns: ['donor_type'])]
+#[ORM\Index(name: 'idx_donation_email', columns: ['email'])]
+#[ORM\Index(name: 'idx_company_siret', columns: ['company_siret'])]
+#[ORM\Index(name: 'idx_status_date', columns: ['status', 'donation_date'])]
 class Donation
 {
     #[ORM\Id]
@@ -43,9 +49,10 @@ class Donation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $zipcode = null;
 
-    #[ORM\Column(enumType: DonationStatus::class)]
+    #[ORM\Column(length: 50, enumType: DonationStatus::class)]
     private ?DonationStatus $status = null;
-    #[ORM\Column(enumType: DonorType::class)]
+
+    #[ORM\Column(length: 50, enumType: DonorType::class)]
     private ?DonorType $donorType = null;
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $receiptPdfPath = null;

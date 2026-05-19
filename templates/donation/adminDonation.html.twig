@@ -2,6 +2,10 @@
 
 {% block body %}
     <h1>Administration des donations</h1>
+    <div>
+        <strong>Total des dons validés :</strong>
+        {{ totalValidatedAmount|number_format(2, ',', ' ') }} €
+    </div>
     {{ form_start(filterForm, {
         attr: {
             id: 'donation-filter-form'
@@ -11,6 +15,8 @@
     {{ form_row(filterForm.search) }}
     {{ form_row(filterForm.donorType) }}
     {{ form_row(filterForm.status) }}
+    {{ form_row(filterForm.dateStart) }}
+    {{ form_row(filterForm.dateEnd) }}
     {{ form_row(filterForm.email) }}
     {{ form_row(filterForm.companySiret) }}
     <button
@@ -19,11 +25,13 @@
     >
         Réinitialiser
     </button>
+    <a href="{{ path('admin_donation_download_pdfs', app.request.query.all) }}">
+        Télécharger les PDF de la recherche
+    </a>
     {{ form_end(filterForm) }}
     <table>
         <thead>
         <tr>
-            <th>ID</th>
             <th>Type</th>
             <th>Donateur / Contact</th>
             <th>Email</th>
@@ -41,8 +49,6 @@
         <tbody>
         {% for donation in donations %}
             <tr>
-                <td>{{ donation.id }}</td>
-
                 <td>
                     {% if donation.donorType.value == 'entreprise' %}
                         Entreprise
@@ -120,6 +126,12 @@
                 filterForm.submit();
             });
 
+        });
+
+        filterForm.querySelectorAll('input[type="date"]').forEach(field => {
+            field.addEventListener('change', () => {
+                filterForm.submit();
+            });
         });
 
         let timeout;

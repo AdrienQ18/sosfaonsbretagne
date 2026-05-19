@@ -14,6 +14,7 @@ use App\Service\HelloAssoWebhookService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,18 +23,10 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
+use ZipArchive;
 
 final class DonationController extends AbstractController
 {
-    /**
-     * Affiche et traite le formulaire de don.
-     *
-     * Fonctionnement :
-     * - Si l'utilisateur est connecté, ses informations sont copiées dans la donation.
-     * - Si l'utilisateur n'est pas connecté, il doit remplir ses informations dans le formulaire.
-     * - Après validation du formulaire, la donation est créée avec le statut DONATION_PASSEE.
-     * - L'utilisateur est ensuite redirigé vers HelloAsso pour effectuer le paiement.
-     */
     #[Route('/donation', name: 'donation', methods: ['GET', 'POST'])]
     public function indexDonation(
         Request                $request,
@@ -83,12 +76,6 @@ final class DonationController extends AbstractController
         ]);
     }
 
-    /**
-     * Affiche la liste des donations dans l'administration.
-     *
-     * TODO sécurité :
-     * Cette route devra être protégée pour être accessible uniquement aux admins.
-     */
     #[Route('/admin/donation', name: 'admin_donation')]
     public function indexAdminDonation(
         DonationRepository $donationRepository,
@@ -99,11 +86,10 @@ final class DonationController extends AbstractController
         $filterForm = $this->createForm(DonationFilterType::class, null, [
             'method' => 'GET',
         ]);
-
         $filterForm->handleRequest($request);
         $filters = $filterForm->getData() ?? [];
+        $totalValidatedAmount = $donationRepository->getValidatedTotalAmount($filters);
         $queryBuilder = $donationRepository->searchDonations($filters);
-
         $donations = $paginator->paginate(
             $queryBuilder->getQuery(),
             $request->query->getInt('page', 1),
@@ -113,6 +99,7 @@ final class DonationController extends AbstractController
         return $this->render('donation/adminDonation.html.twig', [
             'donations' => $donations,
             'filterForm' => $filterForm->createView(),
+            'totalValidatedAmount' => $totalValidatedAmount,
         ]);
     }
 
@@ -120,7 +107,6 @@ final class DonationController extends AbstractController
     public function showDonationPdf(Donation $donation): Response
     {
         $pdfPath = $donation->getReceiptPdfPath();
-
         if (!$pdfPath || !file_exists($pdfPath)) {
             throw $this->createNotFoundException('Le reçu fiscal PDF est introuvable.');
         }
@@ -132,140 +118,90 @@ final class DonationController extends AbstractController
         );
     }
 
-    /**
-     * Route appelée quand HelloAsso redirige l'utilisateur après un paiement terminé.
-     *
-     * Important :
-     * Cette route ne valide pas réellement le don.
-     * La validation fiable est faite dans le webhook HelloAsso.
-     */
+    #[Route('/admin/donation/download-pdfs', name: 'admin_donation_download_pdfs')]
+    public function downloadDonationPdfs(
+        Request $request,
+        DonationRepository $donationRepository
+    ): BinaryFileResponse {
+        $filters = $request->query->all('donation_filter');
+
+        $donations = $donationRepository
+            ->searchDonations($filters)
+            ->getQuery()
+            ->getResult();
+
+        $zipPath = sys_get_temp_dir() . '/recus-fiscaux-' . date('Y-m-d-H-i-s') . '.zip';
+
+        $zip = new ZipArchive();
+
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+            throw new \RuntimeException('Impossible de créer le fichier ZIP.');
+        }
+
+        foreach ($donations as $donation) {
+            $pdfPath = $donation->getReceiptPdfPath();
+
+            if ($pdfPath && file_exists($pdfPath)) {
+                $zip->addFile(
+                    $pdfPath,
+                    basename($pdfPath)
+                );
+            }
+        }
+
+        $zip->close();
+
+        return $this->file(
+            $zipPath,
+            'recus-fiscaux.zip',
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT
+        );
+    }
     #[Route('/donation/success/{id}', name: 'donation_success')]
     public function success(): Response
     {
         $this->addFlash('success', 'Paiement terminé. Votre don est en cours de validation.');
-
         return $this->redirect('http://localhost/sosfaonsbretagne/public/donation');
     }
 
-    /**
-     * Route appelée quand l'utilisateur annule ou revient depuis HelloAsso.
-     *
-     * Ici, on passe la donation en refusée car le paiement n'a pas été finalisé.
-     */
     #[Route('/donation/cancel/{id}', name: 'donation_cancel')]
     public function cancel(Donation $donation, EntityManagerInterface $entityManager): Response
     {
         $donation->setStatus(DonationStatus::DONATION_REFUSEE);
         $entityManager->flush();
-
         $this->addFlash('error', 'Paiement annulé.');
-
         return $this->redirect('http://localhost/sosfaonsbretagne/public/donation');
     }
 
-    /**
-     * Webhook appelé automatiquement par HelloAsso après un événement de paiement.
-     *
-     * Cette route ne doit pas être appelée par un utilisateur classique.
-     * Elle est appelée par HelloAsso en POST quand un paiement est validé,
-     * refusé, annulé ou mis à jour.
-     *
-     * Étapes :
-     * 1. On récupère le secret présent dans l'URL.
-     * 2. On compare ce secret avec celui stocké dans .env.local.
-     * 3. Si le secret est absent ou incorrect, on refuse la requête.
-     * 4. On décode le contenu JSON envoyé par HelloAsso.
-     * 5. On enregistre temporairement le contenu reçu dans un fichier de debug.
-     * 6. Si le JSON est invalide, on retourne une erreur.
-     * 7. Si tout est correct, on délègue le traitement au service HelloAssoWebhookService.
-     * 8. Le service mettra à jour le statut de la donation.
-     */
     #[Route('/helloasso/webhook', name: 'helloasso_webhook', methods: ['POST'])]
     public function helloAssoWebhook(
         Request                 $request,
         HelloAssoWebhookService $helloAssoWebhookService
     ): JsonResponse
     {
-        /*
-         * Récupère le secret envoyé dans l'URL du webhook.
-         *
-         * Exemple d'URL configurée côté HelloAsso :
-         * /helloasso/webhook?secret=MON_SECRET
-         */
         $receivedSecret = $request->query->get('secret');
-
-        /*
-         * Récupère le secret attendu depuis les variables d'environnement.
-         *
-         * Ce secret est défini dans .env.local :
-         * HELLOASSO_WEBHOOK_SECRET=MON_SECRET
-         */
         $expectedSecret = $_ENV['HELLOASSO_WEBHOOK_SECRET'];
-
-        /*
-         * Vérifie que le secret existe et qu'il correspond au secret attendu.
-         *
-         * hash_equals() est utilisé pour comparer deux valeurs sensibles
-         * de manière plus sûre qu'un simple ===.
-         */
         if (!$receivedSecret || !hash_equals($expectedSecret, $receivedSecret)) {
             return new JsonResponse([
                 'error' => 'Notification non autorisée.',
             ], 403);
         }
-
-
-        /*
-         * Récupère le contenu brut envoyé par HelloAsso,
-         * puis le transforme en tableau PHP.
-         */
         $payload = json_decode($request->getContent(), true);
-        file_put_contents(
-            $this->getParameter('kernel.project_dir') . '/var/helloasso-debug.json',
-            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
-        );
-
-        /*
-         * Si le JSON est vide ou invalide, on retourne une erreur 400.
-         */
+//        file_put_contents(
+//            $this->getParameter('kernel.project_dir') . '/var/helloasso-debug.json',
+//            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
+//        );
         if (!$payload) {
             return new JsonResponse([
                 'error' => 'Le contenu reçu est invalide ou vide.',
             ], 400);
         }
 
-        /*
-         * Délègue toute la logique métier au service.
-         *
-         * Le service va :
-         * - retrouver la donation grâce au donation_id
-         * - lire le statut du paiement
-         * - passer le don en validé ou refusé
-         * - générer le PDF si le paiement est validé
-         * - envoyer le reçu fiscal par email
-         */
         $result = $helloAssoWebhookService->handle($payload);
 
-        /*
-         * Retourne la réponse JSON au format attendu.
-         *
-         * $result contient par exemple :
-         * [
-         *     'status' => 200,
-         *     'message' => 'Statut de la donation mis à jour.'
-         * ]
-         */
         return new JsonResponse($result, $result['status']);
     }
 
-    /**
-     * Route temporaire de développement pour générer un reçu fiscal PDF.
-     *
-     * Elle permet de tester la génération du PDF sans repasser par un paiement HelloAsso.
-     *
-     * TODO sécurité :
-     * À supprimer ou protéger avant la mise en production.
-     */
     #[Route('/donation/{id}/pdf-test', name: 'donation_pdf_test')]
     public function testPdf(
         Donation           $donation,
@@ -273,7 +209,6 @@ final class DonationController extends AbstractController
     ): Response
     {
         $path = $donationPdfService->generateFiscalReceipt($donation);
-
         return new Response('PDF généré ici : ' . $path);
     }
 

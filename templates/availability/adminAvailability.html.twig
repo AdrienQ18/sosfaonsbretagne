@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section>
+        <table>
+            <thead>
+            <tr>
+                <th>Disponibilité</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for availability in availabilityList %}
+                <tr>
+                    <td>
+                        {{ availability.label }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <h3>Créer une nouvelle disponibilité</h3>
+        {{ form_start(formAvailability, {attr: {novalidate: 'novalidate'}}) }}
+        {{ form_row(formAvailability.label) }}
+        <button type="submit">
+            Ajouter une disponibilité
+        </button>
+        {{ form_end(formAvailability) }}
+    </section>
+{% endblock %}

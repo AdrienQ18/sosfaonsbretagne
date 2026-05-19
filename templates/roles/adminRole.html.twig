@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section>
+        <table>
+            <thead>
+            <tr>
+                <th>Nom du Role</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for role in roleList %}
+                <tr>
+                    <td>
+                        {{ role.name }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <h3>Créer un nouveau role</h3>
+        {{ form_start(formRole, {attr: {novalidate: 'novalidate'}}) }}
+        {{ form_row(formRole.name) }}
+        <button type="submit">
+            Ajouter le role
+        </button>
+        {{ form_end(formRole) }}
+    </section>
+{% endblock %}

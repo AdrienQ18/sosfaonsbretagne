@@ -1,0 +1,39 @@
+{%  extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des signalements</h1>
+
+    <table>
+        <thread>
+            <tr>
+                <th>Type</th>
+                <th>Surface</th>
+                <th>Date</th>
+                <th>Intervention</th>
+                <th>Localisation</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Utilisateur</th>
+                <th>Type de culture</th>
+                <th>Image</th>
+            </tr>
+        </thread>
+
+        <tbody>
+        {% for alert in alerts %}
+            <tr>
+                <td>{{ alert.type }}</td>
+                <td>{{ alert.surface }}</td>
+                <td>{{alert.creationDate | date('d/m/Y')}}</td>
+                <td>{{ alert.interventionDate | date('d/m/Y')}}</td>
+                <td>{{ alert.localisation }}</td>
+                <td>{{ alert.status.value }}</td>
+                <td>{{ alert.description }}</td>
+                <td>{{ alert.user.email }}</td>
+                <td>{{ alert.cultureType }}</td>
+                <td>{{ alert.image }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

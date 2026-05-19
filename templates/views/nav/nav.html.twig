@@ -23,6 +23,9 @@
         {% if is_granted ("ROLE_ADMIN") %}
             <li><a href="{{ path('admin_donation') }}">Gestion des donations</a></li>
         {% endif %}
+        {% if is_granted ("ROLE_ADMIN") %}
+            <li><a href="{{ path('admin_alert') }}">Gestion des signalements</a></li>
+        {% endif %}
     </ul>
 </nav>
 

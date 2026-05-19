@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Alert;
 use App\Form\AlertType;
+use App\Repository\AlertRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,5 +56,21 @@ final class AlertController extends AbstractController
                 ]));
             $mailer->send($email);
         }
+    }
+
+    #[Route('/admin/alert', name: 'admin_alert')]
+    public function indexAdminAlert(
+        AlertRepository $alertRepository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response {
+        //vérification que l'utilisateur est un admin
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        //Récupération de toute les alert depuis la BDD
+        $alerts = $alertRepository->findAll();
+        //Afficher les alerts
+        return $this->render('alert/pdf/adminAlert.html.twig', [
+            'alerts' => $alerts,
+        ]);
     }
 }

@@ -233,7 +233,7 @@ class AppFixtures extends Fixture
                 $alert->setStatus($faker->randomElement($statues));
                 $alert->setGpsLatitude($faker->latitude());
                 $alert->setGpsLongitude($faker->longitude());
-                $alert->setDescritption($faker->text(200));
+                $alert->setDescription($faker->text(200));
                 $alert->setImage($faker->imageUrl());
                 $alert->setUser($user);
 

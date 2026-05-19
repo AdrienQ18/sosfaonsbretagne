@@ -10,14 +10,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
 #[Route('/admin/roles')]
 final class RolesController extends AbstractController
 {
     #[Route(name: 'admin_roles', methods: ['GET', 'POST'])]
     public function index(
-        RoleRepository $roleRepository,
+        RoleRepository         $roleRepository,
         EntityManagerInterface $entityManager,
-        Request $request
+        Request                $request,
     ): Response
     {
         $roleList = $roleRepository->findAll();

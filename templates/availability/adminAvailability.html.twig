@@ -4,14 +4,14 @@
         <table>
             <thead>
             <tr>
-                <th>Nom du Role</th>
+                <th>Disponibilité</th>
             </tr>
             </thead>
             <tbody>
-            {% for role in roleList %}
+            {% for availability in availabilityList %}
                 <tr>
                     <td>
-                        {{ role.name }}
+                        {{ availability.label }}
                     </td>
                 </tr>
             {% endfor %}
@@ -19,12 +19,12 @@
         </table>
     </section>
     <section>
-        <h3>Créer un nouveau role</h3>
-        {{ form_start(formRole, {attr: {novalidate: 'novalidate'}}) }}
-        {{ form_row(formRole.name) }}
+        <h3>Créer une nouvelle disponibilité</h3>
+        {{ form_start(formAvailability, {attr: {novalidate: 'novalidate'}}) }}
+        {{ form_row(formAvailability.label) }}
         <button type="submit">
-            Ajouter le role
+            Ajouter une disponibilité
         </button>
-        {{ form_end(formRole) }}
+        {{ form_end(formAvailability) }}
     </section>
 {% endblock %}

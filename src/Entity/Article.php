@@ -16,7 +16,6 @@ class Article
     #[ORM\Column]
     private ?int $id = null;
 
-
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -30,21 +29,26 @@ class Article
     private ?string $image = null;
 
     #[ORM\Column]
-    private ?\DateTime $creationDate = null;
+    private ?\DateTimeImmutable $creationDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'createArticle')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     /**
-     * @var Collection<int, PreOrder>
+     * @var Collection<int, PreOrderItem>
      */
-    #[ORM\ManyToMany(targetEntity: PreOrder::class, mappedBy: 'articles')]
-    private Collection $preOrders;
+    #[ORM\OneToMany(
+        targetEntity: PreOrderItem::class,
+        mappedBy: 'article',
+        orphanRemoval: true
+    )]
+    private Collection $preOrderItems;
 
     public function __construct()
     {
-        $this->preOrders = new ArrayCollection();
+        $this->preOrderItems = new ArrayCollection();
+        $this->creationDate = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -52,17 +56,19 @@ class Article
         return $this->id;
     }
 
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
     public function getDescription(): ?string
@@ -70,11 +76,9 @@ class Article
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
-
-        return $this;
     }
 
     public function getPrice(): ?string
@@ -82,11 +86,9 @@ class Article
         return $this->price;
     }
 
-    public function setPrice(string $price): static
+    public function setPrice(?string $price): void
     {
         $this->price = $price;
-
-        return $this;
     }
 
     public function getImage(): ?string
@@ -94,23 +96,19 @@ class Article
         return $this->image;
     }
 
-    public function setImage(string $image): static
+    public function setImage(?string $image): void
     {
         $this->image = $image;
-
-        return $this;
     }
 
-    public function getCreationDate(): ?\DateTime
+    public function getCreationDate(): ?\DateTimeImmutable
     {
         return $this->creationDate;
     }
 
-    public function setCreationDate(\DateTime $creationDate): static
+    public function setCreationDate(?\DateTimeImmutable $creationDate): void
     {
         $this->creationDate = $creationDate;
-
-        return $this;
     }
 
     public function getUser(): ?User
@@ -118,35 +116,32 @@ class Article
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?User $user): void
     {
         $this->user = $user;
-
-        return $this;
     }
 
-    /**
-     * @return Collection<int, PreOrder>
-     */
-    public function getPreOrders(): Collection
+    public function getPreOrderItems(): Collection
     {
-        return $this->preOrders;
+        return $this->preOrderItems;
     }
 
-    public function addPreOrder(PreOrder $preOrder): static
+    public function addPreOrderItem(PreOrderItem $preOrderItem): static
     {
-        if (!$this->preOrders->contains($preOrder)) {
-            $this->preOrders->add($preOrder);
-            $preOrder->addArticle($this);
+        if (!$this->preOrderItems->contains($preOrderItem)) {
+            $this->preOrderItems->add($preOrderItem);
+            $preOrderItem->setArticle($this);
         }
 
         return $this;
     }
 
-    public function removePreOrder(PreOrder $preOrder): static
+    public function removePreOrderItem(PreOrderItem $preOrderItem): static
     {
-        if ($this->preOrders->removeElement($preOrder)) {
-            $preOrder->removeArticle($this);
+        if ($this->preOrderItems->removeElement($preOrderItem)) {
+            if ($preOrderItem->getArticle() === $this) {
+                $preOrderItem->setArticle(null);
+            }
         }
 
         return $this;

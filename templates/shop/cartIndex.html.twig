@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Mon panier</h1>
+
+    {% for item in cart %}
+
+        <div>
+
+            <p>{{ item.article.name }}</p>
+
+            <p>
+                Diamètre :
+                {{ item.diameter }} mm
+            </p>
+
+            <p>
+                Quantité :
+                {{ item.quantity }}
+            </p>
+
+            <p>
+                Prix :
+                {{ item.article.price }} €
+            </p>
+
+        </div>
+
+    {% else %}
+
+        <p>
+            Votre panier est vide.
+        </p>
+
+    {% endfor %}
+
+{% endblock %}

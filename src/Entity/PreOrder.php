@@ -6,8 +6,8 @@ use App\Enum\PreOrderStatus;
 use App\Repository\PreOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 #[ORM\Entity(repositoryClass: PreOrderRepository::class)]
 class PreOrder
 {
@@ -16,28 +16,46 @@ class PreOrder
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $quantity = null;
-
     #[ORM\Column(enumType: PreOrderStatus::class)]
-    private PreOrderStatus $status = PreOrderStatus::PRECOMMANDE_PASSEE;
+    private PreOrderStatus $status = PreOrderStatus::EN_ATTENTE;
 
     #[ORM\Column]
-    private ?\DateTime $preOrderDate = null;
+    private ?\DateTimeImmutable $preOrderDate = null;
 
-    /**
-     * @var Collection<int, Article>
-     */
-    #[ORM\ManyToMany(targetEntity: Article::class, inversedBy: 'preOrders')]
-    private Collection $articles;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $validatedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $paidAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $helloassoCheckoutUrl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $helloassoOrderId = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $totalAmount = null;
 
     #[ORM\ManyToOne(inversedBy: 'preOrders')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    /**
+     * @var Collection<int, PreOrderItem>
+     */
+    #[ORM\OneToMany(
+        targetEntity: PreOrderItem::class,
+        mappedBy: 'preOrder',
+        orphanRemoval: true,
+        cascade: ['persist']
+    )]
+    private Collection $preOrderItems;
+
     public function __construct()
     {
-        $this->articles = new ArrayCollection();
+        $this->preOrderItems = new ArrayCollection();
+        $this->preOrderDate = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -45,16 +63,9 @@ class PreOrder
         return $this->id;
     }
 
-    public function getQuantity(): ?int
+    public function setId(?int $id): void
     {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): static
-    {
-        $this->quantity = $quantity;
-
-        return $this;
+        $this->id = $id;
     }
 
     public function getStatus(): PreOrderStatus
@@ -67,40 +78,64 @@ class PreOrder
         $this->status = $status;
     }
 
-    public function getPreOrderDate(): ?\DateTime
+    public function getPreOrderDate(): ?\DateTimeImmutable
     {
         return $this->preOrderDate;
     }
 
-    public function setPreOrderDate(\DateTime $preOrderDate): static
+    public function setPreOrderDate(?\DateTimeImmutable $preOrderDate): void
     {
         $this->preOrderDate = $preOrderDate;
-
-        return $this;
     }
 
-    /**
-     * @return Collection<int, Article>
-     */
-    public function getArticles(): Collection
+    public function getValidatedAt(): ?\DateTimeImmutable
     {
-        return $this->articles;
+        return $this->validatedAt;
     }
 
-    public function addArticle(Article $article): static
+    public function setValidatedAt(?\DateTimeImmutable $validatedAt): void
     {
-        if (!$this->articles->contains($article)) {
-            $this->articles->add($article);
-        }
-
-        return $this;
+        $this->validatedAt = $validatedAt;
     }
 
-    public function removeArticle(Article $article): static
+    public function getPaidAt(): ?\DateTimeImmutable
     {
-        $this->articles->removeElement($article);
+        return $this->paidAt;
+    }
 
-        return $this;
+    public function setPaidAt(?\DateTimeImmutable $paidAt): void
+    {
+        $this->paidAt = $paidAt;
+    }
+
+    public function getHelloassoCheckoutUrl(): ?string
+    {
+        return $this->helloassoCheckoutUrl;
+    }
+
+    public function setHelloassoCheckoutUrl(?string $helloassoCheckoutUrl): void
+    {
+        $this->helloassoCheckoutUrl = $helloassoCheckoutUrl;
+    }
+
+    public function getHelloassoOrderId(): ?string
+    {
+        return $this->helloassoOrderId;
+    }
+
+    public function setHelloassoOrderId(?string $helloassoOrderId): void
+    {
+        $this->helloassoOrderId = $helloassoOrderId;
+    }
+
+    public function getTotalAmount(): ?string
+    {
+        return $this->totalAmount;
+    }
+
+    public function setTotalAmount(?string $totalAmount): void
+    {
+        $this->totalAmount = $totalAmount;
     }
 
     public function getUser(): ?User
@@ -108,10 +143,37 @@ class PreOrder
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?User $user): void
     {
         $this->user = $user;
+    }
+
+    public function getPreOrderItems(): Collection
+    {
+        return $this->preOrderItems;
+    }
+
+    public function addPreOrderItem(PreOrderItem $preOrderItem): static
+    {
+        if (!$this->preOrderItems->contains($preOrderItem)) {
+            $this->preOrderItems->add($preOrderItem);
+            $preOrderItem->setPreOrder($this);
+        }
 
         return $this;
     }
+
+    public function removePreOrderItem(PreOrderItem $preOrderItem): static
+    {
+        if ($this->preOrderItems->removeElement($preOrderItem)) {
+            if ($preOrderItem->getPreOrder() === $this) {
+                $preOrderItem->setPreOrder(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
+
+

@@ -11,6 +11,7 @@ use App\Entity\PreOrder;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Enum\AlertStatus;
+use App\Enum\BirdhouseDiameter;
 use App\Enum\DonationStatus;
 use App\Enum\DonorType;
 use App\Enum\PreOrderStatus;
@@ -19,6 +20,7 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Service\DonationPdfService;
+use App\Entity\PreOrderItem;
 
 
 class AppFixtures extends Fixture
@@ -26,8 +28,9 @@ class AppFixtures extends Fixture
 
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-        private DonationPdfService $donationPdfService,
-    ) {
+        private DonationPdfService          $donationPdfService,
+    )
+    {
     }
 
     public function load(ObjectManager $manager): void
@@ -57,10 +60,10 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         $usersData = [
-            ['firstname' => 'Adrien', 'lastname' => 'Le Clech', 'email' => 'adrien@leclech.com', 'roles'=>['ROLE_ADMIN']],
-            ['firstname' => 'Adrien', 'lastname' => 'Quintard', 'email' => 'adrien@quintard.com','roles'=>['ROLE_ADMIN']],
-            ['firstname' => 'Laurent', 'lastname' => 'Berthélémy', 'email' => 'laurent@berthelemy.com','roles'=>['ROLE_ADMIN']],
-            ['firstname' => 'Eni', 'lastname' => 'Eni', 'email' => 'enistage@enistage.com','roles'=>['ROLE_USER']],
+            ['firstname' => 'Adrien', 'lastname' => 'Le Clech', 'email' => 'adrien@leclech.com', 'roles' => ['ROLE_ADMIN']],
+            ['firstname' => 'Adrien', 'lastname' => 'Quintard', 'email' => 'adrien@quintard.com', 'roles' => ['ROLE_ADMIN']],
+            ['firstname' => 'Laurent', 'lastname' => 'Berthélémy', 'email' => 'laurent@berthelemy.com', 'roles' => ['ROLE_ADMIN']],
+            ['firstname' => 'Eni', 'lastname' => 'Eni', 'email' => 'enistage@enistage.com', 'roles' => ['ROLE_USER']],
         ];
         $availabilities = $manager->getRepository(Availability::class)->findAll();
         $roles = $manager->getRepository(Role::class)->findAll();
@@ -130,7 +133,7 @@ class AppFixtures extends Fixture
             $newArticle->setImage($articleData['photo']);
             $newArticle->setPrice($articleData['price']);
             $newArticle->setDescription($faker->text(200));
-            $newArticle->setCreationDate($faker->dateTime());
+            $newArticle->setCreationDate(\DateTimeImmutable::createFromMutable($faker->dateTime()));
             $newArticle->setUser($user);
             $manager->persist($newArticle);
         }
@@ -189,23 +192,68 @@ class AppFixtures extends Fixture
     {
         $users = $manager->getRepository(User::class)->findAll();
         $articles = $manager->getRepository(Article::class)->findAll();
-        $statues = PreOrderStatus::cases();
+        $statuses = PreOrderStatus::cases();
+        $diameters = BirdhouseDiameter::cases();
+
         $faker = Factory::create('fr_FR');
+
         foreach ($users as $user) {
             for ($i = 0; $i < rand(1, 5); $i++) {
                 $preOrder = new PreOrder();
+
                 $preOrder->setUser($user);
+                $preOrder->setStatus($faker->randomElement($statuses));
+                $preOrder->setPreOrderDate(\DateTimeImmutable::createFromMutable(
+                    $faker->dateTime()
+                ));
+
+                $totalAmount = 0;
 
                 $randomArticles = $faker->randomElements(
                     $articles,
                     $faker->numberBetween(1, count($articles))
                 );
-                foreach ($randomArticles as $randomArticle) {
-                    $preOrder->addArticle($randomArticle);
+
+                foreach ($randomArticles as $article) {
+                    $quantity = $faker->numberBetween(1, 5);
+                    $unitPrice = (float)$article->getPrice();
+                    $totalPrice = $unitPrice * $quantity;
+
+                    $preOrderItem = new PreOrderItem();
+
+                    $preOrderItem->setArticle($article);
+                    $preOrderItem->setPreOrder($preOrder);
+                    $preOrderItem->setQuantity($quantity);
+                    $preOrderItem->setDiameter($faker->randomElement($diameters));
+                    $preOrderItem->setUnitPrice((string)$unitPrice);
+                    $preOrderItem->setTotalPrice((string)$totalPrice);
+
+                    $preOrder->addPreOrderItem($preOrderItem);
+
+                    $totalAmount += $totalPrice;
                 }
-                $preOrder->setQuantity($faker->numberBetween(1, 5));
-                $preOrder->setStatus($faker->randomElement($statues));
-                $preOrder->setPreOrderDate($faker->dateTime());
+
+                $preOrder->setTotalAmount((string)$totalAmount);
+
+                if ($preOrder->getStatus() === PreOrderStatus::VALIDEE) {
+                    $preOrder->setValidatedAt(new \DateTimeImmutable());
+                }
+
+                if ($preOrder->getStatus() === PreOrderStatus::PAYEE) {
+                    $preOrder->setValidatedAt(new \DateTimeImmutable());
+                    $preOrder->setPaidAt(new \DateTimeImmutable());
+                    $preOrder->setHelloassoOrderId((string)$faker->numberBetween(100000, 999999));
+                }
+
+                if (
+                    $preOrder->getStatus() === PreOrderStatus::EN_ATTENTE_PAIEMENT
+                    || $preOrder->getStatus() === PreOrderStatus::PAYEE
+                ) {
+                    $preOrder->setHelloassoCheckoutUrl(
+                        'https://checkout.helloasso.com/test/' . $faker->uuid()
+                    );
+                }
+
                 $manager->persist($preOrder);
             }
         }

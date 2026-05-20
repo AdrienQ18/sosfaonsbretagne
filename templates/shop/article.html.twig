@@ -1,20 +1,87 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ShopController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <section>
+        {% for article in articleList %}
+            <div>
+                <img src="{{ asset('images/shop/' ~ article.image) }}" alt="{{ article.name }}">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                <p>{{ article.name }}</p>
+                <p>Prix : {{ article.price }} €</p>
+                <p>{{ article.description }}</p>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/wamp64/www/sosfaonsbretagne/src/Controller/ShopController.php</code></li>
-        <li>Your template at <code>C:/wamp64/www/sosfaonsbretagne/templates/shop/index.html.twig</code></li>
-    </ul>
-</div>
+                <form method="post" action="{{ path('cart_add', { id: article.id }) }}">
+
+                    <button type="button"
+                            class="openModal info-btn"
+                            data-modal="modal-{{ article.id }}">
+                        ?
+                    </button>
+
+                    <div id="modal-{{ article.id }}" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+
+                            <h2>Information</h2>
+
+                            <img
+                                src="{{ asset('images/shop/afficheguideNichoir.png') }}"
+                                alt="Information"
+                                class="modal-img"
+                            >
+                        </div>
+                    </div>
+
+                    <label>
+                        <input type="radio" name="diameter" value="28" required>
+                        28 mm
+                    </label>
+
+                    <label>
+                        <input type="radio" name="diameter" value="32" required>
+                        32 mm
+                    </label>
+
+                    <button type="submit">
+                        Ajouter au panier
+                    </button>
+
+                </form>
+            </div>
+        {% endfor %}
+    </section>
+
+    {% block extraJs %}
+        <script>
+
+            const openButtons = document.querySelectorAll(".openModal");
+
+            openButtons.forEach(button => {
+
+                button.addEventListener("click", () => {
+
+                    const modalId = button.dataset.modal;
+                    const modal = document.getElementById(modalId);
+
+                    modal.style.display = "flex";
+
+                    const closeBtn = modal.querySelector(".close");
+
+                    closeBtn.addEventListener("click", () => {
+                        modal.style.display = "none";
+                    });
+
+                    modal.addEventListener("click", (e) => {
+                        if (e.target === modal) {
+                            modal.style.display = "none";
+                        }
+                    });
+
+                });
+
+            });
+
+        </script>
+    {% endblock %}
+
 {% endblock %}

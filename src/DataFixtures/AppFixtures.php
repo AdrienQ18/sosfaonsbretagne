@@ -11,6 +11,7 @@ use App\Entity\PreOrder;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Enum\AlertStatus;
+use App\Enum\BirdhouseDiameter;
 use App\Enum\DonationStatus;
 use App\Enum\DonorType;
 use App\Enum\PreOrderStatus;
@@ -118,6 +119,7 @@ class AppFixtures extends Fixture
         $user = $manager->getRepository(User::class)->findOneBy([
             'email' => 'adrien@leclech.com'
         ]);
+        $articleDiameter = BirdhouseDiameter::cases();
         $articlesData = [
             ['name' => 'Nichoir demi rond', 'photo' => 'nichoirQuartDeRond.png', 'price' => '14.99'],
             ['name' => 'Nichoir à graine', 'photo' => 'nichoirGraine.png', 'price' => '14.99'],
@@ -129,6 +131,7 @@ class AppFixtures extends Fixture
             $newArticle->setName($articleData['name']);
             $newArticle->setImage($articleData['photo']);
             $newArticle->setPrice($articleData['price']);
+            $newArticle->setDiameter($faker->randomElement($articleDiameter));
             $newArticle->setDescription($faker->text(200));
             $newArticle->setCreationDate($faker->dateTime());
             $newArticle->setUser($user);

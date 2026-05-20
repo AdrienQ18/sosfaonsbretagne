@@ -20,7 +20,7 @@ class PreOrder
     private ?int $quantity = null;
 
     #[ORM\Column(enumType: PreOrderStatus::class)]
-    private PreOrderStatus $status = PreOrderStatus::PRECOMMANDE_PASSEE;
+    private PreOrderStatus $status = PreOrderStatus::EN_ATTENTE;
 
     #[ORM\Column]
     private ?\DateTime $preOrderDate = null;

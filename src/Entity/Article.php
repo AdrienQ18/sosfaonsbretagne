@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\BirdhouseDiameter;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -42,9 +43,22 @@ class Article
     #[ORM\ManyToMany(targetEntity: PreOrder::class, mappedBy: 'articles')]
     private Collection $preOrders;
 
+    #[ORM\Column(enumType: BirdhouseDiameter::class)]
+    private ?BirdhouseDiameter $diameter = null;
+
     public function __construct()
     {
         $this->preOrders = new ArrayCollection();
+    }
+
+    public function getDiameter(): ?BirdhouseDiameter
+    {
+        return $this->diameter;
+    }
+
+    public function setDiameter(?BirdhouseDiameter $diameter): void
+    {
+        $this->diameter = $diameter;
     }
 
     public function getId(): ?int
@@ -151,4 +165,5 @@ class Article
 
         return $this;
     }
+
 }

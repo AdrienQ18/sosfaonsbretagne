@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Création d'un post</h1>
+    {{ form_start(eventForm) }}
+    {{ form_errors(eventForm) }}
+
+    {{ form_row(eventForm.type) }}
+    {{ form_row(eventForm.name) }}
+    {{ form_row(eventForm.localisation) }}
+    {{ form_row(eventForm.description) }}
+    {{ form_row(eventForm.image) }}
+    {{ form_row(eventForm.nbParticipant) }}
+    {{ form_row(eventForm.eventDate) }}
+{#    <button type="submit" id="submit-event">Créer</button>#}
+    <button type="submit" name="action" value="publier">Publier</button>
+    <button type="submit" name="action" value="enregistrer">Enregistrer</button>
+
+    {{ form_end(eventForm) }}
+
+{% endblock %}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Facture précommande</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Facture acquittée</h1>
+
+<p>
+    Numéro facture :
+    {{ invoiceNumber }}
+</p>
+
+<p>
+    Client :
+    {{ preOrder.user.firstname }}
+    {{ preOrder.user.lastname }}
+</p>
+
+<p>
+    Date :
+    {{ preOrder.paidAt|date('d/m/Y H:i') }}
+</p>
+
+<hr>
+
+<table>
+    <thead>
+    <tr>
+        <th>Article</th>
+        <th>Diamètre</th>
+        <th>Quantité</th>
+        <th>Prix</th>
+        <th>Total</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    {% for item in preOrder.preOrderItems %}
+        <tr>
+            <td>{{ item.article.name }}</td>
+            <td>{{ item.diameter.value }} mm</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unitPrice }} €</td>
+            <td>{{ item.totalPrice }} €</td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+<h2>
+    Total :
+    {{ preOrder.totalAmount }} €
+</h2>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\ServiceDonation;
 
 use App\Entity\Donation;
 use Dompdf\Dompdf;

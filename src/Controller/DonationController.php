@@ -8,9 +8,10 @@ use App\Enum\DonorType;
 use App\Form\DonationFilterType;
 use App\Form\DonationType;
 use App\Repository\DonationRepository;
-use App\Service\DonationPdfService;
-use App\Service\HelloAssoService;
-use App\Service\HelloAssoWebhookService;
+
+use App\Service\ServiceDonation\DonationPdfService;
+use App\Service\ServiceHelloAsso\HelloAssoService;
+use App\Service\ServiceHelloAsso\HelloAssoWebhookService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -52,6 +52,15 @@ class PreOrder
     )]
     private Collection $preOrderItems;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $invoicePdfPath = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $invoiceReceiptNumber = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $invoiceGeneratedAt = null;
+
     public function __construct()
     {
         $this->preOrderItems = new ArrayCollection();
@@ -170,6 +179,42 @@ class PreOrder
                 $preOrderItem->setPreOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInvoicePdfPath(): ?string
+    {
+        return $this->invoicePdfPath;
+    }
+
+    public function setInvoicePdfPath(?string $invoicePdfPath): static
+    {
+        $this->invoicePdfPath = $invoicePdfPath;
+
+        return $this;
+    }
+
+    public function getInvoiceReceiptNumber(): ?string
+    {
+        return $this->invoiceReceiptNumber;
+    }
+
+    public function setInvoiceReceiptNumber(?string $invoiceReceiptNumber): static
+    {
+        $this->invoiceReceiptNumber = $invoiceReceiptNumber;
+
+        return $this;
+    }
+
+    public function getInvoiceGeneratedAt(): ?\DateTimeImmutable
+    {
+        return $this->invoiceGeneratedAt;
+    }
+
+    public function setInvoiceGeneratedAt(?\DateTimeImmutable $invoiceGeneratedAt): static
+    {
+        $this->invoiceGeneratedAt = $invoiceGeneratedAt;
 
         return $this;
     }

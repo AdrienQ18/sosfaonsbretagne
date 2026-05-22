@@ -8,6 +8,7 @@ use App\Entity\Availability;
 use App\Entity\Donation;
 use App\Entity\Event;
 use App\Entity\PreOrder;
+use App\Entity\PreOrderItem;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Enum\AlertStatus;
@@ -15,12 +16,11 @@ use App\Enum\BirdhouseDiameter;
 use App\Enum\DonationStatus;
 use App\Enum\DonorType;
 use App\Enum\PreOrderStatus;
+use App\Service\ServiceDonation\DonationPdfService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\Service\DonationPdfService;
-use App\Entity\PreOrderItem;
 
 
 class AppFixtures extends Fixture
@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
             ['firstname' => 'Adrien', 'lastname' => 'Le Clech', 'email' => 'adrien@leclech.com', 'roles' => ['ROLE_ADMIN']],
             ['firstname' => 'Adrien', 'lastname' => 'Quintard', 'email' => 'adrien@quintard.com', 'roles' => ['ROLE_ADMIN']],
             ['firstname' => 'Laurent', 'lastname' => 'Berthélémy', 'email' => 'laurent@berthelemy.com', 'roles' => ['ROLE_ADMIN']],
-            ['firstname' => 'Eni', 'lastname' => 'Eni', 'email' => 'enistage@enistage.com', 'roles' => ['ROLE_USER']],
+            ['firstname' => 'Eni', 'lastname' => 'Stage', 'email' => 'enistage@enistage.com', 'roles' => ['ROLE_USER']],
         ];
         $availabilities = $manager->getRepository(Availability::class)->findAll();
         $roles = $manager->getRepository(Role::class)->findAll();

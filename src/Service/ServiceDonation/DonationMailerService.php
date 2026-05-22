@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\ServiceDonation;
 
 use App\Entity\Donation;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -11,7 +11,6 @@ class DonationMailerService
 {
     public function __construct(
         private MailerInterface $mailer,
-        private string          $projectDir,
     )
     {
     }
@@ -25,12 +24,7 @@ class DonationMailerService
             ->htmlTemplate('donation/email/donation_receipt.html.twig')
             ->context([
                 'donation' => $donation,
-            ])
-            ->embedFromPath(
-                $this->projectDir . '/public/images/logo.jpg',
-                'logo'
-            )
-            ->attachFromPath($pdfPath);
+            ]);
 
         $this->mailer->send($email);
     }

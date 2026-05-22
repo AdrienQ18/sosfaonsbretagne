@@ -26,12 +26,7 @@ class AlertType extends AbstractType
             ->add('gpsLongitude')
             ->add('description')
             ->add('image')
-            ->add('cultureType')
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
-        ;
+            ->add('cultureType');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

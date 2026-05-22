@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\ServiceHelloAsso;
 
 use App\Entity\Donation;
+use App\Entity\PreOrder;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -86,6 +87,61 @@ class HelloAssoService
             ]);
 
             throw new \RuntimeException('Impossible de créer le paiement HelloAsso.');
+        }
+
+        return $data['redirectUrl'];
+    }
+    public function createPreOrderCheckout(PreOrder $preOrder): string
+    {
+        $token = $this->getAccessToken();
+
+        $organizationSlug = $_ENV['HELLOASSO_ORGANIZATION_SLUG'];
+        $amountInCents = (int) ((float) $preOrder->getTotalAmount() * 100);
+
+        $response = $this->httpClient->request(
+            'POST',
+            $_ENV['HELLOASSO_API_URL'] . '/organizations/' . $organizationSlug . '/checkout-intents',
+            [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    'totalAmount' => $amountInCents,
+                    'initialAmount' => $amountInCents,
+                    'itemName' => 'Précommande SOS Faons Bretagne',
+                    'backUrl' => $_ENV['APP_PUBLIC_URL'] . '/cart',
+                    'errorUrl' => $_ENV['APP_PUBLIC_URL'] . '/cart',
+                    'returnUrl' => $_ENV['APP_PUBLIC_URL'] . '/pre-order/payment/success/' . $preOrder->getId(),
+                    'containsDonation' => false,
+                    'payer' => [
+                        'firstName' => $preOrder->getUser()->getFirstname(),
+                        'lastName' => $preOrder->getUser()->getLastname(),
+                        'email' => $preOrder->getUser()->getEmail(),
+                        'address' => $preOrder->getUser()->getAddress(),
+                        'city' => $preOrder->getUser()->getCity(),
+                        'zipCode' => $preOrder->getUser()->getZipcode(),
+                        'country' => 'FRA',
+                    ],
+                    'metadata' => [
+                        'pre_order_id' => $preOrder->getId(),
+                        'type' => 'pre_order',
+                    ],
+                ],
+            ]
+        );
+
+        try {
+            $data = $response->toArray();
+        } catch (\Throwable $e) {
+            $this->logger->error('Erreur lors de la création du checkout HelloAsso pour une précommande.', [
+                'pre_order_id' => $preOrder->getId(),
+                'status_code' => $response->getStatusCode(),
+                'response' => $response->getContent(false),
+                'exception' => $e->getMessage(),
+            ]);
+
+            throw new \RuntimeException('Impossible de créer le paiement HelloAsso pour la précommande.');
         }
 
         return $data['redirectUrl'];

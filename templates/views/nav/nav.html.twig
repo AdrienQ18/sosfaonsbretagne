@@ -24,6 +24,7 @@
             <li><a href="{{ path('admin_donation') }}">Gestion des donations</a></li>
             <li><a href="{{ path('admin_roles') }}">Gestion des roles</a></li>
             <li><a href="{{ path('admin_availability') }}">Gestion des disponibilités</a></li>
+            <li><a href="{{ path('admin_pre_order') }}">Gestion des précommandes</a></li>
         {% endif %}
         {% if is_granted ("ROLE_ADMIN") %}
             <li><a href="{{ path('admin_alert') }}">Gestion des signalements</a></li>

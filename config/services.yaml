@@ -19,12 +19,13 @@ services:
     App\:
         resource: '../src/'
 
-    App\Service\DonationPdfService:
+    App\Service\ServiceDonation\DonationPdfService:
         arguments:
             $projectDir: '%kernel.project_dir%'
 
-    App\Service\DonationMailerService:
+    App\Service\ServiceShop\PreOrderPdfService:
         arguments:
             $projectDir: '%kernel.project_dir%'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

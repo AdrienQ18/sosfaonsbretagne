@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Merci pour votre paiement</h1>
+
+    <p>
+        Votre paiement est en cours de confirmation.
+    </p>
+
+    <p>
+        Précommande n°{{ preOrder.id }}
+    </p>
+
+    <p>
+        Statut actuel : {{ preOrder.status.value }}
+    </p>
+
+    <p>
+        Vous recevrez une confirmation par email dès que le paiement sera validé.
+    </p>
+{% endblock %}

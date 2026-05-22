@@ -3,6 +3,7 @@
 {% block body %}
     <h1>Liste des signalements</h1>
 
+
     <table>
         <thead>
             <tr>
@@ -14,6 +15,7 @@
                 <th>Status</th>
                 <th>Description</th>
                 <th>Utilisateur</th>
+                <th>Tel :</th>
                 <th>Type de culture</th>
                 <th>Image</th>
             </tr>
@@ -24,12 +26,13 @@
             <tr>
                 <td>{{ alert.type }}</td>
                 <td>{{ alert.surface }}</td>
-                <td>{{alert.creationDate | date('d/m/Y')}}</td>
+                <td>{{ alert.creationDate | date('d/m/Y')}}</td>
                 <td>{{ alert.interventionDate | date('d/m/Y')}}</td>
                 <td>{{ alert.localisation }}</td>
                 <td>{{ alert.status.value }}</td>
                 <td>{{ alert.description }}</td>
                 <td>{{ alert.user.email }}</td>
+                <td>{{ alert.user.phone }}</td>
                 <td>{{ alert.cultureType }}</td>
                 <td>{{ alert.image }}</td>
             </tr>

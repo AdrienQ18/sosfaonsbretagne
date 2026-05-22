@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <table>
+        <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Contenu</th>
+            <th>Date</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        {% for event in events %}
+        <tr>
+            <td>{{ event.name }}</td>
+            <td>{{ event.description }}</td>
+            <td>{{ event.eventDate | date('d/m/Y') }}</td>
+            <td>{{ event.type }}</td>
+            {% if is_granted ("ROLE_ADMIN") %}
+            <td>
+                <a href="{{ path('event_modify', {'id' : event.id}) }}">
+                    <button class="event-list-action" id="event-mod" onclick="return confirm('Etes-vous sûr de vouloir modifier ce post ?')">
+                        Modifier
+                    </button>
+                </a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

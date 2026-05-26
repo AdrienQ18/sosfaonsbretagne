@@ -20,8 +20,8 @@ class HelloAssoWebhookService
         private DonationPdfService     $donationPdfService,
         private DonationMailerService  $donationMailerService,
         private PreOrderRepository     $preOrderRepository,
-        private PreOrderPdfService $preOrderPdfService,
-        private PreOrderMailerService $preOrderMailerService,
+        private PreOrderPdfService     $preOrderPdfService,
+        private PreOrderMailerService  $preOrderMailerService,
     )
     {
     }
@@ -43,6 +43,7 @@ class HelloAssoWebhookService
             'message' => 'Aucun identifiant donation ou précommande trouvé.',
         ];
     }
+
     public function handleDonation(array $payload): array
     {
         $eventType = $payload['eventType'] ?? null;
@@ -86,7 +87,11 @@ class HelloAssoWebhookService
 
             $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);
 
+            $this->entityManager->flush();
+
             $this->donationMailerService->sendFiscalReceipt($donation, $pdfPath);
+
+            $this->donationMailerService->sendDonationNotificationToAssociation($donation);
 
         } elseif (
             $paymentState === 'Refused'
@@ -109,6 +114,7 @@ class HelloAssoWebhookService
             'message' => 'Statut de la donation mis à jour.',
         ];
     }
+
     private function handlePreOrder(array $payload): array
     {
         $eventType = $payload['eventType'] ?? null;

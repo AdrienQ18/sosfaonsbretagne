@@ -22,8 +22,12 @@ final class EventController extends AbstractController
     {
 
         $events = $eventRepository->findAll();
-        $eventsFiltered = $events;
-//        $eventsFiltered = array_filter($events, fn($event) => $event->isPublished());
+
+        if ($this->isGranted('ROLE_ADMIN')) {    // L'utilisateur a le rôle ROLE_ADMIN}
+            $eventsFiltered = $events;
+        } else {
+            $eventsFiltered = array_filter($events, fn($event) => $event->isPublished());
+        }
 
         return $this->render('main/list.html.twig', [
             'events' => $eventsFiltered,

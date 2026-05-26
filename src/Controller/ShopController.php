@@ -228,6 +228,7 @@ final class ShopController extends AbstractController
         $entityManager->persist($preOrder);
         $entityManager->flush();
         $mailerService->sendPreOrderConfirmation($preOrder);
+        $mailerService->sendPreOrderNotificationToAssociation($preOrder);
         $session->remove('cart');
 
         $this->addFlash('success', 'Votre précommande a bien été envoyée.');

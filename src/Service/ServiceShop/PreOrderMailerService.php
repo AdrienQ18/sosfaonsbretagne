@@ -55,4 +55,29 @@ class PreOrderMailerService
 
         $this->mailer->send($email);
     }
+    public function sendPreOrderNotificationToAssociation(PreOrder $preOrder): void
+    {
+        $email = (new TemplatedEmail())
+            ->from('contact@sosfaonsbretagne.fr')
+            ->to('contact@sosfaonsbretagne.fr')
+            ->subject('Nouvelle précommande reçu - SOS Faons Bretagne')
+            ->htmlTemplate('shop/email/pre_order_notification.html.twig')
+            ->context([
+                'preOrder' => $preOrder,
+            ]);
+        $this->mailer->send($email);
+    }
+
+    public function sendPreOrderPaymentConfirmationNotificationToAssociation(PreOrder $preOrder): void
+    {
+        $email = (new TemplatedEmail())
+            ->from('contact@sosfaonsbretagne.fr')
+            ->to('contact@sosfaonsbretagne.fr')
+            ->subject('Nouvelle précommande reçu - SOS Faons Bretagne')
+            ->htmlTemplate('shop/email/pre_order_payment_notification.html.twig')
+            ->context([
+                'preOrder' => $preOrder,
+            ]);
+        $this->mailer->send($email);
+    }
 }

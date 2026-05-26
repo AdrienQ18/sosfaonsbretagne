@@ -162,6 +162,7 @@ class HelloAssoWebhookService
             $pdfPath = $this->preOrderPdfService->generateInvoice($preOrder);
 
             $this->preOrderMailerService->sendPaymentConfirmation($preOrder, $pdfPath);
+            $this->preOrderMailerService->sendPreOrderPaymentConfirmationNotificationToAssociation($preOrder);
             return [
                 'status' => 200,
                 'message' => 'Précommande payée.',

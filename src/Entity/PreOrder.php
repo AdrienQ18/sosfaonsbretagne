@@ -29,9 +29,6 @@ class PreOrder
     private ?\DateTimeImmutable $paidAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $helloassoCheckoutUrl = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
     private ?string $helloassoOrderId = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
@@ -115,16 +112,6 @@ class PreOrder
     public function setPaidAt(?\DateTimeImmutable $paidAt): void
     {
         $this->paidAt = $paidAt;
-    }
-
-    public function getHelloassoCheckoutUrl(): ?string
-    {
-        return $this->helloassoCheckoutUrl;
-    }
-
-    public function setHelloassoCheckoutUrl(?string $helloassoCheckoutUrl): void
-    {
-        $this->helloassoCheckoutUrl = $helloassoCheckoutUrl;
     }
 
     public function getHelloassoOrderId(): ?string

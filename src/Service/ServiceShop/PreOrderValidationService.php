@@ -23,7 +23,6 @@ class PreOrderValidationService
 
         $preOrder->setStatus(PreOrderStatus::EN_ATTENTE_PAIEMENT);
         $preOrder->setValidatedAt(new \DateTimeImmutable());
-        $preOrder->setHelloassoCheckoutUrl($paymentUrl);
 
         $this->entityManager->flush();
 

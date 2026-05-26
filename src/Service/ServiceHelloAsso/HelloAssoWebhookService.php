@@ -156,10 +156,9 @@ class HelloAssoWebhookService
 
             $preOrder->setStatus(PreOrderStatus::PAYEE);
             $preOrder->setPaidAt(new \DateTimeImmutable());
+            $pdfPath = $this->preOrderPdfService->generateInvoice($preOrder);
 
             $this->entityManager->flush();
-
-            $pdfPath = $this->preOrderPdfService->generateInvoice($preOrder);
 
             $this->preOrderMailerService->sendPaymentConfirmation($preOrder, $pdfPath);
             $this->preOrderMailerService->sendPreOrderPaymentConfirmationNotificationToAssociation($preOrder);

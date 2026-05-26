@@ -13,9 +13,12 @@ use App\Service\ServiceHelloAsso\HelloAssoService;
 use App\Service\ServiceHelloAsso\HelloAssoWebhookService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\ServiceShop\PreOrderMailerService;
@@ -228,6 +231,7 @@ final class ShopController extends AbstractController
         $entityManager->persist($preOrder);
         $entityManager->flush();
         $mailerService->sendPreOrderConfirmation($preOrder);
+        $mailerService->sendPreOrderNotificationToAssociation($preOrder);
         $session->remove('cart');
 
         $this->addFlash('success', 'Votre précommande a bien été envoyée.');
@@ -248,6 +252,30 @@ final class ShopController extends AbstractController
         return $this->render('shop/adminPreOrder.html.twig', [
             'preOrders' => $preOrders,
         ]);
+    }
+
+    #[Route('/admin/pre-order/{id}', name: 'admin_pre_order_show', methods: ['GET'])]
+    public function showPreOrder(PreOrder $preOrder): Response
+    {
+        return $this->render('shop/adminPreOrderShow.html.twig', [
+            'preOrder' => $preOrder,
+        ]);
+    }
+
+    #[Route('/admin/pre-order/{id}/invoice', name: 'admin_pre_order_invoice', methods: ['GET'])]
+    public function showPreOrderInvoice(PreOrder $preOrder): BinaryFileResponse
+    {
+        $pdfPath = $preOrder->getInvoicePdfPath();
+
+        if (!$pdfPath || !file_exists($pdfPath)) {
+            throw $this->createNotFoundException('La facture est introuvable.');
+        }
+
+        return $this->file(
+            new File($pdfPath),
+            'facture-precommande-' . $preOrder->getId() . '.pdf',
+            ResponseHeaderBag::DISPOSITION_INLINE
+        );
     }
 
     #[Route('/admin/pre-order/{id}/validate', name: 'admin_pre_order_validate', methods: ['POST'])]
@@ -303,8 +331,6 @@ final class ShopController extends AbstractController
         }
 
         $paymentUrl = $helloAssoService->createPreOrderCheckout($preOrder);
-
-        $preOrder->setHelloassoCheckoutUrl($paymentUrl);
 
         $entityManager->flush();
 

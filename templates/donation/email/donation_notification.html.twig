@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f4f6f5;
+            font-family: Arial, sans-serif;
+            color: #1f2d24;
+        }
+
+        .email-wrapper {
+            width: 100%;
+            padding: 30px 0;
+            background: #f4f6f5;
+        }
+
+        .email-container {
+            width: 600px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .email-header {
+            background: #2f5d3a;
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .email-content {
+            padding: 28px;
+        }
+
+        .info-box {
+            background: #eef3f0;
+            padding: 16px;
+            margin: 20px 0;
+            border-left: 4px solid #2f5d3a;
+        }
+
+        .amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2f5d3a;
+        }
+
+        .email-footer {
+            background: #eef3f0;
+            padding: 20px;
+            font-size: 12px;
+            color: #5f6f66;
+        }
+    </style>
+
+    <title>Nouveau don reçu</title>
+</head>
+
+<body>
+
+<table class="email-wrapper">
+    <tr>
+        <td>
+
+            <table class="email-container">
+
+                <tr>
+                    <td class="email-header">
+                        <h1>Nouveau don reçu</h1>
+                        <p>SOS Faons Bretagne</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="email-content">
+
+                        <p>
+                            Un nouveau don vient d’être validé via HelloAsso.
+                        </p>
+
+                        <div class="info-box">
+
+                            <p>
+                                <strong>Donateur :</strong><br>
+                                {{ donation.firstname }}
+                                {{ donation.lastname }}
+                            </p>
+
+                            <p>
+                                <strong>Email :</strong><br>
+                                {{ donation.email }}
+                            </p>
+
+                            <p>
+                                <strong>Montant :</strong><br>
+                                <span class="amount">
+                                    {{ donation.amount }} €
+                                </span>
+                            </p>
+
+                            <p>
+                                <strong>Numéro reçu fiscal :</strong><br>
+                                {{ donation.fiscalReceiptNumber }}
+                            </p>
+
+                            <p>
+                                <strong>Date :</strong><br>
+                                {{ donation.donationDate|date('d/m/Y H:i') }}
+                            </p>
+
+                        </div>
+
+                        {% if donation.donorType.value == 'entreprise' %}
+                            <div class="info-box">
+
+                                <p>
+                                    <strong>Entreprise :</strong><br>
+                                    {{ donation.companyName }}
+                                </p>
+
+                                <p>
+                                    <strong>SIRET :</strong><br>
+                                    {{ donation.companySiret }}
+                                </p>
+
+                            </div>
+                        {% endif %}
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="email-footer">
+                        Notification automatique SOS Faons Bretagne
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

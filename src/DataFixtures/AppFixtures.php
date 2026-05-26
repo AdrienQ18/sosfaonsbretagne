@@ -17,6 +17,7 @@ use App\Enum\DonationStatus;
 use App\Enum\DonorType;
 use App\Enum\PreOrderStatus;
 use App\Service\ServiceDonation\DonationPdfService;
+use App\Service\ServiceShop\PreOrderPdfService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -29,6 +30,7 @@ class AppFixtures extends Fixture
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
         private DonationPdfService          $donationPdfService,
+        private PreOrderPdfService         $preOrderPdfService,
     )
     {
     }
@@ -194,66 +196,57 @@ class AppFixtures extends Fixture
         $articles = $manager->getRepository(Article::class)->findAll();
         $statuses = PreOrderStatus::cases();
         $diameters = BirdhouseDiameter::cases();
-
         $faker = Factory::create('fr_FR');
 
         foreach ($users as $user) {
+
             for ($i = 0; $i < rand(1, 5); $i++) {
                 $preOrder = new PreOrder();
-
+                $status = $faker->randomElement($statuses);
                 $preOrder->setUser($user);
-                $preOrder->setStatus($faker->randomElement($statuses));
-                $preOrder->setPreOrderDate(\DateTimeImmutable::createFromMutable(
-                    $faker->dateTime()
-                ));
-
+                $preOrder->setStatus($status);
+                $preOrder->setPreOrderDate(\DateTimeImmutable::createFromMutable($faker->dateTime()));
                 $totalAmount = 0;
-
-                $randomArticles = $faker->randomElements(
-                    $articles,
-                    $faker->numberBetween(1, count($articles))
-                );
+                $randomArticles = $faker->randomElements($articles, $faker->numberBetween(1, count($articles)));
 
                 foreach ($randomArticles as $article) {
                     $quantity = $faker->numberBetween(1, 5);
                     $unitPrice = (float)$article->getPrice();
                     $totalPrice = $unitPrice * $quantity;
-
                     $preOrderItem = new PreOrderItem();
-
                     $preOrderItem->setArticle($article);
                     $preOrderItem->setPreOrder($preOrder);
                     $preOrderItem->setQuantity($quantity);
                     $preOrderItem->setDiameter($faker->randomElement($diameters));
                     $preOrderItem->setUnitPrice((string)$unitPrice);
                     $preOrderItem->setTotalPrice((string)$totalPrice);
-
                     $preOrder->addPreOrderItem($preOrderItem);
-
                     $totalAmount += $totalPrice;
                 }
 
                 $preOrder->setTotalAmount((string)$totalAmount);
 
-                if ($preOrder->getStatus() === PreOrderStatus::VALIDEE) {
-                    $preOrder->setValidatedAt(new \DateTimeImmutable());
-                }
-
-                if ($preOrder->getStatus() === PreOrderStatus::PAYEE) {
-                    $preOrder->setValidatedAt(new \DateTimeImmutable());
-                    $preOrder->setPaidAt(new \DateTimeImmutable());
-                    $preOrder->setHelloassoOrderId((string)$faker->numberBetween(100000, 999999));
-                }
-
                 if (
-                    $preOrder->getStatus() === PreOrderStatus::EN_ATTENTE_PAIEMENT
-                    || $preOrder->getStatus() === PreOrderStatus::PAYEE
+                    $status === PreOrderStatus::VALIDEE
+                    || $status === PreOrderStatus::EN_ATTENTE_PAIEMENT
+                    || $status === PreOrderStatus::PAYEE
                 ) {
-                    $preOrder->setHelloassoCheckoutUrl(
-                        'https://checkout.helloasso.com/test/' . $faker->uuid()
-                    );
+                    $preOrder->setValidatedAt(new \DateTimeImmutable());
                 }
 
+                if ($status === PreOrderStatus::PAYEE) {
+                    $preOrder->setPaidAt(new \DateTimeImmutable());
+                    $preOrder->setHelloassoOrderId((string) $faker->numberBetween(100000, 999999));
+
+                    $manager->persist($preOrder);
+                    $manager->flush();
+
+                    $this->preOrderPdfService->generateInvoice($preOrder);
+
+                    $manager->flush();
+
+                    continue;
+                }
                 $manager->persist($preOrder);
             }
         }
@@ -305,6 +298,7 @@ class AppFixtures extends Fixture
                 $event->setNbParticipant($faker->numberBetween(1, 50));
                 $event->setEventDate($faker->dateTime());
                 $event->setUser($user);
+                $event->setIsPublished(true);
                 $manager->persist($event);
             }
         }

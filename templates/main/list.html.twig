@@ -9,6 +9,7 @@
             <th>Contenu</th>
             <th>Date</th>
             <th>Type</th>
+            <th>Status</th>
         </tr>
         </thead>
         {% for event in events %}
@@ -17,6 +18,13 @@
             <td>{{ event.description }}</td>
             <td>{{ event.eventDate | date('d/m/Y') }}</td>
             <td>{{ event.type }}</td>
+            <td>
+                {% if event.isPublished %}
+                    Publié
+                {% else %}
+                    Enregistré
+                {% endif %}
+            </td>
             {% if is_granted ("ROLE_ADMIN") %}
             <td>
                 <a href="{{ path('event_modify', {'id' : event.id}) }}">

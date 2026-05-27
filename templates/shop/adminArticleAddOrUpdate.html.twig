@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
-{{ form_start(form) }}
+{% block body %}
 
-{{ form_widget(form) }}
+{{ form_start(formAddArticle) }}
+
+{{ form_widget(formAddArticle) }}
 
 <button type="submit">
     Enregistrer
 </button>
 
-{{ form_end(form) }}
+{{ form_end(formAddArticle) }}
 {% endblock %}

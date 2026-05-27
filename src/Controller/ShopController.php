@@ -13,6 +13,7 @@ use App\Repository\ArticleRepository;
 use App\Repository\PreOrderRepository;
 use App\Service\ServiceHelloAsso\HelloAssoService;
 use App\Service\ServiceHelloAsso\HelloAssoWebhookService;
+use App\Service\Utils\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -53,13 +54,18 @@ final class ShopController extends AbstractController
             throw $this->createNotFoundException('Article introuvable.');
         }
 
-        $diameter = $request->request->get('diameter');
         $quantity = (int)$request->request->get('quantity', 1);
 
-        if (!in_array($diameter, ['28', '32'], true)) {
-            $this->addFlash('error', 'Merci de choisir un diamètre valide.');
+        $diameter = null;
 
-            return $this->redirectToRoute('shop');
+        if ($article->isRequiresDiameter()) {
+            $diameter = $request->request->get('diameter');
+
+            if (!in_array($diameter, ['28', '32'], true)) {
+                $this->addFlash('error', 'Merci de choisir un diamètre valide.');
+
+                return $this->redirectToRoute('shop');
+            }
         }
 
         if ($quantity < 1) {
@@ -138,9 +144,10 @@ final class ShopController extends AbstractController
 
     #[Route('/cart/update/{index}', name: 'cart_update', methods: ['POST'])]
     public function updateCartItem(
-        int              $index,
-        Request          $request,
-        SessionInterface $session
+        int               $index,
+        Request           $request,
+        SessionInterface  $session,
+        ArticleRepository $articleRepository,
     ): Response
     {
         $cart = $session->get('cart', []);
@@ -151,19 +158,35 @@ final class ShopController extends AbstractController
             return $this->redirectToRoute('cart_index');
         }
 
-        $diameter = $request->request->get('diameter');
-        $quantity = (int)$request->request->get('quantity', 1);
+        $article = $articleRepository->find(
+            $cart[$index]['article_id']
+        );
 
-        if (!in_array($diameter, ['28', '32'], true)) {
-            $this->addFlash('error', 'Diamètre invalide.');
+        if (!$article) {
+            $this->addFlash('error', 'Article introuvable.');
 
             return $this->redirectToRoute('cart_index');
         }
+
+        $quantity = (int)$request->request->get('quantity', 1);
 
         if ($quantity < 1) {
             $this->addFlash('error', 'La quantité doit être supérieure à 0.');
 
             return $this->redirectToRoute('cart_index');
+        }
+
+        $diameter = null;
+
+        if ($article->isRequiresDiameter()) {
+
+            $diameter = $request->request->get('diameter');
+
+            if (!in_array($diameter, ['28', '32'], true)) {
+                $this->addFlash('error', 'Diamètre invalide.');
+
+                return $this->redirectToRoute('cart_index');
+            }
         }
 
         $cart[$index]['diameter'] = $diameter;
@@ -223,7 +246,13 @@ final class ShopController extends AbstractController
             $preOrderItem->setQuantity($quantity);
             $preOrderItem->setUnitPrice((string)$unitPrice);
             $preOrderItem->setTotalPrice((string)$totalPrice);
-            $preOrderItem->setDiameter(BirdhouseDiameter::from((int)$item['diameter']));
+            if ($article->isRequiresDiameter()) {
+                $preOrderItem->setDiameter(
+                    BirdhouseDiameter::from((int)$item['diameter'])
+                );
+            } else {
+                $preOrderItem->setDiameter(null);
+            }
             $preOrder->addPreOrderItem($preOrderItem);
             $totalAmount += $totalPrice;
         }
@@ -391,11 +420,11 @@ final class ShopController extends AbstractController
         Request                $request,
         ArticleRepository      $articleRepository,
         EntityManagerInterface $entityManager,
+        FileUploader           $fileUploader,
         ?int                   $id = null,
     ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
         if ($id !== null) {
             $article = $articleRepository->find($id);
 
@@ -410,14 +439,21 @@ final class ShopController extends AbstractController
         $formAddArticle->handleRequest($request);
 
         if ($formAddArticle->isSubmitted() && $formAddArticle->isValid()) {
+            $file = $formAddArticle->get('image')->getData();
+
+            if ($file) {
+                $article->setImage($fileUploader->upload($file, 'shop', $article->getImage()));
+            }
+
             if ($id === null) {
                 $entityManager->persist($article);
             }
+
             $entityManager->flush();
+
             $this->addFlash('success', $id === null ? 'Article ajouté avec succès.' : 'Article modifié avec succès.');
-            return $this->redirectToRoute(
-                'admin_article_index'
-            );
+
+            return $this->redirectToRoute('admin_article_index');
         }
 
         return $this->render('shop/adminArticleAddOrUpdate.html.twig', [

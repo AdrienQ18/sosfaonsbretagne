@@ -58,8 +58,13 @@
     {% for item in preOrder.preOrderItems %}
         <tr>
             <td>{{ item.article.name }}</td>
-            <td>{{ item.diameter.value }} mm</td>
-            <td>{{ item.quantity }}</td>
+            <td>
+                {% if item.diameter %}
+                    {{ item.diameter.value }} mm
+                {% else %}
+                    —
+                {% endif %}
+            </td>            <td>{{ item.quantity }}</td>
             <td>{{ item.unitPrice }} €</td>
             <td>{{ item.totalPrice }} €</td>
         </tr>

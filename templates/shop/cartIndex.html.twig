@@ -26,26 +26,30 @@
                     >
                 </label>
 
-                <label>
-                    <input
-                        type="radio"
-                        name="diameter"
-                        value="28"
-                        {% if item.diameter == 28 %}checked{% endif %}
-                        required
-                    >
-                    28 mm
-                </label>
+                {% if item.article.requiresDiameter %}
 
-                <label>
-                    <input
-                        type="radio"
-                        name="diameter"
-                        value="32"
-                        {% if item.diameter == 32 %}checked{% endif %}
-                    >
-                    32 mm
-                </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="diameter"
+                            value="28"
+                            {% if item.diameter == 28 %}checked{% endif %}
+                            required
+                        >
+                        28 mm
+                    </label>
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="diameter"
+                            value="32"
+                            {% if item.diameter == 32 %}checked{% endif %}
+                        >
+                        32 mm
+                    </label>
+
+                {% endif %}
 
                 <button type="submit">
                     Modifier

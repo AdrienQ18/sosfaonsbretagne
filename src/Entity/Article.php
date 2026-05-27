@@ -45,6 +45,9 @@ class Article
     )]
     private Collection $preOrderItems;
 
+    #[ORM\Column]
+    private ?bool $requiresDiameter = null;
+
     public function __construct()
     {
         $this->preOrderItems = new ArrayCollection();
@@ -143,6 +146,18 @@ class Article
                 $preOrderItem->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isRequiresDiameter(): ?bool
+    {
+        return $this->requiresDiameter;
+    }
+
+    public function setRequiresDiameter(bool $requiresDiameter): static
+    {
+        $this->requiresDiameter = $requiresDiameter;
 
         return $this;
     }

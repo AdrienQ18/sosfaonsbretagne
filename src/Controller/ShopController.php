@@ -8,6 +8,7 @@ use App\Entity\PreOrderItem;
 use App\Entity\User;
 use App\Enum\BirdhouseDiameter;
 use App\Enum\PreOrderStatus;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\PreOrderRepository;
 use App\Service\ServiceHelloAsso\HelloAssoService;
@@ -387,14 +388,13 @@ final class ShopController extends AbstractController
     #[Route('/admin/article/add', name: 'admin_article_add', methods: ['GET', 'POST'])]
     #[Route('/admin/article/update/{id}', name: 'admin_article_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addOrUpdateArticle(
-        Request           $request,
-        ArticleRepository $articleRepository,
+        Request                $request,
+        ArticleRepository      $articleRepository,
         EntityManagerInterface $entityManager,
-        ?int              $id = null,
+        ?int                   $id = null,
     ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
 
         if ($id !== null) {
             $article = $articleRepository->find($id);
@@ -406,21 +406,15 @@ final class ShopController extends AbstractController
             $article = new Article();
             $article->setUser($this->getUser());
         }
-        $form = $this->createForm(
-            ArticleType::class,
-            $article
-        );
+        $formAddArticle = $this->createForm(ArticleType::class, $article);
+        $formAddArticle->handleRequest($request);
 
-        $form->handleRequest($request);
-
-        if (
-            $form->isSubmitted()
-            && $form->isValid()
-        ) {
-
-            $entityManager->persist($article);
+        if ($formAddArticle->isSubmitted() && $formAddArticle->isValid()) {
+            if ($id === null) {
+                $entityManager->persist($article);
+            }
             $entityManager->flush();
-
+            $this->addFlash('success', $id === null ? 'Article ajouté avec succès.' : 'Article modifié avec succès.');
             return $this->redirectToRoute(
                 'admin_article_index'
             );
@@ -428,6 +422,7 @@ final class ShopController extends AbstractController
 
         return $this->render('shop/adminArticleAddOrUpdate.html.twig', [
             'article' => $article,
+            'formAddArticle' => $formAddArticle->createView(),
         ]);
     }
 

@@ -389,6 +389,7 @@ final class ShopController extends AbstractController
     public function addOrUpdateArticle(
         Request           $request,
         ArticleRepository $articleRepository,
+        EntityManagerInterface $entityManager,
         ?int              $id = null,
     ): Response
     {
@@ -404,6 +405,25 @@ final class ShopController extends AbstractController
         } else {
             $article = new Article();
             $article->setUser($this->getUser());
+        }
+        $form = $this->createForm(
+            ArticleType::class,
+            $article
+        );
+
+        $form->handleRequest($request);
+
+        if (
+            $form->isSubmitted()
+            && $form->isValid()
+        ) {
+
+            $entityManager->persist($article);
+            $entityManager->flush();
+
+            return $this->redirectToRoute(
+                'admin_article_index'
+            );
         }
 
         return $this->render('shop/adminArticleAddOrUpdate.html.twig', [

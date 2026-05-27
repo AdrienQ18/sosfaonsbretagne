@@ -22,6 +22,7 @@
         <li><a href="{{ path('main_alert') }}">Faire un signalement</a></li>
         <li><a href="{{ path('event_list') }}">Postes</a></li>
         {% if is_granted ("ROLE_ADMIN") %}
+            <li><a href="{{ path('admin_userList') }}">Liste des utilisateurs</a></li>
             <li><a href="{{ path('admin_donation') }}">Gestion des donations</a></li>
             <li><a href="{{ path('admin_roles') }}">Gestion des roles</a></li>
             <li><a href="{{ path('admin_availability') }}">Gestion des disponibilités</a></li>

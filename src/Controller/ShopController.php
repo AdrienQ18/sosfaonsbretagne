@@ -379,7 +379,7 @@ final class ShopController extends AbstractController
 
         $articleList = $articleRepository->findAll();
         return $this->render('shop/adminArticleIndex.html.twig', [
-            'articles' => $articleList,
+            'articleList' => $articleList,
         ]);
     }
 

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<section>
+    <a href="{{ path('admin_article_add')}}">
+        Ajouter un article
+    </a>
+    {%  for article in articleList %}
+    <img src="{{ asset('images/shop/' ~ article.image) }}" alt="{{ article.name }}">
+    <p>{{ article.name }}</p>
+    <p>Prix : {{ article.price }} €</p>
+    <p>{{ article.description }}</p>
+    <a href="{{ path('admin_article_update', { id: article.id }) }}">
+        Modifier l'article
+    </a>
+    <a href="{{ path('admin_article_delete', { id: article.id }) }}">
+        Supprimer l'article
+    </a>
+    {% endfor%}
+</section>
+
+    {% block extraJs %}{% endblock %}
+{% endblock %}

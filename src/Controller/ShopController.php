@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Entity\PreOrder;
 use App\Entity\PreOrderItem;
 use App\Entity\User;
@@ -347,9 +348,10 @@ final class ShopController extends AbstractController
 
     #[Route('/helloasso/webhook', name: 'helloasso_webhook', methods: ['POST'])]
     public function webhook(
-        Request $request,
+        Request                 $request,
         HelloAssoWebhookService $webhookService
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $receivedSecret = $request->query->get('secret');
         $expectedSecret = $_ENV['HELLOASSO_WEBHOOK_SECRET'];
 
@@ -365,4 +367,73 @@ final class ShopController extends AbstractController
 
         return $this->json($result, $result['status']);
     }
+
+    // Liste des articles
+    #[Route('/admin/article', name: 'admin_article_index', methods: ['GET'])]
+    public function showArticle(
+        ArticleRepository $articleRepository,
+        Request           $request,
+    ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $articleList = $articleRepository->findAll();
+        return $this->render('shop/adminArticleIndex.html.twig', [
+            'articles' => $articleList,
+        ]);
+    }
+
+// Ajout article Ou Modification article
+    #[Route('/admin/article/add', name: 'admin_article_add', methods: ['GET', 'POST'])]
+    #[Route('/admin/article/update/{id}', name: 'admin_article_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function addOrUpdateArticle(
+        Request           $request,
+        ArticleRepository $articleRepository,
+        ?int              $id = null,
+    ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+
+        if ($id !== null) {
+            $article = $articleRepository->find($id);
+
+            if (!$article) {
+                throw $this->createNotFoundException('L\'article n\'existe pas.');
+            }
+        } else {
+            $article = new Article();
+            $article->setUser($this->getUser());
+        }
+
+        return $this->render('shop/adminArticleAddOrUpdate.html.twig', [
+            'article' => $article,
+        ]);
+    }
+
+// Suppression article
+    #[Route('/admin/article/delete/{id}', name: 'admin_article_delete', methods: ['POST'])]
+    public function deleteArticle(
+        int                    $id,
+        ArticleRepository      $articleRepository,
+        EntityManagerInterface $entityManager,
+    ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $article = $articleRepository->find($id);
+
+        if (!$article) {
+            throw $this->createNotFoundException('L\'article n\'existe pas.');
+        }
+
+        $entityManager->remove($article);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Votre article a bien été supprimé de la boutique.');
+
+        return $this->redirectToRoute('admin_article_index');
+    }
+
+
 }

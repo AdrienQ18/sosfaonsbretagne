@@ -91,6 +91,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\OneToMany(targetEntity: PreOrder::class, mappedBy: 'user')]
     private Collection $preOrders;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $lastConnection = null;
+
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -435,6 +438,18 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
                 $preOrder->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastConnection(): ?\DateTime
+    {
+        return $this->lastConnection;
+    }
+
+    public function setLastConnection(?\DateTime $lastConnection): static
+    {
+        $this->lastConnection = $lastConnection;
 
         return $this;
     }

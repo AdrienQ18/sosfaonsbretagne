@@ -32,15 +32,17 @@
                         </div>
                     </div>
 
-                    <label>
-                        <input type="radio" name="diameter" value="28" required>
-                        28 mm
-                    </label>
+                    {% if article.requiresDiameter %}
+                        <label>
+                            <input type="radio" name="diameter" value="28" required>
+                            28 mm
+                        </label>
 
-                    <label>
-                        <input type="radio" name="diameter" value="32" required>
-                        32 mm
-                    </label>
+                        <label>
+                            <input type="radio" name="diameter" value="32" required>
+                            32 mm
+                        </label>
+                    {% endif %}
                     <label>
                         Quantité
                         <input

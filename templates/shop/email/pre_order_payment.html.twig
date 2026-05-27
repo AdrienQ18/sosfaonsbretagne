@@ -40,8 +40,13 @@
 
         <p>
             Diamètre :
-            {{ item.diameter.value }} mm
-        </p>
+
+                {% if item.diameter %}
+                    {{ item.diameter.value }} mm
+                {% else %}
+                    Aucun
+                {% endif %}
+                </p>
 
         <p>
             Quantité :

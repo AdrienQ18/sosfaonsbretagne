@@ -134,6 +134,7 @@ class AppFixtures extends Fixture
             $newArticle->setName($articleData['name']);
             $newArticle->setImage($articleData['photo']);
             $newArticle->setPrice($articleData['price']);
+            $newArticle->setRequiresDiameter(true);
             $newArticle->setDescription($faker->text(200));
             $newArticle->setCreationDate(\DateTimeImmutable::createFromMutable($faker->dateTime()));
             $newArticle->setUser($user);

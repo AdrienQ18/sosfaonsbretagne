@@ -18,7 +18,7 @@ class PreOrderItem
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column(enumType: BirdhouseDiameter::class)]
+    #[ORM\Column(nullable: true, enumType: BirdhouseDiameter::class)]
     private ?BirdhouseDiameter $diameter = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('admin_article_add') }}">
+        Ajouter un article
+    </a>
+    <section>
+        {% for article in articleList %}
+            <div>
+                <img src="{{ asset('images/shop/' ~ article.image) }}" alt="{{ article.name }}" width="200">
+                <p>{{ article.name }}</p>
+                <p>Prix : {{ article.price }} €</p>
+                <p>{{ article.description }}</p>
+                <a href="{{ path('admin_article_update', {id: article.id}) }}">Modifier l'article</a>
+                <form method="post" action="{{ path('admin_article_delete', {id: article.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette article?');">
+                    <button type="submit">Supprimer l'article</button>
+                </form>
+            </div>
+            <hr>
+        {% endfor %}
+    </section>
+{% endblock %}

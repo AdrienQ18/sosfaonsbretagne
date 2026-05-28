@@ -1,0 +1,4 @@
+#Lien pour la validation du mail pour la validation du compte
+#le lien sera valide 7 jours
+symfonycasts_verify_email:
+    lifetime: 604800

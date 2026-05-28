@@ -1,17 +1,26 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
+
     <section>
         <table>
             <thead>
             <tr>
                 <th>Disponibilité</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
+
             {% for availability in availabilityList %}
                 <tr>
+                    <td>{{ availability.label }}</td>
                     <td>
-                        {{ availability.label }}
+                        <a href="{{ path('admin_availability_update', {id: availability.id}) }}">Modifier</a>
+                        <form method="post" action="{{ path('admin_availability_delete', {id: availability.id}) }}"
+                              onsubmit="return confirm('Voulez-vous vraiment supprimer cette disponibilité ?');">
+                            <button type="submit">Supprimer</button>
+                        </form>
                     </td>
                 </tr>
             {% endfor %}
@@ -19,11 +28,21 @@
         </table>
     </section>
     <section>
-        <h3>Créer une nouvelle disponibilité</h3>
+        <h3>
+            {% if isEdit %}
+                Modifier une disponibilité
+            {% else %}
+                Créer une nouvelle disponibilité
+            {% endif %}
+        </h3>
         {{ form_start(formAvailability, {attr: {novalidate: 'novalidate'}}) }}
         {{ form_row(formAvailability.label) }}
         <button type="submit">
-            Ajouter une disponibilité
+            {% if isEdit %}
+                Modifier la disponibilité
+            {% else %}
+                Ajouter une disponibilité
+            {% endif %}
         </button>
         {{ form_end(formAvailability) }}
     </section>

@@ -11,30 +11,60 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin/availability')]
 final class AvailabilityController extends AbstractController
 {
-    #[Route(name: 'admin_availability', methods: ['GET', 'POST'])]
+    #[Route('/admin/availability', name: 'admin_availability', methods: ['GET', 'POST'])]
+    #[Route('/admin/availability/update/{id}', name: 'admin_availability_update', methods: ['GET', 'POST'])]
     public function index(
         AvailabilityRepository $availabilityRepository,
         EntityManagerInterface $entityManager,
         Request                $request,
+        ?int                   $id = null,
     ): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        if ($id !== null) {
+            $availability = $availabilityRepository->find($id);
+            if (!$availability) {
+                throw $this->createNotFoundException('La disponibilité n\'existe pas');
+            }
+        } else {
+            $availability = new Availability();
+        }
         $availabilityList = $availabilityRepository->findAll();
-        $availability = new Availability();
         $formAvailability = $this->createForm(AvailabilityType::class, $availability);
         $formAvailability->handleRequest($request);
 
         if ($formAvailability->isSubmitted() && $formAvailability->isValid()) {
-            $entityManager->persist($availability);
+            if ($id === null) {
+                $entityManager->persist($availability);
+            }
             $entityManager->flush();
+            $this->addFlash('success', $id === null ? 'disponibilité ajouté avec succès.' : 'disponibilité modifié avec succès.');
             return $this->redirectToRoute('admin_availability');
-
         }
         return $this->render('availability/adminAvailability.html.twig', [
             'availabilityList' => $availabilityList,
             'formAvailability' => $formAvailability->createView(),
+            'isEdit' => $id !== null,
         ]);
+    }
+
+    #[Route('/admin/availability/delete/{id}', name: 'admin_availability_delete', methods: ['POST'])]
+    public function deleteAvailability(
+        int                    $id,
+        AvailabilityRepository $availabilityRepository,
+        EntityManagerInterface $entityManager,
+    ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $availability = $availabilityRepository->find($id);
+        if (!$availability) {
+            throw $this->createNotFoundException('La disponibilité n\'existe pas');
+        }
+        $entityManager->remove($availability);
+        $entityManager->flush();
+        $this->addFlash('success', 'Votre disponibilité a bien été supprimée.');
+        return $this->redirectToRoute('admin_availability');
     }
 }

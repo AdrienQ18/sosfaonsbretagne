@@ -5,6 +5,7 @@
             <thead>
             <tr>
                 <th>Nom du Role</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -13,17 +14,34 @@
                     <td>
                         {{ role.name }}
                     </td>
+                    <td>
+                        <a href="{{ path('admin_roles_update', {id: role.id}) }}">Modifier</a>
+                        <form method="post" action="{{ path('admin_roles_delete', {id: role.id}) }}"
+                              onsubmit="return confirm('Voulez-vous vraiment supprimer cette disponibilité ?');">
+                            <button type="submit">Supprimer</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </section>
     <section>
-        <h3>Créer un nouveau role</h3>
+        <h3>
+            {% if isEdit %}
+                Modifier un nouveau role
+            {% else %}
+                Créer un nouveau role
+            {% endif %}
+        </h3>
         {{ form_start(formRole, {attr: {novalidate: 'novalidate'}}) }}
         {{ form_row(formRole.name) }}
         <button type="submit">
-            Ajouter le role
+            {% if isEdit %}
+                Modifier le role
+            {% else %}
+                Ajouter le role
+            {% endif %}
         </button>
         {{ form_end(formRole) }}
     </section>

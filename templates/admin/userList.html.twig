@@ -14,7 +14,10 @@
             <th>Ville</th>
             <th>Code postal</th>
             <th>Création du compte</th>
-            <th>Statu</th>
+            <th>Status</th>
+            <th>Rôle</th>
+            <th>Droit</th>
+            <th>Action</th>
         </tr>
         </thead>
 
@@ -30,7 +33,19 @@
                 <td>{{ user.zipcode }}</td>
                 <td>{{ user.creationDate | date('d/m/Y')}}</td>
                 <td>{{ user.actif }}</td>
+                <td>{{ user.userRole.name }}</td>
+                <td>{% if is_granted ("ROLE_ADMIN") %}
+                        Administrateur
+                    {% else %}
+                        Utilisateur
+                    {% endif %}
+                </td>
                 <td>
+                    <a href="{{ path('admin_modify', {'id' : user.id}) }}">
+                        <button class="user-list-action" id="user-mod" onclick="return confirm('Etes-vous sûr de vouloir modifier cet utilisateur ?')">
+                            Modifier
+                        </button>
+                    </a>
                 </td>
             </tr>
         {% endfor %}

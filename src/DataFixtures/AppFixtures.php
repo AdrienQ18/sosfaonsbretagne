@@ -84,6 +84,7 @@ class AppFixtures extends Fixture
             $user->setCreationDate($faker->dateTime());
             $user->setUserRole($faker->randomElement($roles));
             $user->setActif(true);
+            $user->setIsVerified(true);
 
             $randomAvailabilities = $faker->randomElements(
                 $availabilities,

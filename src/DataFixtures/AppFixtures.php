@@ -83,6 +83,7 @@ class AppFixtures extends Fixture
             $user->setzipCode($faker->postcode);
             $user->setCreationDate($faker->dateTime());
             $user->setUserRole($faker->randomElement($roles));
+            $user->setBirthday($faker->dateTime);
             $user->setActif(true);
             $user->setIsVerified(true);
 

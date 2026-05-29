@@ -104,7 +104,21 @@
             </div>
 
             {{ form_start(formRegister,{attr: {novalidate: 'novalidate'}}) }}
-            {{ form_widget(formRegister) }}
+            {{ form_row(formRegister.email) }}
+            {{ form_row(formRegister.plainPassword) }}
+            {{ form_row(formRegister.lastname) }}
+            {{ form_row(formRegister.firstname) }}
+            {{ form_row(formRegister.phone) }}
+            {{ form_row(formRegister.address) }}
+            {{ form_row(formRegister.city) }}
+            {{ form_row(formRegister.zipcode) }}
+            {{ form_row(formRegister.birthday) }}
+            {{ form_row(formRegister.benevole) }}
+            <div id="volunteer-roles" style="display: none;">
+                {{ form_row(formRegister.availabilitys) }}
+            </div>
+            {{ form_row(formRegister.agreeTerms) }}
+
             <button class="" type="submit">
                 Créer son compte
             </button>
@@ -112,5 +126,18 @@
         </section>
 
     {% endif %}
+    {% block extraJs %}
+        <script>
+            const benevoleCheckbox = document.querySelector('#registration_form_benevole');
+            const rolesBlock = document.querySelector('#volunteer-roles');
+
+            function toggleRoles() {
+                rolesBlock.style.display = benevoleCheckbox.checked ? 'block' : 'none';
+            }
+
+            benevoleCheckbox.addEventListener('change', toggleRoles);
+            toggleRoles();
+        </script>
+    {% endblock %}
 
 {% endblock %}

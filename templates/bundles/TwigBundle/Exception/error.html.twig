@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur {{ status_code }}{% endblock %}
+
+{% block body %}
+    <main class="error-page">
+        <section class="error-container">
+            <div class="error-card">
+                <h1 class="error-title">Oups ! Une erreur s'est produite.</h1>
+                <h2 class="error-subtitle">
+                    Le serveur a renvoyé une erreur "{{ status_code }} {{ status_text }}".
+                </h2>
+
+                {% if exception is defined and exception.message is not empty %}
+                    {% if app.environment == 'dev' and exception is defined and exception.message is not empty %}
+                        <p class="error-message">
+                            Message d'erreur : "{{ exception.message }}"
+                        </p>
+                    {% endif %}
+                {% endif %}
+
+                <p class="error-text">
+                    Quelque chose ne fonctionne pas correctement. Veuillez nous envoyer un e-mail à
+                    <a href="mailto:contact@sosfaonsbretagne.fr">contact@sosfaonsbretagne.fr</a>
+                    en nous indiquant ce que vous faisiez lorsque cette erreur s'est produite.
+                    Nous corrigerons le problème dès que possible. Désolés pour la gêne occasionnée.
+                </p>
+
+                <a href="{{ path('main_home') }}" class="btn btn-primary">
+                    Retour au site
+                </a>
+            </div>
+        </section>
+    </main>
+{% endblock %}

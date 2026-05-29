@@ -2,8 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Availability;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -58,6 +61,22 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Ville* : ',])
             ->add('zipcode', TextType::class, [
                 'label' => 'Code postal* : ',
+            ])
+            ->add('birthday', BirthdayType::class, [
+                'label' => 'Date de naissance* : ',
+            ])
+            ->add('benevole', CheckboxType::class, [
+                'label' => 'Voulez-vous être inscrit en tant que bénévole ?',
+                'mapped' => false,
+                'required' => false,
+            ])
+            ->add('availabilitys', EntityType::class, [
+                'label' => 'Vos disponibilités* : ',
+                'class' => Availability::class,
+                'choice_label' => 'label', // Le champ à afficher dans le select
+                'choice_value' => 'id',   // Le champ à utiliser comme valeur
+                'multiple' => true,
+                'expanded' => true,
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => 'J\'accepte les conditions d\'utilisation',

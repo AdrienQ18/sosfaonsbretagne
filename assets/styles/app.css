@@ -7,6 +7,9 @@
     font-style: normal;
     font-display: swap;
 }
+body {
+    font-family: 'Montserrat', sans-serif;
+}
 .container {
     max-width: 1200px;
     margin: auto;

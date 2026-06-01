@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/montserrat/Montserrat-VariableFont_wght.ttf')
+    format('truetype');
+
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
 .container {
     max-width: 1200px;
     margin: auto;

@@ -1,0 +1,56 @@
+<h1 style="color:#1b4a3a;">
+    Réinitialisation de votre mot de passe
+</h1>
+
+<p>
+    Bonjour,
+</p>
+
+<p>
+    Vous avez demandé la réinitialisation de votre mot de passe
+    pour votre compte SOS Faons Bretagne.
+</p>
+
+<p>
+    Cliquez sur le bouton ci-dessous pour définir un nouveau mot de passe :
+</p>
+
+<p style="margin: 35px 0;">
+    <a
+        href="{{ url('app_reset_password', {token: resetToken.token}) }}"
+        style="
+            background: linear-gradient(135deg, #1b4a3a, #6e8e64);
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        "
+    >
+        Réinitialiser mon mot de passe
+    </a>
+</p>
+
+<p>
+    Ce lien expirera dans
+    <strong>
+        {{ resetToken.expirationMessageKey|trans(
+            resetToken.expirationMessageData,
+            'ResetPasswordBundle'
+        ) }}
+    </strong>.
+</p>
+
+<p>
+    Si vous n’êtes pas à l’origine de cette demande,
+    vous pouvez ignorer cet email en toute sécurité.
+</p>
+
+<br>
+
+<p>
+    À bientôt,<br>
+    <strong>SOS Faons Bretagne</strong>
+</p>
+

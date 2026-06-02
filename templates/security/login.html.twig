@@ -7,11 +7,7 @@
 {% block body %}
 
     <section class="auth-page">
-        <div
-            class="auth-container {% if mode == 'register' %}right-panel-active{% endif %}"
-            id="authContainer"
-        >
-
+        <div class="auth-container {% if mode == 'register' %}right-panel-active{% endif %}" id="authContainer">
             {# FORMULAIRE CONNEXION #}
             <div class="form-container sign-in-container">
                 <form method="post" action="{{ path('app_login') }}" novalidate>
@@ -22,51 +18,27 @@
                             {{ error.messageKey|trans(error.messageData, 'security') }}
                         </div>
                     {% endif %}
-
-                    <label for="inputEmail"></label><input
-                        type="email"
-                        value="{{ last_username }}"
-                        name="email"
-                        id="inputEmail"
-                        placeholder="Adresse email"
-                        autocomplete="email"
-                        required
-                    >
-
+                    <label for="inputEmail"></label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
+                           placeholder="Adresse email" autocomplete="email" required>
                     <div class="password-wrapper">
-                        <label for="inputPassword"></label><input
-                            type="password"
-                            name="password"
-                            id="inputPassword"
-                            placeholder="Mot de passe"
-                            autocomplete="current-password"
-                            required
-                        >
-
-                        <button
-                            type="button"
-                            class="toggle-password"
-                            data-target="inputPassword"
-                            aria-label="Afficher le mot de passe"
-                        >
-                            <img
-                                src="{{ asset('images/icons/eye-open.png') }}"
-                                alt="Afficher le mot de passe"
-                            >
+                        <label for="inputPassword">
+                        </label>
+                        <input type="password" name="password" id="inputPassword" placeholder="Mot de passe"
+                               autocomplete="current-password" required>
+                        <button type="button" class="toggle-password" data-target="inputPassword"
+                                aria-label="Afficher le mot de passe">
+                            <img src="{{ asset('images/icons/eye-open.png') }}" alt="Afficher le mot de passe">
                         </button>
                     </div>
-
-                    <input
-                        type="hidden"
-                        name="_csrf_token"
-                        value="{{ csrf_token('authenticate') }}"
-                    >
-
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <label class="remember-me">
                         <input type="checkbox" name="_remember_me">
                         Se souvenir de moi
                     </label>
-
+                    <a href="{{ path('app_forgot_password_request') }}" class="forgot-password">
+                        Mot de passe oublié ?
+                    </a>
                     <button type="submit">
                         Se connecter
                     </button>
@@ -85,23 +57,12 @@
                     </div>
                     <div class="form-group">
                         {{ form_label(formRegister.plainPassword) }}
-                        <div class="password-wrapper">
-                            {{ form_widget(formRegister.plainPassword, {
-                                attr: {
-                                    class: 'password-input'
-                                }
-                            }) }}
-
-                            <button
-                                type="button"
-                                class="toggle-password"
-                                data-target="{{ formRegister.plainPassword.vars.id }}"
-                                aria-label="Afficher le mot de passe"
-                            >
-                                <img
-                                    src="{{ asset('images/icons/eye-open.png') }}"
-                                    alt="Afficher le mot de passe"
-                                >
+                        <div
+                            class="password-wrapper">{{ form_widget(formRegister.plainPassword, {attr: {class: 'password-input'}}) }}
+                            <button type="button" class="toggle-password"
+                                    data-target="{{ formRegister.plainPassword.vars.id }}"
+                                    aria-label="Afficher le mot de passe">
+                                <img src="{{ asset('images/icons/eye-open.png') }}" alt="Afficher le mot de passe">
                             </button>
                         </div>
                         {{ form_errors(formRegister.plainPassword) }}
@@ -151,11 +112,9 @@
                     <div id="volunteer-roles" style="display: none;">
                         <div class="form-group availability-group">
                             {{ form_label(formRegister.availabilitys) }}
-
                             <div class="availability-options">
                                 {{ form_widget(formRegister.availabilitys) }}
                             </div>
-
                             {{ form_errors(formRegister.availabilitys) }}
                         </div>
                     </div>
@@ -178,38 +137,25 @@
                 <div class="overlay">
 
                     <div class="overlay-panel overlay-left">
-                        <img
-                            src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
-                            alt="Logo SOS Faons Bretagne"
-                            class="auth-logo"
-                        >
-
+                        <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" alt="Logo SOS Faons Bretagne"
+                             class="auth-logo">
                         <h2>Déjà inscrit ?</h2>
                         <p>Connectez-vous pour accéder à votre espace.</p>
-
                         <button class="ghost" id="signIn" type="button">
                             Se connecter
                         </button>
                     </div>
-
                     <div class="overlay-panel overlay-right">
-                        <img
-                            src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
-                            alt="Logo SOS Faons Bretagne"
-                            class="auth-logo"
-                        >
-
+                        <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" alt="Logo SOS Faons Bretagne"
+                             class="auth-logo">
                         <h2>Bienvenue !</h2>
                         <p>Créez votre compte et rejoignez SOS Faons Bretagne.</p>
-
                         <button class="ghost" id="signUp" type="button">
                             Créer un compte
                         </button>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </section>
 

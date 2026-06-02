@@ -1,143 +1,306 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Connexion
+    Connexion / Inscription
 {% endblock %}
 
 {% block body %}
-    {% if mode == 'login' %}
 
-        {# formulaire login #}
-        <section>
+    <section class="auth-page">
+        <div
+            class="auth-container {% if mode == 'register' %}right-panel-active{% endif %}"
+            id="authContainer"
+        >
 
-            <form method="post">
+            {# FORMULAIRE CONNEXION #}
+            <div class="form-container sign-in-container">
+                <form method="post" action="{{ path('app_login') }}" novalidate>
+                    <h1>Connexion</h1>
 
-                {% if error %}
-                    <div class="alert alert-danger">
-                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+
+                    <label for="inputEmail"></label><input
+                        type="email"
+                        value="{{ last_username }}"
+                        name="email"
+                        id="inputEmail"
+                        placeholder="Adresse email"
+                        autocomplete="email"
+                        required
+                    >
+
+                    <div class="password-wrapper">
+                        <label for="inputPassword"></label><input
+                            type="password"
+                            name="password"
+                            id="inputPassword"
+                            placeholder="Mot de passe"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            data-target="inputPassword"
+                            aria-label="Afficher le mot de passe"
+                        >
+                            <img
+                                src="{{ asset('images/icons/eye-open.png') }}"
+                                alt="Afficher le mot de passe"
+                            >
+                        </button>
                     </div>
-                {% endif %}
 
-                {% if app.user %}
-                    <div class="mb-3">
-                        Vous êtes connecté en tant que
-                        {{ app.user.userIdentifier }},
-                        <a href="{{ logout_path() }}">
-                            Se déconnecter
-                        </a>
-                    </div>
-                {% endif %}
+                    <input
+                        type="hidden"
+                        name="_csrf_token"
+                        value="{{ csrf_token('authenticate') }}"
+                    >
 
-                <h1 class="h3 mb-3 font-weight-normal">
-                    Connexion
-                </h1>
-                <div>
-                    <a href="{{ path('app_register') }}">
-                        Créer un compte
-                    </a>
-                </div>
-
-                <label for="inputEmail">
-                    Adresse email
-                </label>
-
-                <input
-                    type="email"
-                    value="{{ last_username }}"
-                    name="email"
-                    id="inputEmail"
-                    class="form-control"
-                    autocomplete="email"
-                    required
-                    autofocus
-                >
-
-                <label for="inputPassword">
-                    Mot de passe
-                </label>
-
-                <input
-                    type="password"
-                    name="password"
-                    id="inputPassword"
-                    class="form-control"
-                    autocomplete="current-password"
-                    required
-                >
-
-                <input
-                    type="hidden"
-                    name="_csrf_token"
-                    data-controller="csrf-protection"
-                    value="{{ csrf_token('authenticate') }}"
-                >
-
-                <div class="checkbox mb-3">
-
-                    <label>
+                    <label class="remember-me">
                         <input type="checkbox" name="_remember_me">
                         Se souvenir de moi
                     </label>
 
+                    <button type="submit">
+                        Se connecter
+                    </button>
+                </form>
+            </div>
+
+            {# FORMULAIRE INSCRIPTION #}
+            <div class="form-container sign-up-container">
+                <div class="register-scroll">
+                    <h1>Créer un compte</h1>
+                    {{ form_start(formRegister, {action: path('app_register'),attr: {novalidate: 'novalidate'}}) }}
+                    <div class="form-group">
+                        {{ form_label(formRegister.email) }}
+                        {{ form_widget(formRegister.email) }}
+                        {{ form_errors(formRegister.email) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(formRegister.plainPassword) }}
+                        <div class="password-wrapper">
+                            {{ form_widget(formRegister.plainPassword, {
+                                attr: {
+                                    class: 'password-input'
+                                }
+                            }) }}
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="{{ formRegister.plainPassword.vars.id }}"
+                                aria-label="Afficher le mot de passe"
+                            >
+                                <img
+                                    src="{{ asset('images/icons/eye-open.png') }}"
+                                    alt="Afficher le mot de passe"
+                                >
+                            </button>
+                        </div>
+                        {{ form_errors(formRegister.plainPassword) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(formRegister.lastname) }}
+                        {{ form_widget(formRegister.lastname) }}
+                        {{ form_errors(formRegister.lastname) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(formRegister.firstname) }}
+                        {{ form_widget(formRegister.firstname) }}
+                        {{ form_errors(formRegister.firstname) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(formRegister.phone) }}
+                        {{ form_widget(formRegister.phone) }}
+                        {{ form_errors(formRegister.phone) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(formRegister.address) }}
+                        {{ form_widget(formRegister.address) }}
+                        {{ form_errors(formRegister.address) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(formRegister.city) }}
+                        {{ form_widget(formRegister.city) }}
+                        {{ form_errors(formRegister.city) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(formRegister.zipcode) }}
+                        {{ form_widget(formRegister.zipcode) }}
+                        {{ form_errors(formRegister.zipcode) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(formRegister.birthday) }}
+                        {{ form_widget(formRegister.birthday) }}
+                        {{ form_errors(formRegister.birthday) }}
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            {{ form_label(formRegister.benevole) }}
+                            {{ form_widget(formRegister.benevole) }}
+                        </div>
+                        {{ form_errors(formRegister.benevole) }}
+                    </div>
+                    <div id="volunteer-roles" style="display: none;">
+                        <div class="form-group availability-group">
+                            {{ form_label(formRegister.availabilitys) }}
+
+                            <div class="availability-options">
+                                {{ form_widget(formRegister.availabilitys) }}
+                            </div>
+
+                            {{ form_errors(formRegister.availabilitys) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            {{ form_label(formRegister.agreeTerms) }}
+                            {{ form_widget(formRegister.agreeTerms) }}
+                        </div>
+                        {{ form_errors(formRegister.agreeTerms) }}
+                    </div>
+                    <button type="submit">
+                        Créer son compte
+                    </button>
+                    {{ form_end(formRegister) }}
                 </div>
-
-                <button class="btn btn-lg btn-primary" type="submit">
-                    Se connecter
-                </button>
-
-            </form>
-
-        </section>
-
-    {% else %}
-
-        {# formulaire inscription #}
-        <section>
-
-            <h2>
-                Créer un compte
-            </h2>
-            <div>
-                <a href="{{ path('app_login') }}">
-                    Déjà un compte ? Se connecter
-                </a>
             </div>
 
-            {{ form_start(formRegister,{attr: {novalidate: 'novalidate'}}) }}
-            {{ form_row(formRegister.email) }}
-            {{ form_row(formRegister.plainPassword) }}
-            {{ form_row(formRegister.lastname) }}
-            {{ form_row(formRegister.firstname) }}
-            {{ form_row(formRegister.phone) }}
-            {{ form_row(formRegister.address) }}
-            {{ form_row(formRegister.city) }}
-            {{ form_row(formRegister.zipcode) }}
-            {{ form_row(formRegister.birthday) }}
-            {{ form_row(formRegister.benevole) }}
-            <div id="volunteer-roles" style="display: none;">
-                {{ form_row(formRegister.availabilitys) }}
+            {# OVERLAY ANIMÉ #}
+            <div class="overlay-container">
+                <div class="overlay">
+
+                    <div class="overlay-panel overlay-left">
+                        <img
+                            src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
+                            alt="Logo SOS Faons Bretagne"
+                            class="auth-logo"
+                        >
+
+                        <h2>Déjà inscrit ?</h2>
+                        <p>Connectez-vous pour accéder à votre espace.</p>
+
+                        <button class="ghost" id="signIn" type="button">
+                            Se connecter
+                        </button>
+                    </div>
+
+                    <div class="overlay-panel overlay-right">
+                        <img
+                            src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
+                            alt="Logo SOS Faons Bretagne"
+                            class="auth-logo"
+                        >
+
+                        <h2>Bienvenue !</h2>
+                        <p>Créez votre compte et rejoignez SOS Faons Bretagne.</p>
+
+                        <button class="ghost" id="signUp" type="button">
+                            Créer un compte
+                        </button>
+                    </div>
+
+                </div>
             </div>
-            {{ form_row(formRegister.agreeTerms) }}
 
-            <button class="" type="submit">
-                Créer son compte
-            </button>
-            {{ form_end(formRegister) }}
-        </section>
+        </div>
+    </section>
 
-    {% endif %}
-    {% block extraJs %}
-        <script>
+{% endblock %}
+
+{% block extraJs %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const signUpButton = document.getElementById('signUp');
+            const signInButton = document.getElementById('signIn');
+            const authContainer = document.getElementById('authContainer');
+
+            if (signUpButton && signInButton && authContainer) {
+                signUpButton.addEventListener('click', () => {
+                    authContainer.classList.add('right-panel-active');
+                });
+
+                signInButton.addEventListener('click', () => {
+                    authContainer.classList.remove('right-panel-active');
+                });
+            }
+
             const benevoleCheckbox = document.querySelector('#registration_form_benevole');
             const rolesBlock = document.querySelector('#volunteer-roles');
 
             function toggleRoles() {
-                rolesBlock.style.display = benevoleCheckbox.checked ? 'block' : 'none';
+                if (benevoleCheckbox && rolesBlock) {
+                    rolesBlock.style.display = benevoleCheckbox.checked ? 'block' : 'none';
+                }
             }
 
-            benevoleCheckbox.addEventListener('change', toggleRoles);
-            toggleRoles();
-        </script>
-    {% endblock %}
+            if (benevoleCheckbox && rolesBlock) {
+                benevoleCheckbox.addEventListener('change', toggleRoles);
+                toggleRoles();
+            }
+
+            const availabilityCheckboxes = document.querySelectorAll(
+                '#registration_form_availabilitys input[type="checkbox"]'
+            );
+
+            const allCheckbox = Array.from(availabilityCheckboxes).find((checkbox) => {
+                const label = document.querySelector(`label[for="${checkbox.id}"]`);
+                return label?.textContent.trim().toLowerCase() === 'toutes';
+            });
+
+            if (allCheckbox) {
+                allCheckbox.addEventListener('change', () => {
+                    availabilityCheckboxes.forEach((checkbox) => {
+                        if (checkbox !== allCheckbox) {
+                            checkbox.checked = allCheckbox.checked;
+                        }
+                    });
+                });
+
+                availabilityCheckboxes.forEach((checkbox) => {
+                    if (checkbox !== allCheckbox) {
+                        checkbox.addEventListener('change', () => {
+                            const otherCheckboxes = Array.from(availabilityCheckboxes)
+                                .filter((cb) => cb !== allCheckbox);
+
+                            allCheckbox.checked = otherCheckboxes.every((cb) => cb.checked);
+                        });
+                    }
+                });
+            }
+
+            const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+
+            togglePasswordButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    const input = document.getElementById(targetId);
+                    const image = button.querySelector('img');
+
+                    if (!input || !image) return;
+
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        image.src = "{{ asset('images/icons/eye-close.png') }}";
+                        image.alt = 'Masquer le mot de passe';
+                        button.setAttribute('aria-label', 'Masquer le mot de passe');
+                    } else {
+                        input.type = 'password';
+                        image.src = "{{ asset('images/icons/eye-open.png') }}";
+                        image.alt = 'Afficher le mot de passe';
+                        button.setAttribute('aria-label', 'Afficher le mot de passe');
+                    }
+                });
+            });
+        });
+    </script>
 
 {% endblock %}

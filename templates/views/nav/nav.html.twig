@@ -15,7 +15,7 @@
             </div>
             <div class="second">
                 <a href="{{ path('main_home') }}">
-                    <img src="{{ asset('images/Logo (1).svg') }}" alt="logo sos foans Bretagne">
+                    <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" alt="logo sos faons Bretagne">
                 </a>
                 <ul>
                     <li><a href="{{ path('main_home') }}">Accueil</a></li>
@@ -61,39 +61,6 @@
             </div>
         </div>
     </div>
-    <a href="{{ path('main_home') }}">
-        <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" alt="logo sos foans Bretagne">
-    </a>
-    <ul>
-        <li><a href="{{ path('shop') }}">Boutique</a></li>
-        <li><a href="{{ path('cart_index') }}">Panier</a></li>
-        {% if app.user %}
-            <li><a href="{{ path('app_logout') }}">Se Déconnecter</a></li>
-            <li><a href="{{ path('user_profile', { id: app.user.id }) }}">Mon Profil</a></li>
-        {% else %}
-            <li><a href="{{ path('app_login') }}">Connexion</a></li>
-        {% endif %}
-    </ul>
-    <ul>
-        <li><a href="{{ path('main_home') }}">Accueil</a></li>
-        <li><a href="{{ path('main_about') }}">A propos</a></li>
-        <li><a href="{{ path('main_actions') }}">Actions</a></li>
-        <li><a href="{{ path('main_contact') }}">Contact</a></li>
-        <li><a href="{{ path('main_galerie') }}">Galerie</a></li>
-        <li><a href="{{ path('donation') }}">Faire un don</a></li>
-        <li><a href="{{ path('main_alert') }}">Faire un signalement</a></li>
-        <li><a href="{{ path('event_list') }}">Postes</a></li>
-        {% if is_granted ("ROLE_ADMIN") %}
-            <li><a href="{{ path('admin_userList') }}">Liste des utilisateurs</a></li>
-            <li><a href="{{ path('admin_donation') }}">Gestion des donations</a></li>
-            <li><a href="{{ path('admin_roles') }}">Gestion des roles</a></li>
-            <li><a href="{{ path('admin_availability') }}">Gestion des disponibilités</a></li>
-            <li><a href="{{ path('admin_pre_order') }}">Gestion des précommandes</a></li>
-            <li><a href="{{ path('event_create') }}">Création d'un post</a></li>
-            <li><a href="{{ path('admin_alert') }}">Gestion des signalements</a></li>
-            <li><a href="{{ path('admin_article_index') }}">Gestion des articles</a></li>
-        {% endif %}
-    </ul>
 </nav>
 
 

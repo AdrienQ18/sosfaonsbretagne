@@ -1,0 +1,119 @@
+.first {
+    display: flex;
+    justify-content: end;
+    background-color: rgb(255, 255, 255);
+    opacity: 0.7;
+}
+.second{
+    background-color: rgb(255, 255, 255, 50%);
+    padding: 1rem;
+}
+ul{
+    display: flex;
+    gap: 2rem;
+    margin-inline: 2rem;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+li{
+    list-style: none;
+}
+.second{
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: #333;
+}
+
+.nav-menu li {
+    position: relative;
+}
+
+.nav-menu li a {
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.nav-menu li a:hover {
+    background-color: #111;
+}
+
+/* Style du menu déroulant */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.image{
+    background-image: url("../images/faon_001.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: 45%;
+}
+.overlay{
+    background-color: rgba(0, 0, 0, 50%);
+
+}
+h1, p{
+    color: white;
+}
+.banniere{
+    display: flex;
+}
+.left{
+    width: 50%;
+    padding: 2rem;
+}
+.right{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+}
+.button{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    border-radius: 10px;
+    margin-inline: 10rem;
+    padding: 1rem;
+}
+.don{
+    background-color: green;
+}
+.alert{
+    background-color: orangered;
+}
+
+

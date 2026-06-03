@@ -9,6 +9,7 @@ import './styles/app.css';
 import './styles/normalise.css';
 import './styles/flash.css';
 import './styles/loginRegister.css';
+import './styles/nav.css'
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 

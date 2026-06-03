@@ -7,6 +7,7 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,7 +26,9 @@ class AlertType extends AbstractType
             ->add('gpsLatitude')
             ->add('gpsLongitude')
             ->add('description')
-            ->add('image')
+            ->add('image', FileType::class, [
+                'mapped' => false,
+            ])
             ->add('cultureType');
     }
 

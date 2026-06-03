@@ -1,65 +1,54 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Mot de passe oublié
+    Mot de passe oublié | SOS Faons Bretagne
 {% endblock %}
+
+{% block meta_description %}
+    Demandez un lien de réinitialisation pour modifier le mot de passe de votre compte SOS Faons Bretagne.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
 
 {% block body %}
 
     <section class="auth-page">
         <div class="reset-password-container">
-
             <div class="reset-password-card">
-
                 <img
                     src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
                     alt="Logo SOS Faons Bretagne"
                     class="reset-password-logo"
+                    loading="lazy"
+                    width="120"
+                    height="120"
                 >
-
                 <h1>Mot de passe oublié ?</h1>
-
                 <p>
                     Renseignez votre adresse email et nous vous enverrons un lien
                     pour réinitialiser votre mot de passe.
                 </p>
-
                 {% for flash_error in app.flashes('reset_password_error') %}
                     <div class="alert alert-danger" role="alert">
                         {{ flash_error }}
                     </div>
                 {% endfor %}
-
-                {{ form_start(requestForm, {
-                    attr: {
-                        novalidate: 'novalidate',
-                        class: 'reset-password-form'
-                    }
-                }) }}
-
+                {{ form_start(requestForm, {attr: {novalidate: 'novalidate',class: 'reset-password-form'}}) }}
                 <div class="form-group">
                     {{ form_label(requestForm.email, 'Adresse email') }}
-                    {{ form_widget(requestForm.email, {
-                        attr: {
-                            placeholder: 'Votre adresse email'
-                        }
-                    }) }}
+                    {{ form_widget(requestForm.email, {attr: {placeholder: 'Votre adresse email',autocomplete: 'email'}}) }}
                     {{ form_errors(requestForm.email) }}
                 </div>
-
-                <button type="submit">
-                    Envoyer le lien
-                </button>
-
+                <button type="submit">Envoyer le lien</button>
                 {{ form_end(requestForm) }}
-
                 <a href="{{ path('app_login') }}" class="back-login-link">
                     Retour à la connexion
                 </a>
-
             </div>
-
         </div>
     </section>
-
 {% endblock %}

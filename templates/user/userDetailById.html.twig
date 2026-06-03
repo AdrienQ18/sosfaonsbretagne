@@ -1,126 +1,252 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon Profil{% endblock %}
+{% block title %}
+    Mon Profil Utilisateur | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Consultez et gérez votre profil SOS Faons Bretagne : informations personnelles, reçus fiscaux et factures.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
 
 {% block body %}
 
-    {% if editMode %}
+    <section class="profile-page">
+        <div class="profile-container">
 
-        <section>
-            <h1>Modifier mon profil</h1>
+            <div class="profile-header">
 
-            {{ form_start(formProfile, {
-                attr: {
-                    novalidate: 'novalidate'
-                }
-            }) }}
-
-            {{ form_row(formProfile.firstname) }}
-            {{ form_row(formProfile.lastname) }}
-            {{ form_row(formProfile.email) }}
-            {{ form_row(formProfile.phone) }}
-            {{ form_row(formProfile.address) }}
-            {{ form_row(formProfile.city) }}
-            {{ form_row(formProfile.zipcode) }}
-            {{ form_row(formProfile.birthday) }}
-            {{ form_row(formProfile.availabilitys) }}
-            <button type="submit">
-                Enregistrer
-            </button>
-            {{ form_end(formProfile) }}
-        </section>
-    {% else %}
-        <section>
-            <div class="user-detail-item">
-                <span class="label">Prénom : </span>
-                <span class="value">{{ userById.firstname }}</span>
+                {% if editMode %}
+                    <h1>Modifier mon profil</h1>
+                    <p>Mettez à jour vos informations personnelles.</p>
+                {% else %}
+                    <h1>Mon profil</h1>
+                    <p>Consultez vos informations et vos documents.</p>
+                {% endif %}
             </div>
 
-            <div class="user-detail-item">
-                <span class="label">Nom : </span>
-                <span class="value">{{ userById.lastname }}</span>
-            </div>
+            {% if editMode %}
 
-            <div class="user-detail-item">
-                <span class="label">Téléphone : </span>
-                <span class="value">{{ userById.phone }}</span>
-            </div>
+                <div class="profile-card">
+                    {{ form_start(formProfile, {
+                        attr: {
+                            novalidate: 'novalidate',
+                            class: 'profile-form'
+                        }
+                    }) }}
 
-            <div class="user-detail-item">
-                <span class="label">Email : </span>
-                <span class="value">{{ userById.email }}</span>
-            </div>
+                    <div class="profile-form-grid">
+                        <div class="form-group">
+                            {{ form_label(formProfile.firstname) }}
+                            {{ form_widget(formProfile.firstname) }}
+                            {{ form_errors(formProfile.firstname) }}
+                        </div>
 
-            <div class="user-detail-item">
-                <span class="label">Adresse : </span>
-                <span class="value">{{ userById.address }}</span>
-            </div>
-            <div class="user-detail-item">
-                <span class="label">Ville : </span>
-                <span class="value">{{ userById.city }}</span>
-            </div>
-            <div class="user-detail-item">
-                <span class="label">Code Postal : </span>
-                <span class="value">{{ userById.zipcode }}</span>
-            </div>
-            <div class="user-detail-item">
-                <span class="label">Date Anniversaire : </span>
-                <span class="value">{{ userById.birthday|date('d/m/Y') }}</span>
-            </div>
-            <div class="user-detail-item">
-                <span class="label">Disponibilités : </span>
-                <div class="value">
-                    {% if userById.availabilitys|length > 0 %}
-                        <ul>
-                            {% for availability in userById.availabilitys %}
-                                <li>{{ availability.label }}</li>
+                        <div class="form-group">
+                            {{ form_label(formProfile.lastname) }}
+                            {{ form_widget(formProfile.lastname) }}
+                            {{ form_errors(formProfile.lastname) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(formProfile.email) }}
+                            {{ form_widget(formProfile.email) }}
+                            {{ form_errors(formProfile.email) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(formProfile.phone) }}
+                            {{ form_widget(formProfile.phone) }}
+                            {{ form_errors(formProfile.phone) }}
+                        </div>
+
+                        <div class="form-group profile-full">
+                            {{ form_label(formProfile.address) }}
+                            {{ form_widget(formProfile.address) }}
+                            {{ form_errors(formProfile.address) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(formProfile.city) }}
+                            {{ form_widget(formProfile.city) }}
+                            {{ form_errors(formProfile.city) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(formProfile.zipcode) }}
+                            {{ form_widget(formProfile.zipcode) }}
+                            {{ form_errors(formProfile.zipcode) }}
+                        </div>
+
+                        <div class="form-group profile-full">
+                            {{ form_label(formProfile.birthday) }}
+                            {{ form_widget(formProfile.birthday) }}
+                            {{ form_errors(formProfile.birthday) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group availability-group profile-full">
+                        {{ form_label(formProfile.availabilitys) }}
+
+                        <div class="availability-options">
+                            {{ form_widget(formProfile.availabilitys) }}
+                        </div>
+
+                        {{ form_errors(formProfile.availabilitys) }}
+                    </div>
+
+                    <div class="profile-actions">
+                        <button type="submit">
+                            Enregistrer
+                        </button>
+
+                        <a href="{{ path('user_profile') }}" class="profile-secondary-link">
+                            Annuler
+                        </a>
+                    </div>
+
+                    {{ form_end(formProfile) }}
+                </div>
+
+            {% else %}
+
+                <div class="profile-card">
+                    <div class="profile-details-grid">
+
+                        <div class="user-detail-item">
+                            <span class="label">Prénom</span>
+                            <span class="value">{{ userById.firstname }}</span>
+                        </div>
+
+                        <div class="user-detail-item">
+                            <span class="label">Nom</span>
+                            <span class="value">{{ userById.lastname }}</span>
+                        </div>
+
+                        <div class="user-detail-item">
+                            <span class="label">Téléphone</span>
+                            <span class="value">{{ userById.phone }}</span>
+                        </div>
+
+                        <div class="user-detail-item">
+                            <span class="label">Email</span>
+                            <span class="value">{{ userById.email }}</span>
+                        </div>
+
+                        <div class="user-detail-item profile-full">
+                            <span class="label">Adresse</span>
+                            <span class="value">{{ userById.address }}</span>
+                        </div>
+
+                        <div class="user-detail-item">
+                            <span class="label">Ville</span>
+                            <span class="value">{{ userById.city }}</span>
+                        </div>
+
+                        <div class="user-detail-item">
+                            <span class="label">Code postal</span>
+                            <span class="value">{{ userById.zipcode }}</span>
+                        </div>
+
+                        <div class="user-detail-item">
+                            <span class="label">Date d’anniversaire</span>
+                            <span class="value">
+                            {{ userById.birthday ? userById.birthday|date('d/m/Y') : 'Non renseignée' }}
+                        </span>
+                        </div>
+
+                        <div class="user-detail-item profile-full">
+                            <span class="label">Disponibilités</span>
+
+                            <div class="value">
+                                {% if userById.availabilitys|length > 0 %}
+                                    <div class="profile-tags">
+                                        {% for availability in userById.availabilitys %}
+                                            <span>{{ availability.label }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <span>Aucune disponibilité renseignée</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="profile-actions">
+                        <a href="{{ path('user_profile_edit') }}" class="profile-button">
+                            Modifier mon profil
+                        </a>
+                    </div>
+                </div>
+
+            {% endif %}
+
+            <div class="profile-documents-grid">
+
+                <section class="profile-card document-card">
+                    <h2>Mes reçus fiscaux</h2>
+
+                    {% if userById.donations|length > 0 %}
+                        <ul class="document-list">
+                            {% for donation in userById.donations %}
+                                {% if donation.receiptPdfPath %}
+                                    <li>
+                                        <div>
+                                            <strong>Don du {{ donation.receiptGeneratedAt|date('d/m/Y') }}</strong>
+                                            <span>{{ donation.amount }} €</span>
+                                        </div>
+
+                                        <a href="{{ path('user_donation_pdf', { id: donation.id }) }}"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           aria-label="Voir le reçu fiscal du don du {{ donation.id}}">
+                                            Voir le reçu
+                                        </a>
+                                    </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     {% else %}
-                        <span>Aucune disponibilité renseignée</span>
+                        <p>Aucun reçu fiscal disponible.</p>
                     {% endif %}
-                </div>
+                </section>
+
+                <section class="profile-card document-card">
+                    <h2>Mes factures de précommandes</h2>
+
+                    {% if userById.preOrders|length > 0 %}
+                        <ul class="document-list">
+                            {% for preOrder in userById.preOrders %}
+                                {% if preOrder.invoicePdfPath %}
+                                    <li>
+                                        <div>
+                                            <strong>Précommande #{{ preOrder.id }}</strong>
+                                            <span>{{ preOrder.totalAmount }} €</span>
+                                        </div>
+
+                                        <a href="{{ path('user_preOrder_pdf', { id: preOrder.id }) }}" target="_blank"
+                                           rel="noopener noreferrer"
+                                           aria-label="Voir le reçu fiscal du don du {{ preOrder.id}}">
+                                            Voir la facture
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>Aucune facture disponible.</p>
+                    {% endif %}
+                </section>
+
             </div>
-            <a href="{{ path('user_profile_edit') }}">
-                Modifier mon profil
-            </a>
-        </section>
-    {% endif %}
-    <section>
-        <h2>Mes reçus fiscaux</h2>
-        {% if userById.donations|length > 0 %}
-            <ul>
-                {% for donation in userById.donations %}
-                    {% if donation.receiptPdfPath %}
-                        <li>
-                            Don du {{ donation.receiptGeneratedAt|date('d/m/Y') }} - {{ donation.amount }} €
-                            <a href="{{ path('user_donation_pdf', { id: donation.id }) }}" target="_blank">
-                                Voir le reçu fiscal
-                            </a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Aucun reçu fiscal disponible.</p>
-        {% endif %}
+
+        </div>
     </section>
-    <section>
-        <h2>Mes factures de précommandes</h2>
-        {% if userById.preOrders|length > 0 %}
-            <ul>
-                {% for preOrder in userById.preOrders %}
-                    {% if preOrder.invoicePdfPath %}
-                        <li>Précommande #{{ preOrder.id }}-{{ preOrder.totalAmount }} €
-                            <a href="{{ path('user_preOrder_pdf', { id: preOrder.id }) }}" target="_blank">
-                                Voir la facture
-                            </a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Aucune facture disponible.</p>
-        {% endif %}
-    </section>
+
 {% endblock %}

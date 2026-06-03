@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Alert;
 use App\Form\AlertType;
 use App\Repository\AlertRepository;
+use App\Service\Utils\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -20,13 +22,25 @@ final class AlertController extends AbstractController
     public function alert(
         Request $request,
         EntityManagerInterface $entityManager,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        FileUploader $fileUploader,
     ): Response {
         $alert = new Alert();
         $form = $this->createForm(AlertType::class, $alert);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /**
+             * @var UploadedFile $file
+             */
+            $file = $form->get('image')->getData();
+            if ($file) {
+
+                $alert->setImage(
+                    $fileUploader->upload($file, 'alert/', $alert->getImage()),
+                );
+            }
             //Enregistrement en base de donnée
             $entityManager->persist($alert);
             $entityManager->flush();

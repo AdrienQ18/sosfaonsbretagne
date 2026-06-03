@@ -7,6 +7,19 @@
     font-style: normal;
     font-display: swap;
 }
+:root {
+    --green-dark: #1b4a3a;
+    --green-main: #6e8e64;
+    --green-soft: #88a37f;
+    --brown: #8f4d26;
+    --cream-light: #f6f1e8;
+    --input-bg: #f4efe8;
+    --white: #ffffff;
+    --text: #2b2b2b;
+    --error: #c0392b;
+    --shadow: 0 14px 28px rgba(0, 0, 0, 0.16),
+    0 10px 10px rgba(0, 0, 0, 0.08);
+}
 body {
     font-family: 'Montserrat', sans-serif;
     background: var(--cream-light);

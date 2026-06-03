@@ -99,6 +99,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?\DateTimeInterface $birthday = null;
+
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -470,5 +473,15 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
         return $this;
     }
+    public function getBirthday(): ?\DateTimeInterface
+    {
+        return $this->birthday;
+    }
 
+    public function setBirthday(?\DateTimeInterface $birthday): static
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
 }

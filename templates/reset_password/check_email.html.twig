@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Email de réinitialisation envoyé
+{% endblock %}
+
+{% block body %}
+
+    <section class="auth-page">
+        <div class="reset-password-container">
+
+            <div class="reset-password-card">
+
+                <img
+                    src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
+                    alt="Logo SOS Faons Bretagne"
+                    class="reset-password-logo"
+                >
+
+                <h1>Email envoyé</h1>
+
+                <p>
+                    Si un compte correspondant à cette adresse email existe,
+                    un email contenant un lien de réinitialisation vient d’être envoyé.
+                </p>
+
+                <p>
+                    Ce lien expirera dans
+                    <strong>
+                        {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}
+                    </strong>.
+                </p>
+
+                <p>
+                    Si vous ne recevez pas l’email, pensez à vérifier vos spams.
+                </p>
+
+                <a
+                    href="{{ path('app_forgot_password_request') }}"
+                    class="reset-password-button"
+                >
+                    Réessayer
+                </a>
+
+                <a href="{{ path('app_login') }}" class="back-login-link">
+                    Retour à la connexion
+                </a>
+
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

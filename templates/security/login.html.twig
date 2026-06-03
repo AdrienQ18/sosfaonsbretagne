@@ -1,8 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Connexion / Inscription
+    Connexion / Inscription | SOS Faons Bretagne
 {% endblock %}
+
+{% block meta_description %}
+    Connectez-vous ou créez votre compte SOS Faons Bretagne pour accéder à votre espace personnel.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
 
 {% block body %}
 
@@ -18,17 +28,24 @@
                             {{ error.messageKey|trans(error.messageData, 'security') }}
                         </div>
                     {% endif %}
-                    <label for="inputEmail"></label>
+                    <label for="inputEmail" class="sr-only">
+                        Adresse email
+                    </label>
                     <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
                            placeholder="Adresse email" autocomplete="email" required>
                     <div class="password-wrapper">
-                        <label for="inputPassword">
+                        <label for="inputPassword" class="sr-only">
+                            Mot de passe
                         </label>
                         <input type="password" name="password" id="inputPassword" placeholder="Mot de passe"
                                autocomplete="current-password" required>
                         <button type="button" class="toggle-password" data-target="inputPassword"
-                                aria-label="Afficher le mot de passe">
-                            <img src="{{ asset('images/icons/eye-open.png') }}" alt="Afficher le mot de passe">
+                                aria-label="Afficher le mot de passe" aria-pressed="false">
+                            <img
+                                src="{{ asset('images/icons/eye-open.png') }}"
+                                alt=""
+                                aria-hidden="true"
+                            >
                         </button>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -59,10 +76,11 @@
                         {{ form_label(formRegister.plainPassword) }}
                         <div
                             class="password-wrapper">{{ form_widget(formRegister.plainPassword, {attr: {class: 'password-input'}}) }}
-                            <button type="button" class="toggle-password"
+                            <button type="button" class="toggle-password" aria-pressed="false"
                                     data-target="{{ formRegister.plainPassword.vars.id }}"
                                     aria-label="Afficher le mot de passe">
-                                <img src="{{ asset('images/icons/eye-open.png') }}" alt="Afficher le mot de passe">
+                                <img src="{{ asset('images/icons/eye-open.png') }}" alt=""
+                                     aria-hidden="true">
                             </button>
                         </div>
                         {{ form_errors(formRegister.plainPassword) }}
@@ -125,7 +143,7 @@
                         </div>
                         {{ form_errors(formRegister.agreeTerms) }}
                     </div>
-                    <button type="submit">
+                    <button type="submit" aria-label="Créer un compte SOS Faons Bretagne">
                         Créer son compte
                     </button>
                     {{ form_end(formRegister) }}
@@ -137,8 +155,14 @@
                 <div class="overlay">
 
                     <div class="overlay-panel overlay-left">
-                        <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" alt="Logo SOS Faons Bretagne"
-                             class="auth-logo">
+                        <img
+                            src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
+                            alt="Logo SOS Faons Bretagne"
+                            class="auth-logo"
+                            loading="lazy"
+                            width="120"
+                            height="120"
+                        >
                         <h2>Déjà inscrit ?</h2>
                         <p>Connectez-vous pour accéder à votre espace.</p>
                         <button class="ghost" id="signIn" type="button">
@@ -146,8 +170,14 @@
                         </button>
                     </div>
                     <div class="overlay-panel overlay-right">
-                        <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" alt="Logo SOS Faons Bretagne"
-                             class="auth-logo">
+                        <img
+                            src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
+                            alt="Logo SOS Faons Bretagne"
+                            class="auth-logo"
+                            loading="lazy"
+                            width="120"
+                            height="120"
+                        >
                         <h2>Bienvenue !</h2>
                         <p>Créez votre compte et rejoignez SOS Faons Bretagne.</p>
                         <button class="ghost" id="signUp" type="button">
@@ -164,6 +194,7 @@
 {% block extraJs %}
 
     <script>
+
         document.addEventListener('DOMContentLoaded', () => {
             const signUpButton = document.getElementById('signUp');
             const signInButton = document.getElementById('signIn');
@@ -238,11 +269,13 @@
                         image.src = "{{ asset('images/icons/eye-close.png') }}";
                         image.alt = 'Masquer le mot de passe';
                         button.setAttribute('aria-label', 'Masquer le mot de passe');
+                        button.setAttribute('aria-pressed', 'true');
                     } else {
                         input.type = 'password';
                         image.src = "{{ asset('images/icons/eye-open.png') }}";
                         image.alt = 'Afficher le mot de passe';
                         button.setAttribute('aria-label', 'Afficher le mot de passe');
+                        button.setAttribute('aria-pressed', 'false');
                     }
                 });
             });

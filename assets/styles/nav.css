@@ -1,10 +1,10 @@
-.first {
+.nav-first {
     display: flex;
     justify-content: end;
     background-color: rgb(255, 255, 255);
     opacity: 0.7;
 }
-.second{
+.nav-second{
     background-color: rgb(255, 255, 255, 50%);
     padding: 1rem;
 }
@@ -23,7 +23,7 @@ a{
 li{
     list-style: none;
 }
-.second{
+.nav-second{
     display: flex;
     align-items: center;
 }
@@ -75,34 +75,34 @@ li{
 .dropdown:hover .dropdown-content {
     display: block;
 }
-.image{
+.nav-image{
     background-image: url("../images/faon_001.jpeg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position-y: 45%;
 }
-.overlay{
+.nav-overlay{
     background-color: rgba(0, 0, 0, 50%);
 
 }
 h1, p{
     color: white;
 }
-.banniere{
+.nav-banniere{
     display: flex;
 }
-.left{
+.nav-left{
     width: 50%;
     padding: 2rem;
 }
-.right{
+.nav-right{
     width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
 }
-.button{
+.nav-button{
     color: white;
     display: flex;
     flex-direction: column;
@@ -112,9 +112,9 @@ h1, p{
     margin-inline: 10rem;
     padding: 1rem;
 }
-.don{
+.nav-don{
     background-color: green;
 }
-.alert{
+.nav-alert{
     background-color: orangered;
 }

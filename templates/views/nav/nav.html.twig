@@ -1,7 +1,7 @@
 <nav>
-    <div class="image">
-        <div class="overlay">
-            <div class="first">
+    <div class="nav-image">
+        <div class="nav-overlay">
+            <div class="nav-first">
                 <ul>
                     <li><a href="{{ path('shop') }}">Boutique</a></li>
                     <li><a href="{{ path('cart_index') }}">Panier</a></li>
@@ -13,7 +13,7 @@
                     {% endif %}
                 </ul>
             </div>
-            <div class="second">
+            <div class="nav-second">
                 <a href="{{ path('main_home') }}">
                     <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" alt="logo sos faons Bretagne">
                 </a>
@@ -43,8 +43,8 @@
                 </ul>
             </div>
             <div class="banniere-parent">
-                <div class="banniere">
-                    <div class="left">
+                <div class="nav-banniere">
+                    <div class="nav-left">
                         <h1>Au cœur des prairies, des naissances passent inaperçues.</h1>
                         <p>Chaque printemps, de mai à début juillet, des faons naissent. Ils restent tapis,
                             invisibles, dans les prairies. Au moment des fauches, face aux machines, ce refuge devient
@@ -53,9 +53,9 @@
                             les
                             sauver à temps.</p>
                     </div>
-                    <div class="right">
-                        <a href="{{ path('donation') }}" class="button don">Faire un don</a>
-                        <a href="{{ path('main_alert') }}" class="button alert">Faire un signalement</a>
+                    <div class="nav-right">
+                        <a href="{{ path('donation') }}" class="nav-button nav-don">Faire un don</a>
+                        <a href="{{ path('main_alert') }}" class="nav-button nav-alert">Faire un signalement</a>
                     </div>
                 </div>
             </div>

@@ -11,6 +11,7 @@ import './styles/flash.css';
 import './styles/loginRegister.css';
 import './styles/error.css';
 import './styles/profile.css';
+import './styles/nav.css'
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 

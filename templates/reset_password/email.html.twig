@@ -1,38 +1,43 @@
-<h1 style="color:#1b4a3a;">
+<h1 style="color:#1b4a3a; font-size:28px; margin-bottom:20px;">
     Réinitialisation de votre mot de passe
 </h1>
 
-<p>
+<p style="font-size:16px; line-height:1.6;">
     Bonjour,
 </p>
 
-<p>
-    Vous avez demandé la réinitialisation de votre mot de passe
-    pour votre compte SOS Faons Bretagne.
+<p style="font-size:16px; line-height:1.6;">
+    Vous avez demandé la réinitialisation du mot de passe
+    associé à votre compte <strong>SOS Faons Bretagne</strong>.
 </p>
 
-<p>
-    Cliquez sur le bouton ci-dessous pour définir un nouveau mot de passe :
+<p style="font-size:16px; line-height:1.6;">
+    Cliquez sur le bouton ci-dessous pour définir un nouveau mot de passe sécurisé :
 </p>
 
-<p style="margin: 35px 0;">
-    <a
-        href="{{ url('app_reset_password', {token: resetToken.token}) }}"
-        style="
-            background: linear-gradient(135deg, #1b4a3a, #6e8e64);
-            color: #ffffff;
-            padding: 14px 28px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-        "
-    >
-        Réinitialiser mon mot de passe
-    </a>
-</p>
+<table role="presentation" style="margin:35px 0;">
+    <tr>
+        <td>
+            <a
+                href="{{ url('app_reset_password', {token: resetToken.token}) }}"
+                style="
+                    background-color:#1b4a3a;
+                    color:#ffffff;
+                    padding:14px 28px;
+                    border-radius:50px;
+                    text-decoration:none;
+                    font-weight:bold;
+                    display:inline-block;
+                    font-size:16px;
+                "
+            >
+                Réinitialiser mon mot de passe
+            </a>
+        </td>
+    </tr>
+</table>
 
-<p>
+<p style="font-size:16px; line-height:1.6;">
     Ce lien expirera dans
     <strong>
         {{ resetToken.expirationMessageKey|trans(
@@ -42,14 +47,19 @@
     </strong>.
 </p>
 
-<p>
+<p style="font-size:15px; line-height:1.6; color:#666666;">
     Si vous n’êtes pas à l’origine de cette demande,
     vous pouvez ignorer cet email en toute sécurité.
 </p>
 
-<br>
+<hr style="border:none; border-top:1px solid #dddddd; margin:30px 0;">
 
-<p>
+<p style="font-size:14px; color:#777777; line-height:1.6;">
+    Cet email a été envoyé automatiquement,
+    merci de ne pas y répondre.
+</p>
+
+<p style="font-size:16px; line-height:1.6;">
     À bientôt,<br>
     <strong>SOS Faons Bretagne</strong>
 </p>

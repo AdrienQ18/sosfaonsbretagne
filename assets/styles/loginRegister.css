@@ -16,12 +16,6 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Montserrat', sans-serif;
-    background: var(--cream-light);
-    color: var(--text);
-}
-
 /* PAGE */
 
 .auth-page {
@@ -360,22 +354,16 @@ textarea::placeholder {
 }
 .forgot-password {
     margin: 6px 0 20px;
-
     align-self: flex-end;
-
     color: var(--green-main);
-
     font-size: 13px;
     font-weight: 600;
-
     text-decoration: none;
-
     transition: 0.2s ease;
 }
 
 .forgot-password:hover {
     color: var(--green-dark);
-
     text-decoration: underline;
 }
 
@@ -605,41 +593,30 @@ textarea::placeholder {
 
 .reset-password-card {
     width: 100%;
-
     padding: 50px;
-
     background: var(--white);
-
     border-radius: 24px;
-
     box-shadow: var(--shadow);
-
     text-align: center;
 }
 
 .reset-password-logo {
     width: 130px;
     height: 130px;
-
     object-fit: contain;
-
     margin-bottom: 25px;
 }
 
 .reset-password-card h1 {
     margin-bottom: 18px;
-
     color: var(--green-dark);
-
     font-size: 2rem;
     font-weight: 800;
 }
 
 .reset-password-card p {
     margin-bottom: 30px;
-
     color: var(--text);
-
     font-size: 15px;
     line-height: 1.7;
 }
@@ -650,24 +627,17 @@ textarea::placeholder {
 
 .reset-password-form button {
     width: 100%;
-
     margin-top: 10px;
     padding: 15px 20px;
-
     border: none;
     border-radius: 50px;
-
     background: linear-gradient(135deg, var(--green-dark), var(--green-main));
-
     color: var(--white);
-
     font-family: inherit;
     font-size: 13px;
     font-weight: 700;
-
     letter-spacing: 1px;
     text-transform: uppercase;
-
     cursor: pointer;
 }
 
@@ -677,14 +647,10 @@ textarea::placeholder {
 
 .back-login-link {
     display: inline-block;
-
     margin-top: 24px;
-
     color: var(--brown);
-
     font-size: 14px;
     font-weight: 600;
-
     text-decoration: none;
 }
 
@@ -712,21 +678,14 @@ textarea::placeholder {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-
     width: 100%;
-
     margin-top: 10px;
     padding: 15px 20px;
-
     border-radius: 50px;
-
     background: linear-gradient(135deg, var(--green-dark), var(--green-main));
-
     color: var(--white);
-
     font-size: 13px;
     font-weight: 700;
-
     letter-spacing: 1px;
     text-transform: uppercase;
     text-decoration: none;
@@ -737,7 +696,6 @@ textarea::placeholder {
 }
 .password-match-message {
     margin-top: 8px;
-
     font-size: 13px;
     font-weight: 600;
 }

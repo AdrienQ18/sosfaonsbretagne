@@ -1,35 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Erreur {{ status_code }}{% endblock %}
+{% block title %}
+    Erreur {{ status_code }}
+{% endblock %}
 
 {% block body %}
+
     <main class="error-page">
         <section class="error-container">
+
             <div class="error-card">
-                <h1 class="error-title">Oups ! Une erreur s'est produite.</h1>
-                <h2 class="error-subtitle">
-                    Le serveur a renvoyé une erreur "{{ status_code }} {{ status_text }}".
+
+                <img
+                    src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
+                    alt="Logo SOS Faons Bretagne"
+                    class="error-logo"
+                >
+
+                <span class="error-code">
+                Erreur {{ status_code }}
+            </span>
+
+                <h1>
+                    Oups, une erreur s’est produite.
+                </h1>
+
+                <h2>
+                    Le serveur a renvoyé l’erreur :
+                    <strong>{{ status_code }} {{ status_text }}</strong>
                 </h2>
 
-                {% if exception is defined and exception.message is not empty %}
-                    {% if app.environment == 'dev' and exception is defined and exception.message is not empty %}
-                        <p class="error-message">
-                            Message d'erreur : "{{ exception.message }}"
-                        </p>
-                    {% endif %}
+                {% if app.environment == 'dev' and exception is defined and exception.message is not empty %}
+                    <div class="error-debug">
+                        {{ exception.message }}
+                    </div>
                 {% endif %}
 
-                <p class="error-text">
-                    Quelque chose ne fonctionne pas correctement. Veuillez nous envoyer un e-mail à
-                    <a href="mailto:contact@sosfaonsbretagne.fr">contact@sosfaonsbretagne.fr</a>
-                    en nous indiquant ce que vous faisiez lorsque cette erreur s'est produite.
-                    Nous corrigerons le problème dès que possible. Désolés pour la gêne occasionnée.
+                <p>
+                    Quelque chose ne fonctionne pas correctement.
+                    Vous pouvez nous contacter à
+                    <a href="mailto:contact@sosfaonsbretagne.fr">
+                        contact@sosfaonsbretagne.fr
+                    </a>
+                    en nous indiquant ce que vous faisiez lorsque cette erreur est apparue.
                 </p>
 
-                <a href="{{ path('main_home') }}" class="btn btn-primary">
+                <a href="{{ path('main_home') }}" class="error-button">
                     Retour au site
                 </a>
+
             </div>
+
         </section>
     </main>
+
 {% endblock %}

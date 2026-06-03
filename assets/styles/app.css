@@ -9,6 +9,8 @@
 }
 body {
     font-family: 'Montserrat', sans-serif;
+    background: var(--cream-light);
+    color: var(--text);
 }
 .container {
     max-width: 1200px;

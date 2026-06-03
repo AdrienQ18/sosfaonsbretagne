@@ -15,43 +15,31 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class UserController extends AbstractController
 {
-    #[Route('/user/detail/{id}', name: 'user_detail_id', methods: ['GET'])]
-    public function userDetail(
-        User $user
-    ): Response {
-
-        /** @var User $currentUser */
-        $currentUser = $this->getUser();
-
-        if (!$currentUser) {
-            return $this->redirectToRoute('app_login');
-        }
-        if (
-            $currentUser->getId() !== $user->getId()
-        ) {
-            throw $this->createAccessDeniedException(
-                'Vous ne pouvez pas accéder à ce profil.'
-            );
-        }
-
-        return $this->render('user/userDetailById.html.twig', [
-            'userById' => $user,
-            'editMode'=>false,
-        ]);
-    }
-
-    #[Route('/user/profile/edit', name: 'user_profile_edit', methods: ['GET', 'POST'])]
-    public function editProfile(
-        Request                $request,
-        EntityManagerInterface $entityManager
-    ): Response
+    #[Route('/mon-profil', name: 'user_profile', methods: ['GET'])]
+    public function profile(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         /** @var User $user */
         $user = $this->getUser();
 
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
-        }
+        $response = $this->render('user/userDetailById.html.twig', [
+            'userById' => $user,
+            'editMode' => false,
+        ]);
+
+        return $this->disablePrivateCache($response);
+    }
+
+    #[Route('/mon-profil/modifier', name: 'user_profile_edit', methods: ['GET', 'POST'])]
+    public function editProfile(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        /** @var User $user */
+        $user = $this->getUser();
 
         $form = $this->createForm(UserProfileType::class, $user);
         $form->handleRequest($request);
@@ -61,28 +49,26 @@ final class UserController extends AbstractController
 
             $this->addFlash('success', 'Votre profil a bien été modifié.');
 
-            return $this->redirectToRoute('user_detail_id', [
-                'id' => $user->getId(),
-            ]);
+            return $this->redirectToRoute('user_profile');
         }
 
-        return $this->render('user/userDetailById.html.twig', [
+        $response = $this->render('user/userDetailById.html.twig', [
             'userById' => $user,
             'formProfile' => $form->createView(),
             'editMode' => true,
         ]);
+
+        return $this->disablePrivateCache($response);
     }
 
-    #[Route('/user/donation/{id}/pdf', name: 'user_donation_pdf', methods: ['GET'])]
+    #[Route('/mon-profil/don/{id}/pdf', name: 'user_donation_pdf', methods: ['GET'])]
     public function donationPdf(Donation $donation): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        if (
-            $donation->getUser() !== $this->getUser()
-        ) {
+        if ($donation->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException(
-                'Vous ne pouvez pas accéder à ce pdf.'
+                'Vous ne pouvez pas accéder à ce PDF.'
             );
         }
 
@@ -92,23 +78,23 @@ final class UserController extends AbstractController
             throw $this->createNotFoundException('PDF introuvable.');
         }
 
-        return $this->file(
+        $response = $this->file(
             $pdfPath,
             basename($pdfPath),
             ResponseHeaderBag::DISPOSITION_INLINE
         );
+
+        return $this->disablePrivateCache($response);
     }
 
-    #[Route('/user/precommande/{id}/pdf', name: 'user_preOrder_pdf', methods: ['GET'])]
+    #[Route('/mon-profil/precommande/{id}/pdf', name: 'user_preOrder_pdf', methods: ['GET'])]
     public function preOrderPdf(PreOrder $preOrder): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        if (
-            $preOrder->getUser() !== $this->getUser()
-        ) {
+        if ($preOrder->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException(
-                'Vous ne pouvez pas accéder à ce pdf.'
+                'Vous ne pouvez pas accéder à ce PDF.'
             );
         }
 
@@ -118,10 +104,24 @@ final class UserController extends AbstractController
             throw $this->createNotFoundException('PDF introuvable.');
         }
 
-        return $this->file(
+        $response = $this->file(
             $pdfPath,
             basename($pdfPath),
             ResponseHeaderBag::DISPOSITION_INLINE
         );
+
+        return $this->disablePrivateCache($response);
+    }
+
+    private function disablePrivateCache(Response $response): Response
+    {
+        $response->headers->set(
+            'Cache-Control',
+            'no-store, no-cache, must-revalidate, max-age=0'
+        );
+        $response->headers->set('Pragma', 'no-cache');
+        $response->headers->set('Expires', '0');
+
+        return $response;
     }
 }

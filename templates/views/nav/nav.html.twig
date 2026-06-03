@@ -69,7 +69,7 @@
         <li><a href="{{ path('cart_index') }}">Panier</a></li>
         {% if app.user %}
             <li><a href="{{ path('app_logout') }}">Se Déconnecter</a></li>
-            <li><a href="{{ path('user_detail_id', { id: app.user.id }) }}">Mon Profil</a></li>
+            <li><a href="{{ path('user_profile', { id: app.user.id }) }}">Mon Profil</a></li>
         {% else %}
             <li><a href="{{ path('app_login') }}">Connexion</a></li>
         {% endif %}

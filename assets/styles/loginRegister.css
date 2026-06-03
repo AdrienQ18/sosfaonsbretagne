@@ -699,3 +699,10 @@ textarea::placeholder {
     font-size: 13px;
     font-weight: 600;
 }
+.password-match-message.success {
+    color: #2e7d32;
+}
+
+.password-match-message.error {
+    color: #c62828;
+}

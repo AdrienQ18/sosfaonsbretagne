@@ -1,82 +1,120 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Facture précommande</title>
+{% extends 'pdf/_base_pdf.html.twig' %}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
+{% block pdf_title %}
+    Facture {{ invoiceNumber }}
+{% endblock %}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+{% block pdf_header %} <img class="pdf-logo" src="{{ logoPath }}" alt="Logo SOS Faons Bretagne">
 
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-        }
-    </style>
-</head>
-<body>
+    <h1 class="pdf-title">Facture acquittée</h1>
+    <p class="pdf-subtitle">Précommande validée et payée</p>
 
-<h1>Facture acquittée</h1>
+{% endblock %}
 
-<p>
-    Numéro facture :
-    {{ invoiceNumber }}
-</p>
+{% block pdf_content %}
 
-<p>
-    Client :
-    {{ preOrder.user.firstname }}
-    {{ preOrder.user.lastname }}
-</p>
-
-<p>
-    Date :
-    {{ preOrder.paidAt|date('d/m/Y H:i') }}
-</p>
-
-<hr>
-
-<table>
-    <thead>
-    <tr>
-        <th>Article</th>
-        <th>Diamètre</th>
-        <th>Quantité</th>
-        <th>Prix</th>
-        <th>Total</th>
-    </tr>
-    </thead>
-
-    <tbody>
-
-    {% for item in preOrder.preOrderItems %}
+    <table class="pdf-two-columns">
         <tr>
-            <td>{{ item.article.name }}</td>
-            <td>
-                {% if item.diameter %}
-                    {{ item.diameter.value }} mm
-                {% else %}
-                    —
-                {% endif %}
-            </td>            <td>{{ item.quantity }}</td>
-            <td>{{ item.unitPrice }} €</td>
-            <td>{{ item.totalPrice }} €</td>
+            <td class="pdf-left">
+
+                <div class="pdf-section">
+                    <h2 class="pdf-section-title">Facturation</h2>
+
+                    <div class="pdf-row">
+                        <span class="pdf-label">Numéro de facture :</span>
+                        {{ invoiceNumber }}
+                    </div>
+
+                    <div class="pdf-row">
+                        <span class="pdf-label">Date :</span>
+                        {{ preOrder.paidAt|date('d/m/Y H:i') }}
+                    </div>
+                </div>
+
+            </td>
+
+            <td class="pdf-right">
+
+                <div class="pdf-section">
+                    <h2 class="pdf-section-title">Client</h2>
+
+                    <div class="pdf-row">
+                        <span class="pdf-label">Nom :</span>
+                        {{ preOrder.user.firstname }}
+                        {{ preOrder.user.lastname }}
+                    </div>
+
+                    <div class="pdf-row">
+                        <span class="pdf-label">Email :</span>
+                        {{ preOrder.user.email }}
+                    </div>
+                </div>
+
+            </td>
         </tr>
-    {% endfor %}
+    </table>
 
-    </tbody>
-</table>
+    <table class="pdf-table">
 
-<h2>
-    Total :
-    {{ preOrder.totalAmount }} €
-</h2>
+        <thead>
+        <tr>
+            <th>Article</th>
+            <th>Diamètre</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+            <th>Total</th>
+        </tr>
+        </thead>
 
-</body>
-</html>
+        <tbody>
+
+        {% for item in preOrder.preOrderItems %}
+            <tr>
+                <td>{{ item.article.name }}</td>
+
+                <td>
+                    {% if item.diameter %}
+                        {{ item.diameter.value }} mm
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unitPrice }} €</td>
+                <td>{{ item.totalPrice }} €</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <div class="pdf-total">
+        Total : {{ preOrder.totalAmount }} €
+    </div>
+
+    <div class="pdf-section" style="margin-top:15px;">
+        <h2 class="pdf-section-title">Paiement</h2>
+
+        <div class="pdf-row">
+            <span class="pdf-label">Statut :</span>
+            Facture acquittée
+        </div>
+
+        <div class="pdf-row">
+            <span class="pdf-label">Mode de paiement :</span>
+            HelloAsso / Carte bancaire
+        </div>
+
+        <div class="pdf-row">
+            <span class="pdf-label">Date de règlement :</span>
+            {{ preOrder.paidAt|date('d/m/Y H:i') }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block pdf_footer %}
+    Facture générée automatiquement par SOS Faons Bretagne.<br>
+    Association loi 1901 – SOS Faons Bretagne – 11 Louvel, 35140 Gosné.
+{% endblock %}

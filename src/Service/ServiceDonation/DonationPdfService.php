@@ -40,7 +40,7 @@ class DonationPdfService
         $signaturePath = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($signatureRealPath));
 //      dd($logoPath, file_exists($logoPath), $signaturePath, file_exists($signaturePath));
 
-        $receiptNumber = 'SOSFB-' . date('Y') . '-' . str_pad(
+        $receiptNumber = 'don-SOSFB-' . date('Y') . '-' . str_pad(
                 (string) $donation->getId(),
                 6,
                 '0',
@@ -63,7 +63,7 @@ class DonationPdfService
             mkdir($directory, 0777, true);
         }
 
-        $filename = 'recu-don-' . $receiptNumber . '.pdf';
+        $filename = 'Reçu-fiscal-' . $receiptNumber . '.pdf';
         $path = $directory . '/' . $filename;
 
         file_put_contents($path, $dompdf->output());

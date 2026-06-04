@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block pdf_title %}Document PDF{% endblock %}</title>
+
+    <style>
+        @page {
+            margin: 24px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            color: #2b2b2b;
+            line-height: 1.35;
+        }
+
+        .pdf-header {
+            border-bottom: 3px solid #1b4a3a;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+
+        .pdf-logo {
+            width: 90px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .pdf-title {
+            margin: 0;
+            color: #1b4a3a;
+            font-size: 22px;
+            text-transform: uppercase;
+        }
+
+        .pdf-subtitle {
+            margin: 4px 0 0;
+            color: #6e8e64;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .pdf-section {
+            border: 1px solid #ddd5cc;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+        }
+
+        .pdf-section-title {
+            margin: 0 0 8px;
+            color: #1b4a3a;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .pdf-row {
+            margin-bottom: 4px;
+        }
+
+        .pdf-label {
+            font-weight: bold;
+            color: #1b4a3a;
+        }
+
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+        }
+
+        .pdf-table th,
+        .pdf-table td {
+            border: 1px solid #ddd5cc;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .pdf-table th {
+            background: #f4efe8;
+            color: #1b4a3a;
+            font-weight: bold;
+        }
+
+        .pdf-total {
+            text-align: right;
+            margin-top: 18px;
+            color: #1b4a3a;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .pdf-footer {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd5cc;
+            color: #666;
+            font-size: 9px;
+            text-align: justify;
+        }
+
+        .pdf-two-columns {
+            width: 100%;
+            border-spacing: 0;
+        }
+
+        .pdf-two-columns td {
+            width: 50%;
+            vertical-align: top;
+        }
+
+        .pdf-left {
+            padding-right: 6px;
+        }
+
+        .pdf-right {
+            padding-left: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="pdf-header">
+    {% block pdf_header %}{% endblock %}
+</div>
+
+{% block pdf_content %}{% endblock %}
+
+<div class="pdf-footer">
+    {% block pdf_footer %}
+        Document généré automatiquement par SOS Faons Bretagne.
+    {% endblock %}
+</div>
+
+</body>
+</html>

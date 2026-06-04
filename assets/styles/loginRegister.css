@@ -354,6 +354,24 @@ textarea::placeholder {
     text-decoration: underline;
 }
 
+.password-strength {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.password-strength.weak {
+    color: #d32f2f;
+}
+
+.password-strength.medium {
+    color: #f57c00;
+}
+
+.password-strength.strong {
+    color: #2e7d32;
+}
+
 /* OVERLAY */
 
 .overlay-container {
@@ -489,9 +507,16 @@ textarea::placeholder {
 }
 
 /* RESPONSIVE */
-
 @media screen and (max-width: 900px) {
+    .auth-page {
+        min-height: auto;
+        padding: 20px 12px;
+        align-items: flex-start;
+    }
+
     .auth-container {
+        width: 100%;
+        max-width: 520px;
         min-height: auto;
         display: flex;
         flex-direction: column;
@@ -519,11 +544,34 @@ textarea::placeholder {
         display: block;
     }
 
+    .form-container form,
+    .register-scroll {
+        padding: 28px 24px;
+    }
+
+    .form-container h1,
+    .register-scroll h1 {
+        font-size: 1.7rem;
+        margin-bottom: 18px;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea,
+    .sign-in-container input {
+        padding: 12px 15px;
+    }
+
     .overlay-container {
         position: relative;
         left: 0;
         width: 100%;
-        height: 260px;
+        height: auto;
+        min-height: 220px;
         transform: none !important;
     }
 
@@ -534,8 +582,10 @@ textarea::placeholder {
     }
 
     .overlay-panel {
+        position: relative;
         width: 100%;
-        padding: 30px;
+        min-height: 220px;
+        padding: 28px 24px;
         transform: none !important;
     }
 
@@ -551,9 +601,25 @@ textarea::placeholder {
         display: none;
     }
 
-    .form-container form,
-    .register-scroll {
-        padding: 40px 30px;
+    .auth-logo {
+        width: 95px;
+        margin-bottom: 16px;
+    }
+
+    .overlay-panel h2 {
+        font-size: 1.8rem;
+        margin-bottom: 12px;
+    }
+
+    .overlay-panel p {
+        margin-bottom: 18px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .overlay-panel .ghost {
+        min-width: 160px;
+        padding: 12px 22px;
     }
 }
 
@@ -562,15 +628,24 @@ textarea::placeholder {
         grid-template-columns: 1fr;
     }
 
-    .overlay-panel h2 {
-        font-size: 2rem;
+    .auth-container {
+        border-radius: 18px;
     }
 
-    .form-container h1,
-    .register-scroll h1 {
-        font-size: 1.8rem;
+    .form-container form,
+    .register-scroll {
+        padding: 24px 20px;
+    }
+
+    .auth-logo {
+        width: 80px;
+    }
+
+    .overlay-panel {
+        min-height: 190px;
     }
 }
+
 /* RESET PASSWORD PAGE */
 
 .reset-password-container {

@@ -1,49 +1,148 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Disponibilités | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Administration des disponibilités possibles sur le site de SOS Faons Bretagne.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
+
 {% block body %}
 
-    <section>
-        <table>
-            <thead>
-            <tr>
-                <th>Disponibilité</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
+    <section class="availability-page">
+        <div class="availability-container">
 
-            {% for availability in availabilityList %}
-                <tr>
-                    <td>{{ availability.label }}</td>
-                    <td>
-                        <a href="{{ path('admin_availability_update', {id: availability.id}) }}">Modifier</a>
-                        <form method="post" action="{{ path('admin_availability_delete', {id: availability.id}) }}"
-                              onsubmit="return confirm('Voulez-vous vraiment supprimer cette disponibilité ?');">
-                            <button type="submit">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+            <div class="availability-header">
+                <h1>Gestion des disponibilités</h1>
+                <p>Ajoutez, modifiez ou supprimez les disponibilités proposées aux bénévoles.</p>
+            </div>
+
+            <div class="availability-grid">
+
+                <section class="availability-card availability-list-card">
+                    <div class="availability-card-header">
+                        <h2>Disponibilités existantes</h2>
+                        <span>{{ availabilityList|length }} élément(s)</span>
+                    </div>
+
+                    <div class="availability-table-wrapper">
+                        <table class="availability-table">
+                            <thead>
+                            <tr>
+                                <th>Disponibilité</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for availability in availabilityList %}
+                                <tr>
+                                    <td>
+                                        <span class="availability-badge">
+                                            {{ availability.label }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="availability-actions">
+                                            <a
+                                                href="{{ path('admin_availability_update', { id: availability.id }) }}"
+                                                class="availability-edit-link"
+                                                aria-label="Modifier la disponibilité {{ availability.label }}"
+                                            >
+                                                Modifier
+                                            </a>
+
+                                            <form
+                                                method="post"
+                                                action="{{ path('admin_availability_delete', { id: availability.id }) }}"
+                                                onsubmit="return confirm('Voulez-vous vraiment supprimer cette disponibilité ?');"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    name="_token"
+                                                    value="{{ csrf_token('delete_availability_' ~ availability.id) }}"
+                                                >
+
+                                                <button
+                                                    type="submit"
+                                                    class="availability-delete-button"
+                                                    aria-label="Supprimer la disponibilité {{ availability.label }}"
+                                                >
+                                                    Supprimer
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="2" class="availability-empty">
+                                        Aucune disponibilité enregistrée.
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="availability-card availability-form-card">
+                    <h2>
+                        {% if isEdit %}
+                            Modifier une disponibilité
+                        {% else %}
+                            Ajouter une disponibilité
+                        {% endif %}
+                    </h2>
+
+                    <p>
+                        {% if isEdit %}
+                            Modifiez le libellé de cette disponibilité.
+                        {% else %}
+                            Créez une nouvelle disponibilité pour les bénévoles.
+                        {% endif %}
+                    </p>
+
+                    {{ form_start(formAvailability, {
+                        attr: {
+                            novalidate: 'novalidate',
+                            class: 'availability-form'
+                        }
+                    }) }}
+
+                    <div class="availability-form-group">
+                        {{ form_label(formAvailability.label, 'Libellé') }}
+                        {{ form_widget(formAvailability.label, {
+                            attr: {
+                                placeholder: 'Ex : matin, soir, week-end...',
+                                autocomplete: 'off'
+                            }
+                        }) }}
+                        {{ form_errors(formAvailability.label) }}
+                    </div>
+
+                    <button type="submit" class="availability-submit-button">
+                        {% if isEdit %}
+                            Modifier la disponibilité
+                        {% else %}
+                            Ajouter la disponibilité
+                        {% endif %}
+                    </button>
+
+                    {{ form_end(formAvailability) }}
+                </section>
+
+            </div>
+
+        </div>
     </section>
-    <section>
-        <h3>
-            {% if isEdit %}
-                Modifier une disponibilité
-            {% else %}
-                Créer une nouvelle disponibilité
-            {% endif %}
-        </h3>
-        {{ form_start(formAvailability, {attr: {novalidate: 'novalidate'}}) }}
-        {{ form_row(formAvailability.label) }}
-        <button type="submit">
-            {% if isEdit %}
-                Modifier la disponibilité
-            {% else %}
-                Ajouter une disponibilité
-            {% endif %}
-        </button>
-        {{ form_end(formAvailability) }}
-    </section>
+
 {% endblock %}

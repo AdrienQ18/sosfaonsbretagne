@@ -52,19 +52,31 @@ final class AvailabilityController extends AbstractController
 
     #[Route('/admin/availability/delete/{id}', name: 'admin_availability_delete', methods: ['POST'])]
     public function deleteAvailability(
-        int                    $id,
+        int $id,
+        Request $request,
         AvailabilityRepository $availabilityRepository,
         EntityManagerInterface $entityManager,
-    ): Response
-    {
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $availability = $availabilityRepository->find($id);
+
         if (!$availability) {
-            throw $this->createNotFoundException('La disponibilité n\'existe pas');
+            throw $this->createNotFoundException('La disponibilité n\'existe pas.');
         }
+
+        if (!$this->isCsrfTokenValid(
+            'delete_availability_' . $availability->getId(),
+            $request->request->get('_token')
+        )) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
         $entityManager->remove($availability);
         $entityManager->flush();
+
         $this->addFlash('success', 'Votre disponibilité a bien été supprimée.');
+
         return $this->redirectToRoute('admin_availability');
     }
 }

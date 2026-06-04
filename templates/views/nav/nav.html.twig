@@ -41,23 +41,27 @@
                     {% endif %}
                 </ul>
             </div>
-            <div class="banniere-parent">
-                <div class="nav-banniere">
-                    <div class="nav-left">
-                        <h1>Au cœur des prairies, des naissances passent inaperçues.</h1>
-                        <p>Chaque printemps, de mai à début juillet, des faons naissent. Ils restent tapis,
-                            invisibles, dans les prairies. Au moment des fauches, face aux machines, ce refuge devient
-                            un
-                            piège. En Bretagne, notre association agit aux côtés des agriculteurs pour les repérer et
-                            les
-                            sauver à temps.</p>
-                    </div>
-                    <div class="nav-right">
-                        <a href="{{ path('donation') }}" class="nav-button nav-don">Faire un don</a>
-                        <a href="{{ path('main_alert') }}" class="nav-button nav-alert">Faire un signalement</a>
+            {% if app.request.get('_route') == 'main_home' %}
+                <div class="banniere-parent">
+                    <div class="nav-banniere">
+                        <div class="nav-left">
+                            <h1>Au cœur des prairies, des naissances passent inaperçues.</h1>
+                            <p>Chaque printemps, de mai à début juillet, des faons naissent. Ils restent tapis,
+                                invisibles, dans les prairies. Au moment des fauches, face aux machines, ce refuge
+                                devient
+                                un
+                                piège. En Bretagne, notre association agit aux côtés des agriculteurs pour les repérer
+                                et
+                                les
+                                sauver à temps.</p>
+                        </div>
+                        <div class="nav-right">
+                            <a href="{{ path('donation') }}" class="nav-button nav-don">Faire un don</a>
+                            <a href="{{ path('main_alert') }}" class="nav-button nav-alert">Faire un signalement</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 </nav>

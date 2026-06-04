@@ -15,6 +15,7 @@ import './styles/profile.css';
 import './styles/nav.css';
 import './styles/availabilityRole.css';
 import './styles/donation.css';
+import './styles/alert.css';
 
 /*Import des ficher JS*/
 

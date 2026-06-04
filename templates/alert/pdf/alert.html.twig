@@ -5,7 +5,7 @@
     Faite un signalement auprès de SOS Faons Bretagne. Signaler la présence d'un foan ou un fauchage à venir.
 {% endblock %}
 {% block robots %}
-    <meta name="robots" content="unindex, unfollow">
+    <meta name="robots" content="unindex, nofollow">
 {% endblock %}
 
 {% block body %}
@@ -30,6 +30,9 @@
     </ul>
     <p>Une fois votre demande reçue, un membre de notre équipe vous recontactera pour confirmer
         les possibilités d’intervention.</p>
+
+    <div class="alert-container">
+        <div class="alert-form"></div>
     {{ form_start(form) }}
     {{ form_errors(form) }}
     {{ form_row(form.type) }}
@@ -41,6 +44,7 @@
     {{ form_row(form.description) }}
     {{ form_row(form.image) }}
     {{ form_row(form.cultureType) }}
+    </div>
 
     <button type="submit" id="submit-alert">Signaler</button>
     {{ form_end(form) }}

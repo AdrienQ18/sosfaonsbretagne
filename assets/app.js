@@ -23,6 +23,14 @@ import './js/donation.js';
 import './js/loginRegister.js';
 import './styles/nav.css'
 import './styles/easyAccess.css'
+import './styles/nav.css';
+import './styles/availabilityRole.css';
+import './styles/donation.css';
+
+/*Import des ficher JS*/
+
+import './js/donation.js';
+import './js/loginRegister.js';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 

@@ -1,244 +1,258 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Faire un don | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Soutenez SOS Faons Bretagne grâce à votre don. Votre contribution aide à protéger la faune sauvage et à soutenir les actions de terrain.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('donation')) }}">
+{% endblock %}
+{% block og_title %}
+    Faire un don | SOS Faons Bretagne
+{% endblock %}
+
+{% block og_description %}
+    Soutenez SOS Faons Bretagne grâce à votre don. Votre contribution aide à protéger la faune sauvage et à soutenir les actions de terrain.
+{% endblock %}
+
 {% block body %}
 
-    <h1>Faire un don</h1>
+    <section class="don-page">
+        <noscript>
+            <p class="alert alert-warning">
+                JavaScript est nécessaire pour utiliser le formulaire de don.
+            </p>
+        </noscript>
+        <div class="don-container">
 
-    <p>
-        Votre soutien fait toute la différence.
-    </p>
+            <div class="don-header">
+                <h1>Faire un don</h1>
+                <p>Votre soutien fait toute la différence.</p>
+                <p>
+                    Protéger le vivant demande du temps, du matériel et une présence sur le terrain. Votre don
+                    nous aide à poursuivre cette mission essentielle et à accompagner les acteurs du territoire.
+                </p>
+            </div>
 
-    <p>
-        Grâce à votre générosité, nous pouvons sauver davantage de faons
-        et poursuivre nos actions de protection sur le terrain.
-    </p>
-
-    {{ form_start(formDonation, {
-        attr: {
-            'data-turbo': 'false'
-        }
-    }) }}
-
-    {{ form_errors(formDonation) }}
-
-    <div id="step-amount" class="donation-amount">
-
-        <button type="button" class="amount-btn" data-amount="5">5 €</button>
-        <button type="button" class="amount-btn" data-amount="10">10 €</button>
-        <button type="button" class="amount-btn" data-amount="45">45 €</button>
-        <button type="button" class="amount-btn" data-amount="90">90 €</button>
-        <button type="button" class="amount-btn" data-amount="200">200 €</button>
-        <button type="button" class="amount-btn" data-amount="400">400 €</button>
-
-        <div>
-            {{ form_row(formDonation.amount, {
+            {{ form_start(formDonation, {
                 attr: {
-                    placeholder: 'Montant libre'
+                    'data-turbo': 'false',
+                    class: 'don-form'
                 }
             }) }}
 
-            <span>€</span>
+            <div class="don-layout">
+
+                <div class="don-main">
+
+                    {{ form_errors(formDonation) }}
+
+                    <section id="step-amount" class="don-card">
+                        <h2 class="visually-hidden">
+                            Choisir le montant du don
+                        </h2>
+                        <div class="don-amount-grid">
+                            <button type="button" class="don-amount-btn" data-amount="5"
+                                    aria-label="Faire un don de 5 euros">5 €
+                            </button>
+                            <button type="button" class="don-amount-btn" data-amount="10"
+                                    aria-label="Faire un don de 10 euros"
+                            >10 €
+                            </button>
+                            <button type="button" class="don-amount-btn" data-amount="45"
+                                    aria-label="Faire un don de 45 euros"
+                            >45 €
+                            </button>
+                            <button type="button" class="don-amount-btn" data-amount="90"
+                                    aria-label="Faire un don de 90 euros"
+                            >90 €
+                            </button>
+                            <button type="button" class="don-amount-btn" data-amount="200"
+                                    aria-label="Faire un don de 200 euros"
+                            >200 €
+                            </button>
+                            <button type="button" class="don-amount-btn" data-amount="400"
+                                    aria-label="Faire un don de 400 euros"
+                            >400 €
+                            </button>
+                        </div>
+
+                        <div class="don-free-amount">
+                            {{ form_label(formDonation.amount, 'Montant libre') }}
+
+                            {{ form_widget(formDonation.amount, {
+                                attr: {
+                                    placeholder: 'Montant libre',
+                                    inputmode: 'decimal',
+                                    autocomplete: 'off',
+                                    'data-don-amount-input': 'true'
+                                }
+                            }) }}
+
+                            <span class="don-currency">€</span>
+
+                            {{ form_errors(formDonation.amount) }}
+                        </div>
+
+                        <button type="button" id="go-to-infos" class="don-primary-button">
+                            Faire un don
+                        </button>
+
+                    </section>
+
+                    <section id="step-infos" class="don-card don-infos">
+                        <h2 class="visually-hidden">
+                            Informations du donateur
+                        </h2>
+                        <div class="don-radio-group">
+                            {{ form_label(formDonation.donorType, 'Vous êtes') }}
+                            {{ form_widget(formDonation.donorType) }}
+                            {{ form_errors(formDonation.donorType) }}
+                        </div>
+
+                        <h2 id="donor-title" class="don-section-title">
+                            Particulier donneur
+                        </h2>
+
+                        <div id="company-fields" style="display: none;">
+                            <div class="don-form-group">
+                                {{ form_label(formDonation.companyName) }}
+                                {{ form_widget(formDonation.companyName) }}
+                                {{ form_errors(formDonation.companyName) }}
+                            </div>
+
+                            <div class="don-form-group">
+                                {{ form_label(formDonation.companySiret) }}
+                                {{ form_widget(formDonation.companySiret) }}
+                                {{ form_errors(formDonation.companySiret) }}
+                            </div>
+                        </div>
+
+                        <h3 id="contact-title" class="don-subtitle">
+                            Coordonnées
+                        </h3>
+                        <div class="don-form-row">
+                        <div class="don-form-group">
+                            {{ form_label(formDonation.firstname) }}
+                            {{ form_widget(formDonation.firstname) }}
+                            {{ form_errors(formDonation.firstname) }}
+                        </div>
+
+                        <div class="don-form-group">
+                            {{ form_label(formDonation.lastname) }}
+                            {{ form_widget(formDonation.lastname) }}
+                            {{ form_errors(formDonation.lastname) }}
+                        </div>
+                        </div>
+                        <div class="don-form-group">
+                            {{ form_label(formDonation.email) }}
+                            {{ form_widget(formDonation.email) }}
+                            {{ form_errors(formDonation.email) }}
+                        </div>
+
+                        <div id="address-title" class="don-subtitle">
+                            <h3>Adresse</h3>
+                        </div>
+
+                        <div class="don-form-group">
+                            {{ form_label(formDonation.address) }}
+                            {{ form_widget(formDonation.address) }}
+                            {{ form_errors(formDonation.address) }}
+                        </div>
+                        <div class="don-form-row">
+
+                        <div class="don-form-group">
+                            {{ form_label(formDonation.zipcode) }}
+                            {{ form_widget(formDonation.zipcode) }}
+                            {{ form_errors(formDonation.zipcode) }}
+                        </div>
+
+                        <div class="don-form-group">
+                            {{ form_label(formDonation.city) }}
+                            {{ form_widget(formDonation.city) }}
+                            {{ form_errors(formDonation.city) }}
+                        </div>
+                        </div>
+                        <button
+                            type="submit"
+                            id="submit-donation"
+                            class="don-submit-button"
+                            aria-live="polite"
+                        >
+                            Donner
+                        </button>
+
+                    </section>
+
+                    <p class="don-secure">
+                        Paiement 100 % sécurisé.
+                    </p>
+
+                    <p id="tax-info" class="don-tax-info">
+                        Un reçu fiscal vous sera envoyé par e-mail après la confirmation de votre don.
+                        66 % du montant de votre don est déductible des impôts.
+                    </p>
+
+                    <p class="don-helloasso-info">
+                        HelloAsso propose une contribution supplémentaire lors du paiement.
+                        Vous pouvez modifier ou supprimer ce montant librement.
+                    </p>
+
+                </div>
+
+                <aside class="don-card don-side-card">
+                    <h3>Exemples de dons</h3>
+
+                    <div class="don-example-list">
+                        <div class="don-example-item">
+                            <strong>5 €</strong>
+                            <span>Un premier pas pour agir</span>
+                        </div>
+
+                        <div class="don-example-item">
+                            <strong>10 €</strong>
+                            <span>Aide à financer un repérage de parcelle</span>
+                        </div>
+
+                        <div class="don-example-item">
+                            <strong>45 €</strong>
+                            <span>Soutient une intervention de sauvetage</span>
+                        </div>
+
+                        <div class="don-example-item">
+                            <strong>90 €</strong>
+                            <span>Participe à l’équipement des bénévoles</span>
+                        </div>
+
+                        <div class="don-example-item">
+                            <strong>200 €</strong>
+                            <span>Finance une journée complète de prospection</span>
+                        </div>
+
+                        <div class="don-example-item">
+                            <strong>400 €</strong>
+                            <span>Aide à financer un drone et vivre une immersion à nos côtés</span>
+                        </div>
+
+                        <div class="don-example-item">
+                            <strong>Montant libre</strong>
+                            <span>Je choisis mon engagement</span>
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+
+            {{ form_end(formDonation) }}
         </div>
-
-        <button type="button" id="go-to-infos">
-            Faire un don
-        </button>
-
-    </div>
-
-    <div id="step-infos" class="donation-amount" style="display:none;">
-
-        {{ form_row(formDonation.donorType) }}
-
-        <h2 id="donor-title">
-            Particulier donneur
-        </h2>
-
-        <div id="company-fields" style="display:none;">
-
-            {{ form_row(formDonation.companyName) }}
-
-            {{ form_row(formDonation.companySiret) }}
-
-        </div>
-
-        <h3 id="contact-title">
-            Coordonnées
-        </h3>
-
-        {{ form_row(formDonation.firstname) }}
-        {{ form_row(formDonation.lastname) }}
-        {{ form_row(formDonation.email) }}
-
-        <div id="address-title">
-            <h3>Adresse</h3>
-        </div>
-
-        {{ form_row(formDonation.address) }}
-        {{ form_row(formDonation.zipcode) }}
-        {{ form_row(formDonation.city) }}
-
-        <button type="submit" id="submit-donation">
-            Donner
-        </button>
-
-    </div>
-
-    <p>
-        Paiement 100 % sécurisé.
-    </p>
-
-    <p id="tax-info">
-        Un reçu fiscal vous sera envoyé par e-mail après la confirmation de votre don.
-        66 % du montant de votre don est déductible des impôts.
-    </p>
-
-    <p>
-        HelloAsso propose une contribution supplémentaire lors du paiement.
-        Vous pouvez modifier ou supprimer ce montant librement.
-    </p>
-    {{ form_row(formDonation._token) }}
-    {{ form_end(formDonation, { render_rest: false }) }}
-
-    <div>
-
-        <h3>Exemple de don</h3>
-
-        <p>5 € : Un premier pas pour agir</p>
-        <p>10 € : Aide à financer un repérage de parcelle</p>
-        <p>45 € : Soutient une intervention de sauvetage</p>
-        <p>90 € : Participe à l’équipement des bénévoles</p>
-        <p>200 € : Finance une journée complète de prospection</p>
-        <p>400 € : Aide à financer un drone et vivre une immersion à nos côtés</p>
-        <p>Montant libre : Je choisis mon engagement</p>
-
-    </div>
-
-    <script>
-
-        const stepAmount = document.querySelector('#step-amount');
-        const stepInfos = document.querySelector('#step-infos');
-
-        const amountInput = document.querySelector('#{{ formDonation.amount.vars.id }}');
-
-        const submitBtn = document.querySelector('#submit-donation');
-
-        const goToInfosBtn = document.querySelector('#go-to-infos');
-
-        const taxInfo = document.querySelector('#tax-info');
-
-        const donorTitle = document.querySelector('#donor-title');
-
-        const addressTitle = document.querySelector('#address-title');
-
-        const donorTypeSelector =
-            'input[name="{{ formDonation.donorType.vars.full_name }}"]';
-
-        const donorTypeInputs =
-            document.querySelectorAll(donorTypeSelector);
-
-        const companyFields =
-            document.querySelector('#company-fields');
-
-        const companyInputs = [
-            document.querySelector('#{{ formDonation.companyName.vars.id }}'),
-            document.querySelector('#{{ formDonation.companySiret.vars.id }}')
-        ];
-
-        document.querySelectorAll('.amount-btn').forEach(button => {
-
-            button.addEventListener('click', () => {
-
-                amountInput.value = button.dataset.amount;
-
-                submitBtn.textContent =
-                    'Donner ' + button.dataset.amount + ' €';
-
-            });
-
-        });
-
-        goToInfosBtn.addEventListener('click', () => {
-
-            if (!amountInput.value || Number(amountInput.value) <= 0) {
-
-                alert('Veuillez choisir ou saisir un montant.');
-
-                return;
-            }
-
-            stepAmount.style.display = 'none';
-
-            stepInfos.style.display = 'block';
-
-            submitBtn.textContent =
-                'Donner ' + amountInput.value + ' €';
-
-        });
-
-        function setRequired(inputs, required) {
-
-            inputs.forEach(input => {
-
-                if (input) {
-                    input.required = required;
-                }
-
-            });
-
-        }
-
-        function toggleDonorFields() {
-
-            const selectedType =
-                document.querySelector(donorTypeSelector + ':checked');
-
-            if (!selectedType) {
-                return;
-            }
-
-            if (selectedType.value === 'entreprise') {
-
-                donorTitle.textContent =
-                    'Entreprise donatrice';
-
-                addressTitle.innerHTML =
-                    '<h3>Adresse de l’entreprise</h3>';
-
-                companyFields.style.display = 'block';
-
-                setRequired(companyInputs, true);
-
-                taxInfo.textContent =
-                    'Un reçu fiscal vous sera envoyé par e-mail après la confirmation de votre don. ' +
-                    '60 % du montant du don est déductible de l’impôt sur les sociétés.';
-
-            } else {
-
-                donorTitle.textContent =
-                    'Particulier donneur';
-
-                addressTitle.innerHTML =
-                    '<h3>Adresse</h3>';
-
-                companyFields.style.display = 'none';
-
-                setRequired(companyInputs, false);
-
-                taxInfo.textContent =
-                    'Un reçu fiscal vous sera envoyé par e-mail après la confirmation de votre don. ' +
-                    '66 % du montant de votre don est déductible des impôts.';
-            }
-        }
-
-        donorTypeInputs.forEach(input => {
-
-            input.addEventListener('change', toggleDonorFields);
-
-        });
-
-        toggleDonorFields();
-
-    </script>
+    </section>
 
 {% endblock %}

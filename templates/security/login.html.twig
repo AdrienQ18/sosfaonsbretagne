@@ -18,7 +18,7 @@
 
     <section class="auth-page">
         <div class="auth-container {% if mode == 'register' %}right-panel-active{% endif %}" id="authContainer">
-            {# FORMULAIRE CONNEXION #}
+
             <div class="form-container sign-in-container">
                 <form method="post" action="{{ path('app_login') }}" novalidate>
                     <h1>Connexion</h1>
@@ -28,98 +28,151 @@
                             {{ error.messageKey|trans(error.messageData, 'security') }}
                         </div>
                     {% endif %}
-                    <label for="inputEmail" class="sr-only">
-                        Adresse email
-                    </label>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail"
-                           placeholder="Adresse email" autocomplete="email" required>
+
+                    <label for="inputEmail" class="sr-only">Adresse email</label>
+                    <input
+                        type="email"
+                        value="{{ last_username }}"
+                        name="email"
+                        id="inputEmail"
+                        placeholder="Adresse email"
+                        autocomplete="email"
+                        autocapitalize="off"
+                        spellcheck="false"
+                        required
+                    >
+
                     <div class="password-wrapper">
-                        <label for="inputPassword" class="sr-only">
-                            Mot de passe
-                        </label>
-                        <input type="password" name="password" id="inputPassword" placeholder="Mot de passe"
-                               autocomplete="current-password" required>
-                        <button type="button" class="toggle-password" data-target="inputPassword"
-                                aria-label="Afficher le mot de passe" aria-pressed="false">
-                            <img
-                                src="{{ asset('images/icons/eye-open.png') }}"
-                                alt=""
-                                aria-hidden="true"
-                            >
+                        <label for="inputPassword" class="sr-only">Mot de passe</label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            id="inputPassword"
+                            placeholder="Mot de passe"
+                            autocomplete="current-password"
+                            spellcheck="false"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            data-target="inputPassword"
+                            data-eye-open="{{ asset('images/icons/eye-open.png') }}"
+                            data-eye-close="{{ asset('images/icons/eye-close.png') }}"
+                            aria-label="Afficher le mot de passe"
+                            aria-pressed="false"
+                        >
+                            <img src="{{ asset('images/icons/eye-open.png') }}" alt="" aria-hidden="true">
                         </button>
                     </div>
+
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
                     <label class="remember-me">
                         <input type="checkbox" name="_remember_me">
                         Se souvenir de moi
                     </label>
+
                     <a href="{{ path('app_forgot_password_request') }}" class="forgot-password">
                         Mot de passe oublié ?
                     </a>
+
                     <button type="submit">
                         Se connecter
                     </button>
                 </form>
             </div>
 
-            {# FORMULAIRE INSCRIPTION #}
             <div class="form-container sign-up-container">
                 <div class="register-scroll">
                     <h1>Créer un compte</h1>
-                    {{ form_start(formRegister, {action: path('app_register'),attr: {novalidate: 'novalidate'}}) }}
+
+                    {{ form_start(formRegister, {
+                        action: path('app_register'),
+                        attr: {
+                            novalidate: 'novalidate'
+                        }
+                    }) }}
+
                     <div class="form-group">
                         {{ form_label(formRegister.email) }}
                         {{ form_widget(formRegister.email) }}
                         {{ form_errors(formRegister.email) }}
                     </div>
+
                     <div class="form-group">
                         {{ form_label(formRegister.plainPassword) }}
-                        <div
-                            class="password-wrapper">{{ form_widget(formRegister.plainPassword, {attr: {class: 'password-input'}}) }}
-                            <button type="button" class="toggle-password" aria-pressed="false"
-                                    data-target="{{ formRegister.plainPassword.vars.id }}"
-                                    aria-label="Afficher le mot de passe">
-                                <img src="{{ asset('images/icons/eye-open.png') }}" alt=""
-                                     aria-hidden="true">
+
+                        <div class="password-wrapper">
+                            {{ form_widget(formRegister.plainPassword) }}
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                data-target="{{ formRegister.plainPassword.vars.id }}"
+                                data-eye-open="{{ asset('images/icons/eye-open.png') }}"
+                                data-eye-close="{{ asset('images/icons/eye-close.png') }}"
+                                aria-label="Afficher le mot de passe"
+                                aria-pressed="false"
+                            >
+                                <img src="{{ asset('images/icons/eye-open.png') }}" alt="" aria-hidden="true">
                             </button>
                         </div>
+
+                        <small class="form-help">
+                            Le mot de passe doit contenir au minimum 12 caractères,
+                            une majuscule, une minuscule, un chiffre et un caractère spécial.
+                        </small>
+
+                        <p id="password-strength" class="password-strength"></p>
+
                         {{ form_errors(formRegister.plainPassword) }}
                     </div>
+
                     <div class="form-group">
                         {{ form_label(formRegister.lastname) }}
                         {{ form_widget(formRegister.lastname) }}
                         {{ form_errors(formRegister.lastname) }}
                     </div>
+
                     <div class="form-group">
                         {{ form_label(formRegister.firstname) }}
                         {{ form_widget(formRegister.firstname) }}
                         {{ form_errors(formRegister.firstname) }}
                     </div>
+
                     <div class="form-group">
                         {{ form_label(formRegister.phone) }}
                         {{ form_widget(formRegister.phone) }}
                         {{ form_errors(formRegister.phone) }}
                     </div>
+
                     <div class="form-group">
                         {{ form_label(formRegister.address) }}
                         {{ form_widget(formRegister.address) }}
                         {{ form_errors(formRegister.address) }}
                     </div>
+
                     <div class="form-group">
                         {{ form_label(formRegister.city) }}
                         {{ form_widget(formRegister.city) }}
                         {{ form_errors(formRegister.city) }}
                     </div>
+
                     <div class="form-group">
                         {{ form_label(formRegister.zipcode) }}
                         {{ form_widget(formRegister.zipcode) }}
                         {{ form_errors(formRegister.zipcode) }}
                     </div>
+
                     <div class="form-group">
                         {{ form_label(formRegister.birthday) }}
                         {{ form_widget(formRegister.birthday) }}
                         {{ form_errors(formRegister.birthday) }}
                     </div>
+
                     <div class="form-group">
                         <div class="form-check">
                             {{ form_label(formRegister.benevole) }}
@@ -127,6 +180,7 @@
                         </div>
                         {{ form_errors(formRegister.benevole) }}
                     </div>
+
                     <div id="volunteer-roles" style="display: none;">
                         <div class="form-group availability-group">
                             {{ form_label(formRegister.availabilitys) }}
@@ -136,6 +190,7 @@
                             {{ form_errors(formRegister.availabilitys) }}
                         </div>
                     </div>
+
                     <div class="form-group">
                         <div class="form-check">
                             {{ form_label(formRegister.agreeTerms) }}
@@ -143,14 +198,15 @@
                         </div>
                         {{ form_errors(formRegister.agreeTerms) }}
                     </div>
+
                     <button type="submit" aria-label="Créer un compte SOS Faons Bretagne">
                         Créer son compte
                     </button>
+
                     {{ form_end(formRegister) }}
                 </div>
             </div>
 
-            {# OVERLAY ANIMÉ #}
             <div class="overlay-container">
                 <div class="overlay">
 
@@ -163,12 +219,15 @@
                             width="120"
                             height="120"
                         >
+
                         <h2>Déjà inscrit ?</h2>
                         <p>Connectez-vous pour accéder à votre espace.</p>
+
                         <button class="ghost" id="signIn" type="button">
                             Se connecter
                         </button>
                     </div>
+
                     <div class="overlay-panel overlay-right">
                         <img
                             src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
@@ -178,108 +237,19 @@
                             width="120"
                             height="120"
                         >
+
                         <h2>Bienvenue !</h2>
                         <p>Créez votre compte et rejoignez SOS Faons Bretagne.</p>
+
                         <button class="ghost" id="signUp" type="button">
                             Créer un compte
                         </button>
                     </div>
+
                 </div>
             </div>
+
         </div>
     </section>
-
-{% endblock %}
-
-{% block extraJs %}
-
-    <script>
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const signUpButton = document.getElementById('signUp');
-            const signInButton = document.getElementById('signIn');
-            const authContainer = document.getElementById('authContainer');
-
-            if (signUpButton && signInButton && authContainer) {
-                signUpButton.addEventListener('click', () => {
-                    authContainer.classList.add('right-panel-active');
-                });
-
-                signInButton.addEventListener('click', () => {
-                    authContainer.classList.remove('right-panel-active');
-                });
-            }
-
-            const benevoleCheckbox = document.querySelector('#registration_form_benevole');
-            const rolesBlock = document.querySelector('#volunteer-roles');
-
-            function toggleRoles() {
-                if (benevoleCheckbox && rolesBlock) {
-                    rolesBlock.style.display = benevoleCheckbox.checked ? 'block' : 'none';
-                }
-            }
-
-            if (benevoleCheckbox && rolesBlock) {
-                benevoleCheckbox.addEventListener('change', toggleRoles);
-                toggleRoles();
-            }
-
-            const availabilityCheckboxes = document.querySelectorAll(
-                '#registration_form_availabilitys input[type="checkbox"]'
-            );
-
-            const allCheckbox = Array.from(availabilityCheckboxes).find((checkbox) => {
-                const label = document.querySelector(`label[for="${checkbox.id}"]`);
-                return label?.textContent.trim().toLowerCase() === 'toutes';
-            });
-
-            if (allCheckbox) {
-                allCheckbox.addEventListener('change', () => {
-                    availabilityCheckboxes.forEach((checkbox) => {
-                        if (checkbox !== allCheckbox) {
-                            checkbox.checked = allCheckbox.checked;
-                        }
-                    });
-                });
-
-                availabilityCheckboxes.forEach((checkbox) => {
-                    if (checkbox !== allCheckbox) {
-                        checkbox.addEventListener('change', () => {
-                            const otherCheckboxes = Array.from(availabilityCheckboxes)
-                                .filter((cb) => cb !== allCheckbox);
-
-                            allCheckbox.checked = otherCheckboxes.every((cb) => cb.checked);
-                        });
-                    }
-                });
-            }
-
-            const togglePasswordButtons = document.querySelectorAll('.toggle-password');
-
-            togglePasswordButtons.forEach((button) => {
-                button.addEventListener('click', () => {
-                    const targetId = button.dataset.target;
-                    const input = document.getElementById(targetId);
-                    const image = button.querySelector('img');
-
-                    if (!input || !image) return;
-
-                    if (input.type === 'password') {
-                        input.type = 'text';
-                        image.src = "{{ asset('images/icons/eye-close.png') }}";
-                        image.alt = 'Masquer le mot de passe';
-                        button.setAttribute('aria-label', 'Masquer le mot de passe');
-                        button.setAttribute('aria-pressed', 'true');
-                    } else {
-                        input.type = 'password';
-                        image.src = "{{ asset('images/icons/eye-open.png') }}";
-                        image.alt = 'Afficher le mot de passe';
-                        button.setAttribute('aria-label', 'Afficher le mot de passe');
-                        button.setAttribute('aria-pressed', 'false');
-                    }
-                });
-            });
-        });
-    </script>
 
 {% endblock %}

@@ -1,48 +1,178 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}
+    Rôles | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Administration des rôles possibles sur le site de SOS Faons Bretagne.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
+
 {% block body %}
-    <section>
-        <table>
-            <thead>
-            <tr>
-                <th>Nom du Role</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for role in roleList %}
-                <tr>
-                    <td>
-                        {{ role.name }}
-                    </td>
-                    <td>
-                        <a href="{{ path('admin_roles_update', {id: role.id}) }}">Modifier</a>
-                        <form method="post" action="{{ path('admin_roles_delete', {id: role.id}) }}"
-                              onsubmit="return confirm('Voulez-vous vraiment supprimer cette disponibilité ?');">
-                            <button type="submit">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+
+    <section class="role-page">
+
+        <div class="role-container">
+
+            <div class="role-header">
+                <h1>Gestion des rôles</h1>
+                <p>
+                    Gérez les rôles attribuables aux utilisateurs du site.
+                </p>
+            </div>
+
+            <div class="role-grid">
+
+                <section class="role-card role-list-card">
+
+                    <div class="role-card-header">
+                        <h2>Rôles existants</h2>
+                        <span>{{ roleList|length }} rôle(s)</span>
+                    </div>
+
+                    <div class="role-table-wrapper">
+
+                        <table class="role-table">
+
+                            <thead>
+                            <tr>
+                                <th>Nom du rôle</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            {% for role in roleList %}
+
+                                <tr>
+
+                                    <td>
+                                    <span class="role-badge">
+                                        {{ role.name }}
+                                    </span>
+                                    </td>
+
+                                    <td>
+
+                                        <div class="role-actions">
+
+                                            <a
+                                                href="{{ path('admin_roles_update', {id: role.id}) }}"
+                                                class="role-edit-link"
+                                                aria-label="Modifier le rôle {{ role.name }}"
+                                            >
+                                                Modifier
+                                            </a>
+
+                                            <form
+                                                method="post"
+                                                action="{{ path('admin_roles_delete', {id: role.id}) }}"
+                                                onsubmit="return confirm('Voulez-vous vraiment supprimer ce rôle ?');"
+                                            >
+                                                <input
+                                                    type="hidden"
+                                                    name="_token"
+                                                    value="{{ csrf_token('delete_role_' ~ role.id) }}"
+                                                >
+                                                <button
+                                                    type="submit"
+                                                    class="role-delete-button"
+                                                    aria-label="Supprimer le rôle {{ role.name }}"
+                                                >
+                                                    Supprimer
+                                                </button>
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            {% else %}
+
+                                <tr>
+                                    <td colspan="2" class="role-empty">
+                                        Aucun rôle enregistré.
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+                <section class="role-card role-form-card">
+
+                    <h2>
+                        {% if isEdit %}
+                            Modifier un rôle
+                        {% else %}
+                            Ajouter un rôle
+                        {% endif %}
+                    </h2>
+
+                    <p>
+                        {% if isEdit %}
+                            Modifiez le nom du rôle sélectionné.
+                        {% else %}
+                            Créez un nouveau rôle pour les utilisateurs.
+                        {% endif %}
+                    </p>
+
+                    {{ form_start(formRole, {
+                        attr: {
+                            novalidate: 'novalidate',
+                            class: 'role-form'
+                        }
+                    }) }}
+
+                    <div class="role-form-group">
+
+                        {{ form_label(formRole.name, 'Nom du rôle') }}
+
+                        {{ form_widget(formRole.name, {
+                            attr: {
+                                placeholder: 'Ex : Responsable Faons',
+                                autocomplete: 'off'
+                            }
+                        }) }}
+
+                        {{ form_errors(formRole.name) }}
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="role-submit-button"
+                    >
+                        {% if isEdit %}
+                            Modifier le rôle
+                        {% else %}
+                            Ajouter le rôle
+                        {% endif %}
+                    </button>
+
+                    {{ form_end(formRole) }}
+
+                </section>
+
+            </div>
+
+        </div>
+
     </section>
-    <section>
-        <h3>
-            {% if isEdit %}
-                Modifier un nouveau role
-            {% else %}
-                Créer un nouveau role
-            {% endif %}
-        </h3>
-        {{ form_start(formRole, {attr: {novalidate: 'novalidate'}}) }}
-        {{ form_row(formRole.name) }}
-        <button type="submit">
-            {% if isEdit %}
-                Modifier le role
-            {% else %}
-                Ajouter le role
-            {% endif %}
-        </button>
-        {{ form_end(formRole) }}
-    </section>
+
 {% endblock %}

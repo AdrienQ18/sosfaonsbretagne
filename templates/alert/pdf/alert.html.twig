@@ -1,20 +1,48 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Alerte - SOS Faons Bretagne{% endblock %}
+{% block meta_description %}
+    Faite un signalement auprès de SOS Faons Bretagne. Signaler la présence d'un foan ou un fauchage à venir.
+{% endblock %}
+{% block robots %}
+    <meta name="robots" content="unindex, unfollow">
+{% endblock %}
+
 {% block body %}
-<h1>Faire un signalement</h1>
+
+    <h1>Avertir d'un fauchage</h1>
+    <h2>Demande d'intervention, veuillez renseigner le formulaire ci-joint :</h2>
+    <p>Avant chaque fauche, il est possible de préserver la faune sauvage présente dans les parcelles.
+        SOS Faon Bretagne propose gratuitement des interventions par drone à camera thermique afin
+        de repérer les faons et autres animaux cachés dans les cultures avant le passage des machines
+        agricoles.</p>
+    <p>Merci de nous contacter dès votre date de fauche est connue, idéalement 24 à 48h à l’avance.
+        Plus la demande est anticipée, plus nous pouvons mobiliser nos équipes efficacement.
+        Les demandes reçues après 18h la veille de la fauche ne pourront pas toujours être prises en
+        charge.</p>
+    <p>Important : en fonction des conditions météo, de la disponibilité des pilotes et du nombre
+        d’interventions en cours, une demande ne garantit pas automatiquement un déplacement.
+        Merci de renseigner :</p>
+    <ul>
+        <li>la localisation GPS précise de la parcelle ;</li>
+        <li>la date et l’horaire estimé de la fauche ;</li>
+        <li>le type de culture concernée (prairie, ray-grass, luzerne, etc.).</li>
+    </ul>
+    <p>Une fois votre demande reçue, un membre de notre équipe vous recontactera pour confirmer
+        les possibilités d’intervention.</p>
     {{ form_start(form) }}
     {{ form_errors(form) }}
-{{ form_row(form.type) }}
-{{ form_row(form.surface) }}
-{{ form_row(form.creationDate) }}
-{{ form_row(form.localisation) }}
-{{ form_row(form.gpsLatitude) }}
-{{ form_row(form.gpsLongitude) }}
-{{ form_row(form.description) }}
-{{ form_row(form.image) }}
-{{ form_row(form.cultureType) }}
+    {{ form_row(form.type) }}
+    {{ form_row(form.surface) }}
+    {{ form_row(form.creationDate) }}
+    {{ form_row(form.localisation) }}
+    {{ form_row(form.gpsLatitude) }}
+    {{ form_row(form.gpsLongitude) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.image) }}
+    {{ form_row(form.cultureType) }}
 
-<button type="submit" id="submit-alert">Signaler</button>
+    <button type="submit" id="submit-alert">Signaler</button>
     {{ form_end(form) }}
 
 

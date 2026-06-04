@@ -1,5 +1,18 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    A propos | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Consultez les informations de SOS Faons Bretagne : informations relatives aux actions et motivations de l'association SOS Faons Bretagne.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
 {% block body %}
     <h1>A propos</h1>
+    {% include 'easyAccess/easyAccess.html.twig' %}
 {% endblock %}

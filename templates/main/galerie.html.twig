@@ -1,5 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Galerie - SOS Faons Bretagne{% endblock %}
+{% block meta_description %}
+    Découvrez les actions de SOS Faons Bretagne au travers de la galerie photo.
+{% endblock %}
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
 {% block body %}
     <h1>Galerie</h1>
+    {% include 'easyAccess/easyAccess.html.twig' %}
 {% endblock %}

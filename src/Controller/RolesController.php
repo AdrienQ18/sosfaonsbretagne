@@ -23,7 +23,6 @@ final class RolesController extends AbstractController
         ?int                   $id = null,
     ): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if ($id !== null) {
             $role = $roleRepository->find($id);
             if (!$role) {
@@ -53,19 +52,30 @@ final class RolesController extends AbstractController
 
     #[Route('/admin/roles/delete/{id}', name: 'admin_roles_delete', methods: ['POST'])]
     public function deleteRole(
-        int                    $id,
-        RoleRepository         $roleRepository,
+        int $id,
+        Request $request,
+        RoleRepository $roleRepository,
         EntityManagerInterface $entityManager,
-    ): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    ): Response {
+
         $role = $roleRepository->find($id);
+
         if (!$role) {
-            throw $this->createNotFoundException('La disponibilité n\'existe pas');
+            throw $this->createNotFoundException('Le rôle n\'existe pas.');
         }
+
+        if (!$this->isCsrfTokenValid(
+            'delete_role_' . $role->getId(),
+            $request->request->get('_token')
+        )) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
         $entityManager->remove($role);
         $entityManager->flush();
+
         $this->addFlash('success', 'Votre rôle a bien été supprimé.');
+
         return $this->redirectToRoute('admin_roles');
     }
 

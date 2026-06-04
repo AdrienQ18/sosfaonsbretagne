@@ -5,21 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SOS Faons Bretagne{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}SOS Faons Bretagne accompagne et informe sur la protection des faons et de la faune sauvage en Bretagne.{% endblock %}">
-    <link rel="canonical" href="{{ app.request.uri }}">
-    <meta name="robots" content="index, follow">
+    {% block canonical %}<link rel="canonical" href="{{ app.request.uri }}">{% endblock %}
+    {% block robots %}<meta name="robots" content="index, follow">{% endblock %}
     <meta property="og:title" content="{% block og_title %}SOS Faons Bretagne{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Association dédiée à la protection des faons et de la faune sauvage en Bretagne.{% endblock %}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ app.request.uri }}">
     <meta property="og:image" content="{{ absolute_url(asset('images/LogoSOSFaonsBretagne.svg')) }}">
+    <meta property="og:site_name" content="SOS Faons Bretagne">
+    <meta property="og:locale" content="fr_FR">
     <link rel="icon" href="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" type="image/svg+xml">
-
     {% block stylesheets %}{% endblock %}
+
     {% block javascripts %}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
     {% endblock %}
 </head>
-<body>
+<body data-route="{{ app.request.attributes.get('_route') }}">
 <div class="container">
     <header>
         {% include 'views/nav/nav.html.twig' %}
@@ -39,6 +41,8 @@
         {% include 'views/footer/footer.html.twig' %}
     </footer>
 </div>
-{% block extraJs %}{% endblock %}
+<script>
+    console.log('BASE TWIG OK');
+</script>
 </body>
 </html>

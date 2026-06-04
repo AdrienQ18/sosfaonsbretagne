@@ -16,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
@@ -24,46 +25,75 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'label' => 'Adresse email* : ',
+                'attr' => [
+                    'autocomplete' => 'email',
+                ],
             ])
             ->add('plainPassword', PasswordType::class, [
-
-                // ce champ n'est pas enregistré directement en base
                 'mapped' => false,
-
                 'label' => 'Mot de passe* : ',
                 'attr' => [
                     'autocomplete' => 'new-password',
+                    'class' => 'password-input',
                 ],
                 'constraints' => [
                     new NotBlank(
                         message: 'Veuillez saisir un mot de passe.',
                     ),
+
                     new Length(
-                        min: 6,
-                        minMessage: 'Votre mot de passe doit contenir au moins {{ limit }} caractères.',
-                        // longueur max Symfony
+                        min: 12,
                         max: 4096,
+                        minMessage: 'Votre mot de passe doit contenir au moins {{ limit }} caractères.',
+                    ),
+
+                    new Regex(
+                        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
+                        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.',
                     ),
                 ],
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'Nom* : ',
+                'attr' => [
+                    'autocomplete' => 'family-name',
+                ],
             ])
             ->add('firstname', TextType::class, [
-                'label' => 'Prenom* : ',
+                'label' => 'Prénom* : ',
+                'attr' => [
+                    'autocomplete' => 'given-name',
+                ],
             ])
             ->add('phone', TextType::class, [
                 'label' => 'Téléphone* : ',
+                'attr' => [
+                    'autocomplete' => 'tel',
+                ],
             ])
             ->add('address', TextType::class, [
-                'label' => 'Adresse* : ',])
+                'label' => 'Adresse* : ',
+                'attr' => [
+                    'autocomplete' => 'street-address',
+                ],
+            ])
             ->add('city', TextType::class, [
-                'label' => 'Ville* : ',])
+                'label' => 'Ville* : ',
+                'attr' => [
+                    'autocomplete' => 'address-level2',
+                ],
+            ])
             ->add('zipcode', TextType::class, [
                 'label' => 'Code postal* : ',
+                'attr' => [
+                    'autocomplete' => 'postal-code',
+                ],
             ])
             ->add('birthday', BirthdayType::class, [
                 'label' => 'Date de naissance* : ',
+                'attr' => [
+                    'autocomplete' => 'bday',
+                ],
             ])
             ->add('benevole', CheckboxType::class, [
                 'label' => 'Voulez-vous être inscrit en tant que bénévole ?',

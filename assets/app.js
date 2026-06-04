@@ -12,6 +12,14 @@ import './styles/flash.css';
 import './styles/loginRegister.css';
 import './styles/error.css';
 import './styles/profile.css';
+import './styles/nav.css';
+import './styles/availabilityRole.css';
+import './styles/donation.css';
+
+/*Import des ficher JS*/
+
+import './js/donation.js';
+import './js/loginRegister.js';
 import './styles/nav.css'
 import './styles/easyAccess.css'
 

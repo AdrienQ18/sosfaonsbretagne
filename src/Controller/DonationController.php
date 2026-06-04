@@ -162,8 +162,7 @@ final class DonationController extends AbstractController
     public function success(): Response
     {
         $this->addFlash('success', 'Paiement terminé. Votre don est en cours de validation.');
-        return $this->redirect('http://localhost/sosfaonsbretagne/public/donation');
-    }
+        return $this->redirectToRoute('donation');    }
 
     #[Route('/donation/cancel/{id}', name: 'donation_cancel')]
     public function cancel(Donation $donation, EntityManagerInterface $entityManager): Response
@@ -171,8 +170,7 @@ final class DonationController extends AbstractController
         $donation->setStatus(DonationStatus::DONATION_REFUSEE);
         $entityManager->flush();
         $this->addFlash('error', 'Paiement annulé.');
-        return $this->redirect('http://localhost/sosfaonsbretagne/public/donation');
-    }
+        return $this->redirectToRoute('donation');    }
 
     #[Route('/helloasso/webhook', name: 'helloasso_webhook', methods: ['POST'])]
     public function helloAssoWebhook(

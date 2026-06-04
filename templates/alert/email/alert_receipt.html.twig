@@ -1,6 +1,49 @@
-<h1>Nouveau signalement : {{ alert.type }}</h1>
-<p>Vous avez reçu un nouveau signalement : </p>
-<p><strong>Type :</strong> {{ alert.type }}</p>
-<p>Type de culture : {{ alert.cultureType }}</p>
-<p><strong>Description :</strong> {{ alert.description }}</p>
-<p><strong>Date :</strong> {{ alert.creationDate|date('d/m/Y H:i') }}</p>
+{% extends 'emails/_base_email.html.twig' %}
+
+{% block email_title %}
+    Nouveau signalement
+{% endblock %}
+
+{% block email_header %}
+    <h1>Nouveau signalement</h1>
+    <p>SOS Faons Bretagne</p>
+{% endblock %}
+
+{% block email_content %}
+
+    <div class="email-box">
+        Un nouveau signalement a été enregistré sur le site.
+    </div>
+
+    <h2>Informations du signalement</h2>
+
+    <table class="email-table">
+
+        <tr>
+            <th>Type</th>
+            <td>{{ alert.type }}</td>
+        </tr>
+
+        <tr>
+            <th>Type de culture</th>
+            <td>{{ alert.cultureType }}</td>
+        </tr>
+
+        <tr>
+            <th>Date du signalement</th>
+            <td>{{ alert.creationDate|date('d/m/Y H:i') }}</td>
+        </tr>
+
+    </table>
+
+    <h2>Description</h2>
+
+    <div class="email-box">
+        {{ alert.description|nl2br }}
+    </div>
+
+{% endblock %}
+
+{% block email_footer %}
+    Notification automatique SOS Faons Bretagne
+{% endblock %}

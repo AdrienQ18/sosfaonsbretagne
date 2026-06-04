@@ -1,83 +1,20 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
+{% extends 'emails/_base_email.html.twig' %}
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #f4f6f5;
-            font-family: Arial, sans-serif;
-            color: #1f2d24;
-        }
+{% block email_title %}
+    Nouvelle précommande reçue
+{% endblock %}
 
-        .container {
-            width: 600px;
-            margin: 30px auto;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-        }
+{% block email_header %} <h1>Nouvelle précommande reçue</h1> <p>SOS Faons Bretagne</p>
+{% endblock %}
 
-        .header {
-            background: #2f5d3a;
-            color: white;
-            padding: 24px;
-            text-align: center;
-        }
+{% block email_content %}
 
-        .content {
-            padding: 28px;
-        }
+    ```
+    <p>
+        Une nouvelle précommande vient d'être enregistrée sur le site.
+    </p>
 
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .table th,
-        .table td {
-            border: 1px solid #d9e2dc;
-            padding: 12px;
-            text-align: left;
-        }
-
-        .table th {
-            background: #eef3f0;
-        }
-
-        .amount {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2f5d3a;
-            margin-top: 20px;
-        }
-
-        .footer {
-            background: #eef3f0;
-            padding: 20px;
-            font-size: 12px;
-        }
-    </style>
-
-    <title>Nouvelle précommande</title>
-</head>
-
-<body>
-
-<div class="container">
-
-    <div class="header">
-        <h1>Nouvelle précommande reçue</h1>
-    </div>
-
-    <div class="content">
-
-        <p>
-            Une nouvelle précommande vient d’être enregistrée.
-        </p>
+    <div class="email-box">
 
         <p>
             <strong>Client :</strong><br>
@@ -95,48 +32,55 @@
             {{ preOrder.preOrderDate|date('d/m/Y H:i') }}
         </p>
 
-        <table class="table">
+    </div>
 
-            <thead>
+    <h2>Détail de la précommande</h2>
+
+    <table class="email-table">
+
+        <thead>
+        <tr>
+            <th>Article</th>
+            <th>Diamètre</th>
+            <th>Quantité</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {% for item in preOrder.preOrderItems %}
             <tr>
-                <th>Article</th>
-                <th>Diamètre</th>
-                <th>Quantité</th>
-                <th>Total</th>
+                <td>{{ item.article.name }}</td>
+                <td>
+                    {% if item.diameter %}
+                        {{ item.diameter.value }} mm
+                    {% else %}
+                        Aucun
+                    {% endif %}
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.totalPrice }} €</td>
             </tr>
-            </thead>
+        {% endfor %}
 
-            <tbody>
+        </tbody>
 
-            {% for item in preOrder.preOrderItems %}
-                <tr>
-                    <td>{{ item.article.name }}</td>
-                    <td>
-                        {% if item.diameter %}
-                            {{ item.diameter.value }} mm
-                        {% else %}
-                            Aucun
-                        {% endif %}
-                    </td>                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.totalPrice }} €</td>
-                </tr>
-            {% endfor %}
+    </table>
 
-            </tbody>
+    <div class="email-box">
 
-        </table>
+        <strong>Montant total de la précommande</strong><br>
 
-        <p class="amount">
-            Total : {{ preOrder.totalAmount }} €
-        </p>
+        <span class="email-amount">
+        {{ preOrder.totalAmount }} €
+    </span>
 
     </div>
+    ```
 
-    <div class="footer">
-        Notification automatique SOS Faons Bretagne
-    </div>
+{% endblock %}
 
-</div>
-
-</body>
-</html>
+{% block email_footer %}
+    Notification automatique SOS Faons Bretagne
+{% endblock %}

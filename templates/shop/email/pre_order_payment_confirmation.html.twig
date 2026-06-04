@@ -1,28 +1,70 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Paiement confirmé</title>
-</head>
-<body>
+{% extends 'emails/_base_email.html.twig' %}
 
-<h1>Paiement confirmé</h1>
+{% block email_title %}
+    Paiement confirmé
+{% endblock %}
 
-<p>
-    Bonjour {{ preOrder.user.firstname }},
-</p>
+{% block email_header %}
+    <h1>Paiement confirmé</h1>
+    <p>SOS Faons Bretagne</p>
+{% endblock %}
 
-<p>
-    Votre paiement pour la précommande n°{{ preOrder.id }} a bien été confirmé.
-</p>
+{% block email_content %}
 
-<p>
-    Votre facture est jointe à cet email.
-</p>
+    <p>
+        Bonjour {{ preOrder.user.firstname }},
+    </p>
 
-<p>
-    Merci pour votre soutien ❤️
-</p>
+    <p>
+        Votre paiement pour la précommande
+        <strong>n°{{ preOrder.id }}</strong>
+        a bien été confirmé.
+    </p>
 
-</body>
-</html>
+    <div class="email-box">
+        Votre commande est désormais enregistrée et en cours de traitement.
+    </div>
+
+    <h2>Récapitulatif</h2>
+
+    <table class="email-table">
+        <tr>
+            <th>Numéro de précommande</th>
+            <td>#{{ preOrder.id }}</td>
+        </tr>
+
+        <tr>
+            <th>Montant total</th>
+            <td>
+                <span class="email-amount">
+                    {{ preOrder.totalAmount }} €
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <th>Date</th>
+            <td>
+                {{ preOrder.preOrderDate|date('d/m/Y') }}
+            </td>
+        </tr>
+    </table>
+
+    <div class="email-box">
+        Votre facture est jointe à cet email au format PDF.
+    </div>
+
+    <p>
+        Merci pour votre confiance et votre soutien à nos actions de protection des faons.
+    </p>
+
+    <p>
+        L'équipe <strong>SOS Faons Bretagne</strong>
+    </p>
+
+{% endblock %}
+
+{% block email_footer %}
+    Cet email a été généré automatiquement suite à la confirmation de votre paiement.<br>
+    SOS Faons Bretagne — email@sosfaonsbretagne.fr
+{% endblock %}

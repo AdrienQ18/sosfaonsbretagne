@@ -1,66 +1,43 @@
-<h1 style="color:#1b4a3a; font-size:28px; margin-bottom:20px;">
+{% extends 'emails/_base_email.html.twig' %}
+
+{% block email_title %}
     Réinitialisation de votre mot de passe
-</h1>
+{% endblock %}
 
-<p style="font-size:16px; line-height:1.6;">
-    Bonjour,
-</p>
+{% block email_header %}
+    <h1>Mot de passe oublié</h1>
+    <p>SOS Faons Bretagne</p>
+{% endblock %}
 
-<p style="font-size:16px; line-height:1.6;">
-    Vous avez demandé la réinitialisation du mot de passe
-    associé à votre compte <strong>SOS Faons Bretagne</strong>.
-</p>
+{% block email_content %}
+    <p>Bonjour,</p>
 
-<p style="font-size:16px; line-height:1.6;">
-    Cliquez sur le bouton ci-dessous pour définir un nouveau mot de passe sécurisé :
-</p>
+    <p>
+        Vous avez demandé la réinitialisation du mot de passe associé à votre compte
+        <strong>SOS Faons Bretagne</strong>.
+    </p>
 
-<table role="presentation" style="margin:35px 0;">
-    <tr>
-        <td>
-            <a
-                href="{{ url('app_reset_password', {token: resetToken.token}) }}"
-                style="
-                    background-color:#1b4a3a;
-                    color:#ffffff;
-                    padding:14px 28px;
-                    border-radius:50px;
-                    text-decoration:none;
-                    font-weight:bold;
-                    display:inline-block;
-                    font-size:16px;
-                "
-            >
-                Réinitialiser mon mot de passe
-            </a>
-        </td>
-    </tr>
-</table>
+    <p>
+        Cliquez sur le bouton ci-dessous pour définir un nouveau mot de passe sécurisé :
+    </p>
 
-<p style="font-size:16px; line-height:1.6;">
-    Ce lien expirera dans
-    <strong>
-        {{ resetToken.expirationMessageKey|trans(
-            resetToken.expirationMessageData,
-            'ResetPasswordBundle'
-        ) }}
-    </strong>.
-</p>
+    <p>
+        <a href="{{ url('app_reset_password', {token: resetToken.token}) }}" class="email-button">
+            Réinitialiser mon mot de passe
+        </a>
+    </p>
 
-<p style="font-size:15px; line-height:1.6; color:#666666;">
-    Si vous n’êtes pas à l’origine de cette demande,
-    vous pouvez ignorer cet email en toute sécurité.
-</p>
+    <div class="email-box">
+        Ce lien expirera dans
+        <strong>
+            {{ resetToken.expirationMessageKey|trans(
+                resetToken.expirationMessageData,
+                'ResetPasswordBundle'
+            ) }}
+        </strong>.
+    </div>
 
-<hr style="border:none; border-top:1px solid #dddddd; margin:30px 0;">
-
-<p style="font-size:14px; color:#777777; line-height:1.6;">
-    Cet email a été envoyé automatiquement,
-    merci de ne pas y répondre.
-</p>
-
-<p style="font-size:16px; line-height:1.6;">
-    À bientôt,<br>
-    <strong>SOS Faons Bretagne</strong>
-</p>
-
+    <p>
+        Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer cet email.
+    </p>
+{% endblock %}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block email_title %}SOS Faons Bretagne{% endblock %}</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f6f1e8;
+            font-family: Arial, sans-serif;
+            color: #1b4a3a;
+        }
+
+        .email-wrapper {
+            width: 100%;
+            padding: 32px 0;
+            background: #f6f1e8;
+        }
+
+        .email-container {
+            width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .email-header {
+            background: linear-gradient(135deg, #1b4a3a, #6e8e64);
+            padding: 30px 24px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .email-logo {
+            display: block;
+            width: 120px;
+            height: auto;
+            margin: 0 auto 18px;
+        }
+
+        .email-header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .email-header p {
+            margin: 8px 0 0;
+            font-size: 14px;
+        }
+
+        .email-content {
+            padding: 32px;
+            color: #2b2b2b;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .email-content h2 {
+            color: #1b4a3a;
+            font-size: 20px;
+            margin: 28px 0 12px;
+        }
+
+        .email-box {
+            background: #f4efe8;
+            border-left: 4px solid #6e8e64;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .email-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #1b4a3a, #6e8e64);
+            color: #ffffff !important;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .email-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .email-table th,
+        .email-table td {
+            padding: 12px;
+            border: 1px solid #ddd5cc;
+            text-align: left;
+        }
+
+        .email-table th {
+            background: #f4efe8;
+            color: #1b4a3a;
+        }
+
+        .email-amount {
+            color: #1b4a3a;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .email-footer {
+            background: #f4efe8;
+            padding: 20px 32px;
+            color: #6f6f6f;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+<table class="email-wrapper" role="presentation">
+    <tr>
+        <td>
+            <table class="email-container" role="presentation">
+                <tr>
+                    <td class="email-header">
+
+                        <img
+                            src="{{ email.image('@images/logo.jpg') }}"
+                            alt="Logo SOS Faons Bretagne"
+                            class="email-logo"
+                        >
+
+                        {% block email_header %}
+                            <h1>SOS Faons Bretagne</h1>
+                            <p>Protection des faons et de la faune sauvage</p>
+                        {% endblock %}
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="email-content">
+                        {% block email_content %}{% endblock %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="email-footer">
+                        {% block email_footer %}
+                            Cet email a été envoyé automatiquement par SOS Faons Bretagne.<br>
+                            Merci de ne pas y répondre.
+                        {% endblock %}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

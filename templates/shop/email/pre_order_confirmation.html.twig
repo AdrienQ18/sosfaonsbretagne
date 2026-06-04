@@ -1,223 +1,84 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
+{% extends 'emails/_base_email.html.twig' %}
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #f4f6f5;
-            font-family: Arial, sans-serif;
-            color: #1f2d24;
-        }
+{% block email_title %}
+    Précommande reçue
+{% endblock %}
 
-        .email-wrapper {
-            width: 100%;
-            background: #f4f6f5;
-            padding: 30px 0;
-        }
+{% block email_header %}
+    <h1>Précommande reçue</h1>
+    <p>SOS Faons Bretagne</p>
+{% endblock %}
 
-        .email-container {
-            width: 600px;
-            background: #ffffff;
-            border-radius: 12px;
-            overflow: hidden;
-        }
+{% block email_content %}
 
-        .email-header {
-            background: #2f5d3a;
-            padding: 24px;
-            text-align: center;
-            color: #ffffff;
-        }
+    <p>
+        Bonjour {{ preOrder.user.firstname }} {{ preOrder.user.lastname }},
+    </p>
 
-        .logo {
-            width: 90px;
-            height: auto;
-            margin-bottom: 12px;
-        }
+    <p>
+        Nous avons bien reçu votre précommande.
+        Elle va être vérifiée par l'équipe de <strong>SOS Faons Bretagne</strong>.
+    </p>
 
-        .email-header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
+    <div class="email-box">
+        Vous recevrez un nouvel email avec le lien de paiement dès que votre précommande aura été validée.
+    </div>
 
-        .email-header p {
-            margin: 8px 0 0;
-        }
+    <h2>Détail de la précommande</h2>
 
-        .email-content {
-            padding: 28px;
-        }
+    <table class="email-table">
+        <thead>
+        <tr>
+            <th>Article</th>
+            <th>Diamètre</th>
+            <th>Qté</th>
+            <th>Prix</th>
+            <th>Total</th>
+        </tr>
+        </thead>
 
-        .section-title {
-            font-size: 16px;
-            margin: 24px 0 8px;
-            color: #2f5d3a;
-        }
+        <tbody>
+        {% for item in preOrder.preOrderItems %}
+            <tr>
+                <td>{{ item.article.name }}</td>
+                <td>
+                    {% if item.diameter %}
+                        {{ item.diameter.value }} mm
+                    {% else %}
+                        Aucun
+                    {% endif %}
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unitPrice }} €</td>
+                <td>{{ item.totalPrice }} €</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-        .pre-order-table {
-            width: 100%;
-            margin: 16px 0 24px;
-            border: 1px solid #d9e2dc;
-            border-collapse: collapse;
-        }
+    <p>
+        <strong>Date de précommande :</strong><br>
+        {{ preOrder.preOrderDate|date('d/m/Y') }}
+    </p>
 
-        .pre-order-table th,
-        .pre-order-table td {
-            padding: 12px;
-            border-bottom: 1px solid #d9e2dc;
-            text-align: left;
-            vertical-align: top;
-        }
+    <p>
+        <strong>Total :</strong><br>
+        <span class="email-amount">
+            {{ preOrder.totalAmount }} €
+        </span>
+    </p>
 
-        .pre-order-table th {
-            background: #eef3f0;
-            color: #2f5d3a;
-            font-size: 13px;
-        }
+    <p>
+        Merci pour votre soutien et votre confiance.
+    </p>
 
-        .pre-order-table tr:last-child td {
-            border-bottom: none;
-        }
+    <p>
+        L'équipe <strong>SOS Faons Bretagne</strong>
+    </p>
 
-        .amount {
-            font-size: 18px;
-            font-weight: bold;
-            color: #2f5d3a;
-        }
+{% endblock %}
 
-        .notice {
-            background: #eef3f0;
-            padding: 14px;
-            margin: 20px 0;
-            border-left: 4px solid #2f5d3a;
-        }
-
-        .signature {
-            margin-top: 28px;
-        }
-
-        .email-footer {
-            background: #eef3f0;
-            padding: 18px 28px;
-            font-size: 12px;
-            color: #5f6f66;
-        }
-
-        .email-footer p {
-            margin: 0;
-        }
-
-        .footer-spacing {
-            margin-top: 8px !important;
-        }
-    </style>
-
-    <title>Confirmation de précommande</title>
-</head>
-
-<body>
-<table class="email-wrapper">
-    <tr>
-        <td>
-
-            <table class="email-container">
-
-                <tr>
-                    <td class="email-header">
-                        <img src="{{ email.image('@images/logo.jpg') }}" alt="Logo SOS Faons Bretagne" class="logo">
-
-                        <h1>Précommande reçue</h1>
-                        <p>SOS Faons Bretagne</p>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="email-content">
-
-                        <p>
-                            Bonjour {{ preOrder.user.firstname }} {{ preOrder.user.lastname }},
-                        </p>
-
-                        <p>
-                            Nous avons bien reçu votre précommande.
-                            Elle va être vérifiée par l'équipe de <strong>SOS Faons Bretagne</strong>.
-                        </p>
-
-                        <p class="notice">
-                            Vous recevrez un nouvel email avec le lien de paiement dès que votre précommande aura été validée.
-                        </p>
-
-                        <h2 class="section-title">Détail de la précommande</h2>
-
-                        <table class="pre-order-table">
-                            <thead>
-                            <tr>
-                                <th>Article</th>
-                                <th>Diamètre</th>
-                                <th>Quantité</th>
-                                <th>Prix unitaire</th>
-                                <th>Total</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            {% for item in preOrder.preOrderItems %}
-                                <tr>
-                                    <td>{{ item.article.name }}</td>
-                                    <td>
-                                        {% if item.diameter %}
-                                            {{ item.diameter.value }} mm
-                                        {% else %}
-                                            Aucun
-                                        {% endif %}
-                                    </td>                                    <td>{{ item.quantity }}</td>
-                                    <td>{{ item.unitPrice }} €</td>
-                                    <td>{{ item.totalPrice }} €</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-
-                        <p>
-                            <strong>Date de précommande :</strong>
-                            {{ preOrder.preOrderDate|date('d/m/Y') }}
-                        </p>
-
-                        <p class="amount">
-                            Total : {{ preOrder.totalAmount }} €
-                        </p>
-
-                        <p>
-                            Merci pour votre soutien et votre confiance.
-                        </p>
-
-                        <p class="signature">
-                            L'équipe <strong>SOS Faons Bretagne</strong>
-                        </p>
-
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="email-footer">
-                        <p>
-                            Cet email a été généré automatiquement suite à l'enregistrement
-                            de votre précommande.
-                        </p>
-
-                        <p class="footer-spacing">
-                            SOS Faons Bretagne - email@sosfaonsbretagne.fr
-                        </p>
-                    </td>
-                </tr>
-
-            </table>
-
-        </td>
-    </tr>
-</table>
-</body>
-</html>
+{% block email_footer %}
+    Cet email a été généré automatiquement suite à l'enregistrement de votre précommande.<br>
+    SOS Faons Bretagne — email@sosfaonsbretagne.fr
+{% endblock %}

@@ -1,98 +1,96 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Précommande validée</title>
-</head>
-<body>
+{% extends 'emails/_base_email.html.twig' %}
 
-<h1>Votre précommande a été validée</h1>
+{% block email_title %}
+    Précommande validée
+{% endblock %}
 
-<p>
-    Bonjour {{ preOrder.user.firstname }} {{ preOrder.user.lastname }},
-</p>
+{% block email_header %}
+    <h1>Précommande validée</h1>
+    <p>SOS Faons Bretagne</p>
+{% endblock %}
 
-<p>
-    Votre précommande a été validée par SOS Faons Bretagne.
-</p>
+{% block email_content %}
 
-<p>
-    Vous pouvez maintenant procéder au paiement.
-</p>
+    <p>
+        Bonjour {{ preOrder.user.firstname }} {{ preOrder.user.lastname }},
+    </p>
 
-<hr>
+    <p>
+        Votre précommande a été validée par <strong>SOS Faons Bretagne</strong>.
+    </p>
 
-<h2>Récapitulatif de votre précommande</h2>
-
-{% for item in preOrder.preOrderItems %}
-
-    <div style="margin-bottom: 20px;">
-
-        <img
-            src="{{ email.image('@images/shop/' ~ item.article.image) }}"
-            alt="{{ item.article.name }}"
-            width="150"
-        >
-
-        <p>
-            <strong>{{ item.article.name }}</strong>
-        </p>
-
-        <p>
-            Diamètre :
-
-                {% if item.diameter %}
-                    {{ item.diameter.value }} mm
-                {% else %}
-                    Aucun
-                {% endif %}
-                </p>
-
-        <p>
-            Quantité :
-            {{ item.quantity }}
-        </p>
-
-        <p>
-            Prix unitaire :
-            {{ item.unitPrice }} €
-        </p>
-
-        <p>
-            Total :
-            {{ item.totalPrice }} €
-        </p>
-
+    <div class="email-box">
+        Vous pouvez maintenant procéder au paiement de votre précommande.
     </div>
 
-    <hr>
+    <h2>Récapitulatif de votre précommande</h2>
 
-{% endfor %}
+    <table class="email-table">
+        <thead>
+        <tr>
+            <th>Article</th>
+            <th>Diamètre</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+            <th>Total</th>
+        </tr>
+        </thead>
 
-<h2>
-    Total commande :
-    {{ preOrder.totalAmount }} €
-</h2>
+        <tbody>
+        {% for item in preOrder.preOrderItems %}
+            <tr>
+                <td>
+                    <strong>{{ item.article.name }}</strong>
+                </td>
 
-<p>
-    <a
-        href="{{ url('pre_order_pay', { id: preOrder.id }) }}"
-        style="
-            background-color:#4CAF50;
-            color:white;
-            padding:12px 20px;
-            text-decoration:none;
-            border-radius:5px;
-            display:inline-block;
-        "
-    >
-        Payer ma précommande
-    </a>
-</p>
+                <td>
+                    {% if item.diameter %}
+                        {{ item.diameter.value }} mm
+                    {% else %}
+                        Aucun
+                    {% endif %}
+                </td>
 
-<p>
-    Merci pour votre soutien ❤️
-</p>
+                <td>
+                    {{ item.quantity }}
+                </td>
 
-</body>
-</html>
+                <td>
+                    {{ item.unitPrice }} €
+                </td>
+
+                <td>
+                    {{ item.totalPrice }} €
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="email-box">
+        <strong>Total commande :</strong><br>
+        <span class="email-amount">
+            {{ preOrder.totalAmount }} €
+        </span>
+    </div>
+
+    <p>
+        <a href="{{ url('pre_order_pay', { id: preOrder.id }) }}" class="email-button">
+            Payer ma précommande
+        </a>
+    </p>
+
+    <p>
+        Merci pour votre soutien.
+    </p>
+
+    <p>
+        L'équipe <strong>SOS Faons Bretagne</strong>
+    </p>
+
+{% endblock %}
+
+{% block email_footer %}
+    Cet email a été généré automatiquement suite à la validation de votre précommande.<br>
+    SOS Faons Bretagne — email@sosfaonsbretagne.fr
+{% endblock %}

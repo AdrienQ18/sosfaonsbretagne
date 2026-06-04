@@ -39,7 +39,7 @@ class PreOrderPdfService
         $signaturePath = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($signatureRealPath));
 
         $dompdf = new Dompdf($options);
-        $invoiceNumber = 'SOSFB-Invoice-Paid-PreOrder' . date('Y') . '-' . str_pad((string)$preOrder->getId(), 6, '0', STR_PAD_LEFT);
+        $invoiceNumber = 'precommande-SOSFB-' . date('Y') . '-' . str_pad((string)$preOrder->getId(), 6, '0', STR_PAD_LEFT);
         $html = $this->twig->render(
             'shop/pdf/invoicePaidPreOrder.html.twig', [
             'preOrder' => $preOrder,

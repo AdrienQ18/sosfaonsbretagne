@@ -1,246 +1,142 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <style>
-        @page {
-            margin: 18px 24px;
-        }
+{% extends 'pdf/_base_pdf.html.twig' %}
 
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 10.5px;
-            color: #222;
-            line-height: 1.25;
-        }
+{% block pdf_title %}
+    Reçu fiscal - {{ receiptNumber }}
+{% endblock %}
 
-        .header {
-            text-align: center;
-            border-bottom: 2px solid #2f5d3a;
-            padding-bottom: 8px;
-            margin-bottom: 8px;
-        }
+{% block pdf_header %}
+    <img class="pdf-logo" src="{{ logoPath }}" alt="Logo SOS Faons Bretagne">
 
-        .logo {
-            width: 85px;
-            margin-bottom: 4px;
-        }
+    <h1 class="pdf-title">Attestation de don</h1>
+    <p class="pdf-subtitle">Reçu fiscal</p>
 
-        h1 {
-            font-size: 18px;
-            text-transform: uppercase;
-            margin: 2px 0;
-            color: #2f5d3a;
-        }
+    <div class="pdf-section" style="margin-top: 12px;">
+        <h2 class="pdf-section-title">Référence du reçu</h2>
 
-        .subtitle {
-            font-size: 13px;
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .article {
-            text-align: center;
-            font-style: italic;
-            margin: 6px 0 10px;
-        }
-
-        .section {
-            border: 1px solid #cfcfcf;
-            padding: 7px 9px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-        }
-
-        h2 {
-            font-size: 12px;
-            margin: 0 0 5px;
-            color: #2f5d3a;
-            text-transform: uppercase;
-        }
-
-        .row {
-            margin-bottom: 2px;
-        }
-
-        .label {
-            font-weight: bold;
-        }
-
-        .two-columns {
-            width: 100%;
-            border-spacing: 0;
-        }
-
-        .two-columns td {
-            vertical-align: top;
-            width: 50%;
-        }
-
-        .left-col {
-            padding-right: 5px;
-        }
-
-        .right-col {
-            padding-left: 5px;
-        }
-
-        .legal {
-            font-size: 9.5px;
-            text-align: justify;
-            margin-top: 6px;
-        }
-
-        .signature {
-            margin-top: 8px;
-            text-align: right;
-        }
-
-        .signature img {
-            width: 95px;
-            margin-bottom: 0;
-        }
-
-        .footer {
-            font-size: 8.5px;
-            color: #555;
-            text-align: justify;
-            border-top: 1px solid #ddd;
-            padding-top: 6px;
-            margin-top: 8px;
-        }
-    </style>
-
-    <title>PDF Donation</title>
-</head>
-
-<body>
-
-<div class="header">
-    <img class="logo" src="{{ logoPath }}" alt="Logo SOS Faons Bretagne">
-
-    <h1>Attestation de don</h1>
-    <p class="subtitle">Reçu fiscal</p>
-
-    <div class="section">
-        <h2>Référence du reçu</h2>
-
-        <div class="row">
-            <span class="label">Numéro du reçu fiscal :</span>
+        <div class="pdf-row">
+            <span class="pdf-label">Numéro du reçu fiscal :</span>
             {{ receiptNumber }}
         </div>
     </div>
-</div>
+{% endblock %}
 
-{% if donation.donorType.value == 'entreprise' %}
-    <p class="article">Article 238 bis du Code général des impôts</p>
-{% else %}
-    <p class="article">Article 200 du Code général des impôts</p>
-{% endif %}
+{% block pdf_content %}
 
-<div class="section">
-    <h2>Organisme bénéficiaire</h2>
-
-    <div class="row"><span class="label">Association :</span> SOS Faons Bretagne</div>
-    <div class="row"><span class="label">Nature de l'organisme :</span> Association loi 1901</div>
-    <div class="row"><span class="label">Type :</span> Œuvre ou organisme d'intérêt général</div>
-    <div class="row"><span class="label">Famille :</span> Environnement, cadre de vie</div>
-    <div class="row"><span class="label">Objet :</span> Sauver des faons à l'aide d'un drone équipé d'une caméra thermique et évacuer les animaux avant le passage des faucheuses.</div>
-    <div class="row"><span class="label">SIRET :</span> 98764426700013</div>
-    <div class="row"><span class="label">Adresse :</span> 11 Louvel, 35140 Gosné</div>
-    <div class="row"><span class="label">Téléphone :</span> 02 02 02 02 02</div>
-    <div class="row"><span class="label">E-mail :</span> email@sosfaonsbretagne.fr</div>
-</div>
-
-<table class="two-columns">
-    <tr>
-        <td class="left-col">
-            <div class="section">
-                {% if donation.donorType.value == 'entreprise' %}
-                    <h2>Entreprise donatrice</h2>
-
-                    <div class="row"><span class="label">Entreprise :</span> {{ donation.companyName }}</div>
-                    <div class="row"><span class="label">SIRET :</span> {{ donation.companySiret }}</div>
-                    <div class="row"><span class="label">Contact :</span> {{ donation.firstname }} {{ donation.lastname }}</div>
-                    <div class="row"><span class="label">Adresse :</span> {{ donation.address }}</div>
-                    <div class="row"><span class="label">Code postal :</span> {{ donation.zipcode }}</div>
-                    <div class="row"><span class="label">Ville :</span> {{ donation.city }}</div>
-                    <div class="row"><span class="label">E-mail :</span> {{ donation.email }}</div>
-                {% else %}
-                    <h2>Donateur</h2>
-
-                    <div class="row"><span class="label">Nom :</span> {{ donation.lastname }}</div>
-                    <div class="row"><span class="label">Prénom :</span> {{ donation.firstname }}</div>
-                    <div class="row"><span class="label">Adresse :</span> {{ donation.address }}</div>
-                    <div class="row"><span class="label">Code postal :</span> {{ donation.zipcode }}</div>
-                    <div class="row"><span class="label">Ville :</span> {{ donation.city }}</div>
-                    <div class="row"><span class="label">E-mail :</span> {{ donation.email }}</div>
-                {% endif %}
-            </div>
-        </td>
-
-        <td class="right-col">
-            <div class="section">
-                <h2>Don effectué</h2>
-
-                <div class="row"><span class="label">Montant du don :</span> {{ donation.amount }} €</div>
-                <div class="row"><span class="label">Date du don :</span> {{ donation.donationDate|date('d/m/Y H:i:s') }}</div>
-                <div class="row"><span class="label">Forme du don :</span> Don manuel</div>
-                <div class="row"><span class="label">Nature du don :</span> Paiement en ligne HelloAsso</div>
-                <div class="row"><span class="label">Mode de paiement :</span> Carte bancaire / HelloAsso</div>
-
-                {% if donation.donorType.value == 'entreprise' %}
-                    <div class="row"><span class="label">Type de donateur :</span> Entreprise</div>
-                    <div class="row"><span class="label">Réduction fiscale :</span> 60 %</div>
-                {% else %}
-                    <div class="row"><span class="label">Type de donateur :</span> Particulier</div>
-                    <div class="row"><span class="label">Réduction fiscale :</span> 66 %</div>
-                {% endif %}
-            </div>
-        </td>
-    </tr>
-</table>
-
-<div class="legal">
     {% if donation.donorType.value == 'entreprise' %}
-        <p>
-            Le bénéficiaire certifie sur l'honneur que les dons et versements qu'il reçoit ouvrent droit à la réduction
-            d'impôt prévue à l'article 238 bis du Code général des impôts.
-        </p>
-
-        <p>
-            Entreprise : vous pouvez bénéficier d'une réduction d'impôt égale à 60 % du montant du don,
-            dans les limites prévues par la réglementation en vigueur.
+        <p style="text-align:center; font-style:italic; margin: 8px 0 14px;">
+            Article 238 bis du Code général des impôts
         </p>
     {% else %}
-        <p>
-            Le bénéficiaire certifie sur l'honneur que les dons et versements qu'il reçoit ouvrent droit à la réduction
-            d'impôt prévue à l'article 200 du Code général des impôts.
-        </p>
-
-        <p>
-            Particulier : vous pouvez bénéficier d'une réduction d'impôt égale à 66 % du montant de votre don,
-            dans la limite de 20 % de votre revenu imposable.
+        <p style="text-align:center; font-style:italic; margin: 8px 0 14px;">
+            Article 200 du Code général des impôts
         </p>
     {% endif %}
 
-    <p>
-        Document généré automatiquement. À conserver par le donateur pour ses démarches administratives.
-    </p>
-</div>
+    <div class="pdf-section">
+        <h2 class="pdf-section-title">Organisme bénéficiaire</h2>
 
-<div class="signature">
-    <p>Fait à Gosné, le {{ "now"|date('d/m/Y H:i:s') }}</p>
-    <img src="{{ signaturePath }}" alt="Signature Trésorier">
-    <p><strong>Trésorier</strong></p>
-</div>
+        <div class="pdf-row"><span class="pdf-label">Association :</span> SOS Faons Bretagne</div>
+        <div class="pdf-row"><span class="pdf-label">Nature de l'organisme :</span> Association loi 1901</div>
+        <div class="pdf-row"><span class="pdf-label">Type :</span> Œuvre ou organisme d'intérêt général</div>
+        <div class="pdf-row"><span class="pdf-label">Famille :</span> Environnement, cadre de vie</div>
+        <div class="pdf-row">
+            <span class="pdf-label">Objet :</span>
+            Sauver des faons à l'aide d'un drone équipé d'une caméra thermique et évacuer les animaux avant le passage des faucheuses.
+        </div>
+        <div class="pdf-row"><span class="pdf-label">SIRET :</span> 98764426700013</div>
+        <div class="pdf-row"><span class="pdf-label">Adresse :</span> 11 Louvel, 35140 Gosné</div>
+        <div class="pdf-row"><span class="pdf-label">Téléphone :</span> 02 02 02 02 02</div>
+        <div class="pdf-row"><span class="pdf-label">E-mail :</span> email@sosfaonsbretagne.fr</div>
+    </div>
 
-<div class="footer">
+    <table class="pdf-two-columns">
+        <tr>
+            <td class="pdf-left">
+                <div class="pdf-section">
+                    {% if donation.donorType.value == 'entreprise' %}
+                        <h2 class="pdf-section-title">Entreprise donatrice</h2>
+
+                        <div class="pdf-row"><span class="pdf-label">Entreprise :</span> {{ donation.companyName }}</div>
+                        <div class="pdf-row"><span class="pdf-label">SIRET :</span> {{ donation.companySiret }}</div>
+                        <div class="pdf-row"><span class="pdf-label">Contact :</span> {{ donation.firstname }} {{ donation.lastname }}</div>
+                        <div class="pdf-row"><span class="pdf-label">Adresse :</span> {{ donation.address }}</div>
+                        <div class="pdf-row"><span class="pdf-label">Code postal :</span> {{ donation.zipcode }}</div>
+                        <div class="pdf-row"><span class="pdf-label">Ville :</span> {{ donation.city }}</div>
+                        <div class="pdf-row"><span class="pdf-label">E-mail :</span> {{ donation.email }}</div>
+                    {% else %}
+                        <h2 class="pdf-section-title">Donateur</h2>
+
+                        <div class="pdf-row"><span class="pdf-label">Nom :</span> {{ donation.lastname }}</div>
+                        <div class="pdf-row"><span class="pdf-label">Prénom :</span> {{ donation.firstname }}</div>
+                        <div class="pdf-row"><span class="pdf-label">Adresse :</span> {{ donation.address }}</div>
+                        <div class="pdf-row"><span class="pdf-label">Code postal :</span> {{ donation.zipcode }}</div>
+                        <div class="pdf-row"><span class="pdf-label">Ville :</span> {{ donation.city }}</div>
+                        <div class="pdf-row"><span class="pdf-label">E-mail :</span> {{ donation.email }}</div>
+                    {% endif %}
+                </div>
+            </td>
+
+            <td class="pdf-right">
+                <div class="pdf-section">
+                    <h2 class="pdf-section-title">Don effectué</h2>
+
+                    <div class="pdf-row"><span class="pdf-label">Montant du don :</span> {{ donation.amount }} €</div>
+                    <div class="pdf-row"><span class="pdf-label">Date du don :</span> {{ donation.donationDate|date('d/m/Y H:i:s') }}</div>
+                    <div class="pdf-row"><span class="pdf-label">Forme du don :</span> Don manuel</div>
+                    <div class="pdf-row"><span class="pdf-label">Nature du don :</span> Paiement en ligne HelloAsso</div>
+                    <div class="pdf-row"><span class="pdf-label">Mode de paiement :</span> Carte bancaire / HelloAsso</div>
+
+                    {% if donation.donorType.value == 'entreprise' %}
+                        <div class="pdf-row"><span class="pdf-label">Type de donateur :</span> Entreprise</div>
+                        <div class="pdf-row"><span class="pdf-label">Réduction fiscale :</span> 60 %</div>
+                    {% else %}
+                        <div class="pdf-row"><span class="pdf-label">Type de donateur :</span> Particulier</div>
+                        <div class="pdf-row"><span class="pdf-label">Réduction fiscale :</span> 66 %</div>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="pdf-section">
+        {% if donation.donorType.value == 'entreprise' %}
+            <p>
+                Le bénéficiaire certifie sur l'honneur que les dons et versements qu'il reçoit ouvrent droit à la réduction
+                d'impôt prévue à l'article 238 bis du Code général des impôts.
+            </p>
+
+            <p>
+                Entreprise : vous pouvez bénéficier d'une réduction d'impôt égale à 60 % du montant du don,
+                dans les limites prévues par la réglementation en vigueur.
+            </p>
+        {% else %}
+            <p>
+                Le bénéficiaire certifie sur l'honneur que les dons et versements qu'il reçoit ouvrent droit à la réduction
+                d'impôt prévue à l'article 200 du Code général des impôts.
+            </p>
+
+            <p>
+                Particulier : vous pouvez bénéficier d'une réduction d'impôt égale à 66 % du montant de votre don,
+                dans la limite de 20 % de votre revenu imposable.
+            </p>
+        {% endif %}
+
+        <p>
+            Document généré automatiquement. À conserver par le donateur pour ses démarches administratives.
+        </p>
+    </div>
+
+    <div style="margin-top: 12px; text-align: right;">
+        <p>Fait à Gosné, le {{ "now"|date('d/m/Y H:i:s') }}</p>
+        <img src="{{ signaturePath }}" alt="Signature Trésorier" style="width: 95px;">
+        <p><strong>Trésorier</strong></p>
+    </div>
+
+{% endblock %}
+
+{% block pdf_footer %}
     Conformément au Règlement Général sur la Protection des Données, vous disposez d'un droit d'accès,
     de rectification, d'opposition et de suppression des données vous concernant.
     Pour exercer vos droits, vous pouvez nous adresser votre demande par mail à l'adresse
-    email@sosfaonsbretagne.fr. Ces informations sont réservées à l'usage exclusif de SOS Faons Bretagne.
-</div>
-
-</body>
-</html>
+    contact@sosfaonsbretagne.fr. Ces informations sont réservées à l'usage exclusif de SOS Faons Bretagne.
+{% endblock %}

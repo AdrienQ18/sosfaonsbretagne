@@ -16,6 +16,9 @@ class ContactType extends AbstractType
         $builder
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',
+                'attr' => [
+                    'autocomplete' => 'given-name',
+                ],
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Veuillez saisir votre prénom.',
@@ -28,6 +31,9 @@ class ContactType extends AbstractType
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'Nom',
+                'attr' => [
+                    'autocomplete' => 'family-name',
+                ],
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Veuillez saisir votre nom.',
@@ -40,6 +46,9 @@ class ContactType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Adresse email',
+                'attr' => [
+                    'autocomplete' => 'email',
+                ],
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Veuillez saisir votre adresse email.',
@@ -51,6 +60,9 @@ class ContactType extends AbstractType
             ])
             ->add('subject', TextType::class, [
                 'label' => 'Sujet',
+                'attr' => [
+                    'autocomplete' => 'off',
+                ],
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Veuillez saisir un sujet.',
@@ -63,6 +75,9 @@ class ContactType extends AbstractType
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'Message',
+                'attr' => [
+                    'autocomplete' => 'off',
+                ],
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Veuillez saisir votre message.',

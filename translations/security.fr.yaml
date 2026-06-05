@@ -1,0 +1,28 @@
+Invalid credentials.: Email, Pseudo ou mot de passe incorrect.
+
+Username could not be found.:
+    Aucun compte ne correspond à cet identifiant.
+
+Email could not be found.:
+    Aucun compte ne correspond à cette adresse email.
+
+Account is disabled.:
+    Ce compte est désactivé.
+
+Account has expired.:
+    Ce compte a expiré.
+
+Credentials have expired.:
+    Vos identifiants ont expiré.
+
+Too many failed login attempts, please try again later.:
+    Trop de tentatives de connexion. Veuillez réessayer plus tard.
+
+Authentication request could not be processed due to a system problem.:
+    La demande d'authentification n'a pas pu être traitée.
+
+The presented password is invalid.:
+    Le mot de passe saisi est incorrect.
+
+The presented password cannot be empty.:
+    Le mot de passe ne peut pas être vide.

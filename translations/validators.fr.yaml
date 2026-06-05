@@ -1,0 +1,14 @@
+This value should not be blank.:
+    Ce champ est obligatoire.
+
+This value is not a valid email address.:
+    Cette adresse email n'est pas valide.
+
+This value is too short. It should have {{ limit }} characters or more.:
+    Cette valeur est trop courte. Elle doit contenir au moins {{ limit }} caractères.
+
+This value should have exactly {{ limit }} characters.:
+    Cette valeur doit contenir exactement {{ limit }} caractères.
+
+This value should be of type {{ type }}.:
+    Cette valeur n'est pas du type attendu.

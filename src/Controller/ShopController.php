@@ -29,7 +29,7 @@ use App\Service\ServiceShop\PreOrderValidationService;
 
 final class ShopController extends AbstractController
 {
-    #[Route('/shop', name: 'shop')]
+    #[Route('/boutique', name: 'shop')]
     public function index(
         ArticleRepository $articleRepository,
     ): Response

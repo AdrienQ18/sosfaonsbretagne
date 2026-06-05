@@ -1,31 +1,15 @@
 <nav>
     <div class="nav-image">
         <div class="nav-overlay">
-            <div class="nav-first">
-                <ul>
-                    <a href="{{ path('donation') }}" class="nav-button nav-don">Faire un don</a>
-                    <a href="{{ path('main_alert') }}" class="nav-button nav-alert">Faire un signalement</a>
-                    <li><a href="{{ path('shop') }}">Boutique</a></li>
-                    <li><a href="{{ path('cart_index') }}">Panier</a></li>
-                    {% if app.user %}
-                        <li><a href="{{ path('app_logout') }}">Se Déconnecter</a></li>
-                        <li><a href="{{ path('user_profile') }}">Mon Profil</a></li>
-                    {% else %}
-                        <li><a href="{{ path('app_login') }}">Connexion</a></li>
-                    {% endif %}
-                </ul>
-            </div>
             <div class="nav-second">
                 <a href="{{ path('main_home') }}">
-                    <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" alt="logo SOS Faons Bretagne">
+                    <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" class="logo" alt="logo SOS Faons Bretagne">
                 </a>
                 <ul>
                     <li><a href="{{ path('main_home') }}">Accueil</a></li>
                     <li><a href="{{ path('main_about') }}">A propos</a></li>
                     <li><a href="{{ path('main_galerie') }}">Galerie</a></li>
-
                     <li><a href="{{ path('event_list') }}">Postes</a></li>
-
                     {% if is_granted("ROLE_ADMIN") %}
                         <li class="dropdown">
                             <a href="#" class="dropbtn">Administrateur</a>
@@ -40,6 +24,16 @@
                                 <a href="{{ path('admin_article_index') }}">Gestion des articles</a>
                             </div>
                         </li>
+                    {% endif %}
+                    <a href="{{ path('donation') }}" >Faire un don</a>
+                    <a href="{{ path('main_alert') }}">Signaler un fauchage</a>
+                    <li><a href="{{ path('shop') }}">Boutique</a></li>
+                    <li><a href="{{ path('cart_index') }}">Panier</a></li>
+                    {% if app.user %}
+                        <li><a href="{{ path('app_logout') }}">Se Déconnecter</a></li>
+                        <li><a href="{{ path('user_profile') }}">Mon Profil</a></li>
+                    {% else %}
+                        <li><a href="{{ path('app_login') }}">Connexion</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -58,8 +52,8 @@
                                 sauver à temps.</p>
                         </div>
                         <div class="nav-right">
-                            <a href="{{ path('donation') }}" class="nav-button nav-don">Faire un don</a>
-                            <a href="{{ path('main_alert') }}" class="nav-button nav-alert">Faire un signalement</a>
+                            <a href="{{ path('donation') }}" class="nav-button nav-don" data-back="Faire un don" data-front="Faire un don"></a>
+                            <a href="{{ path('main_alert') }}" class="nav-button nav-alert" data-back="Signaler un fauchage" data-front="Signaler un fauchage"></a>
                         </div>
                     </div>
                 </div>

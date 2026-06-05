@@ -1,12 +1,10 @@
-.nav-first {
-    display: flex;
-    justify-content: end;
-    background-color: rgb(255, 255, 255);
-    opacity: 0.7;
-}
+
 .nav-second{
     background-color: rgb(255, 255, 255, 50%);
-    padding: 1rem;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 .second img{
     width: 6rem;
@@ -15,17 +13,18 @@ ul{
     display: flex;
     gap: 2rem;
     margin-inline: 2rem;
+    justify-content: space-around;
 }
 a{
     text-decoration: none;
     color: black;
+    font-size: larger;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
 }
+
 li{
     list-style: none;
-}
-.nav-second{
-    display: flex;
-    align-items: center;
 }
 
 .nav-menu {
@@ -83,11 +82,11 @@ li{
 }
 .nav-overlay{
     background-color: rgba(0, 0, 0, 50%);
-
 }
-h1, p{
+h1{
     color: white;
 }
+
 .nav-banniere{
     display: flex;
 }
@@ -95,26 +94,85 @@ h1, p{
     width: 50%;
     padding: 2rem;
 }
+.nav-left p{
+    color: white;
+}
 .nav-right{
     width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
+    /*margin-inline: 5rem;*/
+    padding-left: 30rem;
 }
-.nav-button{
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-items: center;
-    border-radius: 10px;
+
+.logo{
+    width: 10rem;
+}
+.nav-button {
+    opacity: 1;
+    outline: 0;
+    color: #fff;
+    line-height: 60px;
+    position: relative;
+    text-align: center;
+    letter-spacing: 1px;
+    display: inline-block;
+    text-decoration: none;
+    text-transform: uppercase;
     margin-inline: 10rem;
-    padding: 1rem;
+    border-radius: 10px;
+    width: 25rem;
+}
+
+.nav-button:after {
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    color: white;
+    display: block;
+    transition: 0.5s; /* J'ai remplacé $speed par une valeur par défaut de 0.3s */
+    position: absolute;
+    content: attr(data-back);
+    transform: translateY(-50%) rotateX(90deg);
+    border-radius: 10px;
 }
 .nav-don{
-    background-color: green;
+    background-color: rgba(0, 128, 0, 70%);
+}
+.nav-don:after{
+    background-color: rgba(0, 128, 0, 100%);
 }
 .nav-alert{
-    background-color: orangered;
+    background-color: rgba(255, 69, 0, 70%);
+}
+.nav-alert:after{
+    background-color: rgba(255, 69, 0, 100%);
+}
+.nav-button:before {
+    top: 0;
+    left: 0;
+    opacity: 1;
+    color: white;
+    display: block;
+    padding: 0 30px;
+    line-height: 60px;
+    transition: 0.3s; /* J'ai remplacé $speed par une valeur par défaut de 0.3s */
+    position: relative;
+    background: rgba(255, 255, 255, 50%);
+    content: attr(data-front);
+    transform: translateY(0) rotateX(0);
+    border-radius: 10px;
+}
+
+.nav-button:hover:after {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+}
+
+.nav-button:hover:before {
+    opacity: 0;
+    transform: translateY(50%) rotateX(90deg);
 }

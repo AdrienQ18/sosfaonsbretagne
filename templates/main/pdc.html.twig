@@ -1,38 +1,151 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Politique de confidentialité | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Consultez la politique de confidentialité de SOS Faons Bretagne concernant la collecte et le traitement de vos données personnelles.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('main_pdc')) }}">
+{% endblock %}
+
+{% block og_title %}
+    Politique de confidentialité | SOS Faons Bretagne
+{% endblock %}
+
+{% block og_description %}
+    Consultez la politique de confidentialité de SOS Faons Bretagne concernant la collecte et le traitement de vos données personnelles.
+{% endblock %}
+
 {% block body %}
-    <h1>Politique de confidentialité</h1>
 
-    <h2>1. Introduction</h2>
-    <p>Nous nous engageons à protéger vos données personnelles conformément au RGPD.</p>
+    <section class="pdc-page">
 
-    <h2>2. Données collectées</h2>
-    <ul>
-        <li>Nom, prénom, adresse e-mail (via les formulaires)</li>
-        <li>Adresse IP, cookies (pour l'analyse du trafic)</li>
-    </ul>
+        <div class="pdc-container">
 
-    <h2>3. Finalité des données</h2>
-    <p>Les données sont utilisées pour :</p>
-    <ul>
-        <li>Répondre à vos demandes</li>
-        <li>Améliorer nos services</li>
-    </ul>
+            <header class="pdc-header">
+                <h1>Politique de confidentialité</h1>
 
-    <h2>4. Durée de conservation</h2>
-    <p>Les données sont conservées pendant 3 ans à partir de votre dernière interaction.</p>
+                <p>
+                    SOS Faons Bretagne s'engage à protéger vos données personnelles
+                    conformément au Règlement Général sur la Protection des Données (RGPD).
+                </p>
 
-    <h2>5. Vos droits</h2>
-    <p>Vous pouvez accéder, rectifier ou supprimer vos données en nous contactant à : <a href="mailto:contact@example.com">contact@example.com</a>.</p>
+                <span class="pdc-update">
+                Dernière mise à jour : {{ 'now'|date('d/m/Y') }}
+            </span>
+            </header>
 
-    <h2>6. Cookies</h2>
-    <p>Nous utilisons des cookies pour analyser le trafic. Vous pouvez les désactiver dans les paramètres de votre navigateur.</p>
+            <article class="pdc-card">
 
-    <h2>7. Sécurité</h2>
-    <p>Nous mettons en place des mesures techniques pour sécuriser vos données.</p>
+                <section class="pdc-section">
+                    <h2>1. Introduction</h2>
 
-    <h2>8. Modifications</h2>
-    <p>Cette politique peut être mise à jour. La date de la dernière modification est indiquée ci-dessous.</p>
+                    <p>
+                        Nous nous engageons à protéger vos données personnelles
+                        conformément au RGPD et à la législation française en vigueur.
+                    </p>
+                </section>
 
-    <p><em>Dernière mise à jour : {{ 'now'|date('d/m/Y') }}</em></p>
+                <section class="pdc-section">
+                    <h2>2. Données collectées</h2>
+
+                    <ul>
+                        <li>Nom et prénom</li>
+                        <li>Adresse email</li>
+                        <li>Adresse postale</li>
+                        <li>Numéro de téléphone</li>
+                        <li>Adresse IP et données de navigation</li>
+                        <li>Informations liées aux dons effectués</li>
+                    </ul>
+                </section>
+
+                <section class="pdc-section">
+                    <h2>3. Finalité des données</h2>
+
+                    <p>Les données collectées sont utilisées afin de :</p>
+
+                    <ul>
+                        <li>Répondre à vos demandes</li>
+                        <li>Gérer votre compte utilisateur</li>
+                        <li>Traiter les dons et éditer les reçus fiscaux</li>
+                        <li>Vous informer des activités de l'association</li>
+                        <li>Améliorer nos services</li>
+                    </ul>
+                </section>
+
+                <section class="pdc-section">
+                    <h2>4. Durée de conservation</h2>
+
+                    <p>
+                        Les données sont conservées pendant une durée maximale de
+                        3 ans après votre dernière interaction avec l'association,
+                        sauf obligation légale contraire.
+                    </p>
+                </section>
+
+                <section class="pdc-section">
+                    <h2>5. Vos droits</h2>
+
+                    <p>
+                        Conformément au RGPD, vous disposez des droits suivants :
+                    </p>
+
+                    <ul>
+                        <li>Droit d'accès</li>
+                        <li>Droit de rectification</li>
+                        <li>Droit à l'effacement</li>
+                        <li>Droit d'opposition</li>
+                        <li>Droit à la limitation du traitement</li>
+                        <li>Droit à la portabilité des données</li>
+                    </ul>
+
+                    <p>
+                        Pour exercer vos droits, contactez-nous à :
+                        <a href="mailto:contact@sosfaonsbretagne.fr">
+                            contact@sosfaonsbretagne.fr
+                        </a>
+                    </p>
+                </section>
+
+                <section class="pdc-section">
+                    <h2>6. Cookies</h2>
+
+                    <p>
+                        Notre site peut utiliser des cookies afin d'améliorer
+                        l'expérience utilisateur et d'analyser la fréquentation du site.
+                    </p>
+                </section>
+
+                <section class="pdc-section">
+                    <h2>7. Sécurité</h2>
+
+                    <p>
+                        Nous mettons en œuvre des mesures techniques et
+                        organisationnelles adaptées afin de protéger vos données.
+                    </p>
+                </section>
+
+                <section class="pdc-section">
+                    <h2>8. Modifications</h2>
+
+                    <p>
+                        Cette politique de confidentialité peut être modifiée à tout moment.
+                        La date de mise à jour est indiquée en haut de cette page.
+                    </p>
+                </section>
+
+            </article>
+
+        </div>
+
+    </section>
+
 {% endblock %}

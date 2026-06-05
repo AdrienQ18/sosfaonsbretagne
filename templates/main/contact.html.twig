@@ -1,4 +1,165 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}
+    Contact | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Contactez l'association SOS Faons Bretagne pour toute question concernant nos actions, les dons ou les signalements.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('main_contact')) }}">
+{% endblock %}
+
+{% block og_title %}
+    Contact | SOS Faons Bretagne
+{% endblock %}
+
+{% block og_description %}
+    Contactez l'association SOS Faons Bretagne pour toute question concernant nos actions, les dons ou les signalements.
+{% endblock %}
+
 {% block body %}
-    <h1>Contact</h1>
+
+    <section class="contact-page">
+        <div class="contact-container">
+
+            <header class="contact-header">
+                <h1>Contact</h1>
+
+                <p>
+                    SOS Faons Bretagne est une association à but non lucratif engagée sur le terrain pour la
+                    protection des faons et de la biodiversité. Une question, une situation à signaler, une demande
+                    d’intervention ou simplement l’envie de nous soutenir ? Nous sommes là pour vous répondre.
+                    Vous pouvez nous contacter directement ou utiliser les différentes options proposées sur cette
+                    page. Merci pour votre message et l’intérêt porté à nos actions !
+                </p>
+            </header>
+
+            <div class="contact-layout">
+
+                <div class="contact-card">
+                    <h2>Nous contacter</h2>
+
+                    <div class="contact-info">
+
+                        <div class="contact-item">
+                            <h3>Email</h3>
+
+                            <p>
+                                <a href="mailto:contact@sosfaonsbretagne.fr">
+                                    contact@sosfaonsbretagne.fr
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="contact-item">
+                            <h3>Association</h3>
+
+                            <p>
+                                SOS Faons Bretagne<br>
+                                11 Louvel<br>
+                                35140 Gosné
+                            </p>
+                        </div>
+
+                        <div class="contact-item">
+                            <h3>Réseaux sociaux</h3>
+
+                            <p>
+                                Retrouvez-nous sur Facebook et Instagram.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    {{ form_start(formContact, {
+                        attr: {
+                            novalidate: 'novalidate',
+                            class: 'contact-form'
+                        }
+                    }) }}
+
+                    <div class="contact-form-row">
+                        <div class="contact-form-group">
+                            {{ form_label(formContact.firstname) }}
+                            {{ form_widget(formContact.firstname) }}
+                            {{ form_errors(formContact.firstname) }}
+                        </div>
+
+                        <div class="contact-form-group">
+                            {{ form_label(formContact.lastname) }}
+                            {{ form_widget(formContact.lastname) }}
+                            {{ form_errors(formContact.lastname) }}
+                        </div>
+                    </div>
+
+                    <div class="contact-form-group">
+                        {{ form_label(formContact.email) }}
+                        {{ form_widget(formContact.email) }}
+                        {{ form_errors(formContact.email) }}
+                    </div>
+
+                    <div class="contact-form-group">
+                        {{ form_label(formContact.subject) }}
+                        {{ form_widget(formContact.subject) }}
+                        {{ form_errors(formContact.subject) }}
+                    </div>
+
+                    <div class="contact-form-group">
+                        {{ form_label(formContact.message) }}
+                        {{ form_widget(formContact.message) }}
+                        {{ form_errors(formContact.message) }}
+                    </div>
+
+                    <button type="submit" class="contact-submit-button">
+                        Envoyer le message
+                    </button>
+
+                    {{ form_end(formContact) }}
+                </div>
+
+                <div class="contact-card">
+                    <h2>Informations utiles</h2>
+
+                    <div class="contact-info-list">
+
+                        <div class="contact-info-row">
+                            Questions concernant les dons
+                        </div>
+
+                        <div class="contact-info-row">
+                            Questions concernant les précommandes
+                        </div>
+
+                        <div class="contact-info-row">
+                            Informations sur l'association
+                        </div>
+
+                        <div class="contact-info-row">
+                            Partenariats et bénévolat
+                        </div>
+
+                        <div class="contact-info-row">
+                            Signalement d'animaux sauvages
+                        </div>
+
+                    </div>
+
+                    <div class="contact-alert">
+                        Pour toute urgence concernant un animal sauvage,
+                        privilégiez un contact rapide par téléphone ou via les réseaux sociaux.
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
 {% endblock %}

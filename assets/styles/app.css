@@ -20,13 +20,18 @@
     --shadow: 0 14px 28px rgba(0, 0, 0, 0.16),
     0 10px 10px rgba(0, 0, 0, 0.08);
 }
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
     background: var(--cream-light);
     color: var(--text);
 }
 .container {
-    max-width: 1200px;
+    /*max-width: 1200px;*/
     margin: auto;
     padding: 5px;
     display: flex;

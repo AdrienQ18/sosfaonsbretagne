@@ -1,4 +1,3 @@
-```twig
 {% extends 'base.html.twig' %}
 
 {% block title %}
@@ -17,20 +16,9 @@
 
 {% block body %}
 
-    <section class="auth-page">
-
-        <div class="reset-password-container">
-
-            <div class="reset-password-card">
-
-                <img
-                    src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
-                    alt="Logo SOS Faons Bretagne"
-                    class="reset-password-logo"
-                    loading="lazy"
-                    width="120"
-                    height="120"
-                >
+    <section class="reset-page">
+        <div class="reset-container">
+            <div class="reset-card">
 
                 <h1>Email envoyé</h1>
 
@@ -39,7 +27,7 @@
                     un email contenant un lien de réinitialisation vient d’être envoyé.
                 </p>
 
-                <p>
+                <div class="reset-info-box">
                     Ce lien expirera dans
                     <strong>
                         {{ resetToken.expirationMessageKey|trans(
@@ -47,38 +35,31 @@
                             'ResetPasswordBundle'
                         ) }}
                     </strong>.
-                </p>
+                </div>
 
                 <p>
                     Si vous ne recevez pas l’email dans quelques minutes,
                     pensez à vérifier vos spams ou courriers indésirables.
                 </p>
 
-                <div class="reset-password-actions">
-
+                <div class="reset-actions">
                     <a
                         href="{{ path('app_forgot_password_request') }}"
-                        class="reset-password-button"
-                        aria-label="Réessayer la demande de réinitialisation de mot de passe"
+                        class="reset-button"
                     >
                         Réessayer
                     </a>
 
                     <a
                         href="{{ path('app_login') }}"
-                        class="back-login-link"
-                        aria-label="Retourner à la page de connexion"
+                        class="reset-back-link"
                     >
                         Retour à la connexion
                     </a>
-
                 </div>
 
             </div>
-
         </div>
-
     </section>
 
 {% endblock %}
-```

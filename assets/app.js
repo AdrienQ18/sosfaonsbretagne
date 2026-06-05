@@ -1,10 +1,6 @@
 import './stimulus_bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
+
+/*Import des ficher JS*/
 
 import './styles/app.css';
 import './styles/normalise.css';
@@ -16,16 +12,7 @@ import './styles/nav.css';
 import './styles/availabilityRole.css';
 import './styles/donation.css';
 import './styles/alert.css';
-
-/*Import des ficher JS*/
-
-import './js/donation.js';
-import './js/loginRegister.js';
-import './styles/nav.css'
 import './styles/easyAccess.css'
-import './styles/nav.css';
-import './styles/availabilityRole.css';
-import './styles/donation.css';
 
 /*Import des ficher JS*/
 

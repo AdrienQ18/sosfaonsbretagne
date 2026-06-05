@@ -16,39 +16,55 @@
 
 {% block body %}
 
-    <section class="auth-page">
-        <div class="reset-password-container">
-            <div class="reset-password-card">
-                <img
-                    src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
-                    alt="Logo SOS Faons Bretagne"
-                    class="reset-password-logo"
-                    loading="lazy"
-                    width="120"
-                    height="120"
-                >
+    <section class="reset-page">
+        <div class="reset-container">
+            <div class="reset-card">
+
                 <h1>Mot de passe oublié ?</h1>
+
                 <p>
                     Renseignez votre adresse email et nous vous enverrons un lien
                     pour réinitialiser votre mot de passe.
                 </p>
+
                 {% for flash_error in app.flashes('reset_password_error') %}
                     <div class="alert alert-danger" role="alert">
                         {{ flash_error }}
                     </div>
                 {% endfor %}
-                {{ form_start(requestForm, {attr: {novalidate: 'novalidate',class: 'reset-password-form'}}) }}
-                <div class="form-group">
+
+                {{ form_start(requestForm, {
+                    attr: {
+                        novalidate: 'novalidate',
+                        class: 'reset-form'
+                    }
+                }) }}
+
+                <div class="reset-form-group">
                     {{ form_label(requestForm.email, 'Adresse email') }}
-                    {{ form_widget(requestForm.email, {attr: {placeholder: 'Votre adresse email',autocomplete: 'email'}}) }}
+
+                    {{ form_widget(requestForm.email, {
+                        attr: {
+                            placeholder: 'Votre adresse email',
+                            autocomplete: 'email'
+                        }
+                    }) }}
+
                     {{ form_errors(requestForm.email) }}
                 </div>
-                <button type="submit">Envoyer le lien</button>
+
+                <button type="submit" class="reset-submit-button">
+                    Envoyer le lien
+                </button>
+
                 {{ form_end(requestForm) }}
-                <a href="{{ path('app_login') }}" class="back-login-link">
+
+                <a href="{{ path('app_login') }}" class="reset-back-link">
                     Retour à la connexion
                 </a>
+
             </div>
         </div>
     </section>
+
 {% endblock %}

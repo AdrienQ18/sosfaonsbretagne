@@ -3,6 +3,8 @@
         <div class="nav-overlay">
             <div class="nav-first">
                 <ul>
+                    <a href="{{ path('donation') }}" class="nav-button nav-don">Faire un don</a>
+                    <a href="{{ path('main_alert') }}" class="nav-button nav-alert">Faire un signalement</a>
                     <li><a href="{{ path('shop') }}">Boutique</a></li>
                     <li><a href="{{ path('cart_index') }}">Panier</a></li>
                     {% if app.user %}

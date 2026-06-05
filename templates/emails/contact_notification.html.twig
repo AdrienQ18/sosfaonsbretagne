@@ -1,0 +1,52 @@
+{% extends 'emails/_base_email.html.twig' %}
+
+{% block email_title %}
+    Nouveau message de contact
+{% endblock %}
+
+{% block email_header %}
+    <h1>Nouveau message de contact</h1>
+    <p>SOS Faons Bretagne</p>
+{% endblock %}
+
+{% block email_content %}
+
+    <div class="email-box">
+        Un nouveau message a été envoyé depuis la page contact du site.
+    </div>
+
+    <h2>Informations du contact</h2>
+
+    <table class="email-table">
+        <tr>
+            <th>Prénom</th>
+            <td>{{ contact.firstname }}</td>
+        </tr>
+
+        <tr>
+            <th>Nom</th>
+            <td>{{ contact.lastname }}</td>
+        </tr>
+
+        <tr>
+            <th>Email</th>
+            <td>{{ contact.email }}</td>
+        </tr>
+
+        <tr>
+            <th>Sujet</th>
+            <td>{{ contact.subject }}</td>
+        </tr>
+    </table>
+
+    <h2>Message</h2>
+
+    <div class="email-box">
+        {{ contact.message|nl2br }}
+    </div>
+
+{% endblock %}
+
+{% block email_footer %}
+    Notification automatique SOS Faons Bretagne
+{% endblock %}

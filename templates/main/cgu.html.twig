@@ -1,211 +1,254 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Conditions Générales d'Utilisation | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Consultez les Conditions Générales d'Utilisation du site SOS Faons Bretagne.
+{% endblock %}
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('main_cgu')) }}">
+{% endblock %}
+{% block og_title %}
+    Conditions Générales d'Utilisation | SOS Faons Bretagne
+{% endblock %}
+
+{% block og_description %}
+    Consultez les Conditions Générales d'Utilisation du site SOS Faons Bretagne.
+{% endblock %}
+
 {% block body %}
-    <h1>Conditions Générales d'Utilisation</h1>
-{#    <p><em>Association {{ app.name }} (loi 1901)</em></p>#}
-{#    <p><em>Dernière mise à jour : {{ 'now'|date('d/m/Y') }}</em></p>#}
 
-{#    ---#}
-{#    <h2>1. Présentation de l'association</h2>#}
-{#    <p>#}
-{#        L'association <strong>{{ app.name }}</strong>, déclarée sous le numéro <strong>[WXXXXX]</strong> (préfecture de [Ville]),#}
-{#        a son siège social à : <strong>[Adresse complète]</strong>.#}
-{#    </p>#}
-{#    <p>#}
-{#        Son objet est : <strong>[Objet de l'association, ex: "Promouvoir la culture scientifique auprès du grand public"]</strong>.#}
-{#    </p>#}
-{#    <p>#}
-{#        Site web : <a href="{{ app.request.schemeAndHttpHost }}">{{ app.request.host }}</a>#}
-{#    </p>#}
+    <section class="pdc-page">
+        <div class="pdc-container">
 
-{#    ---#}
-{#    <h2>2. Acceptation des CGU</h2>#}
-{#    <p>#}
-{#        L'accès et l'utilisation du site de l'association impliquent l'acceptation <strong>sans réserve</strong> des présentes CGU.#}
-{#        Toute personne qui n'accepte pas ces conditions doit s'abstenir d'utiliser le site.#}
-{#    </p>#}
+            <header class="pdc-header">
+                <h1>Conditions Générales d'Utilisation</h1>
 
-{#    ---#}
-{#    <h2>3. Modifications des CGU</h2>#}
-{#    <p>#}
-{#        L'association se réserve le droit de modifier les CGU à tout moment.#}
-{#        Les utilisateurs seront informés des changements par une notification sur le site ou par e-mail (pour les membres).#}
-{#        La poursuite de l'utilisation du site après modification vaut acceptation des nouvelles CGU.#}
-{#    </p>#}
+                <p>
+                    Les présentes Conditions Générales d'Utilisation définissent
+                    les règles d'accès et d'utilisation du site internet de
+                    SOS Faons Bretagne.
+                </p>
 
-{#    ---#}
-{#    <h2>4. Accès au site</h2>#}
-{#    <p>#}
-{#        Le site est accessible gratuitement, 24h/24 et 7j/7, sauf en cas de :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>Maintenance technique ;</li>#}
-{#        <li>Force majeure (ex : panne du serveur, cyberattaque) ;</li>#}
-{#        <li>Décision de l'association pour des raisons de sécurité ou de conformité légale.</li>#}
-{#    </ul>#}
-{#    <p>#}
-{#        L'association ne peut être tenue responsable des dommages liés à l'indisponibilité du site.#}
-{#    </p>#}
+                <span class="pdc-update">
+            Dernière mise à jour : {{ 'now'|date('d/m/Y') }}
+        </span>
+            </header>
 
-{#    ---#}
-{#    <h2>5. Adhésion à l'association</h2>#}
-{#    <h3>5.1. Conditions d'adhésion</h3>#}
-{#    <p>#}
-{#        Pour devenir membre de l'association, il est nécessaire :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>De remplir le <a href="{{ path('app_membership_form') }}">formulaire d'adhésion</a> en ligne ;</li>#}
-{#        <li>De payer la cotisation annuelle de <strong>[Montant] €</strong> (montant voté en Assemblée Générale) ;</li>#}
-{#        <li>D'accepter les présentes CGU et le <a href="{{ path('app_statutes') }}">règlement intérieur</a>.</li>#}
-{#    </ul>#}
+            <article class="pdc-card">
 
-{#    <h3>5.2. Durée et résiliation</h3>#}
-{#    <p>#}
-{#        L'adhésion est valable pour une année civile (du 1er janvier au 31 décembre).#}
-{#        Elle est <strong>tacitement reconductible</strong> sauf résiliation par l'un ou l'autre des parties avec un préavis de 1 mois avant la fin de l'année en cours.#}
-{#    </p>#}
-{#    <p>#}
-{#        Pour résilier votre adhésion, envoyez un e-mail à <a href="mailto:contact@association.fr">contact@association.fr</a>.#}
-{#    </p>#}
+                <section class="pdc-section">
+                    <h2>1. Présentation du site</h2>
 
-{#    ---#}
-{#    <h2>6. Utilisation du site</h2>#}
-{#    <h3>6.1. Comportement attendu</h3>#}
-{#    <p>#}
-{#        Les utilisateurs s'engagent à :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>Respecter les valeurs de l'association ;</li>#}
-{#        <li>Ne pas publier de contenus illicites, diffamatoires ou contraires à l'ordre public ;</li>#}
-{#        <li>Ne pas utiliser le site à des fins commerciales ou politiques ;</li>#}
-{#        <li>Ne pas perturber le fonctionnement du site (ex : spam, attaques informatiques).</li>#}
-{#    </ul>#}
+                    <p>
+                        Le site SOS Faons Bretagne est édité par l'association
+                        SOS Faons Bretagne, association loi 1901 ayant pour objet
+                        la protection des faons et de la faune sauvage.
+                    </p>
+                </section>
 
-{#    <h3>6.2. Sanctions</h3>#}
-{#    <p>#}
-{#        En cas de manquement à ces règles, l'association se réserve le droit de :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>Supprimer les contenus litigieux ;</li>#}
-{#        <li>Suspendre ou résilier l'accès au site ;</li>#}
-{#        <li>Exclure le membre de l'association (selon les statuts).</li>#}
-{#    </ul>#}
+                <section class="pdc-section">
+                    <h2>2. Hébergement</h2>
 
-{#    ---#}
-{#    <h2>7. Propriété intellectuelle</h2>#}
-{#    <p>#}
-{#        Tous les contenus du site (textes, images, logos, vidéos, etc.) sont la propriété de l'association ou de ses partenaires,#}
-{#        et sont protégés par le droit d'auteur (Code de la propriété intellectuelle).#}
-{#    </p>#}
-{#    <p>#}
-{#        <strong>Autorisations</strong> :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>La reproduction des contenus à des fins <strong>non commerciales</strong> est autorisée sous réserve de mentionner la source : <em>"© Association {{ app.name }}"</em>.</li>#}
-{#        <li>Toute utilisation commerciale ou modification des contenus est interdite sans autorisation écrite préalable.</li>#}
-{#    </ul>#}
+                    <p>
+                        Le site est hébergé par :
+                    </p>
 
-{#    ---#}
-{#    <h2>8. Données personnelles</h2>#}
-{#    <p>#}
-{#        Les données personnelles collectées sur ce site (ex : nom, e-mail, adresse pour les adhésions) sont traitées conformément à :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>Notre <a href="{{ path('app_privacy_policy') }}">Politique de confidentialité</a> ;</li>#}
-{#        <li>Le Règlement Général sur la Protection des Données (RGPD) ;</li>#}
-{#        <li>La loi française "Informatique et Libertés".</li>#}
-{#    </ul>#}
-{#    <p>#}
-{#        Vous disposez d'un droit d'accès, de rectification, de suppression et de portabilité de vos données.#}
-{#        Pour l'exercer, contactez-nous à <a href="mailto:dpo@association.fr">dpo@association.fr</a>.#}
-{#    </p>#}
+                    <p>
+                        <strong>O2Switch</strong><br>
+                        Chemin des Pardiaux<br>
+                        63000 Clermont-Ferrand<br>
+                        France
+                    </p>
 
-{#    ---#}
-{#    <h2>9. Dons et financements</h2>#}
-{#    <p>#}
-{#        L'association est financée par :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>Les cotisations de ses membres ;</li>#}
-{#        <li>Les dons (déductibles des impôts à hauteur de 66% dans la limite de 20% du revenu imposable) ;</li>#}
-{#        <li>Les subventions publiques ou privées.</li>#}
-{#    </ul>#}
-{#    <p>#}
-{#        Les dons peuvent être effectués :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>En ligne via <a href="{{ path('app_donation') }}">notre formulaire sécurisé</a> ;</li>#}
-{#        <li>Par chèque à l'ordre de <strong>{{ app.name }}</strong> ;</li>#}
-{#        <li>Par virement bancaire (RIB disponible sur demande).</li>#}
-{#    </ul>#}
-{#    <p>#}
-{#        <strong>Reçu fiscal</strong> : Un reçu fiscal est envoyé automatiquement pour tout don supérieur à 100 €.#}
-{#    </p>#}
+                    <p>
+                        Site web :
+                        <a href="https://www.o2switch.fr" target="_blank">
+                            www.o2switch.fr
+                        </a>
+                    </p>
+                </section>
 
-{#    ---#}
-{#    <h2>10. Événements et activités</h2>#}
-{#    <p>#}
-{#        L'association organise des événements (conférences, ateliers, etc.) ouverts à ses membres et, selon les cas, au public.#}
-{#    </p>#}
-{#    <h3>10.1. Inscription</h3>#}
-{#    <p>#}
-{#        Les inscriptions aux événements se font :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>En ligne via le site ;</li>#}
-{#        <li>Sur place dans la limite des places disponibles.</li>#}
-{#    </ul>#}
-{#    <p>#}
-{#        Les frais d'inscription (le cas échéant) sont remboursables jusqu'à 48h avant l'événement.#}
-{#    </p>#}
+                <section class="pdc-section">
+                    <h2>3. Conception et développement</h2>
+                    <p>
+                        Ce site internet a été conçu et développé bénévolement pour
+                        <strong>SOS Faons Bretagne</strong> par deux stagiaires de
+                        l'ENI École Informatique de Rennes dans le cadre de leur formation
+                        de développeur web.
+                    </p>
 
-{#    <h3>10.2. Annulation</h3>#}
-{#    <p>#}
-{#        L'association se réserve le droit d'annuler un événement en cas de force majeure ou de nombre insuffisant de participants.#}
-{#        Les participants seront informés par e-mail et remboursés intégralement.#}
-{#    </p>#}
+                    <p>
+                        Grâce à leur implication, leur créativité et le temps consacré à ce projet,
+                        ils ont contribué à la création d'un outil numérique permettant de soutenir
+                        les actions de l'association en faveur de la protection des faons et de la
+                        faune sauvage.
+                    </p>
 
-{#    ---#}
-{#    <h2>11. Responsabilités</h2>#}
-{#    <h3>11.1. Responsabilité de l'association</h3>#}
-{#    <p>#}
-{#        L'association met tout en œuvre pour garantir la fiabilité des informations diffusées sur son site.#}
-{#        Cependant, elle ne peut être tenue responsable :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>Des erreurs ou omissions dans les contenus ;</li>#}
-{#        <li>Des dommages directs ou indirects résultant de l'utilisation du site ;</li>#}
-{#        <li>Des liens vers des sites tiers (l'association n'a pas de contrôle sur leur contenu).</li>#}
-{#    </ul>#}
+                    <p>
+                        Ce projet a vocation à évoluer au fil du temps grâce aux contributions
+                        futures de bénévoles et de développeurs engagés auprès de l'association.
+                    </p>
 
-{#    <h3>11.2. Responsabilité des utilisateurs</h3>#}
-{#    <p>#}
-{#        Les utilisateurs sont seuls responsables :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>Des contenus qu'ils publient sur le site (ex : commentaires, contributions) ;</li>#}
-{#        <li>De l'utilisation qu'ils font des informations ou services proposés par l'association.</li>#}
-{#    </ul>#}
+                    <p>
+                        L'association SOS Faons Bretagne remercie chaleureusement les deux Adrien
+                        pour leur investissement et leur soutien dans cette aventure.
+                    </p>
 
-{#    ---#}
-{#    <h2>12. Loi applicable et litiges</h2>#}
-{#    <p>#}
-{#        Les présentes CGU sont régies par le droit français.#}
-{#        Tout litige relatif à leur interprétation ou à leur exécution sera soumis à la compétence exclusive des tribunaux de <strong>[Ville du siège social]</strong>,#}
-{#        nonobstant pluralité de défendeurs ou appel en garantie.#}
-{#    </p>#}
-{#    <p>#}
-{#        En cas de litige, une tentative de médiation sera engagée avant toute action en justice.#}
-{#    </p>#}
+                    <hr>
 
-{#    ---#}
-{#    <h2>13. Contact</h2>#}
-{#    <p>#}
-{#        Pour toute question concernant les CGU, vous pouvez nous contacter :#}
-{#    </p>#}
-{#    <ul>#}
-{#        <li>Par e-mail : <a href="mailto:contact@association.fr">contact@association.fr</a> ;</li>#}
-{#        <li>Par courrier : [Adresse postale complète].</li>#}
-{#    </ul>#}
+                    <p>
+                        <strong>Adrien Le Clech</strong><br>
+                        Développeur Web Full Stack
+                    </p>
+
+                    <p>
+                        GitHub :
+                        <a href="https://github.com/ALC-Tymy"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            github.com/ALC-Tymy
+                        </a>
+                    </p>
+
+                    <p>
+                        <strong>Adrien Quintard</strong><br>
+                        Développeur Web Full Stack
+                    </p>
+
+                    <p>
+                        GitHub :
+                        <a href="https://github.com/AdrienQ18"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            github.com/AdrienQ18
+                        </a>
+                    </p>
+
+                </section>
+
+
+    <section class="pdc-section">
+        <h2>4. Acceptation des conditions</h2>
+
+        <p>
+            Toute utilisation du site implique l'acceptation pleine et entière
+            des présentes Conditions Générales d'Utilisation.
+        </p>
+    </section>
+
+    <section class="pdc-section">
+        <h2>5. Accès au site</h2>
+
+        <p>
+            Le site est accessible gratuitement à tout utilisateur disposant
+            d'un accès à Internet.
+        </p>
+
+        <p>
+            SOS Faons Bretagne se réserve le droit d'interrompre temporairement
+            l'accès au site pour des raisons de maintenance ou de sécurité.
+        </p>
+    </section>
+
+    <section class="pdc-section">
+        <h2>6. Compte utilisateur</h2>
+
+        <p>
+            Certaines fonctionnalités nécessitent la création d'un compte.
+        </p>
+
+        <ul>
+            <li>Les informations fournies doivent être exactes.</li>
+            <li>Chaque utilisateur est responsable de son mot de passe.</li>
+            <li>Toute utilisation frauduleuse pourra entraîner la suppression du compte.</li>
+        </ul>
+    </section>
+
+    <section class="pdc-section">
+        <h2>7. Dons et précommandes</h2>
+
+        <p>
+            Le site permet de réaliser des dons à l'association ainsi que
+            des précommandes de produits proposés par SOS Faons Bretagne.
+        </p>
+
+        <p>
+            Les paiements sont réalisés via des plateformes sécurisées
+            partenaires de l'association.
+        </p>
+    </section>
+
+    <section class="pdc-section">
+        <h2>8. Propriété intellectuelle</h2>
+
+        <p>
+            Les textes, logos, photographies, vidéos et éléments graphiques
+            présents sur le site sont protégés par le droit de la propriété
+            intellectuelle.
+        </p>
+
+        <p>
+            Toute reproduction ou utilisation sans autorisation préalable
+            est interdite.
+        </p>
+    </section>
+
+    <section class="pdc-section">
+        <h2>9. Données personnelles</h2>
+
+        <p>
+            Les données personnelles collectées sont traitées conformément
+            à notre politique de confidentialité.
+        </p>
+
+        <p>
+            Vous pouvez consulter celle-ci depuis la page dédiée du site.
+        </p>
+    </section>
+
+    <section class="pdc-section">
+        <h2>10. Responsabilité</h2>
+
+        <p>
+            SOS Faons Bretagne met tout en œuvre pour assurer l'exactitude
+            des informations publiées mais ne saurait garantir l'absence
+            totale d'erreurs ou d'interruptions de service.
+        </p>
+    </section>
+
+    <section class="pdc-section">
+        <h2>11. Modification des CGU</h2>
+
+        <p>
+            Les présentes CGU peuvent être modifiées à tout moment.
+            Les utilisateurs sont invités à les consulter régulièrement.
+        </p>
+    </section>
+
+    <section class="pdc-section">
+        <h2>12. Contact</h2>
+
+        <p>
+            Pour toute question concernant ces conditions d'utilisation :
+        </p>
+
+        <p>
+            <a href="mailto:contact@sosfaonsbretagne.fr">
+                contact@sosfaonsbretagne.fr
+            </a>
+        </p>
+    </section>
+
+    </article>
+
+    </div>
+    </section>
 
 {% endblock %}

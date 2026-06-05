@@ -13,6 +13,8 @@ import './styles/availabilityRole.css';
 import './styles/donation.css';
 import './styles/alert.css';
 import './styles/easyAccess.css'
+import './styles/privacyPolicy.css'
+import './styles/contact.css'
 
 /*Import des ficher JS*/
 

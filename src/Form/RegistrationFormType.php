@@ -96,7 +96,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('benevole', CheckboxType::class, [
-                'label' => 'Voulez-vous être inscrit en tant que bénévole ?',
+                'label' => 'Voulez-vous être inscrit en tant que bénévole ? - (Sur la période de fauchage)',
                 'mapped' => false,
                 'required' => false,
             ])

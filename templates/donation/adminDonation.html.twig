@@ -1,155 +1,248 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Administration des donations</h1>
-    <div>
-        <strong>Total des dons validés :</strong>
-        {{ totalValidatedAmount|number_format(2, ',', ' ') }} €
-    </div>
-    {{ form_start(filterForm, {
-        attr: {
-            id: 'donation-filter-form'
-        }
-    }) }}
-
-    {{ form_row(filterForm.search) }}
-    {{ form_row(filterForm.donorType) }}
-    {{ form_row(filterForm.status) }}
-    {{ form_row(filterForm.dateStart) }}
-    {{ form_row(filterForm.dateEnd) }}
-    {{ form_row(filterForm.email) }}
-    {{ form_row(filterForm.companySiret) }}
-    <button
-        type="button"
-        id="reset-filters"
-    >
-        Réinitialiser
-    </button>
-    <a href="{{ path('admin_donation_download_pdfs', app.request.query.all) }}">
-        Télécharger les PDF de la recherche
-    </a>
-    {{ form_end(filterForm) }}
-    <table>
-        <thead>
-        <tr>
-            <th>Type</th>
-            <th>Donateur / Contact</th>
-            <th>Email</th>
-            <th>Adresse</th>
-            <th>Montant</th>
-            <th>Numéro du reçu fiscal</th>
-            <th>Statut</th>
-            <th>Date</th>
-            <th>Reçu fiscal</th>
-            <th>Entreprise</th>
-            <th>SIRET</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for donation in donations %}
-            <tr>
-                <td>
-                    {% if donation.donorType.value == 'entreprise' %}
-                        Entreprise
-                    {% else %}
-                        Particulier
-                    {% endif %}
-                </td>
-
-                <td>{{ donation.firstname }} {{ donation.lastname }}</td>
-
-                <td>{{ donation.email }}</td>
-
-                <td>
-                    {{ donation.address }}<br>
-                    {{ donation.zipcode }} {{ donation.city }}
-                </td>
-
-                <td>{{ donation.amount }} €</td>
-
-                <td>
-                    {{ donation.fiscalReceiptNumber ?? 'Non généré' }}
-                </td>
-
-                <td>{{ donation.status.value }}</td>
-
-                <td>{{ donation.donationDate|date('d/m/Y H:i') }}</td>
-
-                <td>
-                    {% if donation.receiptPdfPath %}
-                        <a href="{{ path('admin_donation_pdf', { id: donation.id }) }}" target="_blank">
-                            Voir le PDF
-                        </a>
-                    {% else %}
-                        Aucun PDF
-                    {% endif %}
-                </td>
-
-                <td>
-                    {{ donation.companyName ?? '-' }}
-                </td>
-
-                <td>
-                    {{ donation.companySiret ?? '-' }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">Aucune donation trouvée.</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <div class="pagination">
-        {{ knp_pagination_render(donations) }}
-    </div>
+{% block title %}
+    Administration des donations | SOS Faons Bretagne
 {% endblock %}
 
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
+
+{% block body %}
+
+    <section class="admin-donation-page">
+
+        <div class="admin-donation-container">
+
+            <header class="admin-donation-header">
+                <h1>Administration des donations</h1>
+
+                <div class="admin-donation-total">
+                    <span>Total des dons validés</span>
+                    <strong>{{ totalValidatedAmount|number_format(2, ',', ' ') }} €</strong>
+                </div>
+            </header>
+
+            <div class="admin-donation-card admin-donation-filter-card">
+
+                {{ form_start(filterForm, {
+                    attr: {
+                        id: 'donation-filter-form',
+                        class: 'admin-donation-filter-form'
+                    }
+                }) }}
+
+                <div class="admin-donation-filter-grid">
+                    <div class="admin-donation-form-group">
+                        {{ form_label(filterForm.search) }}
+                        {{ form_widget(filterForm.search) }}
+                    </div>
+
+                    <div class="admin-donation-form-group">
+                        {{ form_label(filterForm.donorType) }}
+                        {{ form_widget(filterForm.donorType) }}
+                    </div>
+
+                    <div class="admin-donation-form-group">
+                        {{ form_label(filterForm.status) }}
+                        {{ form_widget(filterForm.status) }}
+                    </div>
+
+                    <div class="admin-donation-form-group">
+                        {{ form_label(filterForm.dateStart) }}
+                        {{ form_widget(filterForm.dateStart) }}
+                    </div>
+
+                    <div class="admin-donation-form-group">
+                        {{ form_label(filterForm.dateEnd) }}
+                        {{ form_widget(filterForm.dateEnd) }}
+                    </div>
+
+                    <div class="admin-donation-form-group">
+                        {{ form_label(filterForm.email) }}
+                        {{ form_widget(filterForm.email) }}
+                    </div>
+
+                    <div class="admin-donation-form-group">
+                        {{ form_label(filterForm.companySiret) }}
+                        {{ form_widget(filterForm.companySiret) }}
+                    </div>
+                </div>
+
+                <div class="admin-donation-actions">
+                    <button
+                        type="button"
+                        id="reset-filters"
+                        class="admin-donation-reset-button"
+                        aria-label="Réinitialiser les filtres de recherche"
+                    >
+                        Réinitialiser
+                    </button>
+
+                    <a
+                        href="{{ path('admin_donation_download_pdfs', app.request.query.all) }}"
+                        class="admin-donation-download-button"
+                        aria-label="Télécharger les PDF correspondant à la recherche"
+                    >
+                        Télécharger les PDF de la recherche
+                    </a>
+                </div>
+
+                {{ form_end(filterForm) }}
+
+            </div>
+
+            <div class="admin-donation-card">
+
+                <div class="admin-donation-table-wrapper">
+                    <table class="admin-donation-table">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Donateur / Contact</th>
+                            <th>Email</th>
+                            <th>Adresse</th>
+                            <th>Montant</th>
+                            <th>Numéro reçu</th>
+                            <th>Statut</th>
+                            <th>Date</th>
+                            <th>Reçu fiscal</th>
+                            <th>Entreprise</th>
+                            <th>SIRET</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for donation in donations %}
+                            <tr>
+                                <td>
+                                <span class="admin-donation-badge">
+                                    {% if donation.donorType.value == 'entreprise' %}
+                                        Entreprise
+                                    {% else %}
+                                        Particulier
+                                    {% endif %}
+                                </span>
+                                </td>
+
+                                <td>{{ donation.firstname }} {{ donation.lastname }}</td>
+
+                                <td>
+                                    <a href="mailto:{{ donation.email }}">
+                                        {{ donation.email }}
+                                    </a>
+                                </td>
+
+                                <td>
+                                    {{ donation.address }}<br>
+                                    {{ donation.zipcode }} {{ donation.city }}
+                                </td>
+
+                                <td>
+                                    <strong>{{ donation.amount }} €</strong>
+                                </td>
+
+                                <td>
+                                    {{ donation.fiscalReceiptNumber ?? 'Non généré' }}
+                                </td>
+
+                                <td>
+                                <span class="admin-donation-status">
+                                    {{ donation.status.value }}
+                                </span>
+                                </td>
+
+                                <td>{{ donation.donationDate|date('d/m/Y H:i') }}</td>
+
+                                <td>
+                                    {% if donation.receiptPdfPath %}
+                                        <a
+                                            href="{{ path('admin_donation_pdf', { id: donation.id }) }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="admin-donation-link"
+                                            aria-label="Voir le reçu fiscal du don {{ donation.fiscalReceiptNumber ?? donation.id }}"
+                                        >
+                                            Voir le PDF
+                                        </a>
+                                    {% else %}
+                                        <span class="admin-donation-muted">Aucun PDF</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>{{ donation.companyName ?? '-' }}</td>
+
+                                <td>{{ donation.companySiret ?? '-' }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="11" class="admin-donation-empty">
+                                    Aucune donation trouvée.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="admin-donation-pagination">
+                    {{ knp_pagination_render(donations) }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+{% endblock %}
 {% block extraJs %}
     {{ parent() }}
 
     <script>
-        const filterForm = document.querySelector('#donation-filter-form');
+        document.addEventListener('DOMContentLoaded', () => {
 
-        document.querySelector('#reset-filters')
-            .addEventListener('click', () => {
+            const filterForm = document.querySelector('#donation-filter-form');
 
-                window.location.href =
-                    "{{ path('admin_donation') }}";
+            if (!filterForm) {
+                return;
+            }
 
-            });
+            const resetButton = document.querySelector('#reset-filters');
 
-        filterForm.querySelectorAll('select').forEach(field => {
+            if (resetButton) {
+                resetButton.addEventListener('click', () => {
+                    window.location.href = "{{ path('admin_donation') }}";
+                });
+            }
 
-            field.addEventListener('change', () => {
-                filterForm.submit();
-            });
-
-        });
-
-        filterForm.querySelectorAll('input[type="date"]').forEach(field => {
-            field.addEventListener('change', () => {
-                filterForm.submit();
-            });
-        });
-
-        let timeout;
-
-        filterForm.querySelectorAll('input[type="text"]').forEach(field => {
-
-            field.addEventListener('input', () => {
-
-                clearTimeout(timeout);
-
-                timeout = setTimeout(() => {
+            filterForm.querySelectorAll('select').forEach(field => {
+                field.addEventListener('change', () => {
                     filterForm.submit();
-                }, 600);
+                });
+            });
 
+            filterForm.querySelectorAll('input[type="date"]').forEach(field => {
+                field.addEventListener('change', () => {
+                    filterForm.submit();
+                });
+            });
+
+            let timeout;
+
+            filterForm.querySelectorAll('input[type="text"]').forEach(field => {
+                field.addEventListener('input', () => {
+
+                    clearTimeout(timeout);
+
+                    timeout = setTimeout(() => {
+                        filterForm.submit();
+                    }, 600);
+
+                });
             });
 
         });
     </script>
 {% endblock %}
-
-

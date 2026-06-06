@@ -413,3 +413,246 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================
+   ADMIN DONATION
+========================= */
+
+.admin-donation-page {
+    padding: 40px 20px 60px;
+    background: var(--cream-light);
+}
+
+.admin-donation-container {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+.admin-donation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.admin-donation-header h1 {
+    color: var(--green-dark);
+    font-size: 2.2rem;
+    font-weight: 800;
+}
+
+.admin-donation-total {
+    padding: 16px 22px;
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: var(--shadow);
+}
+
+.admin-donation-total span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text);
+    font-size: 13px;
+}
+
+.admin-donation-total strong {
+    color: var(--green-dark);
+    font-size: 1.5rem;
+}
+
+.admin-donation-card {
+    margin-bottom: 24px;
+    padding: 26px;
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+/* FILTERS */
+
+.admin-donation-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.admin-donation-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-donation-form-group label {
+    margin-bottom: 6px;
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.admin-donation-form-group input,
+.admin-donation-form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: var(--input-bg);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.admin-donation-form-group input:focus,
+.admin-donation-form-group select:focus {
+    border-color: var(--green-main);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(110, 142, 100, 0.12);
+}
+
+.admin-donation-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.admin-donation-reset-button,
+.admin-donation-download-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.admin-donation-reset-button {
+    background: var(--input-bg);
+    color: var(--green-dark);
+}
+
+.admin-donation-download-button {
+    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+    color: var(--white);
+}
+
+/* TABLE */
+
+.admin-donation-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.admin-donation-table {
+    width: 100%;
+    min-width: 1150px;
+    border-collapse: collapse;
+}
+
+.admin-donation-table th,
+.admin-donation-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #eee8df;
+    color: var(--text);
+    font-size: 13px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.admin-donation-table th {
+    background: var(--input-bg);
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.admin-donation-table tbody tr:hover {
+    background: rgba(110, 142, 100, 0.06);
+}
+
+.admin-donation-table a {
+    color: var(--green-dark);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.admin-donation-table a:hover {
+    text-decoration: underline;
+}
+
+.admin-donation-badge,
+.admin-donation-status {
+    display: inline-flex;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.admin-donation-link {
+    color: var(--green-dark);
+}
+
+.admin-donation-muted {
+    color: #999;
+}
+
+.admin-donation-empty {
+    text-align: center;
+    color: #777;
+    padding: 30px !important;
+}
+
+/* PAGINATION */
+
+.admin-donation-pagination {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 1000px) {
+    .admin-donation-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-donation-filter-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .admin-donation-page {
+        padding: 28px 14px 45px;
+    }
+
+    .admin-donation-card {
+        padding: 20px;
+    }
+
+    .admin-donation-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-donation-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .admin-donation-reset-button,
+    .admin-donation-download-button {
+        width: 100%;
+    }
+}

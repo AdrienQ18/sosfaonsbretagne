@@ -15,11 +15,14 @@ import './styles/alert.css';
 import './styles/easyAccess.css'
 import './styles/privacyPolicy.css'
 import './styles/contact.css'
+import './styles/boutique.css'
+import './styles/panier.css'
 
 /*Import des ficher JS*/
 
 import './js/donation.js';
 import './js/loginRegister.js';
+import './js/boutique.js';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 

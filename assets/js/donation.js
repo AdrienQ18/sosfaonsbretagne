@@ -1,8 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.body.dataset.route !== 'donation') {
-        return;
+    const route = document.body.dataset.route;
+
+    if (route === 'donation') {
+        initDonationPage();
     }
 
+    if (route === 'admin_donation') {
+        initAdminDonationPage();
+    }
+});
+
+function initDonationPage() {
     const stepAmount = document.querySelector('#step-amount');
     const stepInfos = document.querySelector('#step-infos');
     const amountInput = document.querySelector('[data-don-amount-input]');
@@ -12,16 +20,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const donorTitle = document.querySelector('#donor-title');
     const addressTitle = document.querySelector('#address-title');
     const companyFields = document.querySelector('#company-fields');
-
     const amountButtons = document.querySelectorAll('.don-amount-btn');
+    const donorTypeInputs = document.querySelectorAll('input[name="donation[donorType]"]');
 
-    const donorTypeInputs = document.querySelectorAll(
-        'input[name="donation[donorType]"]'
-    );
     const companyInputs = [
         document.querySelector('#donation_form_companyName'),
         document.querySelector('#donation_form_companySiret'),
     ];
+
+    if (!stepAmount || !stepInfos || !amountInput || !goToInfosBtn) {
+        return;
+    }
 
     amountButtons.forEach((button) => {
         button.addEventListener('click', () => {
@@ -79,13 +88,19 @@ document.addEventListener('DOMContentLoaded', () => {
             'input[name="donation[donorType]"]:checked'
         );
 
-        if (!selectedType) {
+        if (!selectedType || !donorTitle || !addressTitle || !companyFields || !taxInfo) {
             return;
         }
 
+        const addressHeading = addressTitle.querySelector('h3');
+
         if (selectedType.value === 'entreprise') {
             donorTitle.textContent = 'Entreprise donatrice';
-            addressTitle.querySelector('h3').textContent = 'Adresse de l’entreprise';
+
+            if (addressHeading) {
+                addressHeading.textContent = 'Adresse de l’entreprise';
+            }
+
             companyFields.style.display = 'block';
             setRequired(companyInputs, true);
 
@@ -93,7 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Un reçu fiscal vous sera envoyé par e-mail après la confirmation de votre don. 60 % du montant du don est déductible de l’impôt sur les sociétés.';
         } else {
             donorTitle.textContent = 'Particulier donneur';
-            addressTitle.querySelector('h3').textContent = 'Adresse';
+
+            if (addressHeading) {
+                addressHeading.textContent = 'Adresse';
+            }
+
             companyFields.style.display = 'none';
             setRequired(companyInputs, false);
 
@@ -107,4 +126,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     toggleDonorFields();
-});
+}
+
+function initAdminDonationPage() {
+    const filterForm = document.querySelector('#donation-filter-form');
+
+    if (!filterForm) {
+        return;
+    }
+
+    const resetButton = document.querySelector('#reset-filters');
+
+    if (resetButton) {
+        resetButton.addEventListener('click', () => {
+            window.location.href = filterForm.dataset.resetUrl || '/admin/donation';
+        });
+    }
+
+    filterForm.querySelectorAll('select').forEach((field) => {
+        field.addEventListener('change', () => {
+            filterForm.submit();
+        });
+    });
+
+    filterForm.querySelectorAll('input[type="date"]').forEach((field) => {
+        field.addEventListener('change', () => {
+            filterForm.submit();
+        });
+    });
+
+    let timeout;
+
+    filterForm.querySelectorAll('input[type="text"], input[type="search"], input[type="email"]').forEach((field) => {
+        field.addEventListener('input', () => {
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+                filterForm.submit();
+            }, 600);
+        });
+    });
+}

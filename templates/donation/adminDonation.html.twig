@@ -1,76 +1,53 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}
     Administration des donations | SOS Faons Bretagne
 {% endblock %}
-
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
-
 {% block canonical %}{% endblock %}
-
 {% block body %}
-
     <section class="admin-donation-page">
-
         <div class="admin-donation-container">
-
             <header class="admin-donation-header">
                 <h1>Administration des donations</h1>
-
                 <div class="admin-donation-total">
                     <span>Total des dons validés</span>
                     <strong>{{ totalValidatedAmount|number_format(2, ',', ' ') }} €</strong>
                 </div>
             </header>
-
             <div class="admin-donation-card admin-donation-filter-card">
-
-                {{ form_start(filterForm, {
-                    attr: {
-                        id: 'donation-filter-form',
-                        class: 'admin-donation-filter-form'
-                    }
-                }) }}
-
+                {{ form_start(filterForm, {attr: {id: 'donation-filter-form',class: 'admin-donation-filter-form','data-reset-url': path('admin_donation')}}) }}
                 <div class="admin-donation-filter-grid">
                     <div class="admin-donation-form-group">
                         {{ form_label(filterForm.search) }}
                         {{ form_widget(filterForm.search) }}
                     </div>
-
                     <div class="admin-donation-form-group">
                         {{ form_label(filterForm.donorType) }}
                         {{ form_widget(filterForm.donorType) }}
                     </div>
-
                     <div class="admin-donation-form-group">
                         {{ form_label(filterForm.status) }}
                         {{ form_widget(filterForm.status) }}
                     </div>
-
                     <div class="admin-donation-form-group">
                         {{ form_label(filterForm.dateStart) }}
                         {{ form_widget(filterForm.dateStart) }}
                     </div>
-
                     <div class="admin-donation-form-group">
                         {{ form_label(filterForm.dateEnd) }}
                         {{ form_widget(filterForm.dateEnd) }}
                     </div>
-
                     <div class="admin-donation-form-group">
                         {{ form_label(filterForm.email) }}
                         {{ form_widget(filterForm.email) }}
                     </div>
-
                     <div class="admin-donation-form-group">
                         {{ form_label(filterForm.companySiret) }}
                         {{ form_widget(filterForm.companySiret) }}
                     </div>
                 </div>
-
                 <div class="admin-donation-actions">
                     <button
                         type="button"
@@ -80,24 +57,23 @@
                     >
                         Réinitialiser
                     </button>
-
                     <a
                         href="{{ path('admin_donation_download_pdfs', app.request.query.all) }}"
                         class="admin-donation-download-button"
                         aria-label="Télécharger les PDF correspondant à la recherche"
                     >
-                        Télécharger les PDF de la recherche
+                        Télécharger les reçus fiscaux
                     </a>
                 </div>
-
                 {{ form_end(filterForm) }}
-
             </div>
-
             <div class="admin-donation-card">
 
                 <div class="admin-donation-table-wrapper">
                     <table class="admin-donation-table">
+                        <caption class="admin-donation-sr-only">
+                            Liste des donations enregistrées
+                        </caption>
                         <thead>
                         <tr>
                             <th>Type</th>
@@ -113,7 +89,6 @@
                             <th>SIRET</th>
                         </tr>
                         </thead>
-
                         <tbody>
                         {% for donation in donations %}
                             <tr>
@@ -126,36 +101,36 @@
                                     {% endif %}
                                 </span>
                                 </td>
-
                                 <td>{{ donation.firstname }} {{ donation.lastname }}</td>
-
                                 <td>
-                                    <a href="mailto:{{ donation.email }}">
-                                        {{ donation.email }}
-                                    </a>
+                                    <a href="mailto:{{ donation.email }}">{{ donation.email }}</a>
                                 </td>
-
                                 <td>
                                     {{ donation.address }}<br>
                                     {{ donation.zipcode }} {{ donation.city }}
                                 </td>
-
                                 <td>
-                                    <strong>{{ donation.amount }} €</strong>
+                                    <strong>
+                                        {{ donation.amount|number_format(2, ',', ' ') }} €
+                                    </strong>
                                 </td>
-
                                 <td>
                                     {{ donation.fiscalReceiptNumber ?? 'Non généré' }}
                                 </td>
-
                                 <td>
-                                <span class="admin-donation-status">
-                                    {{ donation.status.value }}
+                                <span class="admin-donation-status admin-donation-status--{{ donation.status.value }}">
+                                    {% if donation.status.value == 'donation_validee' %}
+                                        Validé
+                                    {% elseif donation.status.value == 'donation_passee' %}
+                                        En attente
+                                    {% elseif donation.status.value == 'donation_refusee' %}
+                                        Annulé
+                                    {% else %}
+                                        {{ donation.status.value }}
+                                    {% endif %}
                                 </span>
                                 </td>
-
                                 <td>{{ donation.donationDate|date('d/m/Y H:i') }}</td>
-
                                 <td>
                                     {% if donation.receiptPdfPath %}
                                         <a
@@ -165,15 +140,13 @@
                                             class="admin-donation-link"
                                             aria-label="Voir le reçu fiscal du don {{ donation.fiscalReceiptNumber ?? donation.id }}"
                                         >
-                                            Voir le PDF
+                                            Voir le reçu
                                         </a>
                                     {% else %}
-                                        <span class="admin-donation-muted">Aucun PDF</span>
+                                        <span class="admin-donation-muted">Aucun reçu</span>
                                     {% endif %}
                                 </td>
-
                                 <td>{{ donation.companyName ?? '-' }}</td>
-
                                 <td>{{ donation.companySiret ?? '-' }}</td>
                             </tr>
                         {% else %}
@@ -186,63 +159,11 @@
                         </tbody>
                     </table>
                 </div>
-
                 <div class="admin-donation-pagination">
                     {{ knp_pagination_render(donations) }}
                 </div>
-
             </div>
-
         </div>
-
     </section>
 {% endblock %}
-{% block extraJs %}
-    {{ parent() }}
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            const filterForm = document.querySelector('#donation-filter-form');
-
-            if (!filterForm) {
-                return;
-            }
-
-            const resetButton = document.querySelector('#reset-filters');
-
-            if (resetButton) {
-                resetButton.addEventListener('click', () => {
-                    window.location.href = "{{ path('admin_donation') }}";
-                });
-            }
-
-            filterForm.querySelectorAll('select').forEach(field => {
-                field.addEventListener('change', () => {
-                    filterForm.submit();
-                });
-            });
-
-            filterForm.querySelectorAll('input[type="date"]').forEach(field => {
-                field.addEventListener('change', () => {
-                    filterForm.submit();
-                });
-            });
-
-            let timeout;
-
-            filterForm.querySelectorAll('input[type="text"]').forEach(field => {
-                field.addEventListener('input', () => {
-
-                    clearTimeout(timeout);
-
-                    timeout = setTimeout(() => {
-                        filterForm.submit();
-                    }, 600);
-
-                });
-            });
-
-        });
-    </script>
-{% endblock %}

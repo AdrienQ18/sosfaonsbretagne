@@ -1,13 +1,108 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if formAddArticle.vars.value.id %}
+        Modifier un article
+    {% else %}
+        Ajouter un article
+    {% endif %}
+    | SOS Faons Bretagne
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
+
 {% block body %}
 
-{{ form_start(formAddArticle) }}
+    <section class="admin-article-form-page">
 
-{{ form_widget(formAddArticle) }}
+        <div class="admin-article-form-container">
 
-<button type="submit">
-    Enregistrer
-</button>
+            <div class="admin-article-form-card">
 
-{{ form_end(formAddArticle) }}
+                <header class="admin-article-form-header">
+
+                    <h1>
+                        {% if formAddArticle.vars.value.id %}
+                            Modifier un article
+                        {% else %}
+                            Ajouter un article
+                        {% endif %}
+                    </h1>
+
+                    <p>
+                        Renseignez les informations de l'article qui sera affiché dans la boutique.
+                    </p>
+
+                </header>
+
+                {{ form_start(formAddArticle, {
+                    attr: {
+                        class: 'admin-article-form',
+                        novalidate: 'novalidate'
+                    }
+                }) }}
+
+                <div class="admin-article-form-group">
+                    {{ form_label(formAddArticle.name) }}
+                    {{ form_widget(formAddArticle.name) }}
+                    {{ form_errors(formAddArticle.name) }}
+                </div>
+
+                <div class="admin-article-form-group">
+                    {{ form_label(formAddArticle.price) }}
+                    {{ form_widget(formAddArticle.price) }}
+                    {{ form_errors(formAddArticle.price) }}
+                </div>
+
+                <div class="admin-article-form-group">
+                    {{ form_label(formAddArticle.description) }}
+                    {{ form_widget(formAddArticle.description) }}
+                    {{ form_errors(formAddArticle.description) }}
+                </div>
+                <div class="admin-article-form-group admin-article-form-file-group">
+                    {{ form_label(formAddArticle.image, 'Image de l’article' {
+                        label_attr: {class: 'admin-article-form-file-label',}}) }}
+                    {{ form_widget(formAddArticle.image, {
+                        attr: {
+                            class: 'admin-article-form-file-input',
+                            accept: 'image/jpeg,image/png,image/webp'
+                        }
+                    }) }}
+                    <span class="admin-article-form-file-help">
+                        Format conseillé : image carrée, JPG, PNG ou WebP.
+                    </span>
+                    {{ form_errors(formAddArticle.image) }}
+                </div>
+
+                {% if formAddArticle.requiresDiameter is defined %}
+                    <div class="admin-article-form-checkbox">
+                        {{ form_widget(formAddArticle.requiresDiameter) }}
+                        {{ form_label(formAddArticle.requiresDiameter) }}
+                    </div>
+                {% endif %}
+                <div class="admin-article-form-actions">
+                    <a
+                        href="{{ path('admin_article_index') }}"
+                        class="admin-article-form-back-button"
+                        aria-label="Retour à la liste des articles"
+                    >
+                        Retour
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="admin-article-form-submit-button"
+                        aria-label="Enregistrer l’article"
+                    >
+                        Enregistrer
+                    </button>
+                </div>
+                {{ form_end(formAddArticle) }}
+            </div>
+        </div>
+    </section>
 {% endblock %}

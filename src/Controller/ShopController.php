@@ -13,7 +13,7 @@ use App\Repository\ArticleRepository;
 use App\Repository\PreOrderRepository;
 use App\Service\ServiceHelloAsso\HelloAssoService;
 use App\Service\ServiceHelloAsso\HelloAssoWebhookService;
-use App\Service\Utils\FileUploader;
+use App\Service\Utils\FileUploaderShop;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -54,6 +54,10 @@ final class ShopController extends AbstractController
             throw $this->createNotFoundException('Article introuvable.');
         }
 
+        if (!$this->isCsrfTokenValid('cart_add_' . $article->getId(), $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
         $quantity = (int)$request->request->get('quantity', 1);
 
         $diameter = null;
@@ -76,11 +80,28 @@ final class ShopController extends AbstractController
 
         $cart = $session->get('cart', []);
 
-        $cart[] = [
-            'article_id' => $article->getId(),
-            'diameter' => $diameter,
-            'quantity' => $quantity,
-        ];
+        $itemFound = false;
+
+        foreach ($cart as &$item) {
+            if (
+                $item['article_id'] === $article->getId()
+                && $item['diameter'] === $diameter
+            ) {
+                $item['quantity'] += $quantity;
+                $itemFound = true;
+                break;
+            }
+        }
+
+        unset($item);
+
+        if (!$itemFound) {
+            $cart[] = [
+                'article_id' => $article->getId(),
+                'diameter' => $diameter,
+                'quantity' => $quantity,
+            ];
+        }
 
         $session->set('cart', $cart);
 
@@ -124,14 +145,23 @@ final class ShopController extends AbstractController
 
     #[Route('/cart/remove/{index}', name: 'cart_remove', methods: ['POST'])]
     public function removeCartItem(
-        int              $index,
+        int $index,
+        Request $request,
         SessionInterface $session
     ): Response
     {
+        if (!$this->isCsrfTokenValid(
+            'cart_remove_' . $index,
+            $request->request->get('_token')
+        )) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
         $cart = $session->get('cart', []);
 
         if (isset($cart[$index])) {
             unset($cart[$index]);
+
             $cart = array_values($cart);
 
             $session->set('cart', $cart);
@@ -150,6 +180,13 @@ final class ShopController extends AbstractController
         ArticleRepository $articleRepository,
     ): Response
     {
+        if (!$this->isCsrfTokenValid(
+            'cart_update_' . $index,
+            $request->request->get('_token')
+        )) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
         $cart = $session->get('cart', []);
 
         if (!isset($cart[$index])) {
@@ -205,8 +242,17 @@ final class ShopController extends AbstractController
         ArticleRepository      $articleRepository,
         EntityManagerInterface $entityManager,
         PreOrderMailerService  $mailerService,
+        Request                $request
     ): Response
     {
+        if (
+            !$this->isCsrfTokenValid(
+                'pre_order_validate',
+                $request->request->get('_token')
+            )
+        ) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
         $cart = $session->get('cart', []);
 
         if (empty($cart)) {
@@ -221,6 +267,7 @@ final class ShopController extends AbstractController
             $this->addFlash('error', 'Vous devez être connecté pour valider une précommande.');
             return $this->redirectToRoute('app_login');
         }
+
 
         $preOrder = new PreOrder();
         $preOrder->setUser($user);
@@ -255,6 +302,11 @@ final class ShopController extends AbstractController
             }
             $preOrder->addPreOrderItem($preOrderItem);
             $totalAmount += $totalPrice;
+        }
+        if ($preOrder->getPreOrderItems()->isEmpty()) {
+            $this->addFlash('error', 'Aucun article valide dans le panier.');
+
+            return $this->redirectToRoute('cart_index');
         }
 
         $preOrder->setTotalAmount((string)$totalAmount);
@@ -402,7 +454,6 @@ final class ShopController extends AbstractController
     #[Route('/admin/article', name: 'admin_article_index', methods: ['GET'])]
     public function showArticle(
         ArticleRepository $articleRepository,
-        Request           $request,
     ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -420,7 +471,7 @@ final class ShopController extends AbstractController
         Request                $request,
         ArticleRepository      $articleRepository,
         EntityManagerInterface $entityManager,
-        FileUploader           $fileUploader,
+        FileUploaderShop       $fileUploaderShop,
         ?int                   $id = null,
     ): Response
     {
@@ -442,7 +493,7 @@ final class ShopController extends AbstractController
             $file = $formAddArticle->get('image')->getData();
 
             if ($file) {
-                $article->setImage($fileUploader->upload($file, 'shop', $article->getImage()));
+                $article->setImage($fileUploaderShop->uploadShop($file, 'shop', $article->getImage()));
             }
 
             if ($id === null) {
@@ -468,6 +519,7 @@ final class ShopController extends AbstractController
         int                    $id,
         ArticleRepository      $articleRepository,
         EntityManagerInterface $entityManager,
+        Request                $request
     ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -476,6 +528,13 @@ final class ShopController extends AbstractController
 
         if (!$article) {
             throw $this->createNotFoundException('L\'article n\'existe pas.');
+        }
+
+        if (!$this->isCsrfTokenValid(
+            'delete_article_' . $article->getId(),
+            $request->request->get('_token')
+        )) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
         }
 
         $entityManager->remove($article);

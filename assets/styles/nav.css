@@ -118,14 +118,11 @@ h1{
     color: white;
 }
 .nav-right{
-    /*width: 50%;*/
     display: flex;
-
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
     gap: 2rem;
-    /*padding-left: 30rem;*/
 }
 
 .logo{
@@ -197,5 +194,3 @@ h1{
     opacity: 0;
     transform: translateY(50%) rotateX(90deg);
 }
-
-

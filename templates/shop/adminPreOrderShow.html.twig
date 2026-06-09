@@ -1,159 +1,222 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Précommande #{{ preOrder.id }} | SOS Faons Bretagne
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
+
 {% block body %}
 
-    <h1>
-        Précommande #{{ preOrder.id }}
-    </h1>
+    <section class="admin-preorder-show-page">
+        <div class="admin-preorder-show-container">
 
-    <p>
-        <strong>Client :</strong>
-        {{ preOrder.user.firstname }}
-        {{ preOrder.user.lastname }}
-    </p>
+            <header class="admin-preorder-show-header">
+                <div>
+                    <h1>Précommande #{{ preOrder.id }}</h1>
 
-    <p>
-        <strong>Email :</strong>
-        {{ preOrder.user.email }}
-    </p>
+                    <p>
+                        Détail complet de la précommande client.
+                    </p>
+                </div>
 
-    <p>
-        <strong>Statut :</strong>
-        {{ preOrder.status.value }}
-    </p>
+                <span class="admin-preorder-show-status admin-preorder-show-status--{{ preOrder.status.value }}">
+                {% if preOrder.status.value == 'en_attente' %}
+                    En attente
+                {% elseif preOrder.status.value == 'validee' %}
+                    Validée
+                {% elseif preOrder.status.value == 'refusee' %}
+                    Refusée
+                {% elseif preOrder.status.value == 'payee' %}
+                    Payée
+                {% else %}
+                    {{ preOrder.status.value }}
+                {% endif %}
+            </span>
+            </header>
 
-    <p>
-        <strong>Total :</strong>
-        {{ preOrder.totalAmount }} €
-    </p>
+            <div class="admin-preorder-show-layout">
 
-    <p>
-        <strong>Date :</strong>
-        {{ preOrder.preOrderDate|date('d/m/Y H:i') }}
-    </p>
+                <main class="admin-preorder-show-main">
 
-    {% if preOrder.validatedAt %}
-        <p>
-            <strong>Validation :</strong>
-            {{ preOrder.validatedAt|date('d/m/Y H:i') }}
-        </p>
-    {% endif %}
+                    <section class="admin-preorder-show-card">
+                        <h2>Informations client</h2>
 
-    {% if preOrder.paidAt %}
-        <p>
-            <strong>Paiement :</strong>
-            {{ preOrder.paidAt|date('d/m/Y H:i') }}
-        </p>
-    {% endif %}
+                        <div class="admin-preorder-show-info-grid">
+                            <div class="admin-preorder-show-info">
+                                <span>Client</span>
+                                <strong>
+                                    {{ preOrder.user.firstname }}
+                                    {{ preOrder.user.lastname }}
+                                </strong>
+                            </div>
 
-    <hr>
+                            <div class="admin-preorder-show-info">
+                                <span>Email</span>
+                                <strong>
+                                    <a href="mailto:{{ preOrder.user.email }}">
+                                        {{ preOrder.user.email }}
+                                    </a>
+                                </strong>
+                            </div>
 
-    <h2>
-        Articles
-    </h2>
+                            <div class="admin-preorder-show-info">
+                                <span>Total</span>
+                                <strong>
+                                    {{ preOrder.totalAmount|number_format(2, ',', ' ') }} €
+                                </strong>
+                            </div>
 
-    {% for item in preOrder.preOrderItems %}
+                            <div class="admin-preorder-show-info">
+                                <span>Date</span>
+                                <strong>
+                                    {{ preOrder.preOrderDate|date('d/m/Y H:i') }}
+                                </strong>
+                            </div>
 
-        <div>
+                            {% if preOrder.validatedAt %}
+                                <div class="admin-preorder-show-info">
+                                    <span>Validation</span>
+                                    <strong>
+                                        {{ preOrder.validatedAt|date('d/m/Y H:i') }}
+                                    </strong>
+                                </div>
+                            {% endif %}
 
-            <img
-                src="{{ asset('images/shop/' ~ item.article.image) }}"
-                alt="{{ item.article.name }}"
-                width="200"
-            >
+                            {% if preOrder.paidAt %}
+                                <div class="admin-preorder-show-info">
+                                    <span>Paiement</span>
+                                    <strong>
+                                        {{ preOrder.paidAt|date('d/m/Y H:i') }}
+                                    </strong>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </section>
 
-            <h3>
-                {{ item.article.name }}
-            </h3>
+                    <section class="admin-preorder-show-card">
+                        <h2>Articles commandés</h2>
 
-            <p>
-                <strong>Description :</strong><br>
-                {{ item.article.description }}
-            </p>
+                        <div class="admin-preorder-show-items">
+                            {% for item in preOrder.preOrderItems %}
+                                <article class="admin-preorder-show-item">
 
-            <p>
-                <strong>Diamètre :</strong>
+                                    <div class="admin-preorder-show-item-image-wrapper">
+                                        <img
+                                            src="{{ asset('images/shop/' ~ item.article.image) }}"
+                                            alt="{{ item.article.name }}"
+                                            class="admin-preorder-show-item-image"
+                                            loading="lazy"
+                                        >
+                                    </div>
 
-                    {% if item.diameter %}
-                        {{ item.diameter.value }} mm
-                    {% else %}
-                        Aucun
-                    {% endif %}
+                                    <div class="admin-preorder-show-item-content">
+                                        <h3>{{ item.article.name }}</h3>
 
-            </p>
+                                        <p class="admin-preorder-show-item-description">
+                                            {{ item.article.description }}
+                                        </p>
 
-            <p>
-                <strong>Quantité :</strong>
-                {{ item.quantity }}
-            </p>
+                                        <div class="admin-preorder-show-item-grid">
+                                            <div>
+                                                <span>Diamètre</span>
+                                                <strong>
+                                                    {% if item.diameter %}
+                                                        {{ item.diameter.value }} mm
+                                                    {% else %}
+                                                        Aucun
+                                                    {% endif %}
+                                                </strong>
+                                            </div>
 
-            <p>
-                <strong>Prix unitaire :</strong>
-                {{ item.unitPrice }} €
-            </p>
+                                            <div>
+                                                <span>Quantité</span>
+                                                <strong>{{ item.quantity }}</strong>
+                                            </div>
 
-            <p>
-                <strong>Total ligne :</strong>
-                {{ item.totalPrice }} €
-            </p>
+                                            <div>
+                                                <span>Prix unitaire</span>
+                                                <strong>
+                                                    {{ item.unitPrice|number_format(2, ',', ' ') }} €
+                                                </strong>
+                                            </div>
+
+                                            <div>
+                                                <span>Total ligne</span>
+                                                <strong>
+                                                    {{ item.totalPrice|number_format(2, ',', ' ') }} €
+                                                </strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </article>
+                            {% endfor %}
+                        </div>
+                    </section>
+
+                </main>
+
+                <aside class="admin-preorder-show-sidebar">
+
+                    <section class="admin-preorder-show-card admin-preorder-show-summary">
+                        <h2>Actions</h2>
+
+                        {% if preOrder.invoicePdfPath %}
+                            <a
+                                href="{{ path('admin_pre_order_invoice', { id: preOrder.id }) }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="admin-preorder-show-button"
+                            >
+                                Voir la facture PDF
+                            </a>
+                        {% endif %}
+
+                        {% if preOrder.status.value == 'en_attente' %}
+                            <form
+                                method="post"
+                                action="{{ path('admin_pre_order_validate', { id: preOrder.id }) }}"
+                            >
+                                <button
+                                    type="submit"
+                                    class="admin-preorder-show-button"
+                                >
+                                    Valider la précommande
+                                </button>
+                            </form>
+
+                            <form
+                                method="post"
+                                action="{{ path('admin_pre_order_refuse', { id: preOrder.id }) }}"
+                                onsubmit="return confirm('Voulez-vous vraiment refuser cette précommande ?');"
+                            >
+                                <button
+                                    type="submit"
+                                    class="admin-preorder-show-button admin-preorder-show-button--danger"
+                                >
+                                    Refuser la précommande
+                                </button>
+                            </form>
+                        {% endif %}
+
+                        <a
+                            href="{{ path('admin_pre_order') }}"
+                            class="admin-preorder-show-back-link"
+                        >
+                            Retour à la liste
+                        </a>
+                    </section>
+
+                </aside>
+
+            </div>
 
         </div>
-
-        <hr>
-
-    {% endfor %}
-
-    {% if preOrder.invoicePdfPath %}
-
-        <a
-            href="{{ path('admin_pre_order_invoice', {
-                id: preOrder.id
-            }) }}"
-            target="_blank"
-        >
-            Voir la facture PDF
-        </a>
-
-    {% endif %}
-
-    <br><br>
-
-    {% if preOrder.status.value == 'en_attente' %}
-
-        <form
-            method="post"
-            action="{{ path('admin_pre_order_validate', {
-                id: preOrder.id
-            }) }}"
-        >
-
-            <button type="submit">
-                Valider la précommande
-            </button>
-
-        </form>
-
-        <br>
-
-        <form
-            method="post"
-            action="{{ path('admin_pre_order_refuse', {
-                id: preOrder.id
-            }) }}"
-        >
-
-            <button type="submit">
-                Refuser la précommande
-            </button>
-
-        </form>
-
-    {% endif %}
-
-    <br>
-
-    <a href="{{ path('admin_pre_order') }}">
-        Retour à la liste
-    </a>
+    </section>
 
 {% endblock %}

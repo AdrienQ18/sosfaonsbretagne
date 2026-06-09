@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Détail du signalement | SOS Faons Bretagne
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
+
+{% block body %}
+
+    <section class="admin-alert-show-page">
+        <div class="admin-alert-show-container">
+
+            <header class="admin-alert-show-header">
+                <div>
+                    <h1>Signalement #{{ alert.id }}</h1>
+                    <p>Détail complet du signalement transmis.</p>
+                </div>
+
+                <span class="admin-alert-status admin-alert-status--{{ alert.status.value }}">
+               {{ alert.status.getLabel() }}
+            </span>
+            </header>
+
+            <div class="admin-alert-show-layout">
+
+                <div class="admin-alert-show-main">
+                    <section class="admin-alert-show-card">
+                        <h2>Informations du signalement</h2>
+
+                        <div class="admin-alert-show-info-grid">
+                            <div><span>Type</span><strong>{{ alert.type }}</strong></div>
+                            <div><span>Culture</span><strong>{{ alert.cultureType }}</strong></div>
+                            <div><span>Surface</span><strong>{{ alert.surface ? alert.surface|number_format(2, ',', ' ') ~ ' ha' : '-' }}</strong></div>
+                            <div><span>Date signalement</span><strong>{{ alert.creationDate|date('d/m/Y H:i') }}</strong></div>
+                            <div><span>Intervention</span><strong>{{ alert.interventionDate ? alert.interventionDate|date('d/m/Y H:i') : 'Non renseignée' }}</strong></div>
+                            <div><span>Localisation</span><strong>{{ alert.localisation ?: '-' }}</strong></div>
+                            <div>
+                                <span>Latitude</span>
+                                <strong>
+                                    {{ alert.gpsLatitude ? alert.gpsLatitude|number_format(6, '.', '') : '-' }}
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Longitude</span>
+                                <strong>
+                                    {{ alert.gpsLongitude ? alert.gpsLongitude|number_format(6, '.', '') : '-' }}
+                                </strong>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="admin-alert-show-card">
+                        <h2>Description</h2>
+                        <p class="admin-alert-show-description">
+                            {{ alert.description|nl2br }}
+                        </p>
+                    </section>
+
+                    {% if alert.image %}
+                        <section class="admin-alert-show-card">
+                            <h2>Image transmise</h2>
+
+                            <img
+                                src="{{ asset('images/alert/' ~ alert.image) }}"
+                                alt="Image du signalement {{ alert.id }}"
+                                class="admin-alert-show-image"
+                                loading="lazy"
+                            >
+                        </section>
+                    {% endif %}
+
+                    {% if alert.user %}
+                        <section class="admin-alert-show-card">
+                            <h2>Utilisateur</h2>
+
+                            <div class="admin-alert-show-info-grid">
+                                <div><span>Email</span><strong>{{ alert.user.email }}</strong></div>
+                                <div><span>Téléphone</span><strong>{{ alert.user.phone ?: '-' }}</strong></div>
+                                <div><span>Nom</span><strong>{{ alert.user.lastname ?: '-' }}</strong></div>
+                                <div><span>Prénom</span><strong>{{ alert.user.firstname ?: '-' }}</strong></div>
+                            </div>
+                        </section>
+                    {% endif %}
+
+                </div>
+
+                <aside class="admin-alert-show-sidebar">
+                    <section class="admin-alert-show-card">
+                        <h2>Gestion admin</h2>
+
+                        <form
+                            method="post"
+                            class="admin-alert-show-form"
+                            novalidate
+                        >
+                            <input
+                                type="hidden"
+                                name="_token"
+                                value="{{ csrf_token('admin_alert_update_' ~ alert.id) }}"
+                            >
+                            <div class="admin-alert-show-form-group">
+                                <label for="interventionDate">Date d'intervention</label>
+                                <input
+                                    type="datetime-local"
+                                    id="interventionDate"
+                                    name="interventionDate"
+                                    aria-label="Date d'intervention"
+                                    value="{{ alert.interventionDate ? alert.interventionDate|date('Y-m-d\\TH:i') : '' }}"
+                                >
+                            </div>
+
+                            <div class="admin-alert-show-form-group">
+                                <label for="status">Statut</label>
+                                <select
+                                    id="status"
+                                    name="status"
+                                    aria-label="Statut du signalement"
+                                >
+                                    <option value="signalement_passee" {% if alert.status.value == 'signalement_passee' %}selected{% endif %}>
+                                        Signalement passé
+                                    </option>
+                                    <option value="signalement_validee" {% if alert.status.value == 'signalement_validee' %}selected{% endif %}>
+                                        Intervention validée
+                                    </option>
+                                    <option value="signalement_refusee" {% if alert.status.value == 'signalement_refusee' %}selected{% endif %}>
+                                        Intervention refusée
+                                    </option>
+                                </select>
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="admin-alert-show-button"
+                                aria-label="Enregistrer les modifications du signalement {{ alert.id }}"
+                            >
+                                Enregistrer
+                            </button>
+                        </form>
+
+                        <a
+                            href="{{ path('admin_alert') }}"
+                            class="admin-alert-show-back-link"
+                            aria-label="Retour à la liste des signalements"
+                        >
+                            Retour à la liste
+                        </a>
+                    </section>
+                </aside>
+
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

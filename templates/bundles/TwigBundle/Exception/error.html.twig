@@ -1,28 +1,38 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Erreur {{ status_code }}
+    Erreur {{ status_code }} | SOS Faons Bretagne
 {% endblock %}
+
+{% block meta_description %}
+    Une erreur est survenue sur le site SOS Faons Bretagne.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
 
 {% block body %}
 
-    <main class="error-page">
-        <section class="error-container">
+    <section class="error-page">
+        <div class="error-container">
 
             <div class="error-card">
 
                 <span class="error-code">
-                Erreur {{ status_code }}
-            </span>
+                    Erreur {{ status_code }}
+                </span>
 
                 <h1>
                     Oups, une erreur s’est produite.
                 </h1>
 
-                <h2>
+                <p class="error-status">
                     Le serveur a renvoyé l’erreur :
                     <strong>{{ status_code }} {{ status_text }}</strong>
-                </h2>
+                </p>
 
                 {% if app.environment == 'dev' and exception is defined and exception.message is not empty %}
                     <div class="error-debug">
@@ -32,7 +42,7 @@
 
                 <p>
                     Quelque chose ne fonctionne pas correctement.
-                    Vous pouvez nous contacter à
+                    Vous pouvez réessayer dans quelques instants ou nous contacter à
                     <a href="mailto:contact@sosfaonsbretagne.fr">
                         contact@sosfaonsbretagne.fr
                     </a>
@@ -40,12 +50,12 @@
                 </p>
 
                 <a href="{{ path('main_home') }}" class="error-button">
-                    Retour au site
+                    Retour à l’accueil
                 </a>
 
             </div>
 
-        </section>
-    </main>
+        </div>
+    </section>
 
 {% endblock %}

@@ -1,86 +1,205 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Mon panier | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Consultez votre panier et validez votre précommande auprès de SOS Faons Bretagne.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
+
 {% block body %}
 
-    <h1>Mon panier</h1>
+    <section class="panier-page">
+        <div class="panier-container">
 
-    {% for item in cart %}
-        <div>
-            <img
-                src="{{ asset('images/shop/' ~ item.article.image) }}"
-                alt="{{ item.article.name }}"
-                width="150"
-            >
-            <p>{{ item.article.name }}</p>
-            <p>Prix : {{ item.article.price }} €</p>
+            <header class="panier-header">
+                <h1>Mon panier</h1>
 
-            <form method="post" action="{{ path('cart_update', { index: item.index }) }}">
-                <label>
-                    Quantité
-                    <input
-                        type="number"
-                        name="quantity"
-                        value="{{ item.quantity }}"
-                        min="1"
-                        required
-                    >
-                </label>
+                <p>
+                    Vérifiez vos articles avant de valider votre précommande.
+                </p>
+            </header>
 
-                {% if item.article.requiresDiameter %}
+            {% if cart is empty %}
+                <div class="panier-empty">
+                    <h2>Votre panier est vide</h2>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="diameter"
-                            value="28"
-                            {% if item.diameter == 28 %}checked{% endif %}
-                            required
-                        >
-                        28 mm
-                    </label>
+                    <p>
+                        Aucun article n'a encore été ajouté à votre panier.
+                    </p>
 
-                    <label>
-                        <input
-                            type="radio"
-                            name="diameter"
-                            value="32"
-                            {% if item.diameter == 32 %}checked{% endif %}
-                        >
-                        32 mm
-                    </label>
+                    <a href="{{ path('shop') }}" class="panier-back-shop-button">
+                        Retour à la boutique
+                    </a>
+                </div>
+            {% else %}
 
-                {% endif %}
+                <div class="panier-layout">
 
-                <button type="submit">
-                    Modifier
-                </button>
-            </form>
-            <p>
-                Total article :
-                {{ item.lineTotal|number_format(2, ',', ' ') }} €
-            </p>
-            <form method="post" action="{{ path('cart_remove', { index: item.index }) }}">
-                <button type="submit">
-                    Supprimer
-                </button>
-            </form>
+                    <div class="panier-items">
+
+                        {% for item in cart %}
+                            <article class="panier-item">
+
+                                <div class="panier-item-image-wrapper">
+                                    <img
+                                        src="{{ asset('images/shop/' ~ item.article.image) }}"
+                                        alt="{{ item.article.name }}"
+                                        class="panier-item-image"
+                                        loading="lazy"
+                                    >
+                                </div>
+
+                                <div class="panier-item-content">
+
+                                    <div class="panier-item-header">
+                                        <div>
+                                            <h2>{{ item.article.name }}</h2>
+
+                                            <p class="panier-item-price">
+                                                {{ item.article.price|number_format(2, ',', ' ') }} €
+                                            </p>
+                                        </div>
+
+                                        <form
+                                            method="post"
+                                            action="{{ path('cart_remove', { index: item.index }) }}"
+                                            class="panier-remove-form"
+                                            onsubmit="return confirm('Voulez-vous vraiment supprimer cet article du panier ?');"
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="_token"
+                                                value="{{ csrf_token('cart_remove_' ~ item.index) }}"
+                                            >
+                                            <button
+                                                type="submit"
+                                                class="panier-remove-button"
+                                                aria-label="Supprimer {{ item.article.name }} du panier"
+                                            >
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <form
+                                        method="post"
+                                        action="{{ path('cart_update', { index: item.index }) }}"
+                                        class="panier-update-form"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="_token"
+                                            value="{{ csrf_token('cart_update_' ~ item.index) }}"
+                                        >
+                                        {% if item.article.requiresDiameter %}
+                                            <div class="panier-options">
+                                                <span>Diamètre</span>
+
+                                                <div class="panier-radio-group">
+                                                    <label>
+                                                        <input
+                                                            type="radio"
+                                                            name="diameter"
+                                                            value="28"
+                                                            {% if item.diameter == 28 %}checked{% endif %}
+                                                            required
+                                                        >
+                                                        28 mm
+                                                    </label>
+
+                                                    <label>
+                                                        <input
+                                                            type="radio"
+                                                            name="diameter"
+                                                            value="32"
+                                                            {% if item.diameter == 32 %}checked{% endif %}
+                                                            required
+                                                        >
+                                                        32 mm
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="panier-update-row">
+                                            <label class="panier-quantity">
+                                                <span>Quantité</span>
+
+                                                <input
+                                                    type="number"
+                                                    name="quantity"
+                                                    value="{{ item.quantity }}"
+                                                    min="1"
+                                                    inputmode="numeric"
+                                                    required
+                                                >
+                                            </label>
+
+                                            <button
+                                                type="submit"
+                                                class="panier-update-button"
+                                            >
+                                                Modifier
+                                            </button>
+                                        </div>
+
+                                    </form>
+
+                                    <div class="panier-line-total">
+                                        <span>Total article</span>
+                                        <strong>{{ item.lineTotal|number_format(2, ',', ' ') }} €</strong>
+                                    </div>
+
+                                </div>
+
+                            </article>
+                        {% endfor %}
+
+                    </div>
+
+                    <aside class="panier-summary">
+
+                        <h2>Résumé</h2>
+
+                        <div class="panier-summary-row">
+                            <span>Total panier</span>
+                            <strong>{{ totalCart|number_format(2, ',', ' ') }} €</strong>
+                        </div>
+
+                        <p>
+                            Votre précommande sera vérifiée par l'association avant l'envoi du lien de paiement.
+                        </p>
+
+                        <form method="post" action="{{ path('pre_order_validate') }}">
+                            <input
+                                type="hidden"
+                                name="_token"
+                                value="{{ csrf_token('pre_order_validate') }}"
+                            >
+                            <button type="submit" class="panier-validate-button">
+                                Valider la précommande
+                            </button>
+                        </form>
+
+                        <a href="{{ path('shop') }}" class="panier-continue-link">
+                            Continuer mes achats
+                        </a>
+
+                    </aside>
+
+                </div>
+
+            {% endif %}
+
         </div>
-    {% else %}
-        <p>Votre panier est vide.</p>
-    {% endfor %}
-    {% if cart is not empty %}
-        <hr>
-
-        <h3>
-            Total panier :
-            {{ totalCart|number_format(2, ',', ' ') }} €
-        </h3>
-
-        <form method="post" action="{{ path('pre_order_validate') }}">
-            <button type="submit">
-                Valider la précommande
-            </button>
-        </form>
-    {% endif %}
+    </section>
 
 {% endblock %}

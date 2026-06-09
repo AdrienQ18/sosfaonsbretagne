@@ -42,7 +42,8 @@
                             attr: {
                                 class: 'password-input',
                                 placeholder: 'Votre nouveau mot de passe',
-                                autocomplete: 'new-password'
+                                autocomplete: 'new-password',
+                                'data-reset-password-first': 'true'
                             }
                         }) }}
 
@@ -50,11 +51,13 @@
                             type="button"
                             class="reset-toggle-password"
                             data-target="{{ resetForm.plainPassword.first.vars.id }}"
+                            data-eye-open="{{ asset('images/icones/eye-open.png') }}"
+                            data-eye-close="{{ asset('images/icones/eye-close.png') }}"
                             aria-label="Afficher le mot de passe"
                             aria-pressed="false"
                         >
                             <img
-                                src="{{ asset('images/icons/eye-open.png') }}"
+                                src="{{ asset('images/icones/eye-open.png') }}"
                                 alt=""
                                 aria-hidden="true"
                             >
@@ -72,19 +75,21 @@
                             attr: {
                                 class: 'password-input',
                                 placeholder: 'Confirmez votre mot de passe',
-                                autocomplete: 'new-password'
+                                autocomplete: 'new-password',
+                                'data-reset-password-second': 'true'
                             }
                         }) }}
 
                         <button
                             type="button"
                             class="reset-toggle-password"
-                            data-target="{{ resetForm.plainPassword.second.vars.id }}"
+                            data-target="{{ resetForm.plainPassword.second.vars.id }}"                            data-eye-open="{{ asset('images/icones/eye-open.png') }}"
+                            data-eye-close="{{ asset('images/icones/eye-close.png') }}"
                             aria-label="Afficher le mot de passe"
                             aria-pressed="false"
                         >
                             <img
-                                src="{{ asset('images/icons/eye-open.png') }}"
+                                src="{{ asset('images/icones/eye-open.png') }}"
                                 alt=""
                                 aria-hidden="true"
                             >
@@ -116,81 +121,4 @@
         </div>
     </section>
 
-{% endblock %}
-
-{% block extraJs %}
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const togglePasswordButtons = document.querySelectorAll('.reset-toggle-password');
-
-            togglePasswordButtons.forEach((button) => {
-                button.addEventListener('click', () => {
-                    const targetId = button.dataset.target;
-                    const input = document.getElementById(targetId);
-                    const image = button.querySelector('img');
-
-                    if (!input || !image) {
-                        return;
-                    }
-
-                    const isHidden = input.type === 'password';
-
-                    input.type = isHidden ? 'text' : 'password';
-
-                    image.src = isHidden
-                        ? "{{ asset('images/icons/eye-close.png') }}"
-                        : "{{ asset('images/icons/eye-open.png') }}";
-
-                    button.setAttribute(
-                        'aria-label',
-                        isHidden ? 'Masquer le mot de passe' : 'Afficher le mot de passe'
-                    );
-
-                    button.setAttribute(
-                        'aria-pressed',
-                        isHidden ? 'true' : 'false'
-                    );
-                });
-            });
-
-            const firstPassword = document.getElementById(
-                '{{ resetForm.plainPassword.first.vars.id }}'
-            );
-
-            const secondPassword = document.getElementById(
-                '{{ resetForm.plainPassword.second.vars.id }}'
-            );
-
-            const passwordMessage = document.getElementById(
-                'password-match-message'
-            );
-
-            if (!firstPassword || !secondPassword || !passwordMessage) {
-                return;
-            }
-
-            function checkPasswordsMatch() {
-                if (secondPassword.value.length === 0) {
-                    passwordMessage.textContent = '';
-                    passwordMessage.classList.remove('success');
-                    passwordMessage.classList.remove('error');
-
-                    return;
-                }
-
-                if (firstPassword.value === secondPassword.value) {
-                    passwordMessage.textContent = 'Les mots de passe correspondent.';
-                    passwordMessage.classList.remove('error');
-                    passwordMessage.classList.add('success');
-                } else {
-                    passwordMessage.textContent = 'Les mots de passe ne correspondent pas.';
-                    passwordMessage.classList.remove('success');
-                    passwordMessage.classList.add('error');
-                }
-            }
-
-            firstPassword.addEventListener('input', checkPasswordsMatch);
-            secondPassword.addEventListener('input', checkPasswordsMatch);
-        });
-    </script>
 {% endblock %}

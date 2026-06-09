@@ -23,6 +23,7 @@ class DonationFilterType extends AbstractType
 
             ->add('donorType', ChoiceType::class, [
                 'required' => false,
+                'label' => 'Type de donation: ',
                 'placeholder' => 'Tous',
                 'choices' => [
                     'Particulier' => DonorType::PARTICULIER,

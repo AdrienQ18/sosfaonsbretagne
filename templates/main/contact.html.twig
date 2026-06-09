@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block meta_description %}
-    Contactez l'association SOS Faons Bretagne pour toute question concernant nos actions, les dons ou les signalements.
+    Contactez SOS Faons Bretagne pour toute question concernant l'association, les dons, les précommandes ou les signalements d'animaux sauvages.
 {% endblock %}
 
 {% block robots %}
@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block og_description %}
-    Contactez l'association SOS Faons Bretagne pour toute question concernant nos actions, les dons ou les signalements.
+    Contactez SOS Faons Bretagne pour toute question concernant l'association, les dons, les précommandes ou les signalements d'animaux sauvages.
 {% endblock %}
 
 {% block body %}
@@ -72,7 +72,39 @@
                             <h3>Réseaux sociaux</h3>
 
                             <p>
-                                Retrouvez-nous sur Facebook et Instagram.
+                                <a
+                                    href="https://www.facebook.com/sos.faons/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="social-link"
+                                >
+                                    <img
+                                        src="{{ asset('images/icones/facebook.svg') }}"
+                                        alt=""
+                                        aria-hidden="true"
+                                        width="20"
+                                        height="20"
+                                    >
+                                    Facebook
+                                </a>
+                            </p>
+
+                            <p>
+                                <a
+                                    href="https://www.instagram.com/sosfaonsbretagne/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="social-link"
+                                >
+                                    <img
+                                        src="{{ asset('images/icones/instagram.svg') }}"
+                                        alt=""
+                                        aria-hidden="true"
+                                        width="20"
+                                        height="20"
+                                    >
+                                    Instagram
+                                </a>
                             </p>
                         </div>
 
@@ -117,10 +149,18 @@
                         {{ form_errors(formContact.message) }}
                     </div>
 
-                    <button type="submit" class="contact-submit-button">
+                    <button
+                        type="submit"
+                        class="contact-submit-button"
+                        aria-label="Envoyer le message de contact"
+                    >
                         Envoyer le message
                     </button>
-
+                    <p class="contact-rgpd">
+                        Les informations transmises via ce formulaire sont utilisées uniquement
+                        pour répondre à votre demande. Pour en savoir plus, consultez notre
+                        <a href="{{ path('main_pdc') }}">politique de confidentialité</a>.
+                    </p>
                     {{ form_end(formContact) }}
                 </div>
 

@@ -1,4 +1,44 @@
+.nav-top{
+   display: flex;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 50%);
+}
+.nav-logo{
+    display: flex;
+    height: 10rem;
+    width: 10rem;
+}
+.nav-menu{
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 10rem);
+}
+.nav-menu-top{
+    display: flex;
+    gap: 2rem;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 2rem;
+}
+.nav-menu-top ul{
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    justify-content: flex-end;
+    align-items: center;
+}
+.nav-menu-top ul li a .menu-icon{
+    height: 2rem;
+    width: 2rem;
+}
 
+.nav-menu-top ul li:nth-child(3) a .menu-icon{
+    height: 3rem;
+    width: 3rem;
+}
+.nav-menu-bottom{
+    display: flex;
+}
 .nav-second{
     background-color: rgb(255, 255, 255, 50%);
     padding: 0.5rem;
@@ -6,16 +46,18 @@
     align-items: center;
     justify-content: space-around;
 }
+
 .second img{
     width: 6rem;
 }
-ul{
+.top-menu{
     display: flex;
     gap: 2rem;
     margin-inline: 2rem;
     justify-content: space-around;
+    align-items: center;
 }
-a{
+.top-menu li a{
     text-decoration: none;
     color: black;
     font-size: larger;
@@ -23,31 +65,8 @@ a{
     letter-spacing: 0.1rem;
 }
 
-li{
+.top-menu li{
     list-style: none;
-}
-
-.nav-menu {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    background-color: #333;
-}
-
-.nav-menu li {
-    position: relative;
-}
-
-.nav-menu li a {
-    color: white;
-    padding: 14px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.nav-menu li a:hover {
-    background-color: #111;
 }
 
 /* Style du menu déroulant */
@@ -89,6 +108,7 @@ h1{
 
 .nav-banniere{
     display: flex;
+    justify-content: space-between;
 }
 .nav-left{
     width: 50%;
@@ -98,17 +118,18 @@ h1{
     color: white;
 }
 .nav-right{
-    width: 50%;
+    /*width: 50%;*/
     display: flex;
+
     flex-direction: column;
     justify-content: center;
+    align-items: flex-end;
     gap: 2rem;
-    /*margin-inline: 5rem;*/
-    padding-left: 30rem;
+    /*padding-left: 30rem;*/
 }
 
 .logo{
-    width: 10rem;
+    width: 9rem;
 }
 .nav-button {
     opacity: 1;
@@ -121,7 +142,7 @@ h1{
     display: inline-block;
     text-decoration: none;
     text-transform: uppercase;
-    margin-inline: 10rem;
+    margin-inline: 2rem;
     border-radius: 10px;
     width: 25rem;
 }
@@ -133,7 +154,7 @@ h1{
     width: 100%;
     color: white;
     display: block;
-    transition: 0.5s; /* J'ai remplacé $speed par une valeur par défaut de 0.3s */
+    transition: 0.5s;
     position: absolute;
     content: attr(data-back);
     transform: translateY(-50%) rotateX(90deg);
@@ -159,7 +180,7 @@ h1{
     display: block;
     padding: 0 30px;
     line-height: 60px;
-    transition: 0.3s; /* J'ai remplacé $speed par une valeur par défaut de 0.3s */
+    transition: 0.3s;
     position: relative;
     background: rgba(255, 255, 255, 50%);
     content: attr(data-front);
@@ -176,3 +197,5 @@ h1{
     opacity: 0;
     transform: translateY(50%) rotateX(90deg);
 }
+
+

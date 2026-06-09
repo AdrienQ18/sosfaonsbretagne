@@ -15,6 +15,7 @@ import './styles/alert.css';
 import './styles/easyAccess.css'
 import './styles/privacyPolicy.css'
 import './styles/contact.css'
+import './styles/footer.css'
 import './styles/boutique.css'
 import './styles/panier.css'
 

@@ -1,42 +1,103 @@
 <nav>
     <div class="nav-image">
         <div class="nav-overlay">
-            <div class="nav-second">
-                <a href="{{ path('main_home') }}">
-                    <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" class="logo" alt="logo SOS Faons Bretagne">
-                </a>
-                <ul>
-                    <li><a href="{{ path('main_home') }}">Accueil</a></li>
-                    <li><a href="{{ path('main_about') }}">A propos</a></li>
-                    <li><a href="{{ path('main_galerie') }}">Galerie</a></li>
-                    <li><a href="{{ path('event_list') }}">Postes</a></li>
-                    {% if is_granted("ROLE_ADMIN") %}
-                        <li class="dropdown">
-                            <a href="#" class="dropbtn">Administrateur</a>
-                            <div class="dropdown-content">
-                                <a href="{{ path('admin_userList') }}">Liste des utilisateurs</a>
-                                <a href="{{ path('admin_donation') }}">Gestion des donations</a>
-                                <a href="{{ path('admin_roles') }}">Gestion des roles</a>
-                                <a href="{{ path('admin_availability') }}">Gestion des disponibilités</a>
-                                <a href="{{ path('admin_pre_order') }}">Gestion des précommandes</a>
-                                <a href="{{ path('event_create') }}">Création d'un post</a>
-                                <a href="{{ path('admin_alert') }}">Gestion des signalements</a>
-                                <a href="{{ path('admin_article_index') }}">Gestion des articles</a>
-                            </div>
-                        </li>
-                    {% endif %}
-                    <a href="{{ path('donation') }}" >Faire un don</a>
-                    <a href="{{ path('main_alert') }}">Signaler un fauchage</a>
-                    <li><a href="{{ path('shop') }}">Boutique</a></li>
-                    <li><a href="{{ path('cart_index') }}">Panier</a></li>
-                    {% if app.user %}
-                        <li><a href="{{ path('app_logout') }}">Se Déconnecter</a></li>
-                        <li><a href="{{ path('user_profile') }}">Mon Profil</a></li>
-                    {% else %}
-                        <li><a href="{{ path('app_login') }}">Connexion</a></li>
-                    {% endif %}
-                </ul>
+            <div class="nav-top">
+                <div class="nav-logo">
+                    <a href="{{ path('main_home') }}">
+                        <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" class="logo"
+                             alt="logo SOS Faons Bretagne">
+                    </a>
+                </div>
+                <div class="nav-menu">
+                    <div class="nav-menu-top">
+                        <ul>
+                            <li><a title="Accès à la boutique" href="{{ path('shop') }}"><img class="menu-icon"
+                                                                                              src="{{ asset('images/icons/shop.png') }}"
+                                                                                              alt="Boutique"></a></li>
+                            <li><a title="Panier" href="{{ path('cart_index') }}"><img class="menu-icon"
+                                                                                       src="{{ asset('images/icons/caddie.png') }}"
+                                                                                       alt="Panier"></a></li>
+                            {% if app.user %}
+                                <li><a title="Déconnexion" href="{{ path('app_logout') }}"><img class="menu-icon"
+                                                                                                src="{{ asset('images/icons/logout.png') }}"
+                                                                                                alt="Déconnexion"></a>
+                                </li>
+                                <li><a title="Profil utilisateur" href="{{ path('user_profile') }}"><img
+                                            class="menu-icon" src="{{ asset('images/icons/profile.png') }}"
+                                            alt="Mon profil"></a></li>
+                            {% else %}
+                                <li><a title="Connexion" href="{{ path('app_login') }}"><img class="menu-icon"
+                                                                                             src="{{ asset('images/icons/login.png') }}"
+                                                                                             alt="Connexion"></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="nav-menu-bottom">
+                        <ul class="top-menu">
+                            <li><a href="{{ path('main_home') }}">Accueil</a></li>
+                            <li><a href="{{ path('main_about') }}">A propos</a></li>
+                            <li><a href="{{ path('main_galerie') }}">Galerie</a></li>
+                            <li><a href="{{ path('event_list') }}">Postes</a></li>
+                            {% if is_granted("ROLE_ADMIN") %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropbtn">Administrateur</a>
+                                    <div class="dropdown-content">
+                                        <a href="{{ path('admin_userList') }}">Liste des utilisateurs</a>
+                                        <a href="{{ path('admin_donation') }}">Gestion des donations</a>
+                                        <a href="{{ path('admin_roles') }}">Gestion des roles</a>
+                                        <a href="{{ path('admin_availability') }}">Gestion des disponibilités</a>
+                                        <a href="{{ path('admin_pre_order') }}">Gestion des précommandes</a>
+                                        <a href="{{ path('event_create') }}">Création d'un post</a>
+                                        <a href="{{ path('admin_alert') }}">Gestion des signalements</a>
+                                        <a href="{{ path('admin_article_index') }}">Gestion des articles</a>
+                                    </div>
+                                </li>
+                            {% endif %}
+                            <li><a href="{{ path('donation') }}">Faire un don</a></li>
+                            <li><a href="{{ path('main_alert') }}">Signaler un fauchage</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+{#            <div class="nav-first">#}
+
+{#            </div>#}
+{#            <div class="nav-second">#}
+                {#                <a href="{{ path('main_home') }}"> #}
+                {#                    <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" class="logo" alt="logo SOS Faons Bretagne"> #}
+                {#                </a> #}
+{#                <ul class="top-menu">#}
+{#                    <li><a href="{{ path('main_home') }}">Accueil</a></li>#}
+{#                    <li><a href="{{ path('main_about') }}">A propos</a></li>#}
+{#                    <li><a href="{{ path('main_galerie') }}">Galerie</a></li>#}
+{#                    <li><a href="{{ path('event_list') }}">Postes</a></li>#}
+{#                    {% if is_granted("ROLE_ADMIN") %}#}
+{#                        <li class="dropdown">#}
+{#                            <a href="#" class="dropbtn">Administrateur</a>#}
+{#                            <div class="dropdown-content">#}
+{#                                <a href="{{ path('admin_userList') }}">Liste des utilisateurs</a>#}
+{#                                <a href="{{ path('admin_donation') }}">Gestion des donations</a>#}
+{#                                <a href="{{ path('admin_roles') }}">Gestion des roles</a>#}
+{#                                <a href="{{ path('admin_availability') }}">Gestion des disponibilités</a>#}
+{#                                <a href="{{ path('admin_pre_order') }}">Gestion des précommandes</a>#}
+{#                                <a href="{{ path('event_create') }}">Création d'un post</a>#}
+{#                                <a href="{{ path('admin_alert') }}">Gestion des signalements</a>#}
+{#                                <a href="{{ path('admin_article_index') }}">Gestion des articles</a>#}
+{#                            </div>#}
+{#                        </li>#}
+{#                    {% endif %}#}
+{#                    <li><a href="{{ path('donation') }}">Faire un don</a></li>#}
+{#                    <li><a href="{{ path('main_alert') }}">Signaler un fauchage</a></li>#}
+                    {#                    <li><a title="Accès à la boutique" href="{{ path('shop') }}"><img class="menu-icon" src="{{ asset('images/icons/shop.png') }}" alt="Boutique"></a></li> #}
+                    {#                    <li><a title="Panier" href="{{ path('cart_index') }}"><img class="menu-icon" src="{{ asset('images/icons/caddie.png') }}" alt="Panier"></a></li> #}
+                    {#                    {% if app.user %} #}
+                    {#                        <li><a title="Déconnexion" href="{{ path('app_logout') }}"><img class="menu-icon" src="{{ asset('images/icons/logout.png') }}" alt="Déconnexion"></a></li> #}
+                    {#                        <li><a title="Profil utilisateur" href="{{ path('user_profile') }}"><img class="menu-icon" src="{{ asset('images/icons/profile.png') }}" alt="Mon profil"></a></li> #}
+                    {#                    {% else %} #}
+                    {#                        <li><a title="Connexion" href="{{ path('app_login') }}"><img class="menu-icon" src="{{ asset('images/icons/login.png') }}" alt="Connexion"></a></li> #}
+                    {#                    {% endif %} #}
+{#                #}
+{#            </div>#}
             {% if app.request.get('_route') == 'main_home' %}
                 <div class="banniere-parent">
                     <div class="nav-banniere">
@@ -52,8 +113,10 @@
                                 sauver à temps.</p>
                         </div>
                         <div class="nav-right">
-                            <a href="{{ path('donation') }}" class="nav-button nav-don" data-back="Faire un don" data-front="Faire un don"></a>
-                            <a href="{{ path('main_alert') }}" class="nav-button nav-alert" data-back="Signaler un fauchage" data-front="Signaler un fauchage"></a>
+                            <a href="{{ path('donation') }}" class="nav-button nav-don" data-back="Faire un don"
+                               data-front="Faire un don"></a>
+                            <a href="{{ path('main_alert') }}" class="nav-button nav-alert"
+                               data-back="Signaler un fauchage" data-front="Signaler un fauchage"></a>
                         </div>
                     </div>
                 </div>

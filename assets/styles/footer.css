@@ -1,0 +1,14 @@
+.footer-container{
+    display: flex;
+    align-items: center
+}
+.footer-nav{
+    display: flex;
+    list-style: none;
+    color: black;
+    justify-content: space-around;
+}
+.footer-button{
+    color: black;
+    text-decoration: none;
+}

@@ -9,12 +9,14 @@ use App\Entity\User;
 use App\Enum\BirdhouseDiameter;
 use App\Enum\PreOrderStatus;
 use App\Form\ArticleType;
+use App\Form\PreOrderFilterType;
 use App\Repository\ArticleRepository;
 use App\Repository\PreOrderRepository;
 use App\Service\ServiceHelloAsso\HelloAssoService;
 use App\Service\ServiceHelloAsso\HelloAssoWebhookService;
 use App\Service\Utils\FileUploaderShop;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
@@ -323,17 +325,29 @@ final class ShopController extends AbstractController
 
     #[Route('/admin/pre-order', name: 'admin_pre_order')]
     public function adminPreOrder(
-        PreOrderRepository $preOrderRepository
-    ): Response
-    {
+        Request $request,
+        PreOrderRepository $preOrderRepository,
+        PaginatorInterface $paginator
+    ): Response {
+        $form = $this->createForm(PreOrderFilterType::class, null, [
+            'method' => 'GET',
+        ]);
 
-        $preOrders = $preOrderRepository->findBy(
-            [],
-            ['preOrderDate' => 'DESC']
+        $form->handleRequest($request);
+
+        $filters = $form->getData() ?? [];
+
+        $query = $preOrderRepository->findByFiltersQuery($filters);
+
+        $preOrders = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
         );
 
         return $this->render('shop/adminPreOrder.html.twig', [
             'preOrders' => $preOrders,
+            'filterForm' => $form->createView(),
         ]);
     }
 

@@ -1,28 +1,165 @@
-<h1>Gestion des précommandes</h1>
+{% extends 'base.html.twig' %}
 
-{% for preOrder in preOrders %}
-    <div>
-        <h3>Précommande #{{ preOrder.id }}</h3>
+{% block title %}
+    Administration des précommandes | SOS Faons Bretagne
+{% endblock %}
 
-        <p>
-            Client :
-            {{ preOrder.user.firstname }} {{ preOrder.user.lastname }}
-        </p>
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
 
-        <p>Statut : {{ preOrder.status.value }}</p>
-        <p>Total : {{ preOrder.totalAmount }} €</p>
-        <p>Date : {{ preOrder.preOrderDate|date('d/m/Y H:i') }}</p>
+{% block canonical %}{% endblock %}
 
-        <a href="{{ path('admin_pre_order_show', { id: preOrder.id }) }}">
-            Voir le détail
-        </a>
+{% block body %}
 
-        {% if preOrder.invoicePdfPath %}
-            <a href="{{ path('admin_pre_order_invoice', { id: preOrder.id }) }}" target="_blank">
-                Voir la facture
-            </a>
-        {% endif %}
-    </div>
-{% else %}
-    <p>Aucune précommande trouvée.</p>
-{% endfor %}
+    <section class="admin-preorder-page">
+        <div class="admin-preorder-container">
+
+            <header class="admin-preorder-header">
+                <h1>Gestion des précommandes</h1>
+
+                <div class="admin-preorder-count">
+                    <span>Nombre de précommandes</span>
+                    <strong>{{ preOrders.getTotalItemCount }}</strong>
+                </div>
+            </header>
+
+            <div class="admin-preorder-card admin-preorder-filter-card">
+
+                {{ form_start(filterForm, {
+                    method: 'GET',
+                    attr: {
+                        id: 'pre-order-filter-form',
+                        class: 'admin-preorder-filter-form',
+                        'data-reset-url': path('admin_pre_order')
+                    }
+                }) }}
+
+                <div class="admin-preorder-filter-grid">
+                    <div class="admin-preorder-form-group">
+                        {{ form_label(filterForm.search) }}
+                        {{ form_widget(filterForm.search) }}
+                    </div>
+
+                    <div class="admin-preorder-form-group">
+                        {{ form_label(filterForm.status) }}
+                        {{ form_widget(filterForm.status) }}
+                    </div>
+
+                    <div class="admin-preorder-form-group">
+                        {{ form_label(filterForm.dateStart) }}
+                        {{ form_widget(filterForm.dateStart) }}
+                    </div>
+
+                    <div class="admin-preorder-form-group">
+                        {{ form_label(filterForm.dateEnd) }}
+                        {{ form_widget(filterForm.dateEnd) }}
+                    </div>
+
+                    <div class="admin-preorder-form-group">
+                        {{ form_label(filterForm.email) }}
+                        {{ form_widget(filterForm.email) }}
+                    </div>
+                </div>
+
+                <div class="admin-preorder-filter-actions">
+                    <button
+                        type="button"
+                        id="reset-preorder-filters"
+                        class="admin-preorder-reset-button"
+                        aria-label="Réinitialiser les filtres de recherche"
+                    >
+                        Réinitialiser
+                    </button>
+                </div>
+
+                {{ form_end(filterForm) }}
+
+            </div>
+
+            <div class="admin-preorder-grid">
+                {% for preOrder in preOrders %}
+                    <article class="admin-preorder-card">
+
+                        <div class="admin-preorder-card-header">
+                            <h2>Précommande #{{ preOrder.id }}</h2>
+
+                            <span class="admin-preorder-status admin-preorder-status--{{ preOrder.status.value }}">
+                                {% if preOrder.status.value == 'en_attente' %}
+                                    En attente
+                                {% elseif preOrder.status.value == 'validee' %}
+                                    Validée
+                                {% elseif preOrder.status.value == 'refusee' %}
+                                    Refusée
+                                {% elseif preOrder.status.value == 'en_attente_paiement' %}
+                                    En attente paiement
+                                {% elseif preOrder.status.value == 'payee' %}
+                                    Payée
+                                {% else %}
+                                    {{ preOrder.status.value }}
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="admin-preorder-infos">
+                            <div class="admin-preorder-row">
+                                <span>Client</span>
+                                <strong>
+                                    {{ preOrder.user.firstname }}
+                                    {{ preOrder.user.lastname }}
+                                </strong>
+                            </div>
+
+                            <div class="admin-preorder-row">
+                                <span>Total</span>
+                                <strong class="admin-preorder-amount">
+                                    {{ preOrder.totalAmount|number_format(2, ',', ' ') }} €
+                                </strong>
+                            </div>
+
+                            <div class="admin-preorder-row">
+                                <span>Date</span>
+                                <strong>
+                                    {{ preOrder.preOrderDate|date('d/m/Y H:i') }}
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="admin-preorder-actions">
+                            <a
+                                href="{{ path('admin_pre_order_show', { id: preOrder.id }) }}"
+                                class="admin-preorder-button"
+                            >
+                                Voir le détail
+                            </a>
+
+                            {% if preOrder.invoicePdfPath %}
+                                <a
+                                    href="{{ path('admin_pre_order_invoice', { id: preOrder.id }) }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="admin-preorder-button admin-preorder-button--secondary"
+                                >
+                                    Voir la facture
+                                </a>
+                            {% endif %}
+                        </div>
+
+                    </article>
+                {% else %}
+                    <div class="admin-preorder-empty">
+                        <h2>Aucune précommande trouvée</h2>
+
+                        <p>
+                            Aucune précommande n'est actuellement enregistrée.
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="admin-preorder-pagination">
+                {{ knp_pagination_render(preOrders) }}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

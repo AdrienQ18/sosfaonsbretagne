@@ -1,54 +1,127 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Administration des utilisateurs | SOS Faons Bretagne
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
+
 {% block body %}
-<h1>Liste des utilisateurs</h1>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
-            <th>Téléphone</th>
-            <th>Adresse</th>
-            <th>Ville</th>
-            <th>Code postal</th>
-            <th>Création du compte</th>
-            <th>Status</th>
-            <th>Rôle</th>
-            <th>Droit</th>
-            <th>Action</th>
-        </tr>
-        </thead>
+    <section class="admin-user-page">
+        <div class="admin-user-container">
 
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.lastname }}</td>
-                <td>{{ user.firstname }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phone }}</td>
-                <td>{{ user.address }}</td>
-                <td>{{ user.city }}</td>
-                <td>{{ user.zipcode }}</td>
-                <td>{{ user.creationDate | date('d/m/Y')}}</td>
-                <td>{{ user.actif }}</td>
-                <td>{{ user.userRole.name }}</td>
-                <td>{% if is_granted ("ROLE_ADMIN") %}
-                        Administrateur
-                    {% else %}
-                        Utilisateur
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{{ path('admin_modify', {'id' : user.id}) }}">
-                        <button class="user-list-action" id="user-mod" onclick="return confirm('Etes-vous sûr de vouloir modifier cet utilisateur ?')">
-                            Modifier
-                        </button>
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <header class="admin-user-header">
+                <h1>Liste des utilisateurs</h1>
+
+                <div class="admin-user-count">
+                    <span>Nombre d'utilisateurs</span>
+                    <strong>{{ users|length }}</strong>
+                </div>
+            </header>
+
+            <div class="admin-user-card">
+
+                <div class="admin-user-table-wrapper">
+                    <table class="admin-user-table">
+                        <caption class="admin-user-sr-only">
+                            Liste des utilisateurs enregistrés
+                        </caption>
+                        <thead>
+                        <tr>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Prénom</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Téléphone</th>
+                            <th scope="col">Adresse</th>
+                            <th scope="col">Ville</th>
+                            <th scope="col">Code postal</th>
+                            <th scope="col">Création</th>
+                            <th scope="col">Statut</th>
+                            <th scope="col">Rôle</th>
+                            <th scope="col">Droit</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.lastname }}</td>
+                                <td>{{ user.firstname }}</td>
+
+                                <td>
+                                    <a href="mailto:{{ user.email }}">
+                                        {{ user.email }}
+                                    </a>
+                                </td>
+
+                                <td>{{ user.phone ?? '-' }}</td>
+                                <td>{{ user.address ?? '-' }}</td>
+                                <td>{{ user.city ?? '-' }}</td>
+                                <td>{{ user.zipcode ?? '-' }}</td>
+
+                                <td>
+                                    {{ user.creationDate|date('d/m/Y') }}
+                                </td>
+
+                                <td>
+                                    {% if user.actif %}
+                                        <span class="admin-user-status admin-user-status--active">
+                                        Actif
+                                    </span>
+                                    {% else %}
+                                        <span class="admin-user-status admin-user-status--inactive">
+                                        Inactif
+                                    </span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {{ user.userRole.name ?? 'Non défini' }}
+                                </td>
+
+                                <td>
+                                    {% if 'ROLE_ADMIN' in user.roles %}
+                                        <span class="admin-user-badge admin-user-badge--admin">
+                                        Administrateur
+                                    </span>
+                                    {% else %}
+                                        <span class="admin-user-badge">
+                                        Utilisateur
+                                    </span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <a
+                                        href="{{ path('admin_modify', { id: user.id }) }}"
+                                        class="admin-user-edit-button"
+                                        aria-label="Modifier l'utilisateur {{ user.firstname }} {{ user.lastname }}"
+                                        onclick="return confirm('Êtes-vous sûr de vouloir modifier cet utilisateur ?');"
+                                    >
+                                        Modifier
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="12" class="admin-user-empty">
+                                    Aucun utilisateur trouvé.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
 {% endblock %}

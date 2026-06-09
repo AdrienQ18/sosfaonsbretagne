@@ -1,0 +1,199 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Gestion des signalements | SOS Faons Bretagne
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
+
+{% block body %}
+
+    <section class="admin-alert-page">
+
+        <div class="admin-alert-container">
+
+            <header class="admin-alert-header">
+
+                <h1>Gestion des signalements</h1>
+
+                <div class="admin-alert-count">
+                    <span>Nombre de signalements</span>
+                    <strong>{{ alerts.getTotalItemCount }}</strong>
+                </div>
+
+            </header>
+            <div class="admin-alert-filter-card">
+                {{ form_start(filterForm, {
+                    method: 'GET',
+                    attr: {
+                        id: 'alert-filter-form',
+                        class: 'admin-alert-filter-form',
+                        'data-reset-url': path('admin_alert')
+                    }
+                }) }}
+
+                <div class="admin-alert-filter-grid">
+                    <div class="admin-alert-form-group">
+                        {{ form_label(filterForm.search) }}
+                        {{ form_widget(filterForm.search) }}
+                    </div>
+
+                    <div class="admin-alert-form-group">
+                        {{ form_label(filterForm.status) }}
+                        {{ form_widget(filterForm.status) }}
+                    </div>
+
+                    <div class="admin-alert-form-group">
+                        {{ form_label(filterForm.type) }}
+                        {{ form_widget(filterForm.type) }}
+                    </div>
+
+                    <div class="admin-alert-form-group">
+                        {{ form_label(filterForm.localisation) }}
+                        {{ form_widget(filterForm.localisation) }}
+                    </div>
+
+                    <div class="admin-alert-form-group">
+                        {{ form_label(filterForm.cultureType) }}
+                        {{ form_widget(filterForm.cultureType) }}
+                    </div>
+
+                    <div class="admin-alert-form-group">
+                        {{ form_label(filterForm.dateStart) }}
+                        {{ form_widget(filterForm.dateStart) }}
+                    </div>
+
+                    <div class="admin-alert-form-group">
+                        {{ form_label(filterForm.dateEnd) }}
+                        {{ form_widget(filterForm.dateEnd) }}
+                    </div>
+                </div>
+
+                <div class="admin-alert-filter-actions">
+                    <button
+                        type="button"
+                        id="reset-alert-filters"
+                        class="admin-alert-reset-button"
+                        aria-label="Réinitialiser les filtres de signalements"
+                    >
+                        Réinitialiser
+                    </button>
+                </div>
+
+                {{ form_end(filterForm) }}
+            </div>
+            <div class="admin-alert-grid">
+
+                {% for alert in alerts %}
+
+                    <article class="admin-alert-card">
+
+                        <div class="admin-alert-card-header">
+
+                            <h2>{{ alert.type }}</h2>
+
+                            <span class="admin-alert-status admin-alert-status--{{ alert.status.value }}">
+                                {{ alert.status.getLabel() }}
+                            </span>
+
+                        </div>
+
+                        {% if alert.image %}
+                            <div class="admin-alert-image-wrapper">
+
+                                <img
+                                    src="{{ asset('images/alert/' ~ alert.image) }}"
+                                    alt="Photo du signalement"
+                                    class="admin-alert-image"
+                                    loading="lazy"
+                                >
+
+                            </div>
+                        {% endif %}
+
+                        <div class="admin-alert-infos">
+
+                            <div class="admin-alert-row">
+                                <span>Date signalement</span>
+                                <strong>{{ alert.creationDate|date('d/m/Y') }}</strong>
+                            </div>
+
+                            <div class="admin-alert-row">
+                                <span>Intervention</span>
+                                <strong>
+                                    {{ alert.interventionDate ? alert.interventionDate|date('d/m/Y H:i') : 'Non renseignée' }}
+                                </strong>
+                            </div>
+
+                            <div class="admin-alert-row">
+                                <span>Localisation</span>
+                                <strong>{{ alert.localisation }}</strong>
+                            </div>
+
+                            <div class="admin-alert-row">
+                                <span>Culture</span>
+                                <strong>{{ alert.cultureType }}</strong>
+                            </div>
+
+                            <div class="admin-alert-row">
+                                <span>Surface</span>
+                                <strong>
+                                    {{ alert.surface ? alert.surface|number_format(2, ',', ' ') ~ ' ha' : '-' }}
+                                </strong>
+                            </div>
+
+                            {% if alert.user %}
+                                <div class="admin-alert-row">
+                                    <span>Utilisateur</span>
+                                    <strong>{{ alert.user.email }}</strong>
+                                </div>
+
+                                <div class="admin-alert-row">
+                                    <span>Téléphone</span>
+                                    <strong>{{ alert.user.phone ?? '-' }}</strong>
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                        <div class="admin-alert-actions">
+
+                            <a
+                                href="{{ path('admin_alert_show', { id: alert.id }) }}"
+                                class="admin-alert-button"
+                                aria-label="Voir le détail du signalement {{ alert.id }}"
+                            >
+                                Voir le détail
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% else %}
+
+                    <div class="admin-alert-empty">
+
+                        <h2>Aucun signalement</h2>
+
+                        <p>
+                            Aucun signalement n'est actuellement enregistré.
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+            <div class="admin-alert-pagination">
+                {{ knp_pagination_render(alerts) }}
+            </div>
+        </div>
+
+    </section>
+
+{% endblock %}

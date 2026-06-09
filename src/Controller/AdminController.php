@@ -14,11 +14,6 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin', name: 'admin_')]
 final class AdminController extends AbstractController
 {
-    #[Route('', name: 'main_home')]
-    public function index(): Response
-    {
-        return $this->render('main/home.html.twig');
-    }
 
     #[Route('/userList', name: 'userList')]
     public function userList(
@@ -46,7 +41,7 @@ final class AdminController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash('success', 'Le role à bien été mis à jour');
-            return $this->redirectToRoute('userList');
+            return $this->redirectToRoute('admin_userList');
         }
         return $this->render('roles/modifyUser.html.twig', [
             'formUser' => $formUser->createView(),

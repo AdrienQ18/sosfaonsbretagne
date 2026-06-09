@@ -1,0 +1,190 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Signaler un fauchage | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Signalez un fauchage à venir ou la présence d'un faon auprès de SOS Faons Bretagne afin de demander une intervention par drone thermique.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('main_alert')) }}">
+{% endblock %}
+{% block og_title %}
+    Signaler un fauchage | SOS Faons Bretagne
+{% endblock %}
+
+{% block og_description %}
+    Signalez un fauchage à venir ou la présence d'un faon auprès de SOS Faons Bretagne afin de demander une intervention par drone thermique.
+{% endblock %}
+{% block body %}
+
+    <section class="alert-page">
+
+        <div class="alert-container">
+
+            <header class="alert-header">
+                <h1>Signaler un fauchage</h1>
+
+                <p>
+                    Vous pouvez nous transmettre une demande d'intervention
+                    afin de préserver les faons et la faune sauvage avant
+                    le passage des machines agricoles.
+                </p>
+            </header>
+
+            <div class="alert-layout">
+
+                <article class="alert-card alert-info-card">
+
+                    <h2>Demande d'intervention</h2>
+
+                    <p>
+                        Avant chaque fauche, il est possible de préserver la faune sauvage
+                        présente dans les parcelles. SOS Faons Bretagne propose gratuitement
+                        des interventions par drone à caméra thermique afin de repérer les faons
+                        et autres animaux cachés dans les cultures.
+                    </p>
+
+                    <p>
+                        Merci de nous contacter dès que votre date de fauche est connue,
+                        idéalement 24 à 48h à l'avance. Plus la demande est anticipée,
+                        plus nous pouvons mobiliser nos équipes efficacement.
+                    </p>
+
+                    <div class="alert-warning">
+                        Les demandes reçues après 18h la veille de la fauche ne pourront
+                        pas toujours être prises en charge.
+                    </div>
+
+                    <h3>Informations importantes à transmettre</h3>
+
+                    <ul>
+                        <li>La localisation précise de la parcelle ;</li>
+                        <li>La date et l'horaire estimé de la fauche ;</li>
+                        <li>Le type de culture concernée : prairie, ray-grass, luzerne, etc. ;</li>
+                        <li>Si possible, une photo ou un repère visuel de la parcelle.</li>
+                    </ul>
+
+                    <p>
+                        Une fois votre demande reçue, un membre de notre équipe vous recontactera
+                        afin de confirmer les possibilités d'intervention.
+                    </p>
+
+                </article>
+
+                <article class="alert-card alert-form-card">
+
+                    <h2>Formulaire de signalement</h2>
+
+                    {{ form_start(form, {
+                        attr: {
+                            class: 'alert-form',
+                            novalidate: 'novalidate'
+                        }
+                    }) }}
+
+                    {{ form_errors(form) }}
+
+                    <div class="alert-form-row">
+                        <div class="alert-form-group">
+                            {{ form_label(form.type) }}
+                            {{ form_widget(form.type) }}
+                            {{ form_errors(form.type) }}
+                        </div>
+
+                        <div class="alert-form-group">
+                            {{ form_label(form.surface) }}
+                            {{ form_widget(form.surface) }}
+                            {{ form_errors(form.surface) }}
+                        </div>
+                    </div>
+
+                    <div class="alert-form-group">
+                        {{ form_label(form.localisation) }}
+                        {{ form_widget(form.localisation) }}
+                        {{ form_errors(form.localisation) }}
+                    </div>
+
+                    <div class="alert-form-row">
+                        <div class="alert-form-group">
+                            {{ form_label(form.gpsLatitude) }}
+                            {{ form_widget(form.gpsLatitude, {
+                                attr: {
+                                    inputmode: 'decimal'
+                                }
+                            }) }}
+                            {{ form_errors(form.gpsLatitude) }}
+                        </div>
+
+                        <div class="alert-form-group">
+                            {{ form_label(form.gpsLongitude) }}
+                            {{ form_widget(form.gpsLongitude, {
+                                attr: {
+                                    inputmode: 'decimal'
+                                }
+                            }) }}
+                            {{ form_errors(form.gpsLongitude) }}
+                        </div>
+                    </div>
+                    <div class="alert-form-row">
+
+                        <div class="alert-form-group">
+                            {{ form_label(form.cultureType) }}
+                            {{ form_widget(form.cultureType) }}
+                            {{ form_errors(form.cultureType) }}
+                        </div>
+                        <div class="alert-form-group">
+                            {{ form_label(form.interventionDate) }}
+                            {{ form_widget(form.interventionDate) }}
+                            {{ form_errors(form.interventionDate) }}
+                        </div>
+
+                    </div>
+                    <div class="alert-form-group">
+                        {{ form_label(form.description) }}
+                        {{ form_widget(form.description) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+                    <div class="alert-form-group alert-file-group">
+                        {{ form_label(form.image) }}
+                        {{ form_widget(form.image, {
+                            attr: {
+                                class: 'alert-file-input',
+                                accept: 'image/*'
+                            }
+                        }) }}
+                        {{ form_errors(form.image) }}
+                        {{ form_help(form.image) }}
+                    </div>
+
+                    <p class="alert-rgpd">
+                        Les informations transmises via ce formulaire sont utilisées uniquement
+                        pour traiter votre demande d'intervention. Pour en savoir plus, consultez notre
+                        <a href="{{ path('main_pdc') }}">politique de confidentialité</a>.
+                    </p>
+
+                    <button
+                        type="submit"
+                        class="alert-submit-button"
+                        aria-label="Envoyer le signalement de fauchage"
+                    >
+                        Envoyer le signalement
+                    </button>
+
+                    {{ form_end(form) }}
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}

@@ -186,10 +186,7 @@ final class DonationController extends AbstractController
             ], 403);
         }
         $payload = json_decode($request->getContent(), true);
-//        file_put_contents(
-//            $this->getParameter('kernel.project_dir') . '/var/helloasso-debug.json',
-//            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
-//        );
+
         if (!$payload) {
             return new JsonResponse([
                 'error' => 'Le contenu reçu est invalide ou vide.',
@@ -201,27 +198,4 @@ final class DonationController extends AbstractController
         return new JsonResponse($result, $result['status']);
     }
 
-    #[Route('/donation/{id}/pdf-test', name: 'donation_pdf_test')]
-    public function testPdf(
-        Donation           $donation,
-        DonationPdfService $donationPdfService
-    ): Response
-    {
-        $path = $donationPdfService->generateFiscalReceipt($donation);
-        return new Response('PDF généré ici : ' . $path);
-    }
-
-    #[Route('/mail/test', name: 'mail_test')]
-    public function testMail(MailerInterface $mailer): Response
-    {
-        $email = (new Email())
-            ->from('test@sosfaonsbretagne.fr')
-            ->to('test@example.com')
-            ->subject('Test Papercut')
-            ->text('Ceci est un test Papercut.');
-
-        $mailer->send($email);
-
-        return new Response('Mail envoyé');
-    }
 }

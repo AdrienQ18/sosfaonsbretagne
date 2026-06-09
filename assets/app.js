@@ -19,6 +19,8 @@ import './styles/footer.css'
 import './styles/boutique.css'
 import './styles/panier.css'
 import './styles/adminPreOrder.css'
+import './styles/userAdminList.css'
+
 
 /*Import des ficher JS*/
 
@@ -26,6 +28,7 @@ import './js/donation.js';
 import './js/loginRegister.js';
 import './js/boutique.js';
 import './js/adminPreOrder.js';
+import './js/amdinUser.js';
 
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

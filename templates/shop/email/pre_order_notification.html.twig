@@ -4,83 +4,213 @@
     Nouvelle précommande reçue
 {% endblock %}
 
-{% block email_header %} <h1>Nouvelle précommande reçue</h1> <p>SOS Faons Bretagne</p>
+{% block email_header %}
+    <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.3;">
+        Nouvelle précommande reçue
+    </h1>
+
+    <p style="margin:8px 0 0 0; color:#ffffff;">
+        SOS Faons Bretagne
+    </p>
 {% endblock %}
 
 {% block email_content %}
 
-    ```
-    <p>
+    <p style="margin:0 0 18px 0;">
         Une nouvelle précommande vient d'être enregistrée sur le site.
     </p>
 
-    <div class="email-box">
+    <div
+        style="
+            background-color:#f4efe8;
+            border-left:4px solid #6e8e64;
+            padding:18px;
+            margin-bottom:24px;
+        "
+    >
 
-        <p>
+        <p style="margin:0 0 16px 0;">
             <strong>Client :</strong><br>
             {{ preOrder.user.firstname }}
             {{ preOrder.user.lastname }}
         </p>
 
-        <p>
+        <p style="margin:0 0 16px 0;">
             <strong>Email :</strong><br>
             {{ preOrder.user.email }}
         </p>
 
-        <p>
+        <p style="margin:0;">
             <strong>Date :</strong><br>
             {{ preOrder.preOrderDate|date('d/m/Y H:i') }}
         </p>
 
     </div>
 
-    <h2>Détail de la précommande</h2>
+    <h2
+        style="
+            color:#1b4a3a;
+            font-size:20px;
+            margin:0 0 16px 0;
+        "
+    >
+        Détail de la précommande
+    </h2>
 
-    <table class="email-table">
+    <table
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="
+            border-collapse:collapse;
+            margin-bottom:24px;
+        "
+    >
 
         <thead>
         <tr>
-            <th>Article</th>
-            <th>Diamètre</th>
-            <th>Quantité</th>
-            <th>Total</th>
+
+            <th
+                style="
+                    background:#f4efe8;
+                    border:1px solid #ddd5cc;
+                    padding:12px;
+                    color:#1b4a3a;
+                    text-align:left;
+                "
+            >
+                Article
+            </th>
+
+            <th
+                style="
+                    background:#f4efe8;
+                    border:1px solid #ddd5cc;
+                    padding:12px;
+                    color:#1b4a3a;
+                    text-align:left;
+                "
+            >
+                Diamètre
+            </th>
+
+            <th
+                style="
+                    background:#f4efe8;
+                    border:1px solid #ddd5cc;
+                    padding:12px;
+                    color:#1b4a3a;
+                    text-align:center;
+                "
+            >
+                Quantité
+            </th>
+
+            <th
+                style="
+                    background:#f4efe8;
+                    border:1px solid #ddd5cc;
+                    padding:12px;
+                    color:#1b4a3a;
+                    text-align:right;
+                "
+            >
+                Total
+            </th>
+
         </tr>
         </thead>
 
         <tbody>
 
         {% for item in preOrder.preOrderItems %}
+
             <tr>
-                <td>{{ item.article.name }}</td>
-                <td>
+
+                <td
+                    style="
+                        border:1px solid #ddd5cc;
+                        padding:12px;
+                    "
+                >
+                    {{ item.article.name }}
+                </td>
+
+                <td
+                    style="
+                        border:1px solid #ddd5cc;
+                        padding:12px;
+                    "
+                >
                     {% if item.diameter %}
                         {{ item.diameter.value }} mm
                     {% else %}
                         Aucun
                     {% endif %}
                 </td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.totalPrice }} €</td>
+
+                <td
+                    style="
+                        border:1px solid #ddd5cc;
+                        padding:12px;
+                        text-align:center;
+                    "
+                >
+                    {{ item.quantity }}
+                </td>
+
+                <td
+                    style="
+                        border:1px solid #ddd5cc;
+                        padding:12px;
+                        text-align:right;
+                    "
+                >
+                    {{ item.totalPrice|number_format(2, ',', ' ') }} €
+                </td>
+
             </tr>
+
         {% endfor %}
 
         </tbody>
 
     </table>
 
-    <div class="email-box">
+    <div
+        style="
+            background-color:#f4efe8;
+            border-left:4px solid #6e8e64;
+            padding:18px;
+        "
+    >
 
-        <strong>Montant total de la précommande</strong><br>
+        <strong
+            style="
+                display:block;
+                margin-bottom:8px;
+                color:#1b4a3a;
+            "
+        >
+            Montant total de la précommande
+        </strong>
 
-        <span class="email-amount">
-        {{ preOrder.totalAmount }} €
-    </span>
+        <span
+            style="
+                color:#1b4a3a;
+                font-size:24px;
+                font-weight:bold;
+            "
+        >
+            {{ preOrder.totalAmount|number_format(2, ',', ' ') }} €
+        </span>
 
     </div>
-    ```
 
 {% endblock %}
 
 {% block email_footer %}
-    Notification automatique SOS Faons Bretagne
+    Notification automatique SOS Faons Bretagne.<br>
+    Une nouvelle précommande a été enregistrée sur le site et nécessite une vérification.
 {% endblock %}

@@ -5,60 +5,97 @@
 {% endblock %}
 
 {% block email_header %}
-    <h1>Paiement confirmé</h1>
-    <p>SOS Faons Bretagne</p>
+    <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.3;">
+        Paiement confirmé
+    </h1>
+
+    <p style="margin:8px 0 0 0; color:#ffffff;">
+        SOS Faons Bretagne
+    </p>
 {% endblock %}
 
 {% block email_content %}
 
-    <div class="email-box">
+    <div
+        style="
+            background-color:#f4efe8;
+            border-left:4px solid #6e8e64;
+            padding:16px;
+            margin-bottom:24px;
+            color:#2b2b2b;
+            line-height:1.6;
+        "
+    >
         Un paiement de précommande vient d'être confirmé via HelloAsso.
     </div>
 
-    <h2>Informations du client</h2>
+    <h2 style="color:#1b4a3a; font-size:20px; margin:0 0 16px 0;">
+        Informations du client
+    </h2>
 
-    <div class="email-box">
-
-        <p>
+    <div
+        style="
+            background-color:#f4efe8;
+            border-left:4px solid #6e8e64;
+            padding:18px;
+            margin-bottom:26px;
+        "
+    >
+        <p style="margin:0 0 16px 0;">
             <strong>Client :</strong><br>
-            {{ preOrder.user.firstname }}
-            {{ preOrder.user.lastname }}
+            {{ preOrder.user.firstname }} {{ preOrder.user.lastname }}
         </p>
 
-        <p>
+        <p style="margin:0;">
             <strong>Email :</strong><br>
             {{ preOrder.user.email }}
         </p>
-
     </div>
 
-    <h2>Détail du paiement</h2>
+    <h2 style="color:#1b4a3a; font-size:20px; margin:0 0 16px 0;">
+        Détail du paiement
+    </h2>
 
-    <table class="email-table">
-
+    <table
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="border-collapse:collapse; margin-bottom:24px;"
+    >
         <tr>
-            <th>Précommande</th>
-            <td>#{{ preOrder.id }}</td>
-        </tr>
-
-        <tr>
-            <th>Date du paiement</th>
-            <td>{{ preOrder.paidAt|date('d/m/Y H:i') }}</td>
-        </tr>
-
-        <tr>
-            <th>Montant payé</th>
-            <td>
-                <span class="email-amount">
-                    {{ preOrder.totalAmount }} €
-                </span>
+            <td style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; font-weight:bold; width:180px; color:#1b4a3a;">
+                Précommande
+            </td>
+            <td style="border:1px solid #ddd5cc; padding:12px;">
+                #{{ preOrder.id }}
             </td>
         </tr>
 
+        <tr>
+            <td style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; font-weight:bold; color:#1b4a3a;">
+                Date du paiement
+            </td>
+            <td style="border:1px solid #ddd5cc; padding:12px;">
+                {{ preOrder.paidAt ? preOrder.paidAt|date('d/m/Y H:i') : 'Non renseignée' }}
+            </td>
+        </tr>
+
+        <tr>
+            <td style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; font-weight:bold; color:#1b4a3a;">
+                Montant payé
+            </td>
+            <td style="border:1px solid #ddd5cc; padding:12px;">
+                <span style="color:#1b4a3a; font-size:22px; font-weight:bold;">
+                    {{ preOrder.totalAmount|number_format(2, ',', ' ') }} €
+                </span>
+            </td>
+        </tr>
     </table>
 
 {% endblock %}
 
 {% block email_footer %}
-    Notification automatique SOS Faons Bretagne
+    Notification automatique SOS Faons Bretagne.<br>
+    Un paiement de précommande a été confirmé et peut être traité.
 {% endblock %}

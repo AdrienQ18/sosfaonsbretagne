@@ -1,14 +1,244 @@
-.footer-container{
-    display: flex;
-    align-items: center
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    margin-top: 80px;
+    background: var(--green-dark);
+    color: var(--white);
+    border-top: 4px solid rgba(255, 255, 255, 0.08);
+
 }
-.footer-nav{
-    display: flex;
+
+.footer-container {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr 1fr 1fr;
+    gap: 40px;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 8px 30px;
+}
+
+/* =========================
+   TITRES
+========================= */
+
+.footer-column h3 {
+    margin-bottom: 18px;
+    color: var(--white);
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+/* =========================
+   LOGO / PRESENTATION
+========================= */
+
+.footer-about {
+    max-width: 340px;
+}
+
+.footer-logo {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 120px;
+    background: var(--cream-light);
+    border-radius: 50%;
+    backdrop-filter: blur(4px);
+}
+
+.footer-logo img {
+    width: 95px;
+    height: auto;
+    transition: transform 0.25s ease;
+}
+
+.footer-logo:hover img {
+    transform: scale(1.05);
+}
+
+.footer-about p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+/* =========================
+   LIENS
+========================= */
+
+.footer-links,
+.footer-contact {
+    margin: 0;
+    padding: 0;
     list-style: none;
-    color: black;
-    justify-content: space-around;
 }
-.footer-button{
-    color: black;
+
+.footer-links li,
+.footer-contact li {
+    margin-bottom: 12px;
+}
+
+.footer-links a,
+.footer-contact a {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 15px;
     text-decoration: none;
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.footer-links a:hover,
+.footer-contact a:hover {
+    color: var(--white);
+    transform: translateX(4px);
+}
+
+/* =========================
+   CONTACT
+========================= */
+
+.footer-contact {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-contact li {
+    line-height: 1.6;
+}
+
+/* =========================
+   RESEAUX SOCIAUX
+========================= */
+
+.footer-social {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.footer-social a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.footer-social a:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.footer-social img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+/* Facebook */
+
+.footer-social a:first-child:hover {
+    background: #1877f2;
+}
+
+/* Instagram */
+
+.footer-social a:last-child:hover {
+    background: linear-gradient(
+        135deg,
+        #f58529,
+        #dd2a7b,
+        #8134af,
+        #515bd4
+    );
+}
+
+/* =========================
+   BAS DE PAGE
+========================= */
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 5px 20px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 14px;
+    letter-spacing: 0.3px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media screen and (max-width: 1000px) {
+
+    .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 35px;
+    }
+
+    .footer-about {
+        max-width: 100%;
+    }
+
+}
+
+@media screen and (max-width: 700px) {
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 45px 20px;
+    }
+
+    .footer-column {
+        text-align: center;
+    }
+
+    .footer-logo {
+        display: flex;
+        justify-content: center;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+
+    .footer-links a:hover,
+    .footer-contact a:hover {
+        transform: none;
+    }
+
+}
+
+@media screen and (max-width: 480px) {
+
+    .footer-logo img {
+        width: 100px;
+    }
+
+    .footer-about p,
+    .footer-links a,
+    .footer-contact li {
+        font-size: 14px;
+    }
+
+    .footer-column h3 {
+        font-size: 1rem;
+    }
+
 }

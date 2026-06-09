@@ -6,13 +6,13 @@
 {% block robots %}
     <meta name="robots" content="index, follow">
 {% endblock %}
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('main_home')) }}">
+{% endblock %}
 
 {% block body %}
-    <h1>Au cœur des prairies, des naissances passent inaperçues.</h1>
-    <h3>Chaque printemps, de mai à début juillet, des faons naissent. Ils restent tapis,
-        invisibles, dans les prairies. Au moment des fauches, face aux machines, ce refuge devient un
-        piège. En Bretagne, notre association agit aux côtés des agriculteurs pour les repérer et les
-        sauver à temps.</h3>
+
+
 
     {% include 'easyAccess/easyAccess.html.twig' %}
 {% endblock %}

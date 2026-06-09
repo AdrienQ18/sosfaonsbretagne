@@ -12,8 +12,43 @@
 
 {% block body %}
 
-
+    <h1 class="home-title page-title">Acceuil</h1>
 
     {% include 'easyAccess/easyAccess.html.twig' %}
+
+    <div class="home-item-background">
+        <div class="home-item">
+            <div class="item-image"><img src="{{ asset('images/photos/photo1.jpg') }}" alt=""></div>
+            <div class="item-description">
+                <h1 class="home-title">A propos</h1>
+                <p>Découvrez nos motivations et nos activités pour le bien de la bio-diversité</p>
+                <a href="{{ path('main_about') }}"><button class="item-button">En savoir plus </button></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-item-background">
+        <div class="home-item">
+
+            <div class="item-description">
+                <h1 class="home-title">Actualité</h1>
+                <p>Découvrez des articles et des événements concernant notre histoire et nos activités.</p>
+                <a href="{{ path('event_list') }}"><button class="item-button">En savoir plus </button></a>
+            </div>
+            <div class="item-image"><img src="{{ asset('images/photos/photo2.jpg') }}" alt=""></div>
+        </div>
+    </div>
+
+{#    <div class="home-item-background">#}
+{#        <div class="home-item">#}
+{#            <div class="item-image"><img src="{{ asset('images/photos/photo1.jpg') }}" alt=""></div>#}
+{#            <div class="item-description">#}
+{#                <h1 class="home-title">A propos</h1>#}
+{#                <p>Découvrez nos motivations et nos activités pour le bien de la bio-diversité</p>#}
+{#                <a href="{{ path('main_about') }}"><button class="item-button">En savoir plus </button></a>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
 {% endblock %}
 

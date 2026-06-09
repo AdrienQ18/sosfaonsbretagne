@@ -1,40 +1,144 @@
-<footer class="footer-container">
-    <a href="{{ path('main_home') }}">
-        <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" alt="logo sos foans Bretagne">
-    </a>
-    <ul class="footer-nav">
-        <li><a href="{{ path('main_cgu') }}" class="footer-button">Condition générales d'utilisations</a></li>
-        <li><a href="{{ path('main_pdc') }}" class="footer-button">Politique de confidencialité</a></li>
-        <li><a href="{{ path('main_contact') }}" class="footer-button">Contact</a></li>
-    </ul>
-    <div class="footer-reseau">
-        <p>
-            <a
-                href="https://www.facebook.com/sos.faons/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-link">
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-column footer-about">
+
+            <a href="{{ path('main_home') }}" class="footer-logo">
                 <img
-                    src="{{ asset('images/icones/facebook.svg') }}"
-                    alt=""
-                    aria-hidden="true"
-                    width="20"
-                    height="20">
+                    src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}"
+                    alt="Logo SOS Faons Bretagne"
+                >
             </a>
-        </p>
-        <p>
-            <a
-                href="https://www.instagram.com/sosfaonsbretagne/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="social-link">
-                <img
-                    src="{{ asset('images/icones/instagram.svg') }}"
-                    alt=""
-                    aria-hidden="true"
-                    width="20"
-                    height="20">
-            </a>
-        </p>
+
+            <p>
+                SOS Faons Bretagne est une association engagée dans la
+                protection de la faune sauvage grâce à l'utilisation
+                de drones thermiques avant les périodes de fauche.
+            </p>
+
+        </div>
+
+        <div class="footer-column">
+
+            <h3>Navigation</h3>
+
+            <ul class="footer-links">
+                <li>
+                    <a href="{{ path('main_home') }}">
+                        Accueil
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ path('shop') }}">
+                        Boutique
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ path('donation') }}">
+                        Faire un don
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ path('main_contact') }}">
+                        Contact
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="footer-column">
+
+            <h3>Informations</h3>
+
+            <ul class="footer-links">
+
+                <li>
+                    <a href="{{ path('main_cgu') }}">
+                        Conditions générales d'utilisation
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ path('main_pdc') }}">
+                        Politique de confidentialité
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="{{ path('main_mentions_legales') }}">
+                        Mentions légales
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="footer-column">
+
+            <h3>Contact</h3>
+
+            <address class="footer-contact">
+
+                    <a href="mailto:contact@sosfaonsbretagne.fr">
+                        contact@sosfaonsbretagne.fr
+                    </a>
+
+                <br>
+                11 Louvel
+                <br>
+                35140 Gosné
+                <br>
+                Bretagne, France
+
+            </address>
+
+            <div class="footer-social">
+                <span class="footer-sr-only">Réseaux sociaux</span>
+                <a
+                    href="https://www.facebook.com/sos.faons/"
+
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                >
+                    <img
+                        src="{{ asset('images/icones/facebook.svg') }}"
+                        alt=""
+                    >
+                </a>
+
+                <a
+                    href="https://www.instagram.com/sosfaonsbretagne/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                >
+                    <img
+                        src="{{ asset('images/icones/instagram.svg') }}"
+                        alt=""
+                    >
+                </a>
+
+            </div>
+
+        </div>
+
     </div>
+
+    <div class="footer-bottom">
+
+        <p>
+            © {{ "now"|date("Y") }}
+            SOS Faons Bretagne — Tous droits réservés.
+        </p>
+
+    </div>
+
 </footer>

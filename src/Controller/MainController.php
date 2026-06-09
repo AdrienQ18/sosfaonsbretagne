@@ -74,5 +74,8 @@ final class MainController extends AbstractController
     public function pdc(): Response{
         return $this->render('main/pdc.html.twig');
     }
-
+#[Route('/mentions-legales', name: 'main_mentions_legales')]
+public function mentionsLegales(): Response{
+    return $this->render('main/mentionsLegales.html.twig');
+}
 }

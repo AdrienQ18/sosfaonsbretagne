@@ -1,0 +1,522 @@
+/* =========================
+   ADMIN USER LIST
+========================= */
+
+.admin-user-page {
+    padding: 40px 20px 60px;
+    background: var(--cream-light);
+}
+
+.admin-user-container {
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.admin-user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.admin-user-header h1 {
+    color: var(--green-dark);
+    font-size: 2.2rem;
+    font-weight: 800;
+}
+
+.admin-user-count {
+    min-width: 180px;
+    padding: 16px 22px;
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.admin-user-count span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text);
+    font-size: 13px;
+}
+
+.admin-user-count strong {
+    color: var(--green-dark);
+    font-size: 1.6rem;
+}
+
+.admin-user-card {
+    padding: 26px;
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.admin-user-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.admin-user-table {
+    width: 100%;
+    min-width: 1200px;
+    border-collapse: collapse;
+}
+
+.admin-user-table th,
+.admin-user-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #eee8df;
+    color: var(--text);
+    font-size: 13px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.admin-user-table th {
+    background: var(--input-bg);
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.admin-user-table tbody tr:hover {
+    background: rgba(110, 142, 100, 0.06);
+}
+
+.admin-user-table a {
+    color: var(--green-dark);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.admin-user-table a:hover {
+    color: var(--green-main);
+}
+
+.admin-user-status,
+.admin-user-badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.admin-user-status--active {
+    background: #e7f8ed;
+    color: #207245;
+}
+
+.admin-user-status--inactive {
+    background: #fde7e7;
+    color: #b42318;
+}
+
+.admin-user-badge--admin {
+    background: #e8f1ff;
+    color: #2457a6;
+}
+
+.admin-user-edit-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+    color: var(--white) !important;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-user-edit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
+}
+
+.admin-user-empty {
+    padding: 30px !important;
+    text-align: center !important;
+    color: #777;
+}
+
+/* =========================
+   ADMIN USER FORM
+========================= */
+
+.admin-user-form-page {
+    padding: 40px 20px 60px;
+    background: var(--cream-light);
+}
+
+.admin-user-form-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.admin-user-form-card {
+    padding: 32px;
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.admin-user-form-header {
+    margin-bottom: 30px;
+}
+
+.admin-user-form-header h1 {
+    margin-bottom: 10px;
+    color: var(--green-dark);
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.admin-user-form-header p {
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.admin-user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.admin-user-form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.admin-user-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-user-form label {
+    margin-bottom: 8px;
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.admin-user-form input,
+.admin-user-form select,
+.admin-user-form textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: var(--input-bg);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.admin-user-form textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.admin-user-form input:focus,
+.admin-user-form select:focus,
+.admin-user-form textarea:focus {
+    border-color: var(--green-main);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(110, 142, 100, 0.12);
+}
+
+.admin-user-form ul {
+    margin-top: 8px;
+    padding-left: 18px;
+    color: #c62828;
+    font-size: 13px;
+}
+
+/* CHECKBOX */
+
+.admin-user-form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-user-form-checkbox label {
+    margin: 0;
+}
+
+.admin-user-form input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px !important;
+    height: 24px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0;
+    border: 2px solid var(--green-dark);
+    border-radius: 6px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.admin-user-form input[type='checkbox']::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 12px;
+    top: 50%;
+    left: 50%;
+    border: solid var(--green-main);
+    border-width: 0 3px 3px 0;
+    transform: translate(-50%, -60%) rotate(45deg) scale(0);
+    transform-origin: center;
+    transition: 0.2s ease;
+}
+
+.admin-user-form input[type='checkbox']:checked {
+    border-color: var(--green-main);
+}
+
+.admin-user-form input[type='checkbox']:checked::before {
+    transform: translate(-50%, -60%) rotate(45deg) scale(1);
+}
+
+/* ACTIONS */
+
+.admin-user-form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.admin-user-form-back-button,
+.admin-user-form-submit-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 180px;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-user-form-back-button {
+    background: var(--input-bg);
+    color: var(--green-dark);
+}
+
+.admin-user-form-submit-button {
+    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+    color: var(--white);
+}
+
+.admin-user-form-back-button:hover,
+.admin-user-form-submit-button:hover {
+    transform: translateY(-2px);
+}
+
+.admin-user-form-submit-button:hover {
+    box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
+}
+/* CHECKBOX GROUPS */
+
+.admin-user-form-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+}
+
+.admin-user-form-checkbox label {
+    margin: 0;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Disponibilités / droits */
+
+.admin-user-form-choice-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-user-form-choice-group > label {
+    margin-bottom: 4px;
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.admin-user-form-choice-group > div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+/* Style bouton pour disponibilités */
+
+.admin-user-form-choice-group input[type='checkbox'] {
+    display: none;
+}
+
+.admin-user-form-choice-group input[type='checkbox'] + label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 42px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.admin-user-form-choice-group input[type='checkbox']:checked + label {
+    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+    color: var(--white);
+    box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
+}
+
+.admin-user-form-choice-group input[type='checkbox'] + label:hover {
+    transform: translateY(-2px);
+}
+
+/* Checkbox simple : compte actif */
+
+.admin-user-form-single-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+.admin-user-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+.admin-user-form-single-checkbox input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 28px !important;
+    height: 28px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0;
+    border: 2px solid var(--green-dark);
+    border-radius: 8px;
+    background: var(--white);
+    position: relative;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.admin-user-form-single-checkbox input[type='checkbox']::before {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 14px;
+    top: 50%;
+    left: 50%;
+    border: solid var(--green-main);
+    border-width: 0 3px 3px 0;
+    transform: translate(-50%, -60%) rotate(45deg) scale(0);
+    transform-origin: center;
+    transition: 0.2s ease;
+}
+
+.admin-user-form-single-checkbox input[type='checkbox']:checked::before {
+    transform: translate(-50%, -60%) rotate(45deg) scale(1);
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 900px) {
+    .admin-user-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .admin-user-form-page {
+        padding: 28px 14px 45px;
+    }
+
+    .admin-user-form-card {
+        padding: 24px;
+    }
+
+    .admin-user-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-user-form-actions {
+        flex-direction: column;
+    }
+
+    .admin-user-form-back-button,
+    .admin-user-form-submit-button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .admin-user-page {
+        padding: 28px 14px 45px;
+    }
+
+    .admin-user-card {
+        padding: 20px;
+    }
+
+    .admin-user-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .admin-user-count {
+        width: 100%;
+    }
+}

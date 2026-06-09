@@ -11,6 +11,9 @@
 {% block robots %}
     <meta name="robots" content="index, follow">
 {% endblock %}
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('main_about')) }}">
+{% endblock %}
 
 {% block body %}
     <h1>A propos</h1>

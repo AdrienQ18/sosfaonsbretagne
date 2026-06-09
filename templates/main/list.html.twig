@@ -7,43 +7,49 @@
 {% block robots %}
     <meta name="robots" content="index, follow">
 {% endblock %}
+{#{% block canonical %}#}
+{#    <link rel="canonical" href="{{ absolute_url(path('main_list')) }}">#}
+{#{% endblock %}#}
 
 {% block body %}
 
-    <table>
-        <thead>
-        <tr>
-            <th>Titre</th>
-            <th>Contenu</th>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Status</th>
-        </tr>
-        </thead>
+    <div class="post-container">
         {% for event in events %}
-        <tr>
-            <td>{{ event.name }}</td>
-            <td>{{ event.description }}</td>
-            <td>{{ event.eventDate | date('d/m/Y') }}</td>
-            <td>{{ event.type }}</td>
-            <td>
-                {% if event.isPublished %}
-                    Publié
-                {% else %}
-                    Enregistré
-                {% endif %}
-            </td>
-            {% if is_granted ("ROLE_ADMIN") %}
-            <td>
-                <a href="{{ path('event_modify', {'id' : event.id}) }}">
-                    <button class="event-list-action" id="event-mod" onclick="return confirm('Etes-vous sûr de vouloir modifier ce post ?')">
-                        Modifier
-                    </button>
-                </a>
-            </td>
-            {% endif %}
-        </tr>
+            <div class="post-item">
+                <div class="post-photo">
+                    {% if event.image %}
+                        <img src="{{ asset('images/event/' ~ event.image) }}" alt="{{ event.image }}">
+                    {% else %}
+                        <span>Image indisponible</span>
+                    {% endif %}
+                </div>
+                <div class="post-description">
+
+                    <h1>{{ event.name }}
+                        <span class="post-item-date">(
+                            <span class="post-item-type">{{ event.type }}</span> du {{ event.eventDate | date('d/m/Y') }})
+                        </span>
+                    </h1>
+                    <p>{{ event.description | replace({'\\n':'<br>'}) | raw }}</p>
+
+                    {% if is_granted ("ROLE_ADMIN") %}
+                        <span>
+                                    {% if event.isPublished %}
+                                        Publié
+                                    {% else %}
+                                        Enregistré
+                                    {% endif %}
+                        </span>
+                        <a href="{{ path('event_modify', {'id' : event.id}) }}">
+                            <button class="post-list-action" id="event-mod"
+                                    onclick="return confirm('Etes-vous sûr de vouloir modifier ce post ?')">
+                                Modifier
+                            </button>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
         {% endfor %}
-    </table>
+    </div>
 
 {% endblock %}

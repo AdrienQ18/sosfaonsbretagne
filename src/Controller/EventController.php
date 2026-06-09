@@ -31,6 +31,11 @@ final class EventController extends AbstractController
             $eventsFiltered = array_filter($events, fn($event) => $event->isPublished());
         }
 
+        // Tri par ordre inverse chronologique (du plus récent au plus ancien)
+        usort($eventsFiltered, function($a, $b) {
+            return $b->getEventDate() <=> $a->getEventDate();
+        });
+
         return $this->render('main/list.html.twig', [
             'events' => $eventsFiltered,
         ]);

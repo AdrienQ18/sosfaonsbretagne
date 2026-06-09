@@ -1,0 +1,64 @@
+.home-item-background{
+    display: flex;
+    width: 100%;
+    margin-top: 2rem;
+    justify-content: center;
+    padding: 1rem;
+}
+.home-item-background:nth-child(even){
+    background-color: #CAD5CD;
+}
+.home-item{
+    display: flex;
+    width: 75%;
+    gap: 3rem;
+}
+.item-image{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.item-image img{
+    width: 20rem;
+    height: 20rem;
+    border-radius: 10px;
+}
+.item-description{
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.item-button{
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+    color: var(--white);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.item-button:hover{
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, var(--green-main), var(--green-soft));
+    box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
+}
+.home-title {
+    color: var(--green-dark);
+    font-size: 2.35rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+.page-title{
+    text-align: center;
+    margin-block: 2rem;
+}

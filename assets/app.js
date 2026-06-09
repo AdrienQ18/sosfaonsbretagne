@@ -19,6 +19,8 @@ import './styles/footer.css'
 import './styles/boutique.css'
 import './styles/panier.css'
 import './styles/adminPreOrder.css'
+import './styles/acceuil.css'
+import './styles/list.css'
 
 /*Import des ficher JS*/
 

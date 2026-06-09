@@ -5,54 +5,65 @@
 {% endblock %}
 
 {% block email_header %}
-    <h1>Merci pour votre don</h1>
-    <p>SOS Faons Bretagne</p>
+    <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.3;">
+        Merci pour votre don
+    </h1>
+
+    <p style="margin:8px 0 0 0; color:#ffffff;">
+        SOS Faons Bretagne
+    </p>
 {% endblock %}
 
 {% block email_content %}
 
     {% if donation.donorType.value == 'entreprise' %}
 
-        <p>Bonjour,</p>
+        <p style="margin:0 0 18px 0;">
+            Bonjour,
+        </p>
 
-        <p>
-            Toute l’équipe de <strong>SOS Faons Bretagne</strong>
+        <p style="margin:0 0 18px 0;">
+            Toute l'équipe de <strong>SOS Faons Bretagne</strong>
             remercie sincèrement
             <strong>{{ donation.companyName }}</strong>
             pour son don de
-            <span class="email-amount">{{ donation.amount }} €</span>.
+            <span style="color:#1b4a3a; font-size:22px; font-weight:bold;">
+                {{ donation.amount|number_format(2, ',', ' ') }} €
+            </span>.
         </p>
 
-        <p>
+        <p style="margin:0 0 24px 0;">
             Votre soutien nous aide à poursuivre nos actions de protection
-            des faons et d’accompagnement des agriculteurs sur le terrain.
+            des faons et d'accompagnement des agriculteurs sur le terrain.
         </p>
 
-        <h2>Informations de l'entreprise</h2>
+        <h2 style="color:#1b4a3a; font-size:20px; margin:0 0 16px 0;">
+            Informations de l'entreprise
+        </h2>
 
-        <div class="email-box">
+        <div style="background-color:#f4efe8; border-left:4px solid #6e8e64; padding:18px; margin-bottom:26px;">
 
-            <p>
+            <p style="margin:0 0 16px 0;">
                 <strong>Entreprise :</strong><br>
                 {{ donation.companyName }}
             </p>
 
-            <p>
+            <p style="margin:0 0 16px 0;">
                 <strong>SIRET :</strong><br>
                 {{ donation.companySiret }}
             </p>
 
-            <p>
+            <p style="margin:0 0 16px 0;">
                 <strong>Contact :</strong><br>
                 {{ donation.firstname }} {{ donation.lastname }}
             </p>
 
-            <p>
+            <p style="margin:0 0 16px 0;">
                 <strong>Email :</strong><br>
                 {{ donation.email }}
             </p>
 
-            <p>
+            <p style="margin:0;">
                 <strong>Adresse :</strong><br>
                 {{ donation.address }},
                 {{ donation.zipcode }} {{ donation.city }}
@@ -62,36 +73,40 @@
 
     {% else %}
 
-        <p>
+        <p style="margin:0 0 18px 0;">
             Bonjour {{ donation.firstname }} {{ donation.lastname }},
         </p>
 
-        <p>
-            Toute l’équipe de <strong>SOS Faons Bretagne</strong>
+        <p style="margin:0 0 18px 0;">
+            Toute l'équipe de <strong>SOS Faons Bretagne</strong>
             vous remercie sincèrement pour votre don de
-            <span class="email-amount">{{ donation.amount }} €</span>.
+            <span style="color:#1b4a3a; font-size:22px; font-weight:bold;">
+                {{ donation.amount|number_format(2, ',', ' ') }} €
+            </span>.
         </p>
 
-        <p>
+        <p style="margin:0 0 24px 0;">
             Votre soutien nous aide à poursuivre nos actions de protection
-            des faons et d’accompagnement des agriculteurs sur le terrain.
+            des faons et d'accompagnement des agriculteurs sur le terrain.
         </p>
 
-        <h2>Informations du donateur</h2>
+        <h2 style="color:#1b4a3a; font-size:20px; margin:0 0 16px 0;">
+            Informations du donateur
+        </h2>
 
-        <div class="email-box">
+        <div style="background-color:#f4efe8; border-left:4px solid #6e8e64; padding:18px; margin-bottom:26px;">
 
-            <p>
+            <p style="margin:0 0 16px 0;">
                 <strong>Donateur :</strong><br>
                 {{ donation.firstname }} {{ donation.lastname }}
             </p>
 
-            <p>
+            <p style="margin:0 0 16px 0;">
                 <strong>Email :</strong><br>
                 {{ donation.email }}
             </p>
 
-            <p>
+            <p style="margin:0;">
                 <strong>Adresse :</strong><br>
                 {{ donation.address }},
                 {{ donation.zipcode }} {{ donation.city }}
@@ -101,28 +116,49 @@
 
     {% endif %}
 
-    <h2>Détail du don</h2>
+    <h2 style="color:#1b4a3a; font-size:20px; margin:0 0 16px 0;">
+        Détail du don
+    </h2>
 
-    <table class="email-table">
-
+    <table
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="border-collapse:collapse; margin-bottom:26px;"
+    >
         <tr>
-            <th>Montant du don</th>
-            <td>{{ donation.amount }} €</td>
+            <td style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; font-weight:bold; width:180px; color:#1b4a3a;">
+                Montant du don
+            </td>
+            <td style="border:1px solid #ddd5cc; padding:12px;">
+                {{ donation.amount|number_format(2, ',', ' ') }} €
+            </td>
         </tr>
 
         <tr>
-            <th>Date du don</th>
-            <td>{{ donation.donationDate|date('d/m/Y') }}</td>
+            <td style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; font-weight:bold; color:#1b4a3a;">
+                Date du don
+            </td>
+            <td style="border:1px solid #ddd5cc; padding:12px;">
+                {{ donation.donationDate|date('d/m/Y') }}
+            </td>
         </tr>
 
         <tr>
-            <th>Numéro du reçu fiscal</th>
-            <td>{{ donation.fiscalReceiptNumber }}</td>
+            <td style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; font-weight:bold; color:#1b4a3a;">
+                Numéro du reçu fiscal
+            </td>
+            <td style="border:1px solid #ddd5cc; padding:12px;">
+                {{ donation.fiscalReceiptNumber }}
+            </td>
         </tr>
 
         <tr>
-            <th>Déduction fiscale</th>
-            <td>
+            <td style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; font-weight:bold; color:#1b4a3a;">
+                Déduction fiscale
+            </td>
+            <td style="border:1px solid #ddd5cc; padding:12px;">
                 {% if donation.donorType.value == 'entreprise' %}
                     60 % du montant du don est déductible de l'impôt sur les sociétés.
                 {% else %}
@@ -130,18 +166,17 @@
                 {% endif %}
             </td>
         </tr>
-
     </table>
 
-    <div class="email-box">
+    <div style="background-color:#f4efe8; border-left:4px solid #6e8e64; padding:16px; margin-bottom:24px; color:#2b2b2b; line-height:1.6;">
         Votre reçu fiscal est joint à cet email au format PDF.
     </div>
 
-    <p>
+    <p style="margin:0 0 18px 0;">
         Encore merci pour votre confiance et votre générosité.
     </p>
 
-    <p>
+    <p style="margin:0;">
         L'équipe <strong>SOS Faons Bretagne</strong>
     </p>
 
@@ -149,5 +184,5 @@
 
 {% block email_footer %}
     Cet email a été généré automatiquement suite à la validation de votre don.<br>
-    SOS Faons Bretagne — email@sosfaonsbretagne.fr
+    SOS Faons Bretagne — contact@sosfaonsbretagne.fr
 {% endblock %}

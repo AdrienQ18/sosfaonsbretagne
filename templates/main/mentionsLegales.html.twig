@@ -1,0 +1,241 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Mentions légales | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Consultez les mentions légales du site internet SOS Faons Bretagne.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('main_mentions_legales')) }}">
+{% endblock %}
+
+{% block og_title %}
+    Mentions légales | SOS Faons Bretagne
+{% endblock %}
+
+{% block og_description %}
+    Consultez les mentions légales du site internet SOS Faons Bretagne.
+{% endblock %}
+
+{% block body %}
+
+    <section class="pdc-page">
+
+        <div class="pdc-container">
+
+            <header class="pdc-header">
+
+                <h1>Mentions légales</h1>
+
+                <p>
+                    Conformément à la législation française en vigueur,
+                    vous trouverez ci-dessous les informations relatives
+                    à l'édition et à l'exploitation du site internet
+                    SOS Faons Bretagne.
+                </p>
+
+                <span class="pdc-update">
+                   Dernière mise à jour : 05/06/2026
+                </span>
+
+            </header>
+
+            <article class="pdc-card">
+
+                <section class="pdc-section">
+
+                    <h2>1. Éditeur du site</h2>
+
+                    <p>
+                        <strong>SOS Faons Bretagne</strong><br>
+                        Association loi 1901 dédiée à la protection des faons
+                        et de la faune sauvage grâce à l'utilisation de drones thermiques.
+                    </p>
+
+                    <p>
+                        Adresse :<br>
+                        11 Louvel<br>
+                        35140 Gosné<br>
+                        France
+                    </p>
+
+                    <p>
+                        Email :
+                        <a href="mailto:contact@sosfaonsbretagne.fr">
+                            contact@sosfaonsbretagne.fr
+                        </a>
+                    </p>
+                    <p>
+                        Numéro RNA : WXXXXXXXXX
+                    </p>
+
+                    <p>
+                        Numéro SIREN : 987 644 267
+                    </p>
+                </section>
+
+                <section class="pdc-section">
+
+                    <h2>2. Responsable de la publication</h2>
+
+                    <p>
+                        Le responsable de la publication du site est le
+                        président de l'association SOS Faons Bretagne.
+                    </p>
+
+                </section>
+
+                <section class="pdc-section">
+
+                    <h2>3. Hébergement</h2>
+
+                    <p>
+                        Le site est hébergé par :
+                    </p>
+
+                    <p>
+                        <strong>O2Switch</strong><br>
+                        Chemin des Pardiaux<br>
+                        63000 Clermont-Ferrand<br>
+                        France
+                    </p>
+
+                    <p>
+                        Site web :
+                        <a
+                            href="https://www.o2switch.fr"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            www.o2switch.fr
+                        </a>
+                    </p>
+
+                </section>
+
+                <section class="pdc-section">
+
+                    <h2>4. Conception et développement</h2>
+
+                    <p>
+                        Ce site internet a été conçu et développé bénévolement
+                        dans le cadre d'un projet réalisé pour l'association
+                        SOS Faons Bretagne.
+                    </p>
+
+                    <p>
+                        Développeurs :
+                    </p>
+
+                    <ul>
+                        <li>Adrien Le Clech</li>
+                        <li>Adrien Quintard</li>
+                    </ul>
+
+                </section>
+
+                <section class="pdc-section">
+
+                    <h2>5. Propriété intellectuelle</h2>
+
+                    <p>
+                        L'ensemble des contenus présents sur ce site
+                        (textes, photographies, illustrations, logos,
+                        documents, vidéos et éléments graphiques)
+                        est protégé par les dispositions du Code de la
+                        propriété intellectuelle.
+                    </p>
+
+                    <p>
+                        Toute reproduction, représentation, modification,
+                        publication ou adaptation, totale ou partielle,
+                        des éléments du site est interdite sans autorisation
+                        écrite préalable.
+                    </p>
+
+                </section>
+
+                <section class="pdc-section">
+
+                    <h2>6. Limitation de responsabilité</h2>
+
+                    <p>
+                        SOS Faons Bretagne s'efforce de fournir des informations
+                        aussi précises que possible sur son site.
+                    </p>
+
+                    <p>
+                        Toutefois, l'association ne saurait être tenue
+                        responsable des omissions, inexactitudes ou carences
+                        dans la mise à jour des informations diffusées.
+                    </p>
+
+                </section>
+
+                <section class="pdc-section">
+
+                    <h2>7. Liens externes</h2>
+
+                    <p>
+                        Le site peut contenir des liens vers des sites internet
+                        tiers. SOS Faons Bretagne ne peut être tenue responsable
+                        du contenu de ces sites externes ni des conséquences de
+                        leur utilisation.
+                    </p>
+
+                </section>
+
+                <section class="pdc-section">
+
+                    <h2>8. Données personnelles</h2>
+
+                    <p>
+                        Les informations relatives au traitement des données
+                        personnelles sont détaillées dans notre
+                        <a href="{{ path('main_pdc') }}">
+                            politique de confidentialité
+                        </a>.
+                    </p>
+
+                </section>
+
+                <section class="pdc-section">
+
+                    <h2>9. Droit applicable</h2>
+
+                    <p>
+                        Le présent site est soumis au droit français.
+                    </p>
+
+                    <p>
+                        En cas de litige et à défaut d'accord amiable,
+                        les juridictions françaises seront seules compétentes.
+                    </p>
+
+                </section>
+
+                <section class="pdc-section">
+                    <h2>10. Conditions d'utilisation</h2>
+
+                    <p>
+                        L'utilisation du site est encadrée par nos
+                        <a href="{{ path('main_cgu') }}">
+                            Conditions Générales d'Utilisation
+                        </a>.
+                    </p>
+                </section>
+
+            </article>
+
+        </div>
+
+    </section>
+
+{% endblock %}

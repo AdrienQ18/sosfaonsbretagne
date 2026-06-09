@@ -15,6 +15,7 @@ import './styles/alert.css';
 import './styles/easyAccess.css'
 import './styles/privacyPolicy.css'
 import './styles/contact.css'
+import './styles/footer.css'
 
 /*Import des ficher JS*/
 

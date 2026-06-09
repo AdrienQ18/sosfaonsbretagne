@@ -1,10 +1,10 @@
-<footer>
-    <ul>
-        <li><a href="{{ path('main_cgu') }}">Condition générales d'utilisations</a></li>
-        <li><a href="{{ path('main_pdc') }}">Politique de confidencialité</a></li>
-        <li><a href="{{ path('main_contact') }}">Contact</a></li>
-    </ul>
+<footer class="footer-container">
     <a href="{{ path('main_home') }}">
         <img src="{{ asset('images/LogoSOSFaonsBretagne.svg') }}" alt="logo sos foans Bretagne">
     </a>
+    <ul class="footer-nav">
+        <li><a href="{{ path('main_cgu') }}" class="footer-button">Condition générales d'utilisations</a></li>
+        <li><a href="{{ path('main_pdc') }}" class="footer-button">Politique de confidencialité</a></li>
+        <li><a href="{{ path('main_contact') }}" class="footer-button">Contact</a></li>
+    </ul>
 </footer>

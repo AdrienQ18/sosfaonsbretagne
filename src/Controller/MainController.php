@@ -78,4 +78,11 @@ final class MainController extends AbstractController
 public function mentionsLegales(): Response{
     return $this->render('main/mentionsLegales.html.twig');
 }
+    #[Route('/admin', name: 'admin_dashboard')]
+    public function dashboard(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        return $this->render('admin/dashboard.html.twig');
+    }
 }

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Administration | SOS Faons Bretagne
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block body %}
+
+    <section class="admin-dashboard-page">
+        <div class="admin-dashboard-container">
+
+            <header class="admin-dashboard-header">
+                <h1>Tableau de bord administrateur</h1>
+                <p>Accédez rapidement aux différentes sections de gestion du site.</p>
+            </header>
+
+            <div class="admin-dashboard-grid">
+
+                <a href="{{ path('admin_userList') }}" class="admin-dashboard-card">
+                    <h2>Utilisateurs</h2>
+                    <p>Gérer les comptes, rôles et informations utilisateurs.</p>
+                </a>
+
+                <a href="{{ path('admin_donation') }}" class="admin-dashboard-card">
+                    <h2>Donations</h2>
+                    <p>Consulter les dons, reçus fiscaux et exports PDF.</p>
+                </a>
+
+                <a href="{{ path('admin_roles') }}" class="admin-dashboard-card">
+                    <h2>Rôles</h2>
+                    <p>Administrer les rôles de l’association.</p>
+                </a>
+
+                <a href="{{ path('admin_availability') }}" class="admin-dashboard-card">
+                    <h2>Disponibilités</h2>
+                    <p>Gérer les disponibilités des bénévoles.</p>
+                </a>
+
+                <a href="{{ path('admin_pre_order') }}" class="admin-dashboard-card">
+                    <h2>Précommandes</h2>
+                    <p>Valider, refuser et suivre les précommandes boutique.</p>
+                </a>
+
+                <a href="{{ path('event_create') }}" class="admin-dashboard-card">
+                    <h2>Créer un post</h2>
+                    <p>Publier une actualité ou un contenu sur le site.</p>
+                </a>
+
+                <a href="{{ path('admin_alert') }}" class="admin-dashboard-card">
+                    <h2>Signalements</h2>
+                    <p>Traiter les demandes d’intervention et fauchages signalés.</p>
+                </a>
+
+                <a href="{{ path('admin_article_index') }}" class="admin-dashboard-card">
+                    <h2>Articles boutique</h2>
+                    <p>Ajouter, modifier ou supprimer les articles de la boutique.</p>
+                </a>
+
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

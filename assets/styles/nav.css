@@ -1,6 +1,7 @@
 /* =========================
    NAVIGATION
 ========================= */
+
 .nav-image {
     background-image: url("../images/faon_001.jpeg");
     background-position: center;
@@ -12,14 +13,12 @@
     background-color: rgb(0 0 0 / 0.50);
 }
 
-/* Header */
-
 .nav-top {
     display: flex;
     align-items: center;
     min-height: 150px;
     padding: 0 30px;
-    background: rgb(255 255 255 / 0.70);
+    background: rgb(255 255 255 / 0.78);
     backdrop-filter: blur(2px);
 }
 
@@ -27,31 +26,34 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 110px;
-    height: 110px;
+    width: 115px;
+    height: 115px;
     flex-shrink: 0;
 }
 
 .nav-logo img,
 .logo {
-    width: 110px;
+    width: 105px;
     height: auto;
 }
 
 .nav-menu {
     display: flex;
-    flex-direction: column;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    gap: 28px;
     width: 100%;
 }
 
-/* Top Menu */
+/* MENU ICONES */
 
 .nav-menu-top {
     display: flex;
-    gap: 2rem;
     justify-content: flex-end;
     align-items: center;
-    padding-right: 2rem;
+    flex-shrink: 0;
+    padding-right: 0;
 }
 
 .nav-menu-top ul {
@@ -65,17 +67,31 @@
 
 .nav-menu-top a {
     display: flex;
+    justify-content: center;
     align-items: center;
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.55);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.nav-menu-top a:hover {
+    transform: translateY(-2px);
+    background: var(--white);
+    box-shadow: 0 8px 18px rgb(27 74 58 / 0.15);
 }
 
 .menu-icon {
-    width: 24px;
-    height: 24px;
-    transition: transform 0.2s ease;
-}
-
-.nav-menu-top a:hover .menu-icon {
-    transform: scale(1.1);
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
 }
 
 /* MENU PRINCIPAL */
@@ -84,13 +100,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex: 1;
 }
 
 .top-menu {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 35px;
+    gap: 28px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -100,8 +117,9 @@
     position: relative;
     color: var(--green-dark);
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 800;
     text-decoration: none;
+    white-space: nowrap;
     transition: color 0.2s ease;
 }
 
@@ -113,7 +131,7 @@
     content: '';
     position: absolute;
     left: 0;
-    bottom: -6px;
+    bottom: -7px;
     width: 0;
     height: 2px;
     background: var(--green-main);
@@ -132,16 +150,21 @@
 
 .dropdown-content {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 14px);
     left: 0;
-    min-width: 220px;
+    z-index: 50;
+
+    min-width: 240px;
     padding: 10px 0;
+
     border-radius: 14px;
-    background: white;
+    background: var(--white);
     box-shadow: var(--shadow);
+
     opacity: 0;
     visibility: hidden;
     transform: translateY(8px);
+
     transition: all 0.2s ease;
 }
 
@@ -155,7 +178,12 @@
     display: block;
     padding: 12px 18px;
     color: var(--text);
-    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.dropdown-content a::after {
+    display: none;
 }
 
 .dropdown-content a:hover {
@@ -179,13 +207,13 @@
 
 .nav-left h1 {
     margin-bottom: 18px;
-    color: white;
+    color: var(--white);
     font-size: 3rem;
     font-weight: 800;
 }
 
 .nav-left p {
-    color: white;
+    color: var(--white);
     font-size: 16px;
     line-height: 1.7;
 }
@@ -196,12 +224,12 @@
     gap: 18px;
 }
 
-/* BOUTONS */
+/* BOUTONS BANNIERE */
 
 .nav-button {
     opacity: 1;
     outline: 0;
-    color: #fff;
+    color: var(--white);
     line-height: 60px;
     position: relative;
     text-align: center;
@@ -219,7 +247,7 @@
     left: 0;
     opacity: 0;
     width: 100%;
-    color: white;
+    color: var(--white);
     display: block;
     transition: 0.5s;
     position: absolute;
@@ -229,32 +257,32 @@
 }
 
 .nav-don {
-    background-color: rgba(0, 128, 0, 70%);
+    background-color: rgb(0 128 0 / 0.70);
 }
 
 .nav-don:after {
-    background-color: rgba(0, 128, 0, 100%);
+    background-color: rgb(0 128 0 / 1);
 }
 
 .nav-alert {
-    background-color: rgba(255, 69, 0, 70%);
+    background-color: rgb(255 69 0 / 0.70);
 }
 
 .nav-alert:after {
-    background-color: rgba(255, 69, 0, 100%);
+    background-color: rgb(255 69 0 / 1);
 }
 
 .nav-button:before {
     top: 0;
     left: 0;
     opacity: 1;
-    color: white;
+    color: var(--white);
     display: block;
     padding: 0 30px;
     line-height: 60px;
     transition: 0.3s;
     position: relative;
-    background: rgba(255, 255, 255, 50%);
+    background: rgb(255 255 255 / 0.30);
     content: attr(data-front);
     transform: translateY(0) rotateX(0);
     border-radius: 10px;
@@ -272,7 +300,44 @@
 
 /* RESPONSIVE */
 
+@media screen and (max-width: 1200px) {
+    .nav-menu {
+        gap: 18px;
+    }
+
+    .top-menu {
+        gap: 18px;
+    }
+
+    .top-menu li a {
+        font-size: 14px;
+    }
+
+    .nav-menu-top a {
+        width: 44px;
+        height: 44px;
+    }
+
+    .menu-icon {
+        width: 29px;
+        height: 29px;
+    }
+}
+
 @media screen and (max-width: 1000px) {
+    .nav-top {
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .nav-menu {
+        flex-direction: column-reverse;
+        gap: 20px;
+    }
+
+    .top-menu {
+        flex-wrap: wrap;
+    }
 
     .nav-banniere {
         flex-direction: column;
@@ -290,17 +355,6 @@
 }
 
 @media screen and (max-width: 768px) {
-
-    .nav-top {
-        flex-direction: column;
-        padding: 15px;
-    }
-
-    .top-menu {
-        flex-wrap: wrap;
-        gap: 15px;
-    }
-
     .nav-left h1 {
         font-size: 2.2rem;
     }
@@ -308,5 +362,20 @@
     .nav-button {
         width: 100%;
         min-width: auto;
+        margin-inline: 0;
+    }
+
+    .nav-menu-top ul {
+        gap: 12px;
+    }
+
+    .nav-menu-top a {
+        width: 42px;
+        height: 42px;
+    }
+
+    .menu-icon {
+        width: 28px;
+        height: 28px;
     }
 }

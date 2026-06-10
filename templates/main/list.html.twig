@@ -1,64 +1,126 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil - SOS Faons Bretagne{% endblock %}
-{% block meta_description %}
-    Découvrez SOS Faons Bretagne, une association engagée dans la protection des faons et de la faune sauvage en Bretagne.
+{% block title %}
+    Actualités | SOS Faons Bretagne
 {% endblock %}
+
+{% block meta_description %}
+    Retrouvez les actualités, événements et publications de SOS Faons Bretagne.
+{% endblock %}
+
 {% block robots %}
     <meta name="robots" content="index, follow">
 {% endblock %}
-{# {% block canonical %} #}
-{#    <link rel="canonical" href="{{ absolute_url(path('main_list')) }}"> #}
-{# {% endblock %} #}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('event_list')) }}">
+{% endblock %}
 
 {% block body %}
 
-    <div class="post-container">
-        {% for event in events %}
-            <div class="post-item">
-                <div class="post-photo">
-                    {% if event.image %}
-                        <img src="{{ asset('images/event/' ~ event.image) }}" alt="{{ event.image }}">
-                    {% else %}
-                        <span>Image indisponible</span>
-                    {% endif %}
-                </div>
-                <div class="post-description">
+    <section class="post-page">
 
-                    <h1>{{ event.name }}
-                        <span class="post-item-date">(
-                            <span
-                                class="post-item-type">{{ event.type }}</span> du {{ event.eventDate | date('d/m/Y') }})
-                        </span>
-                    </h1>
-                    <p>{{ event.description | replace({'\\n':'<br>'}) | raw }}</p>
+        <div class="post-container">
 
-                    {% if is_granted ("ROLE_ADMIN") %}
-                        <span>
+            <header class="post-header">
+                <h1>Actualités</h1>
+
+                <p>
+                    Retrouvez les dernières nouvelles, événements et publications
+                    de SOS Faons Bretagne.
+                </p>
+            </header>
+
+            <div class="post-grid">
+
+                {% for event in events %}
+
+                    <article class="post-card">
+
+                        <div class="post-photo">
+                            {% if event.image %}
+                                <img
+                                    src="{{ asset('images/event/' ~ event.image) }}"
+                                    alt="{{ event.name }}"
+                                    loading="lazy"
+                                >
+                            {% else %}
+                                <div class="post-no-image">
+                                    Image indisponible
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="post-content">
+
+                            <div class="post-meta">
+                                <span class="post-type">
+                                    {{ event.type }}
+                                </span>
+
+                                <span class="post-date">
+                                    {{ event.eventDate|date('d/m/Y') }}
+                                </span>
+                            </div>
+
+                            <h2>{{ event.name }}</h2>
+
+                            <p>
+                                {{ event.description|replace({'\\n':'<br>'})|raw }}
+                            </p>
+
+                            {% if is_granted("ROLE_ADMIN") %}
+
+                                <div class="post-admin-status">
                                     {% if event.isPublished %}
                                         Publié
                                     {% else %}
                                         Enregistré
                                     {% endif %}
-                        </span>
-                        <div class="list-button">
-                            <a href="{{ path('event_modify', {'id' : event.id}) }}">
-                                <button class="post-list-action action-modify" id="event-mod"
-                                        onclick="return confirm('Etes-vous sûr de vouloir modifier ce post ?')">
-                                    Modifier
-                                </button>
-                            </a>
-                            <a href="{{ path('event_delete', {'id' : event.id}) }}">
-                                <button class="post-list-action action-delete" id="event-mod"
-                                        onclick="return confirm('Etes-vous sûr de vouloir supprimerr ce post ?')">
-                                    Supprimer
-                                </button>
-                            </a>
+                                </div>
+
+                                <div class="post-admin-actions">
+
+                                    <a
+                                        href="{{ path('event_modify', { id: event.id }) }}"
+                                        class="post-admin-button post-admin-button--edit"
+                                        onclick="return confirm('Êtes-vous sûr de vouloir modifier ce post ?')"
+                                    >
+                                        Modifier
+                                    </a>
+
+                                    <a
+                                        href="{{ path('event_delete', { id: event.id }) }}"
+                                        class="post-admin-button post-admin-button--delete"
+                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce post ?')"
+                                    >
+                                        Supprimer
+                                    </a>
+
+                                </div>
+
+                            {% endif %}
+
                         </div>
-                    {% endif %}
-                </div>
+
+                    </article>
+
+                {% else %}
+
+                    <div class="post-empty">
+                        <h2>Aucune actualité</h2>
+
+                        <p>
+                            Aucune publication n'est disponible pour le moment.
+                        </p>
+                    </div>
+
+                {% endfor %}
+
             </div>
-        {% endfor %}
-    </div>
+
+        </div>
+
+    </section>
 
 {% endblock %}

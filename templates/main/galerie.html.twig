@@ -1,19 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Galerie photo | SOS Faons Bretagne
-{% endblock %}
-
-{% block meta_description %}
-    Découvrez les actions de SOS Faons Bretagne au travers de notre galerie photo.
-{% endblock %}
-
-{% block robots %}
-    <meta name="robots" content="index, follow">
-{% endblock %}
-
-{% block canonical %}
-    <link rel="canonical" href="{{ absolute_url(path('main_galerie')) }}">
+    Galerie | SOS Faons Bretagne
 {% endblock %}
 
 {% block body %}
@@ -26,13 +14,37 @@
                 <h1>Galerie photo</h1>
 
                 <p>
-                    Découvrez en images les actions de SOS Faons Bretagne,
-                    les interventions sur le terrain et les moments forts de l'association.
+                    Découvrez nos interventions sur le terrain,
+                    nos bénévoles, les animaux sauvés et les actions
+                    menées partout en Bretagne.
                 </p>
             </header>
+            <div class="gallery-grid">
+
+                {% for photo in photos %}
+                    <div class="gallery-item">
+                        <img
+                            src="{{ asset('images/gallery/' ~ photo) }}"
+                            alt="Photo SOS Faons Bretagne"
+                            class="gallery-image"
+                        >
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <div id="gallery-lightbox" class="gallery-lightbox">
+                <span class="gallery-lightbox-close">&times;</span>
+
+                <img
+                    id="gallery-lightbox-image"
+                    class="gallery-lightbox-image"
+                    src=""
+                    alt=""
+                >
+            </div>
 
         </div>
-
     </section>
 
 {% endblock %}

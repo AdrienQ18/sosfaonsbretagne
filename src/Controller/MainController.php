@@ -61,8 +61,29 @@ final class MainController extends AbstractController
     }
 
     #[Route('/galerie', name: 'main_galerie')]
-    public function galerie(): Response{
-        return $this->render('main/galerie.html.twig');
+    public function galerie(): Response
+    {
+        $galleryDirectory = $this->getParameter('kernel.project_dir') . '/public/images/gallery';
+
+        $photos = [];
+
+        if (is_dir($galleryDirectory)) {
+            $files = scandir($galleryDirectory);
+
+            foreach ($files as $file) {
+                $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+                if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
+                    $photos[] = $file;
+                }
+            }
+        }
+
+        sort($photos);
+
+        return $this->render('main/galerie.html.twig', [
+            'photos' => $photos,
+        ]);
     }
 
     #[Route('/cgu', name: 'main_cgu')]

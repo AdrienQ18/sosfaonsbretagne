@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Presse | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Consultez les articles de presse et reportages consacrés à SOS Faons Bretagne.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('main_presse')) }}">
+{% endblock %}
+
+{% block og_title %}
+    Presse | SOS Faons Bretagne
+{% endblock %}
+
+{% block og_description %}
+    Consultez les articles de presse et reportages consacrés à SOS Faons Bretagne.
+{% endblock %}
+
+{% block body %}
+
+    <section class="press-page">
+
+        <div class="press-container">
+
+            <header class="press-header">
+                <h1>Presse</h1>
+
+                <p>
+                    Retrouvez les reportages, articles et médias qui parlent
+                    des actions de SOS Faons Bretagne pour protéger les faons
+                    avant les fauches.
+                </p>
+            </header>
+
+            <article class="press-feature-card">
+
+                <div class="press-video-wrapper">
+                    <video
+                        controls
+                        preload="metadata"
+                        class="press-video"
+                        aria-label="Reportage TF1 Info sur SOS Faons Bretagne"
+                    >
+                        <source src="{{ asset('video/tf1-sos-faons.mp4') }}" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture vidéo.
+                    </video>
+                </div>
+
+                <div class="press-feature-content">
+
+                    <div class="press-media-header">
+
+    <span class="press-badge">
+        Reportage vidéo
+    </span>
+
+                        <a
+                            href="https://www.tf1info.fr/societe/videos/video-comment-sauver-les-faons-avant-les-moissons-59562-2374482.html"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="press-media-logo"
+                            aria-label="TF1 Info"
+                        >
+                            <img
+                                src="{{ asset('images/icons/logoTF1.jpg') }}"
+                                alt="Logo TF1 Info"
+                            >
+                        </a>
+
+                    </div>
+
+                    <h2>
+                        TF1 Info — Comment sauver les faons avant les moissons ?
+                    </h2>
+
+                    <p>
+                        Un reportage consacré aux actions de repérage par drone thermique
+                        pour sauver les faons avant le passage des machines agricoles.
+                    </p>
+
+                    <a
+                        href="https://www.tf1info.fr/societe/videos/video-comment-sauver-les-faons-avant-les-moissons-59562-2374482.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="press-button"
+                        aria-label="Voir le reportage TF1 Info sur SOS Faons Bretagne"
+                    >
+                        Voir sur TF1 Info
+                    </a>
+
+                </div>
+                <p class="press-credit">
+                    Reportage réalisé par TF1 Info.
+                    Diffusé avec l'autorisation de TF1.
+                </p>
+            </article>
+
+            <section class="press-section">
+
+                <h2>Articles de presse</h2>
+
+                <div class="press-grid">
+
+                    <a
+                        href="https://saint-malo.maville.com/actu/actudet_-reportage.-avec-des-drones-thermiques-ce-breton-sauve-les-faons-avant-le-fauchage-des-champs-_fil-6845908_actu.Htm"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="press-card"
+                    >
+                        <span>Ouest-France</span>
+                        <h3>Avec des drones thermiques, ce Breton sauve les faons avant le fauchage</h3>
+                        <p>Reportage sur les interventions de terrain et l'utilisation du drone thermique.</p>
+                    </a>
+
+                    <a
+                        href="https://www.ouest-france.fr/bretagne/gosne-35140/deux-nouveautes-presentees-au-forum-des-associations-92d18fd3-4419-492b-b999-4b90c5b791af"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="press-card"
+                    >
+                        <span>Ouest-France</span>
+                        <h3>Deux nouveautés présentées au forum des associations</h3>
+                        <p>Un article autour de la vie associative locale et des initiatives présentées à Gosné.</p>
+                    </a>
+
+                    <a
+                        href="https://actu.fr/bretagne/gosne_35121/ille-et-vilaine-avec-un-drone-ils-sauvent-des-faons-du-fauchage-dans-les-champs_62756714.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="press-card"
+                    >
+                        <span>Actu.fr</span>
+                        <h3>Avec un drone, ils sauvent des faons du fauchage dans les champs</h3>
+                        <p>Présentation du dispositif de sauvetage et de son intérêt pour la faune sauvage.</p>
+                    </a>
+
+                    <a
+                        href="https://www.ouest-france.fr/bretagne/gosne-35140/pres-de-rennes-il-veut-sauver-les-faons-victimes-des-moissons-en-filmant-les-champs-avec-un-drone-999ed498-49df-11ee-a86e-16a76f203a5e"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="press-card"
+                    >
+                        <span>Ouest-France</span>
+                        <h3>Près de Rennes, il veut sauver les faons victimes des moissons</h3>
+                        <p>Un article sur l'engagement local pour repérer les faons avant les moissons.</p>
+                    </a>
+
+                    <a
+                        href="https://www.letelegramme.fr/bretagne/juste-traumatisant-des-faons-tues-par-des-engins-agricoles-en-bretagne-cette-association-a-trouve-la-solution-6839987.php"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="press-card"
+                    >
+                        <span>Le Télégramme</span>
+                        <h3>Des faons tués par des engins agricoles : cette association a trouvé la solution</h3>
+                        <p>Un article sur la problématique des fauches et les solutions proposées.</p>
+                    </a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </section>
+
+{% endblock %}

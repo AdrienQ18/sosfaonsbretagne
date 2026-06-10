@@ -1,64 +1,184 @@
-.home-item-background{
-    display: flex;
+/* =========================
+   HOME
+========================= */
+
+.home-page {
+    padding: 40px 20px 60px;
+    background: var(--cream-light);
+}
+
+.home-container {
     width: 100%;
-    margin-top: 2rem;
-    justify-content: center;
-    padding: 1rem;
+    max-width: 1180px;
+    margin: 0 auto;
 }
-.home-item-background:nth-child(even){
-    background-color: #CAD5CD;
+
+/* HEADER */
+
+.home-header {
+    max-width: 800px;
+    margin: 0 auto 36px;
+    text-align: center;
 }
-.home-item{
-    display: flex;
-    width: 75%;
-    gap: 3rem;
+
+.home-header h1 {
+    margin-bottom: 14px;
+    color: var(--green-dark);
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.15;
 }
-.item-image{
-    flex: 1;
-    display: flex;
-    justify-content: center;
+
+.home-header p {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* SECTIONS */
+
+.home-section {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 36px;
     align-items: center;
 
+    margin-top: 34px;
+    padding: 28px;
+
+    border-radius: 28px;
+    background: var(--white);
+    box-shadow: var(--shadow);
 }
-.item-image img{
-    width: 20rem;
-    height: 20rem;
-    border-radius: 10px;
+
+.home-section--reverse {
+    grid-template-columns: 1.1fr 0.9fr;
 }
-.item-description{
-    flex: 2;
+
+.home-section--reverse .home-image {
+    order: 2;
+}
+
+.home-section--reverse .home-content {
+    order: 1;
+}
+
+/* IMAGE */
+
+.home-image {
+    overflow: hidden;
+    border-radius: 24px;
+    background: var(--input-bg);
+}
+
+.home-image img {
+    display: block;
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* CONTENT */
+
+.home-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-.item-button{
-    width: 100%;
-    margin-top: 20px;
-    padding: 15px 20px;
-    border: none;
+
+.home-content h2 {
+    margin-bottom: 14px;
+    color: var(--green-dark);
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.home-content p {
+    margin-bottom: 22px;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* BUTTON */
+
+.home-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    width: fit-content;
+    min-width: 190px;
+    min-height: 46px;
+    padding: 0 24px;
+
     border-radius: 999px;
-    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+    background: linear-gradient(
+        135deg,
+        var(--green-dark),
+        var(--green-main)
+    );
+
     color: var(--white);
-    font-family: inherit;
     font-size: 13px;
     font-weight: 800;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
+    text-decoration: none;
     text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
-.item-button:hover{
+
+.home-button:hover {
     transform: translateY(-2px);
-    background: linear-gradient(135deg, var(--green-main), var(--green-soft));
+    background: linear-gradient(
+        135deg,
+        var(--green-main),
+        var(--green-soft)
+    );
     box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
 }
-.home-title {
-    color: var(--green-dark);
-    font-size: 2.35rem;
-    font-weight: 800;
-    line-height: 1.1;
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 900px) {
+    .home-section,
+    .home-section--reverse {
+        grid-template-columns: 1fr;
+    }
+
+    .home-section--reverse .home-image,
+    .home-section--reverse .home-content {
+        order: initial;
+    }
+
+    .home-image img {
+        height: 280px;
+    }
 }
-.page-title{
-    text-align: center;
-    margin-block: 2rem;
+
+@media screen and (max-width: 600px) {
+    .home-page {
+        padding: 28px 14px 45px;
+    }
+
+    .home-header h1 {
+        font-size: 2rem;
+    }
+
+    .home-section {
+        padding: 20px;
+    }
+
+    .home-content h2 {
+        font-size: 1.6rem;
+    }
+
+    .home-button {
+        width: 100%;
+    }
 }

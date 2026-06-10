@@ -1,54 +1,108 @@
 {% extends 'base.html.twig' %}
-{% block title %}Accueil - SOS Faons Bretagne{% endblock %}
+
+{% block title %}
+    Accueil | SOS Faons Bretagne
+{% endblock %}
+
 {% block meta_description %}
     Découvrez SOS Faons Bretagne, une association engagée dans la protection des faons et de la faune sauvage en Bretagne.
 {% endblock %}
+
 {% block robots %}
     <meta name="robots" content="index, follow">
 {% endblock %}
+
 {% block canonical %}
     <link rel="canonical" href="{{ absolute_url(path('main_home')) }}">
 {% endblock %}
 
-{% block body %}
-
-    <h1 class="home-title page-title">Acceuil</h1>
-
-    {% include 'easyAccess/easyAccess.html.twig' %}
-
-    <div class="home-item-background">
-        <div class="home-item">
-            <div class="item-image"><img src="{{ asset('images/photos/photo1.jpg') }}" alt=""></div>
-            <div class="item-description">
-                <h1 class="home-title">A propos</h1>
-                <p>Découvrez nos motivations et nos activités pour le bien de la bio-diversité</p>
-                <a href="{{ path('main_about') }}"><button class="item-button">En savoir plus </button></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="home-item-background">
-        <div class="home-item">
-
-            <div class="item-description">
-                <h1 class="home-title">Actualité</h1>
-                <p>Découvrez des articles et des événements concernant notre histoire et nos activités.</p>
-                <a href="{{ path('event_list') }}"><button class="item-button">En savoir plus </button></a>
-            </div>
-            <div class="item-image"><img src="{{ asset('images/photos/photo2.jpg') }}" alt=""></div>
-        </div>
-    </div>
-
-{#    <div class="home-item-background">#}
-{#        <div class="home-item">#}
-{#            <div class="item-image"><img src="{{ asset('images/photos/photo1.jpg') }}" alt=""></div>#}
-{#            <div class="item-description">#}
-{#                <h1 class="home-title">A propos</h1>#}
-{#                <p>Découvrez nos motivations et nos activités pour le bien de la bio-diversité</p>#}
-{#                <a href="{{ path('main_about') }}"><button class="item-button">En savoir plus </button></a>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-
+{% block og_title %}
+    Accueil | SOS Faons Bretagne
 {% endblock %}
 
+{% block og_description %}
+    Découvrez SOS Faons Bretagne, une association engagée dans la protection des faons et de la faune sauvage en Bretagne.
+{% endblock %}
+
+{% block body %}
+
+    <section class="home-page">
+
+        <div class="home-container">
+
+            <header class="home-header">
+                <h1>Bienvenue chez SOS Faons Bretagne</h1>
+                <p>
+                    Association engagée dans la protection des faons et de la faune sauvage
+                    avant les périodes de fauche en Bretagne.
+                </p>
+            </header>
+
+            {% include 'easyAccess/easyAccess.html.twig' %}
+
+            <div class="home-section">
+                <div class="home-image">
+                    <img src="{{ asset('images/photos/photo1.jpg') }}" alt="Faon dans une prairie" loading="lazy">
+                </div>
+
+                <div class="home-content">
+                    <h2>À propos</h2>
+
+                    <p>
+                        Découvrez nos motivations, notre fonctionnement et nos actions
+                        pour préserver la biodiversité locale.
+                    </p>
+
+                    <a
+                        href="{{ path('main_about') }}"
+                        class="home-button"
+                        aria-label="En savoir plus sur SOS Faons Bretagne"
+                    >
+                        En savoir plus
+                    </a>
+                </div>
+            </div>
+
+            <div class="home-section home-section--reverse">
+                <div class="home-image">
+                    <img src="{{ asset('images/photos/photo2.jpg') }}" alt="Intervention SOS Faons Bretagne" loading="lazy">
+                </div>
+
+                <div class="home-content">
+                    <h2>Actualités</h2>
+
+                    <p>
+                        Retrouvez les dernières nouvelles de l'association,
+                        les événements et les actions menées sur le terrain.
+                    </p>
+
+                    <a href="{{ path('event_list') }}" class="home-button" aria-label="En savoir plus">
+                        Voir les actualités
+                    </a>
+                </div>
+            </div>
+
+            <div class="home-section">
+                <div class="home-image">
+                    <img src="{{ asset('images/photos/photo2.jpg') }}" alt="Reportage presse SOS Faons Bretagne" loading="lazy">
+                </div>
+
+                <div class="home-content">
+                    <h2>Presse</h2>
+
+                    <p>
+                        Découvrez les articles, reportages et passages médias consacrés
+                        aux actions de SOS Faons Bretagne.
+                    </p>
+
+                    <a href="{{ path('main_presse') }}" class="home-button" aria-label="En savoir plus">
+                        Découvrir
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}

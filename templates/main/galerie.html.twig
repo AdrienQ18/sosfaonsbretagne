@@ -4,6 +4,26 @@
     Galerie | SOS Faons Bretagne
 {% endblock %}
 
+{% block meta_description %}
+    Découvrez en images les interventions de SOS Faons Bretagne, les bénévoles mobilisés et les animaux sauvés grâce aux opérations de repérage par drone thermique.
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('main_galerie')) }}">
+{% endblock %}
+
+{% block og_title %}
+    Galerie photo | SOS Faons Bretagne
+{% endblock %}
+
+{% block og_description %}
+    Découvrez en images les interventions de SOS Faons Bretagne et les animaux sauvés grâce aux opérations de repérage par drone thermique.
+{% endblock %}
+
 {% block body %}
 
     <section class="gallery-page">
@@ -19,28 +39,40 @@
                     menées partout en Bretagne.
                 </p>
             </header>
-            <div class="gallery-grid">
+            {% if photos is not empty %}
+                <div class="gallery-grid" aria-label="Galerie photos des interventions">
+                    {% for photo in photos %}
+                        <div class="gallery-item">
+                            <img
+                                src="{{ asset('images/gallery/' ~ photo) }}"
+                                alt="Photo SOS Faons Bretagne"
+                                class="gallery-image"
+                                loading="lazy"
+                            >
+                        </div>
+                    {% endfor %}
 
-                {% for photo in photos %}
-                    <div class="gallery-item">
-                        <img
-                            src="{{ asset('images/gallery/' ~ photo) }}"
-                            alt="Photo SOS Faons Bretagne"
-                            class="gallery-image"
-                        >
-                    </div>
-                {% endfor %}
-
-            </div>
-
-            <div id="gallery-lightbox" class="gallery-lightbox">
-                <span class="gallery-lightbox-close">&times;</span>
+                </div>
+            {% else %}
+                <div class="gallery-empty">
+                    <p>Aucune photo n'est disponible pour le moment.</p>
+                </div>
+            {% endif %}
+            <div id="gallery-lightbox" class="gallery-lightbox" aria-hidden="true">
+               <span
+                   class="gallery-lightbox-close"
+                   role="button"
+                   tabindex="0"
+                   aria-label="Fermer l'image"
+               >
+                &times;
+                </span>
 
                 <img
                     id="gallery-lightbox-image"
                     class="gallery-lightbox-image"
                     src=""
-                    alt=""
+                    alt="Photo agrandie"
                 >
             </div>
 

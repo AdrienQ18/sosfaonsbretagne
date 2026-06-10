@@ -47,13 +47,16 @@
     white-space: pre-line;
     margin: 10px 0;
 }
+.list-button{
+    display: flex;
+    gap: 2rem;
+}
 .post-list-action{
-    width: 50%;
+    width: 100%;
     margin-top: 20px;
     padding: 15px 20px;
     border: none;
     border-radius: 999px;
-    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
     color: var(--white);
     font-family: inherit;
     font-size: 13px;
@@ -65,6 +68,19 @@
 }
 .post-list-action:hover{
     transform: translateY(-2px);
-    background: linear-gradient(135deg, var(--green-main), var(--green-soft));
+    /*background: linear-gradient(135deg, var(--green-main), var(--green-soft));*/
     box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
 }
+.action-modify{
+    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+}
+.action-modify:hover{
+    background: linear-gradient(135deg, var(--green-main), var(--green-soft));
+}
+.action-delete{
+    background: linear-gradient(135deg, var(--red-dark), var(--red-main));
+}
+.action-delete:hover{
+    background: linear-gradient(135deg, var(--red-main), var(--red-soft));
+}
+

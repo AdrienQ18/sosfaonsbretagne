@@ -102,6 +102,37 @@ final class EventController extends AbstractController
         ]);
     }
 
+    #[Route('/delete/{id}', name: 'delete', methods: ['GET', 'POST'])]
+    public function delete(
+        int $id,
+        EventRepository $eventRepository,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $event = $eventRepository->find($id);
+
+        $imageFilename = $event->getImage();
+
+        if(!$event){
+            throw $this->createNotFoundException('Actualité non trouvée.');
+        }
+
+        //Suppression de l'activité
+        $entityManager->remove($event);
+        $entityManager->flush();
+
+        //Suppression de l'image
+        if($imageFilename){
+            $imagePath = $this->getParameter('kernel.project_dir').'/public/images/event/'.$imageFilename;
+            if(file_exists($imagePath)){
+                unlink($imagePath);
+            }
+        }
+
+        $this->addFlash('success', 'Activité supprimée avec succès');
+        return $this->redirectToRoute('event_list');
+    }
+
     public function postProcess(
         Request                $request,
         EntityManagerInterface $entityManager,

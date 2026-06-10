@@ -24,6 +24,9 @@ import './styles/list.css'
 import './styles/userAdminList.css'
 import './styles/adminDashboard.css'
 import './styles/galery.css'
+import './styles/presse.css'
+import './styles/eventCreate.css'
+
 
 
 

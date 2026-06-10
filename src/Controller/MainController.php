@@ -24,11 +24,6 @@ final class MainController extends AbstractController
         return $this->render('main/about.html.twig');
     }
 
-    #[Route ('/actions', name: 'main_actions')]
-    public function actions(): Response{
-        return $this->render('main/actions.html.twig');
-    }
-
     #[Route('/contact', name: 'main_contact', methods: ['GET', 'POST'])]
     public function contact(Request $request, MailerInterface $mailer): Response
     {
@@ -105,5 +100,10 @@ public function mentionsLegales(): Response{
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         return $this->render('admin/dashboard.html.twig');
+    }
+    #[Route('/presse', name: 'main_presse')]
+    public function presse(): Response
+    {
+        return $this->render('main/presse.html.twig');
     }
 }

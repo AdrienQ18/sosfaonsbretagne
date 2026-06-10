@@ -1,38 +1,42 @@
 <div class="easyAccess-container">
-    <div class="easyAccess-action">
+
+    <a href="{{ path('main_alert') }}" class="easyAccess-action">
         <div class="easyAccess-logo">
-            <a href="{{ path('main_alert') }}">
-                <img src="{{ asset('images/icones/appel-telephonique.png') }}" alt="logo alerte fauchage">
-            </a>
+            <img src="{{ asset('images/icones/appel-telephonique.png') }}" alt="">
         </div>
+
         <div class="easyAccess-text">
             <h3>Signaler un faon</h3>
-            <p>Un doute ? Prévenez-nous
-                Contactez-nous avant toute intervention.</p>
+            <p>
+                Un doute ? Prévenez-nous avant toute intervention.
+            </p>
         </div>
-    </div>
-    <div class="easyAccess-action">
+    </a>
+
+    <a href="{{ path('shop') }}" class="easyAccess-action">
         <div class="easyAccess-logo">
-            <a href="{{ path('shop') }}">
-                <img src="{{ asset('images/icones/boutique.png') }}" alt="logo boutique">
-            </a>
+            <img src="{{ asset('images/icones/boutique.png') }}" alt="">
         </div>
+
         <div class="easyAccess-text">
             <h3>Boutique</h3>
-            <p>Des achats qui ont du sens
-                Vos commandes soutiennent nos actions sur le terrain.</p>
+            <p>
+                Vos commandes soutiennent nos actions sur le terrain.
+            </p>
         </div>
-    </div>
-    <div class="easyAccess-action">
+    </a>
+
+    <a href="{{ path('donation') }}" class="easyAccess-action">
         <div class="easyAccess-logo">
-            <a href="{{ path('donation') }}">
-                <img src="{{ asset('images/icones/coeur.png') }}" alt="logo donation">
-            </a>
+            <img src="{{ asset('images/icones/coeur.png') }}" alt="">
         </div>
+
         <div class="easyAccess-text">
             <h3>Faire un don</h3>
-            <p>Préserver la biodiversité
-                Votre aide nous permet d’agir durablement.</p>
+            <p>
+                Votre aide nous permet d'agir durablement.
+            </p>
         </div>
-    </div>
+    </a>
+
 </div>

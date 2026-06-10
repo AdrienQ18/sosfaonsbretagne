@@ -23,6 +23,7 @@ import './styles/acceuil.css'
 import './styles/list.css'
 import './styles/userAdminList.css'
 import './styles/adminDashboard.css'
+import './styles/galery.css'
 
 
 
@@ -33,6 +34,7 @@ import './js/loginRegister.js';
 import './js/boutique.js';
 import './js/adminPreOrder.js';
 import './js/amdinUser.js';
+import './js/gallery.js';
 
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

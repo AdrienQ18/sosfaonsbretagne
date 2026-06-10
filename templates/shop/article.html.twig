@@ -70,7 +70,11 @@
                             </span>
 
                             <p class="boutique-price">
-                                {{ article.price|number_format(2, ',', ' ') }} €
+                                {% if article.price > 0 %}
+                                    {{ article.price|number_format(2, ',', ' ') }} €
+                                {% else %}
+                                    Contacter l'association
+                                {% endif %}
                             </p>
 
                             <p class="boutique-description">
@@ -119,9 +123,18 @@
                                     >
                                 </label>
 
-                                <button type="submit" class="boutique-submit-button">
-                                    Ajouter au panier
-                                </button>
+                                {% if article.price > 0 %}
+                                    <button type="submit" class="boutique-submit-button">
+                                        Ajouter au panier
+                                    </button>
+                                {% else %}
+                                    <a
+                                        href="{{ path('main_contact') }}"
+                                        class="boutique-submit-button boutique-submit-button--contact"
+                                    >
+                                        Contacter l'association
+                                    </a>
+                                {% endif %}
                             </form>
 
                         </div>

@@ -81,9 +81,31 @@
                 </td>
 
                 <td>{{ item.quantity }}</td>
-                <td>{{ item.unitPrice }} €</td>
-                <td>{{ item.totalPrice }} €</td>
+                <td>
+                <td>
+                    {% if item.unitPrice > 0 %}
+                        {{ item.unitPrice|number_format(2, ',', ' ') }} €
+                    {% else %}
+                        Nous contacter
+                    {% endif %}
+                </td>
+                <td>
+                    {% if item.totalPrice > 0 %}
+                        {{ item.totalPrice|number_format(2, ',', ' ') }} €
+                    {% else %}
+                        Prix à définir
+                    {% endif %}
+                </td>
             </tr>
+            {% if preOrder.totalAmount > 0 %}
+                <div class="pdf-total">
+                    Total : {{ preOrder.totalAmount|number_format(2, ',', ' ') }} €
+                </div>
+            {% else %}
+                <div class="pdf-total">
+                    Total : Prix à définir avec l'association
+                </div>
+            {% endif %}
         {% endfor %}
 
         </tbody>

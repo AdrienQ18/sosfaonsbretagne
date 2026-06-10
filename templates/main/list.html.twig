@@ -7,9 +7,9 @@
 {% block robots %}
     <meta name="robots" content="index, follow">
 {% endblock %}
-{#{% block canonical %}#}
-{#    <link rel="canonical" href="{{ absolute_url(path('main_list')) }}">#}
-{#{% endblock %}#}
+{# {% block canonical %} #}
+{#    <link rel="canonical" href="{{ absolute_url(path('main_list')) }}"> #}
+{# {% endblock %} #}
 
 {% block body %}
 
@@ -27,7 +27,8 @@
 
                     <h1>{{ event.name }}
                         <span class="post-item-date">(
-                            <span class="post-item-type">{{ event.type }}</span> du {{ event.eventDate | date('d/m/Y') }})
+                            <span
+                                class="post-item-type">{{ event.type }}</span> du {{ event.eventDate | date('d/m/Y') }})
                         </span>
                     </h1>
                     <p>{{ event.description | replace({'\\n':'<br>'}) | raw }}</p>
@@ -40,12 +41,20 @@
                                         Enregistré
                                     {% endif %}
                         </span>
-                        <a href="{{ path('event_modify', {'id' : event.id}) }}">
-                            <button class="post-list-action" id="event-mod"
-                                    onclick="return confirm('Etes-vous sûr de vouloir modifier ce post ?')">
-                                Modifier
-                            </button>
-                        </a>
+                        <div class="list-button">
+                            <a href="{{ path('event_modify', {'id' : event.id}) }}">
+                                <button class="post-list-action action-modify" id="event-mod"
+                                        onclick="return confirm('Etes-vous sûr de vouloir modifier ce post ?')">
+                                    Modifier
+                                </button>
+                            </a>
+                            <a href="{{ path('event_delete', {'id' : event.id}) }}">
+                                <button class="post-list-action action-delete" id="event-mod"
+                                        onclick="return confirm('Etes-vous sûr de vouloir supprimerr ce post ?')">
+                                    Supprimer
+                                </button>
+                            </a>
+                        </div>
                     {% endif %}
                 </div>
             </div>

@@ -22,6 +22,8 @@ import './styles/adminPreOrder.css'
 import './styles/acceuil.css'
 import './styles/list.css'
 import './styles/userAdminList.css'
+import './styles/adminDashboard.css'
+
 
 
 /*Import des ficher JS*/

@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentIndex = 0;
 
     function updateCarousel() {
-        carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+        carouselInner.style.transform = `translateX(-${currentIndex * 50}%)`;
     }
 
     prevBtn.addEventListener('click', () => {

@@ -1,21 +1,229 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    A propos | SOS Faons Bretagne
+    À propos | SOS Faons Bretagne
 {% endblock %}
 
 {% block meta_description %}
-    Consultez les informations de SOS Faons Bretagne : informations relatives aux actions et motivations de l'association SOS Faons Bretagne.
+    Découvrez l'histoire, les actions et les motivations de SOS Faons Bretagne pour protéger les faons et la faune sauvage en Bretagne.
 {% endblock %}
 
 {% block robots %}
     <meta name="robots" content="index, follow">
 {% endblock %}
+
 {% block canonical %}
     <link rel="canonical" href="{{ absolute_url(path('main_about')) }}">
 {% endblock %}
 
+{% block og_title %}
+    À propos | SOS Faons Bretagne
+{% endblock %}
+
+{% block og_description %}
+    Découvrez l'histoire, les actions et les motivations de SOS Faons Bretagne pour protéger les faons et la faune sauvage en Bretagne.
+{% endblock %}
+
 {% block body %}
-    <h1>A propos</h1>
-    {% include 'easyAccess/easyAccess.html.twig' %}
+
+    <section class="about-page">
+
+        <div class="about-container">
+
+            <header class="about-header">
+
+                <h1>À propos de SOS Faons Bretagne</h1>
+
+                <p>
+                    Une association engagée aux côtés des agriculteurs pour protéger
+                    les faons et la faune sauvage avant les fauches.
+                </p>
+
+            </header>
+
+            {% include 'easyAccess/easyAccess.html.twig' %}
+
+            <section class="about-card">
+
+                <div class="about-content">
+
+                    <span class="about-badge">
+                        Notre histoire
+                    </span>
+
+                    <h2>Une action née du terrain</h2>
+
+                    <p>
+                        Au printemps, les prairies bretonnes accueillent une biodiversité riche mais discrète.
+                        SOS Faons Bretagne est né d’une volonté simple : agir concrètement sur le terrain pour
+                        protéger la faune sauvage en milieu agricole. L’objectif est clair : intervenir avant les fauches
+                        pour éviter que des animaux, cachés dans les herbes hautes, ne soient blessés ou tués lors du
+                        passage des engins.
+                    </p>
+
+                    <p>
+                        C’est après la découverte d’un faon blessé, signalé par un ami agriculteur, qu’Arnaud
+                        prend conscience de l’urgence d’agir. Pour œuvrer rapidement, il finance un premier drone à
+                        caméra thermique en vendant une voiture de collection. Un geste concret, pour passer
+                        rapidement de l’idée à l’action.
+                    </p>
+
+                    <p>
+                        Les premières missions confirment la réalité du terrain : faons, levrauts, lapereaux et
+                        oiseaux nichant au sol restent immobiles dans l’herbe. Un comportement naturel, mais qui les
+                        rend invisibles lors des fauches. Agir en amont permet à la fois de protéger la faune et de
+                        sécuriser les pratiques agricoles.
+                    </p>
+
+                    <p>
+                        Un animal mort intégré au fourrage peut en dégrader la qualité et entraîner des risques
+                        sanitaires pour les élevages, notamment le botulisme.
+                    </p>
+
+                    <p>
+                        Aujourd’hui, une équipe s’est formée autour de cette initiative. Bénévoles,
+                        agriculteurs, acteurs locaux : chacun s’implique à sa manière. L’association poursuit son
+                        engagement avec une idée simple : être présent au bon moment, avancer ensemble et apporter
+                        sur le terrain des solutions concrètes.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <section class="about-section">
+
+                <header class="about-section-header">
+
+                    <h2>Les étapes d'un sauvetage</h2>
+
+                    <p>
+                        Chaque mission suit un protocole précis afin de garantir
+                        la sécurité des animaux et le bon déroulement des opérations
+                        avec les agriculteurs.
+                    </p>
+
+                </header>
+
+                <div class="about-process">
+
+                    <div class="about-process-text">
+
+                        <h3>1. Repérage et mise en sécurité</h3>
+                        <p>
+                            Notre pilote de drone bénévole, spécialement formé, réalise le survol des parcelles.
+                            Lorsqu’un animal est repéré, il guide l’équipe au sol afin de le sécuriser
+                            dans une caisse de protection.
+                        </p>
+
+                        <h3>2. Mise à l’abri des faons</h3>
+                        <p>
+                            Les animaux sont manipulés avec précaution afin de ne pas laisser d’odeur.
+                            Ils sont maintenus en sécurité le temps de la fauche.
+                        </p>
+
+                        <h3>3. Libération après la fauche</h3>
+                        <p>
+                            Une fois la fauche terminée, les jeunes faons sont rapidement relâchés.
+                            La chevrette retrouve généralement très vite ses petits.
+                        </p>
+
+                    </div>
+
+                    <img
+                        src="{{ asset('images/about/processus-sauvetage-faon.png') }}"
+                        alt="Déroulement complet d'une mission de sauvetage des faons"
+                        class="about-process-image"
+                        loading="lazy"
+                    >
+                </div>
+
+            </section>
+
+            <section class="about-card about-card-highlight">
+
+                <div class="about-content">
+
+                    <span class="about-badge">
+                        Comprendre
+                    </span>
+
+                    <h2>Pourquoi les jeunes faons ne bougent-ils pas ?</h2>
+
+                    <p>
+                        Durant leurs premières semaines de vie, les faons ne sont pas encore capables de
+                        suivre leur mère sur de longues distances. Pendant cette période, qui dure généralement
+                        jusqu’à l’âge de 3 à 4 semaines, la chevrette les dissimule dans les hautes herbes et la
+                        végétation dense, où ils restent seuls durant plusieurs heures.
+                    </p>
+
+                    <p>
+                        Lorsqu’un danger approche, leur instinct ne les pousse pas à fuir, mais au contraire à
+                        rester parfaitement immobiles. Cette stratégie de survie est très efficace dans la nature. Grâce
+                        à leur pelage tacheté, qui se confond avec la végétation, et à leur faible odeur, les faons
+                        passent souvent inaperçus aux yeux des prédateurs. Cependant, face aux engins agricoles, ce
+                        comportement devient un piège. Au lieu de s’enfuir à l’approche d’une faucheuse, ils restent
+                        cachés dans la parcelle.
+                    </p>
+
+                    <p>
+                        C’est pourquoi les opérations de repérage par drone avant la fauche sont essentielles
+                        pour les localiser et les mettre en sécurité.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <section class="about-card">
+
+                <div class="about-content">
+
+                    <span class="about-badge">
+                        Biodiversité
+                    </span>
+
+                    <h2>Aider les oiseaux à passer l'hiver</h2>
+
+                    <p>
+                        Lorsque l’hiver s’installe, les ressources alimentaires se raréfient pour de nombreuses espèces
+                        d’oiseaux. Les périodes de gel ou de neige rendent l’accès aux graines, insectes et fruits plus
+                        difficile, alors même que leurs besoins énergétiques augmentent pour faire face au froid.
+                    </p>
+
+                    <p>
+                        Un nourrissage adapté, limité à la saison hivernale (de novembre à fin mars), peut leur
+                        apporter un précieux coup de pouce. Parmi les aliments les plus appréciés figurent les graines
+                        de tournesol noir, naturellement riches en lipides et particulièrement adaptées à de
+                        nombreuses espèces fréquentant nos jardins.
+                    </p>
+
+                    <p>
+                        Pour accueillir les oiseaux dans les meilleures conditions, il est conseillé d’installer les
+                        mangeoires dans un endroit dégagé, à l’abri des prédateurs, de maintenir une eau propre à leur
+                        disposition et de nettoyer régulièrement les points de nourrissage.
+                    </p>
+
+                    <p>
+                        <strong>
+                            Les graines qu’il leur faut !
+                        </strong>
+                        Chaque automne, notre opération « Graines de tournesol noir BIO » revient pour
+                        accompagner les oiseaux durant la saison froide. Un geste simple pour soutenir la biodiversité
+                        et profiter du spectacle offert par les oiseaux tout au long de l’hiver.
+                    </p>
+
+                    <a href="{{ path('shop') }}" class="about-button" aria-label="Voir la boutique solidaire SOS Faons Bretagne"
+                    >
+                        Voir la boutique
+                    </a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </section>
+
 {% endblock %}

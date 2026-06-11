@@ -27,6 +27,7 @@ import './styles/galery.css'
 import './styles/presse.css'
 import './styles/eventCreate.css'
 import './styles/adminGallery.css'
+import './styles/about.css'
 
 
 /*Import des ficher JS*/

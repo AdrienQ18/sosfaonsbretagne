@@ -1,21 +1,22 @@
 <div class="carousel">
+    <h1 class="carousel">Nos partenaires :</h1>
     <div class="carousel-inner">
         {% set images = [
-            'images/partenaire/slide1.jpg',
-            'images/partenaire/slide2.svg',
-            'images/partenaire/slide3.webp',
-            'images/partenaire/slide4.webp',
-            'images/partenaire/slide5.png',
-            'images/partenaire/slide6.png',
-            'images/partenaire/slide7.jpg',
-            'images/partenaire/slide8.svg',
-            'images/partenaire/slide9.jpg',
-            'images/partenaire/slide10.svg',
-            'images/partenaire/slide11.png',
-            'images/partenaire/slide12.png']  %}
+            'slide1.jpg',
+            'slide2.svg',
+            'slide3.webp',
+            'slide4.webp',
+            'slide5.png',
+            'slide6.png',
+            'slide7.jpg',
+            'slide8.svg',
+            'slide9.jpg',
+            'slide10.svg',
+            'slide11.png',
+            'slide12.png']  %}
         {% for image in images %}
             <div class="carousel-item">
-                <img src="{{ asset('images/' ~ image) }}" alt="Slide">
+                <img src="{{ asset('images/partenaire/' ~ image) }}" alt="Slide">
             </div>
         {% endfor %}
     </div>

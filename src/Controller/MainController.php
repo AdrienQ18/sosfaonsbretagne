@@ -24,11 +24,6 @@ final class MainController extends AbstractController
         return $this->render('main/about.html.twig');
     }
 
-    #[Route ('/actions', name: 'main_actions')]
-    public function actions(): Response{
-        return $this->render('main/actions.html.twig');
-    }
-
     #[Route('/contact', name: 'main_contact', methods: ['GET', 'POST'])]
     public function contact(Request $request, MailerInterface $mailer): Response
     {
@@ -61,8 +56,29 @@ final class MainController extends AbstractController
     }
 
     #[Route('/galerie', name: 'main_galerie')]
-    public function galerie(): Response{
-        return $this->render('main/galerie.html.twig');
+    public function galerie(): Response
+    {
+        $galleryDirectory = $this->getParameter('kernel.project_dir') . '/public/images/gallery';
+
+        $photos = [];
+
+        if (is_dir($galleryDirectory)) {
+            $files = scandir($galleryDirectory);
+
+            foreach ($files as $file) {
+                $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+                if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
+                    $photos[] = $file;
+                }
+            }
+        }
+
+        sort($photos);
+
+        return $this->render('main/galerie.html.twig', [
+            'photos' => $photos,
+        ]);
     }
 
     #[Route('/cgu', name: 'main_cgu')]
@@ -84,5 +100,10 @@ public function mentionsLegales(): Response{
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         return $this->render('admin/dashboard.html.twig');
+    }
+    #[Route('/presse', name: 'main_presse')]
+    public function presse(): Response
+    {
+        return $this->render('main/presse.html.twig');
     }
 }

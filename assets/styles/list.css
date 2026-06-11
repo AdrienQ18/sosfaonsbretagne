@@ -1,86 +1,277 @@
-.post-container{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
+/* =========================
+   POSTS / ACTUALITÉS
+========================= */
+
+.post-page {
+    padding: 40px 20px 60px;
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(110, 142, 100, 0.12),
+            transparent 35%
+        ),
+        var(--cream-light);
 }
-.post-container h1{
+
+.post-container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+/* HEADER */
+
+.post-header {
+    max-width: 760px;
+    margin: 0 auto 36px;
+    text-align: center;
+}
+
+.post-header h1 {
+    margin-bottom: 14px;
     color: var(--green-dark);
-    font-size: 2.35rem;
+    font-size: 2.4rem;
     font-weight: 800;
-    line-height: 1.1;
 }
-.post-container h1 .post-item-date{
-    font-size: 1.5rem;
-    font-weight: 400;
+
+.post-header p {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
 }
-.post-item-type{
-    text-transform: capitalize;
+
+/* GRID */
+
+.post-grid {
+    display: grid;
+    gap: 28px;
 }
-.post-item{
-    display: flex;
+
+/* CARD */
+
+.post-card {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    overflow: hidden;
+
+    border-radius: 28px;
+    background: var(--white);
+    box-shadow: var(--shadow);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* IMAGE */
+
+.post-photo {
+    min-height: 320px;
+    background: var(--input-bg);
+}
+
+.post-photo img {
+    display: block;
     width: 100%;
-    gap: 1rem;
-    background-color: #CAD5CD;
-    border-radius: 10px;
+    height: 100%;
+    min-height: 320px;
+    object-fit: cover;
+    object-position: center;
 }
-.post-photo{
-    flex: 1;
+
+.post-no-image {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
-}
-.post-photo img{
-    width: 20rem;
-    height: 20rem;
-    border-radius: 10px;
-}
-.post-description{
-    flex: 3;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-}
-.post-description p{
-    white-space: pre-line;
-    margin: 10px 0;
-}
-.list-button{
-    display: flex;
-    gap: 2rem;
-}
-.post-list-action{
-    width: 100%;
-    margin-top: 20px;
-    padding: 15px 20px;
-    border: none;
-    border-radius: 999px;
-    color: var(--white);
-    font-family: inherit;
-    font-size: 13px;
+    height: 100%;
+    min-height: 320px;
+
+    color: var(--green-dark);
+    font-size: 14px;
     font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-}
-.post-list-action:hover{
-    transform: translateY(-2px);
-    /*background: linear-gradient(135deg, var(--green-main), var(--green-soft));*/
-    box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
-}
-.action-modify{
-    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
-}
-.action-modify:hover{
-    background: linear-gradient(135deg, var(--green-main), var(--green-soft));
-}
-.action-delete{
-    background: linear-gradient(135deg, var(--red-dark), var(--red-main));
-}
-.action-delete:hover{
-    background: linear-gradient(135deg, var(--red-main), var(--red-soft));
 }
 
+/* CONTENT */
+
+.post-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30px;
+}
+
+.post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.post-type,
+.post-date,
+.post-admin-status {
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+    padding: 7px 12px;
+
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.post-type {
+    background: #e7f8ed;
+    color: #207245;
+}
+
+.post-date {
+    background: var(--input-bg);
+    color: var(--green-dark);
+}
+
+.post-content h2 {
+    margin-bottom: 14px;
+    color: var(--green-dark);
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.post-content p {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* ADMIN */
+
+.post-admin-status {
+    margin-top: 20px;
+    background: #e8f1ff;
+    color: #2457a6;
+}
+
+.post-admin-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+.post-admin-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 42px;
+    padding: 0 20px;
+
+    border-radius: 999px;
+
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.post-admin-button:hover {
+    transform: translateY(-2px);
+}
+
+.post-admin-button--edit {
+    background: linear-gradient(
+        135deg,
+        var(--green-dark),
+        var(--green-main)
+    );
+}
+
+.post-admin-button--edit:hover {
+    box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
+}
+
+.post-admin-button--delete {
+    background: linear-gradient(
+        135deg,
+        #8b1e1e,
+        #c0392b
+    );
+}
+
+.post-admin-button--delete:hover {
+    box-shadow: 0 8px 18px rgba(139, 30, 30, 0.18);
+}
+
+/* EMPTY */
+
+.post-empty {
+    padding: 40px;
+    border-radius: 24px;
+    background: var(--white);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.post-empty h2 {
+    margin-bottom: 12px;
+    color: var(--green-dark);
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.post-empty p {
+    color: var(--text);
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 850px) {
+    .post-card {
+        grid-template-columns: 1fr;
+    }
+
+    .post-photo,
+    .post-photo img,
+    .post-no-image {
+        min-height: 260px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .post-page {
+        padding: 28px 14px 45px;
+    }
+
+    .post-header h1 {
+        font-size: 2rem;
+    }
+
+    .post-content {
+        padding: 24px;
+    }
+
+    .post-content h2 {
+        font-size: 1.45rem;
+    }
+
+    .post-admin-actions {
+        flex-direction: column;
+    }
+
+    .post-admin-button {
+        width: 100%;
+    }
+}

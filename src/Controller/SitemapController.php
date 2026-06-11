@@ -12,39 +12,21 @@ final class SitemapController extends AbstractController
     #[Route('/sitemap.xml', name: 'sitemap', methods: ['GET'])]
     public function index(UrlGeneratorInterface $urlGenerator): Response
     {
-        $lastmod = (new \DateTimeImmutable())->format('Y-m-d');
+        $lastmod = '2026-06-10';
 
         $urls = [
-            [
-                'loc' => $urlGenerator->generate('main_home', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'priority' => '1.0',
-                'lastmod' => $lastmod,
-            ],
-            [
-                'loc' => $urlGenerator->generate('main_contact', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'priority' => '0.8',
-                'lastmod' => $lastmod,
-            ],
-            [
-                'loc' => $urlGenerator->generate('donation', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'priority' => '0.9',
-                'lastmod' => $lastmod,
-            ],
-            [
-                'loc' => $urlGenerator->generate('shop', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'priority' => '0.9',
-                'lastmod' => $lastmod,
-            ],
-            [
-                'loc' => $urlGenerator->generate('main_cgu', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'priority' => '0.4',
-                'lastmod' => $lastmod,
-            ],
-            [
-                'loc' => $urlGenerator->generate('main_pdc', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'priority' => '0.4',
-                'lastmod' => $lastmod,
-            ],
+            $this->createUrl($urlGenerator, 'main_home', '1.0', $lastmod),
+            $this->createUrl($urlGenerator, 'donation', '0.9', $lastmod),
+            $this->createUrl($urlGenerator, 'main_alert', '0.9', $lastmod),
+            $this->createUrl($urlGenerator, 'shop', '0.8', $lastmod),
+            $this->createUrl($urlGenerator, 'main_about', '0.8', $lastmod),
+            $this->createUrl($urlGenerator, 'main_contact', '0.7', $lastmod),
+            $this->createUrl($urlGenerator, 'main_galerie', '0.6', $lastmod),
+            $this->createUrl($urlGenerator, 'main_presse', '0.6', $lastmod),
+            $this->createUrl($urlGenerator, 'event_list', '0.6', $lastmod),
+            $this->createUrl($urlGenerator, 'main_cgu', '0.2', $lastmod),
+            $this->createUrl($urlGenerator, 'main_mentions_legales', '0.2', $lastmod),
+            $this->createUrl($urlGenerator, 'main_pdc', '0.2', $lastmod),
         ];
 
         $response = new Response(
@@ -56,5 +38,22 @@ final class SitemapController extends AbstractController
         $response->headers->set('Content-Type', 'application/xml; charset=UTF-8');
 
         return $response;
+    }
+
+    private function createUrl(
+        UrlGeneratorInterface $urlGenerator,
+        string $route,
+        string $priority,
+        string $lastmod
+    ): array {
+        return [
+            'loc' => $urlGenerator->generate(
+                $route,
+                [],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            ),
+            'priority' => $priority,
+            'lastmod' => $lastmod,
+        ];
     }
 }

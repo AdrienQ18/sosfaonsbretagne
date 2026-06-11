@@ -1,22 +1,134 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Créer un post | SOS Faons Bretagne
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block canonical %}{% endblock %}
+
 {% block body %}
-    <h1>Création d'un post</h1>
-    {{ form_start(eventForm) }}
-    {{ form_errors(eventForm) }}
 
-    {{ form_row(eventForm.type) }}
-    {{ form_row(eventForm.name) }}
-    {{ form_row(eventForm.localisation) }}
-    <span>Insérer "\n" entre deux paragraphes, pour revenir à la ligne à l'affichage</span>
-    {{ form_row(eventForm.description) }}
-    {{ form_row(eventForm.image) }}
-    {{ form_row(eventForm.nbParticipant) }}
-    {{ form_row(eventForm.eventDate) }}
-{#    <button type="submit" id="submit-event">Créer</button>#}
-    <button type="submit" name="action" value="publier">Publier</button>
-    <button type="submit" name="action" value="enregistrer">Enregistrer</button>
+    <section class="event-create-page">
 
-    {{ form_end(eventForm) }}
+        <div class="event-create-container">
+
+            <header class="event-create-header">
+
+                <h1>Création d'un post</h1>
+
+                <p>
+                    Créez un nouvel article, événement ou actualité
+                    qui sera publié sur le site SOS Faons Bretagne.
+                </p>
+
+            </header>
+
+            <div class="event-create-card">
+
+                {{ form_start(eventForm, {
+                    attr: {
+                        class: 'event-create-form',
+                        novalidate: 'novalidate'
+                    }
+                }) }}
+
+                {{ form_errors(eventForm) }}
+
+                <div class="event-form-row">
+
+                    <div class="event-form-group">
+                        {{ form_label(eventForm.type) }}
+                        {{ form_widget(eventForm.type) }}
+                        {{ form_errors(eventForm.type) }}
+                    </div>
+
+                    <div class="event-form-group">
+                        {{ form_label(eventForm.eventDate) }}
+                        {{ form_widget(eventForm.eventDate) }}
+                        {{ form_errors(eventForm.eventDate) }}
+                    </div>
+
+                </div>
+
+                <div class="event-form-group">
+                    {{ form_label(eventForm.name) }}
+                    {{ form_widget(eventForm.name) }}
+                    {{ form_errors(eventForm.name) }}
+                </div>
+
+                <div class="event-form-group">
+                    {{ form_label(eventForm.localisation) }}
+                    {{ form_widget(eventForm.localisation) }}
+                    {{ form_errors(eventForm.localisation) }}
+                </div>
+
+                <div class="event-form-row">
+
+                    <div class="event-form-group">
+                        {{ form_label(eventForm.nbParticipant) }}
+                        {{ form_widget(eventForm.nbParticipant) }}
+                        {{ form_errors(eventForm.nbParticipant) }}
+                    </div>
+
+                </div>
+
+                <div class="event-form-group">
+
+                    {{ form_label(eventForm.description) }}
+                    {{ form_widget(eventForm.description) }}
+                    {{ form_errors(eventForm.description) }}
+
+                </div>
+
+                <div class="event-form-group event-file-group">
+
+                    {{ form_label(eventForm.image) }}
+
+                    {{ form_widget(eventForm.image, {
+                        attr: {
+                            class: 'event-file-input',
+                            accept: 'image/*'
+                        }
+                    }) }}
+
+                    {{ form_errors(eventForm.image) }}
+
+                </div>
+
+                <div class="event-actions">
+
+                    <button
+                        type="submit"
+                        name="action"
+                        value="enregistrer"
+                        class="event-button event-button-secondary"
+                        aria-label="Enregistrer le post comme brouillon"
+                    >
+                        Enregistrer comme brouillon
+                    </button>
+
+                    <button
+                        type="submit"
+                        name="action"
+                        value="publier"
+                        class="event-button event-button-primary"
+                        aria-label="Publier le post"
+                    >
+                        Publier
+                    </button>
+
+                </div>
+
+                {{ form_end(eventForm) }}
+
+            </div>
+
+        </div>
+
+    </section>
 
 {% endblock %}

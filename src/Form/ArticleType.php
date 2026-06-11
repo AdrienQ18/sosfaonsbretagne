@@ -28,7 +28,7 @@ class ArticleType extends AbstractType
                 'label' => 'Description',
                 'attr' => [
                     'rows' => 8,
-                    'placeholder' => "Exemple :\nHauteur : 200 mm\nLargeur : 130 mm\nProfondeur : 140 mm",
+                    'placeholder' => "Exemple :Hauteur : 200 mm Largeur : 130 mm Profondeur : 140 mm",
                 ],
             ])
             ->add('price', NumberType::class, [

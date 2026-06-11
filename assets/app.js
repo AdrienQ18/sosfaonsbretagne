@@ -23,6 +23,7 @@ import './styles/acceuil.css'
 import './styles/list.css'
 import './styles/userAdminList.css'
 import './styles/adminDashboard.css'
+import './styles/carousel.css'
 import './styles/galery.css'
 import './styles/presse.css'
 import './styles/eventCreate.css'
@@ -37,6 +38,7 @@ import './js/loginRegister.js';
 import './js/boutique.js';
 import './js/adminPreOrder.js';
 import './js/amdinUser.js';
+import './js/carousel.js'
 import './js/gallery.js';
 import './js/userList.js';
 import './js/userProfil.js';

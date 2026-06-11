@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Gestion des partenaires | SOS Faons Bretagne
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block body %}
+
+    <section class="admin-gallery-page">
+
+        <div class="admin-gallery-container">
+
+            <header class="admin-gallery-header">
+
+                <h1>Gestion des partenaires</h1>
+
+                <p>
+                    Ajouter ou supprimer les images affichées dans le carousel du site.
+                </p>
+
+            </header>
+
+            <div class="admin-gallery-upload-card">
+
+                <h2>Ajouter une image</h2>
+
+                <form
+                    method="post"
+                    enctype="multipart/form-data"
+                    action="{{ path('admin_carousel_add') }}"
+                    class="admin-gallery-upload-form"
+                >
+
+                    <input
+                        type="file"
+                        name="partenaire_image"
+                        accept=".jpg,.jpeg,.png,.webp"
+                        required
+                    >
+
+                    <button
+                        type="submit"
+                        class="admin-gallery-upload-button"
+                    >
+                        Ajouter au carousel
+                    </button>
+
+                </form>
+
+            </div>
+
+            <div class="admin-gallery-grid">
+
+                {% for image in images %}
+
+                    <article class="admin-gallery-card">
+
+                        <img
+                            src="{{ asset('images/partenaire/' ~ image) }}"
+                            alt="{{ image }}"
+                            class="admin-gallery-image"
+                            loading="lazy"
+                        >
+
+                        <div class="admin-gallery-card-footer">
+
+                            <span class="admin-gallery-filename">
+                                {{ image }}
+                            </span>
+
+                            <form
+                                method="post"
+                                action="{{ path('admin_carousel_delete', { filename: image }) }}"
+                            >
+
+                                <input
+                                    type="hidden"
+                                    name="_token"
+                                    value="{{ csrf_token('delete_carousel_' ~ image) }}"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="admin-gallery-delete-button"
+                                    onclick="return confirm('Supprimer cette image ?')"
+                                >
+                                    Supprimer
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </article>
+
+                {% else %}
+
+                    <div class="admin-gallery-empty">
+
+                        <h2>Aucune image</h2>
+
+                        <p>
+                            Le carousel est actuellement vide.
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}

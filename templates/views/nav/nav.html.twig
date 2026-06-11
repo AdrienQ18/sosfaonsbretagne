@@ -12,22 +12,22 @@
                     <div class="nav-menu-top">
                         <ul>
                             <li><a title="Accès à la boutique" href="{{ path('shop') }}"><img class="menu-icon"
-                                                                                              src="{{ asset('images/icons/shop.png') }}"
+                                                                                              src="{{ asset('images/icones/shop.png') }}"
                                                                                               alt="Boutique"></a></li>
                             <li><a title="Panier" href="{{ path('cart_index') }}"><img class="menu-icon"
-                                                                                       src="{{ asset('images/icons/caddie.png') }}"
+                                                                                       src="{{ asset('images/icones/caddie.png') }}"
                                                                                        alt="Panier"></a></li>
                             {% if app.user %}
                                 <li><a title="Déconnexion" href="{{ path('app_logout') }}"><img class="menu-icon"
-                                                                                                src="{{ asset('images/icons/logout.png') }}"
+                                                                                                src="{{ asset('images/icones/logout.png') }}"
                                                                                                 alt="Déconnexion"></a>
                                 </li>
                                 <li><a title="Profil utilisateur" href="{{ path('user_profile') }}"><img
-                                            class="menu-icon" src="{{ asset('images/icons/profile.png') }}"
+                                            class="menu-icon" src="{{ asset('images/icones/profile.png') }}"
                                             alt="Mon profil"></a></li>
                             {% else %}
                                 <li><a title="Connexion" href="{{ path('app_login') }}"><img class="menu-icon"
-                                                                                             src="{{ asset('images/icons/login.png') }}"
+                                                                                             src="{{ asset('images/icones/login.png') }}"
                                                                                              alt="Connexion"></a></li>
                             {% endif %}
                         </ul>

@@ -1,0 +1,217 @@
+/* =========================
+   ABOUT PAGE
+========================= */
+
+.about-page {
+    padding: 40px 20px 60px;
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(110, 142, 100, 0.12),
+            transparent 35%
+        ),
+        var(--cream-light);
+}
+
+.about-container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+/* HEADER */
+
+.about-header {
+    max-width: 820px;
+    margin: 0 auto 36px;
+    text-align: center;
+}
+
+.about-header h1 {
+    margin-bottom: 14px;
+    color: var(--green-dark);
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.about-header p {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* CARD */
+
+.about-card,
+.about-section {
+    margin-top: 34px;
+    padding: 32px;
+    border-radius: 28px;
+    background: var(--white);
+    box-shadow: var(--shadow);
+}
+
+.about-card-highlight {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(110, 142, 100, 0.12),
+            rgba(255, 255, 255, 1)
+        );
+}
+
+.about-content {
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.about-badge {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 16px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: #e7f8ed;
+    color: #207245;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.about-content h2,
+.about-section-header h2 {
+    margin-bottom: 16px;
+    color: var(--green-dark);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.about-content p,
+.about-section-header p,
+.about-process-text p {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.about-content p + p,
+.about-process-text p + p {
+    margin-top: 16px;
+}
+
+/* PROCESS */
+
+.about-section-header {
+    max-width: 820px;
+    margin: 0 auto 28px;
+    text-align: center;
+}
+
+.about-process {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 28px;
+    align-items: center;
+}
+
+.about-process-text {
+    padding: 22px;
+    border-radius: 22px;
+    background: var(--input-bg);
+}
+
+.about-process-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+}
+
+/* BUTTON */
+
+.about-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 24px;
+    min-height: 46px;
+    padding: 0 24px;
+
+    border-radius: 999px;
+    background: linear-gradient(
+        135deg,
+        var(--green-dark),
+        var(--green-main)
+    );
+
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.about-button:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(
+        135deg,
+        var(--green-main),
+        var(--green-soft)
+    );
+    box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 900px) {
+    .about-process {
+        grid-template-columns: 1fr;
+    }
+
+    .about-process-text {
+        order: 2;
+    }
+
+    .about-process-image {
+        order: 1;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .about-page {
+        padding: 28px 14px 45px;
+    }
+
+    .about-header h1 {
+        font-size: 2rem;
+    }
+
+    .about-card,
+    .about-section {
+        padding: 22px;
+        border-radius: 22px;
+    }
+
+    .about-content h2,
+    .about-section-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .about-process-text {
+        padding: 18px;
+    }
+
+    .about-button {
+        width: 100%;
+    }
+}

@@ -21,7 +21,8 @@ final class MainController extends AbstractController
     }
 
     #[Route('/about', name: 'main_about')]
-    public function about(): Response{
+    public function about(): Response
+    {
         return $this->render('main/about.html.twig');
     }
 
@@ -57,18 +58,23 @@ final class MainController extends AbstractController
     }
 
     #[Route('/cgu', name: 'main_cgu')]
-    public function cgu(): Response{
+    public function cgu(): Response
+    {
         return $this->render('main/cgu.html.twig');
     }
 
     #[Route('/pdc', name: 'main_pdc')]
-    public function pdc(): Response{
+    public function pdc(): Response
+    {
         return $this->render('main/pdc.html.twig');
     }
-#[Route('/mentions-legales', name: 'main_mentions_legales')]
-public function mentionsLegales(): Response{
-    return $this->render('main/mentionsLegales.html.twig');
-}
+
+    #[Route('/mentions-legales', name: 'main_mentions_legales')]
+    public function mentionsLegales(): Response
+    {
+        return $this->render('main/mentionsLegales.html.twig');
+    }
+
     #[Route('/admin', name: 'admin_dashboard')]
     public function dashboard(): Response
     {
@@ -76,6 +82,7 @@ public function mentionsLegales(): Response{
 
         return $this->render('admin/dashboard.html.twig');
     }
+
     #[Route('/presse', name: 'main_presse')]
     public function presse(): Response
     {
@@ -99,11 +106,13 @@ public function mentionsLegales(): Response{
             'images' => $this->getGalleryImages(),
         ]);
     }
+
     #[Route('/admin/gallery/add', name: 'admin_gallery_add', methods: ['POST'])]
     public function addGalleryImage(
-        Request $request,
+        Request       $request,
         ImageUploader $imageUploader
-    ): Response {
+    ): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $file = $request->files->get('gallery_image');
@@ -123,12 +132,14 @@ public function mentionsLegales(): Response{
 
         return $this->redirectToRoute('admin_gallery');
     }
+
     #[Route('/admin/gallery/delete/{filename}', name: 'admin_gallery_delete', methods: ['POST'])]
     public function deleteGalleryImage(
-        string $filename,
-        Request $request,
+        string        $filename,
+        Request       $request,
         ImageUploader $imageUploader
-    ): Response {
+    ): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $filename = basename($filename);
@@ -169,4 +180,98 @@ public function mentionsLegales(): Response{
 
         return $images;
     }
+
+
+    #[Route('/carousel', name: 'main_carousel')]
+    public function carousel(): Response
+    {
+        return $this->render('carousel/carousel.html.twig', [
+            'images' => $this->getCarouselImages(),
+        ]);
+    }
+
+    #[Route('/admin/carousel', name: 'admin_carousel')]
+    public function carouselAdmin(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        return $this->render('admin/adminCarousel.html.twig', [
+            'images' => $this->getCarouselImages(),
+        ]);
+    }
+
+    #[Route('/admin/carousel/add', name: 'admin_carousel_add', methods: ['POST'])]
+    public function addCarouselImage(
+        Request       $request,
+        ImageUploader $imageUploader
+    ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $file = $request->files->get('partenaire_image');
+
+        if (!$file) {
+            $this->addFlash('error', 'Aucune image sélectionnée.');
+
+            return $this->redirectToRoute('admin_carousel');
+        }
+
+        $imageUploader->upload(
+            $file,
+            'partenaire'
+        );
+
+        $this->addFlash('success', 'L’image a bien été ajoutée au carousel.');
+
+        return $this->redirectToRoute('admin_carousel');
+    }
+
+    #[Route('/admin/carousel/delete/{filename}', name: 'admin_carousel_delete', methods: ['POST'])]
+    public function deleteCarouselImage(
+        string        $filename,
+        Request       $request,
+        ImageUploader $imageUploader
+    ): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $filename = basename($filename);
+
+        if (!$this->isCsrfTokenValid('delete_carousel_' . $filename, $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $imageUploader->delete(
+            $filename,
+            'partenaire'
+        );
+
+        $this->addFlash('success', 'L’image a bien été supprimée du carousel.');
+
+        return $this->redirectToRoute('admin_carousel');
+    }
+
+    private function getCarouselImages(): array
+    {
+        $directory = $this->getParameter('kernel.project_dir') . '/public/images/partenaire';
+
+        $images = [];
+
+        if (!is_dir($directory)) {
+            return $images;
+        }
+
+        foreach (scandir($directory) as $file) {
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true)) {
+                $images[] = $file;
+            }
+        }
+
+        sort($images);
+
+        return $images;
+    }
+
 }

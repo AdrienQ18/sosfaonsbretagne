@@ -19,7 +19,9 @@
     margin: 0 auto;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 .post-header {
     max-width: 760px;
@@ -40,22 +42,27 @@
     line-height: 1.7;
 }
 
-/* GRID */
+/* =========================
+   GRID
+========================= */
 
 .post-grid {
     display: grid;
     gap: 28px;
 }
 
-/* CARD */
+/* =========================
+   CARD
+========================= */
 
 .post-card {
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
+
     overflow: hidden;
 
-    border-radius: 28px;
     background: var(--white);
+    border-radius: 28px;
     box-shadow: var(--shadow);
 
     transition:
@@ -68,7 +75,9 @@
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
 }
 
-/* IMAGE */
+/* =========================
+   IMAGE
+========================= */
 
 .post-photo {
     min-height: 320px;
@@ -80,6 +89,7 @@
     width: 100%;
     height: 100%;
     min-height: 320px;
+
     object-fit: cover;
     object-position: center;
 }
@@ -88,7 +98,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+
     min-height: 320px;
 
     color: var(--green-dark);
@@ -96,12 +106,15 @@
     font-weight: 800;
 }
 
-/* CONTENT */
+/* =========================
+   CONTENT
+========================= */
 
 .post-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     padding: 30px;
 }
 
@@ -109,6 +122,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+
     margin-bottom: 14px;
 }
 
@@ -122,6 +136,7 @@
     padding: 7px 12px;
 
     border-radius: 999px;
+
     font-size: 12px;
     font-weight: 800;
 }
@@ -138,6 +153,7 @@
 
 .post-content h2 {
     margin-bottom: 14px;
+
     color: var(--green-dark);
     font-size: 1.7rem;
     font-weight: 800;
@@ -150,18 +166,22 @@
     line-height: 1.7;
 }
 
-/* ADMIN */
+/* =========================
+   ADMIN
+========================= */
 
 .post-admin-status {
     margin-top: 20px;
+
     background: #e8f1ff;
     color: #2457a6;
 }
 
 .post-admin-actions {
     display: flex;
-    gap: 12px;
     flex-wrap: wrap;
+    gap: 12px;
+
     margin-top: 18px;
 }
 
@@ -215,18 +235,23 @@
     box-shadow: 0 8px 18px rgba(139, 30, 30, 0.18);
 }
 
-/* EMPTY */
+/* =========================
+   EMPTY STATE
+========================= */
 
 .post-empty {
     padding: 40px;
-    border-radius: 24px;
-    background: var(--white);
-    box-shadow: var(--shadow);
+
     text-align: center;
+
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
 }
 
 .post-empty h2 {
     margin-bottom: 12px;
+
     color: var(--green-dark);
     font-size: 1.5rem;
     font-weight: 800;
@@ -236,9 +261,95 @@
     color: var(--text);
 }
 
-/* RESPONSIVE */
+/* =========================
+   PAGINATION
+========================= */
+
+.post-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 36px;
+}
+
+.post-pagination .pagination {
+    display: flex;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.post-pagination .pagination span,
+.post-pagination .pagination a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 48px;
+    height: 48px;
+    padding: 0 14px;
+
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+
+    font-size: 15px;
+    font-weight: 800;
+    text-decoration: none;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.post-pagination .pagination a:hover {
+    transform: translateY(-2px);
+    background: rgba(110, 142, 100, 0.18);
+}
+
+.post-pagination .pagination .current {
+    background: linear-gradient(
+        135deg,
+        var(--green-dark),
+        var(--green-main)
+    );
+    color: var(--white);
+    box-shadow: 0 10px 22px rgba(27, 74, 58, 0.22);
+}
+
+@media screen and (max-width: 600px) {
+    .post-pagination .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .post-pagination .pagination span,
+    .post-pagination .pagination a {
+        min-width: 44px;
+        height: 44px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .post-pagination .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .post-pagination .pagination span,
+    .post-pagination .pagination a {
+        min-width: 44px;
+        height: 44px;
+    }
+}
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media screen and (max-width: 850px) {
+
     .post-card {
         grid-template-columns: 1fr;
     }
@@ -251,6 +362,7 @@
 }
 
 @media screen and (max-width: 600px) {
+
     .post-page {
         padding: 28px 14px 45px;
     }
@@ -273,5 +385,10 @@
 
     .post-admin-button {
         width: 100%;
+    }
+
+    .post-pagination .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }

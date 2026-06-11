@@ -1,44 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const route = document.body.dataset.route;
 
-    if (route !== 'shop') {
-        return;
-    }
+    const viewer = document.getElementById('image-viewer');
+    const viewerImg = document.getElementById('image-viewer-img');
+    const closeBtn = document.querySelector('.image-viewer-close');
 
-    const openButtons = document.querySelectorAll('.boutique-info-button');
+    document.querySelectorAll('.js-image-viewer').forEach(image => {
 
-    openButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            const modalId = button.dataset.modal;
-            const modal = document.getElementById(modalId);
+        image.addEventListener('click', () => {
 
-            if (!modal) {
-                return;
-            }
+            viewerImg.src = image.src;
+            viewer.classList.add('active');
 
-            modal.classList.add('is-open');
-            modal.setAttribute('aria-hidden', 'false');
-
-            const closeButton = modal.querySelector('.boutique-modal-close');
-
-            if (closeButton) {
-                closeButton.addEventListener('click', () => {
-                    closeModal(modal);
-                });
-            }
-
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    closeModal(modal);
-                }
-            });
         });
+
     });
 
-    function closeModal(modal) {
-        modal.classList.remove('is-open');
-        modal.setAttribute('aria-hidden', 'true');
-    }
-});
+    closeBtn.addEventListener('click', () => {
+        viewer.classList.remove('active');
+    });
 
+    viewer.addEventListener('click', (e) => {
+
+        if (e.target === viewer) {
+            viewer.classList.remove('active');
+        }
+
+    });
+
+});
 

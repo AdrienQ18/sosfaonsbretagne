@@ -27,42 +27,43 @@
 {% block body %}
 
     <section class="boutique-page">
+
         <div class="boutique-container">
 
             <header class="boutique-header">
+
                 <h1>Boutique solidaire</h1>
 
                 <p>
                     Retrouvez les articles proposés par SOS Faons Bretagne.
                     Chaque achat soutient les actions de l'association.
                 </p>
+
             </header>
 
             <div class="boutique-grid">
+
                 {% for article in articleList %}
+
                     <article class="boutique-card">
 
                         <div class="boutique-image-wrapper">
+
                             <img
                                 src="{{ asset('images/shop/' ~ article.image) }}"
                                 alt="{{ article.name }}"
-                                class="boutique-image"
+                                class="boutique-image js-image-viewer"
                                 loading="lazy"
                             >
+
                         </div>
 
                         <div class="boutique-content">
 
                             <div class="boutique-card-header">
+
                                 <h2>{{ article.name }}</h2>
 
-                                <button
-                                    type="button"
-                                    class="boutique-info-button"
-                                    data-modal="boutique-modal-{{ article.id }}"
-                                    aria-label="Voir les informations complémentaires sur {{ article.name }}"                                >
-                                    ?
-                                </button>
                             </div>
 
                             <span class="boutique-badge">
@@ -70,11 +71,13 @@
                             </span>
 
                             <p class="boutique-price">
+
                                 {% if article.price > 0 %}
                                     {{ article.price|number_format(2, ',', ' ') }} €
                                 {% else %}
                                     Contacter l'association
                                 {% endif %}
+
                             </p>
 
                             <p class="boutique-description">
@@ -86,6 +89,7 @@
                                 action="{{ path('cart_add', { id: article.id }) }}"
                                 class="boutique-form"
                             >
+
                                 <input
                                     type="hidden"
                                     name="_token"
@@ -93,24 +97,41 @@
                                 >
 
                                 {% if article.requiresDiameter %}
+
                                     <div class="boutique-options">
+
                                         <span>Diamètre</span>
 
                                         <div class="boutique-radio-group">
+
                                             <label>
-                                                <input type="radio" name="diameter" value="28" required>
+                                                <input
+                                                    type="radio"
+                                                    name="diameter"
+                                                    value="28"
+                                                    required
+                                                >
                                                 28 mm
                                             </label>
 
                                             <label>
-                                                <input type="radio" name="diameter" value="32" required>
+                                                <input
+                                                    type="radio"
+                                                    name="diameter"
+                                                    value="32"
+                                                    required
+                                                >
                                                 32 mm
                                             </label>
+
                                         </div>
+
                                     </div>
+
                                 {% endif %}
 
                                 <label class="boutique-quantity">
+
                                     <span>Quantité</span>
 
                                     <input
@@ -121,61 +142,58 @@
                                         inputmode="numeric"
                                         required
                                     >
+
                                 </label>
 
                                 {% if article.price > 0 %}
-                                    <button type="submit" class="boutique-submit-button">
+
+                                    <button
+                                        type="submit"
+                                        class="boutique-submit-button"
+                                    >
                                         Ajouter au panier
                                     </button>
+
                                 {% else %}
+
                                     <a
                                         href="{{ path('main_contact') }}"
                                         class="boutique-submit-button boutique-submit-button--contact"
                                     >
                                         Contacter l'association
                                     </a>
+
                                 {% endif %}
+
                             </form>
 
                         </div>
 
                     </article>
+
                 {% endfor %}
+
             </div>
 
         </div>
+        <div id="image-viewer" class="image-viewer">
 
-        {% for article in articleList %}
-            <div
-                id="boutique-modal-{{ article.id }}"
-                class="boutique-modal"
-                aria-hidden="true"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="boutique-modal-title-{{ article.id }}"
+            <button
+                type="button"
+                class="image-viewer-close"
+                aria-label="Fermer l'image"
             >
-                <div class="boutique-modal-content">
-                    <button
-                        type="button"
-                        class="boutique-modal-close"
-                        aria-label="Fermer la fenêtre"
-                    >
-                        &times;
-                    </button>
+                ×
+            </button>
 
-                    <h2 id="boutique-modal-title-{{ article.id }}">
-                        Information
-                    </h2>
+            <img
+                src=""
+                alt=""
+                id="image-viewer-img"
+                class="image-viewer-img"
+            >
 
-                    <img
-                        src="{{ asset('images/shop/guides/afficheguideNichoir.png') }}"
-                        alt="Guide d'information"
-                        class="boutique-modal-image"
-                        loading="lazy"
-                    >
-                </div>
-            </div>
-        {% endfor %}
+        </div>
 
     </section>
 

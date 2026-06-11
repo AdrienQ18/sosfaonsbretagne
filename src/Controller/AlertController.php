@@ -7,7 +7,7 @@ use App\Enum\AlertStatus;
 use App\Form\AlertFilterType;
 use App\Form\AlertType;
 use App\Repository\AlertRepository;
-use App\Service\Utils\FileUploader;
+use App\Service\Utils\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +25,7 @@ final class AlertController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         MailerInterface $mailer,
-        FileUploader $fileUploader,
+        ImageUploader $imageUploader,
     ): Response {
         $alert = new Alert();
         $alert->setCreationDate(new \DateTime());
@@ -43,7 +43,7 @@ final class AlertController extends AbstractController
 
             if ($file) {
                 $alert->setImage(
-                    $fileUploader->upload($file, 'alert', $alert->getImage())
+                    $imageUploader->upload($file, 'alert', $alert->getImage())
                 );
             }
 

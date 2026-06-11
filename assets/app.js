@@ -27,8 +27,7 @@ import './styles/carousel.css'
 import './styles/galery.css'
 import './styles/presse.css'
 import './styles/eventCreate.css'
-
-
+import './styles/adminGallery.css'
 
 
 /*Import des ficher JS*/
@@ -40,6 +39,8 @@ import './js/adminPreOrder.js';
 import './js/amdinUser.js';
 import './js/carousel.js'
 import './js/gallery.js';
+import './js/userList.js';
+import './js/userProfil.js';
 
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

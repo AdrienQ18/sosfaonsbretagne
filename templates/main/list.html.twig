@@ -66,7 +66,7 @@
                             <h2>{{ event.name }}</h2>
 
                             <p>
-                                {{ event.description|replace({'\\n':'<br>'})|raw }}
+                                {{ event.description|nl2br }}
                             </p>
 
                             {% if is_granted("ROLE_ADMIN") %}
@@ -119,6 +119,10 @@
 
             </div>
 
+        </div>
+
+        <div class="post-pagination">
+            {{ knp_pagination_render(events) }}
         </div>
 
     </section>

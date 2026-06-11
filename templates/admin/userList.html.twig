@@ -13,24 +13,91 @@
 {% block body %}
 
     <section class="admin-user-page">
+
         <div class="admin-user-container">
 
             <header class="admin-user-header">
+
                 <h1>Liste des utilisateurs</h1>
 
                 <div class="admin-user-count">
                     <span>Nombre d'utilisateurs</span>
-                    <strong>{{ users|length }}</strong>
+                    <strong>{{ users.getTotalItemCount }}</strong>
                 </div>
+
             </header>
+
+            <div class="admin-user-filter-card">
+
+                {{ form_start(filterForm, {
+                    method: 'GET',
+                    attr: {
+                        id: 'user-filter-form',
+                        class: 'admin-user-filter-form',
+                        'data-reset-url': path('admin_userList')
+                    }
+                }) }}
+
+                <div class="admin-user-filter-grid">
+
+                    <div class="admin-user-form-group">
+                        {{ form_label(filterForm.search) }}
+                        {{ form_widget(filterForm.search) }}
+                    </div>
+
+                    <div class="admin-user-form-group">
+                        {{ form_label(filterForm.actif) }}
+                        {{ form_widget(filterForm.actif) }}
+                    </div>
+
+                    <div class="admin-user-form-group">
+                        {{ form_label(filterForm.role) }}
+                        {{ form_widget(filterForm.role) }}
+                    </div>
+
+                    <div class="admin-user-form-group">
+                        {{ form_label(filterForm.right) }}
+                        {{ form_widget(filterForm.right) }}
+                    </div>
+
+                    <div class="admin-user-form-group">
+                        {{ form_label(filterForm.dateStart) }}
+                        {{ form_widget(filterForm.dateStart) }}
+                    </div>
+
+                    <div class="admin-user-form-group">
+                        {{ form_label(filterForm.dateEnd) }}
+                        {{ form_widget(filterForm.dateEnd) }}
+                    </div>
+
+                </div>
+
+                <div class="admin-user-filter-actions">
+
+                    <button
+                        type="button"
+                        id="reset-user-filters"
+                        class="admin-user-reset-button"
+                    >
+                        Réinitialiser
+                    </button>
+
+                </div>
+
+                {{ form_end(filterForm) }}
+
+            </div>
 
             <div class="admin-user-card">
 
                 <div class="admin-user-table-wrapper">
+
                     <table class="admin-user-table">
+
                         <caption class="admin-user-sr-only">
                             Liste des utilisateurs enregistrés
                         </caption>
+
                         <thead>
                         <tr>
                             <th scope="col">Nom</th>
@@ -49,10 +116,12 @@
                         </thead>
 
                         <tbody>
+
                         {% for user in users %}
+
                             <tr>
-                                <td>{{ user.lastname }}</td>
-                                <td>{{ user.firstname }}</td>
+                                <td>{{ user.lastname ?: '-' }}</td>
+                                <td>{{ user.firstname ?: '-' }}</td>
 
                                 <td>
                                     <a href="mailto:{{ user.email }}">
@@ -60,24 +129,24 @@
                                     </a>
                                 </td>
 
-                                <td>{{ user.phone ?? '-' }}</td>
-                                <td>{{ user.address ?? '-' }}</td>
-                                <td>{{ user.city ?? '-' }}</td>
-                                <td>{{ user.zipcode ?? '-' }}</td>
+                                <td>{{ user.phone ?: '-' }}</td>
+                                <td>{{ user.address ?: '-' }}</td>
+                                <td>{{ user.city ?: '-' }}</td>
+                                <td>{{ user.zipcode ?: '-' }}</td>
 
                                 <td>
-                                    {{ user.creationDate|date('d/m/Y') }}
+                                    {{ user.creationDate ? user.creationDate|date('d/m/Y') : '-' }}
                                 </td>
 
                                 <td>
                                     {% if user.actif %}
                                         <span class="admin-user-status admin-user-status--active">
-                                        Actif
-                                    </span>
+                                            Actif
+                                        </span>
                                     {% else %}
                                         <span class="admin-user-status admin-user-status--inactive">
-                                        Inactif
-                                    </span>
+                                            Inactif
+                                        </span>
                                     {% endif %}
                                 </td>
 
@@ -88,12 +157,12 @@
                                 <td>
                                     {% if 'ROLE_ADMIN' in user.roles %}
                                         <span class="admin-user-badge admin-user-badge--admin">
-                                        Administrateur
-                                    </span>
+                                            Administrateur
+                                        </span>
                                     {% else %}
                                         <span class="admin-user-badge">
-                                        Utilisateur
-                                    </span>
+                                            Utilisateur
+                                        </span>
                                     {% endif %}
                                 </td>
 
@@ -108,20 +177,31 @@
                                     </a>
                                 </td>
                             </tr>
+
                         {% else %}
+
                             <tr>
                                 <td colspan="12" class="admin-user-empty">
                                     Aucun utilisateur trouvé.
                                 </td>
                             </tr>
+
                         {% endfor %}
+
                         </tbody>
+
                     </table>
+
                 </div>
 
             </div>
 
+            <div class="admin-user-pagination">
+                {{ knp_pagination_render(users) }}
+            </div>
+
         </div>
+
     </section>
 
 {% endblock %}

@@ -27,11 +27,7 @@ services:
         arguments:
             $projectDir: '%kernel.project_dir%'
 
-    App\Service\Utils\FileUploader:
-        arguments:
-            $projectDir: '%kernel.project_dir%'
-
-    App\Service\Utils\FileUploaderShop:
+    App\Service\Utils\ImageUploader:
         arguments:
             $projectDir: '%kernel.project_dir%'
 

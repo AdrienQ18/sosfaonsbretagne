@@ -5,8 +5,9 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
-use App\Service\Utils\FileUploader;
+use App\Service\Utils\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,26 +19,28 @@ final class EventController extends AbstractController
 {
     #[Route('', name: 'list')]
     public function list(
-        EventRepository $eventRepository,
-        Request         $request,
+        EventRepository    $eventRepository,
+        Request            $request,
+        PaginatorInterface $paginator,
     ): Response
     {
+        $qb = $eventRepository->createQueryBuilder('e')
+            ->orderBy('e.eventDate', 'DESC');
 
-        $events = $eventRepository->findAll();
-
-        if ($this->isGranted('ROLE_ADMIN')) {    // L'utilisateur a le rôle ROLE_ADMIN}
-            $eventsFiltered = $events;
-        } else {
-            $eventsFiltered = array_filter($events, fn($event) => $event->isPublished());
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $qb
+                ->andWhere('e.isPublished = :published')
+                ->setParameter('published', true);
         }
 
-        // Tri par ordre inverse chronologique (du plus récent au plus ancien)
-        usort($eventsFiltered, function($a, $b) {
-            return $b->getEventDate() <=> $a->getEventDate();
-        });
+        $events = $paginator->paginate(
+            $qb,
+            $request->query->getInt('page', 1),
+            3
+        );
 
         return $this->render('main/list.html.twig', [
-            'events' => $eventsFiltered,
+            'events' => $events,
         ]);
     }
 
@@ -45,24 +48,23 @@ final class EventController extends AbstractController
     public function create(
         Request                $request,
         EntityManagerInterface $entityManager,
-        EventRepository        $eventRepository,
-        FileUploader $fileUploader): Response
+      ImageUploader         $imageUploader,
+    ): Response
     {
 
         $event = new Event();
         $eventForm = $this->createForm(EventType::class, $event);
 
         $eventForm->handleRequest($request);
-        if ($eventForm->isSubmitted() && $eventForm->isValid()){
+        if ($eventForm->isSubmitted() && $eventForm->isValid()) {
             /**
              * @var UploadedFile $file
              */
-            dump("Try to upload file :" );
             $file = $eventForm->get('image')->getData();
             if ($file) {
 
                 $event->setImage(
-                    $fileUploader->upload($file, 'event/', $event->getImage()),
+                    $imageUploader->upload($file, 'event/', $event->getImage()),
                 );
             }
 
@@ -89,7 +91,7 @@ final class EventController extends AbstractController
         $event = $eventRepository->find($id);
         $eventForm = $this->createForm(EventType::class, $event);
         $eventForm->handleRequest($request);
-        if ($eventForm->isSubmitted() && $eventForm->isValid()){
+        if ($eventForm->isSubmitted() && $eventForm->isValid()) {
             $this->postProcess(
                 $request,
                 $entityManager,
@@ -104,8 +106,8 @@ final class EventController extends AbstractController
 
     #[Route('/delete/{id}', name: 'delete', methods: ['GET', 'POST'])]
     public function delete(
-        int $id,
-        EventRepository $eventRepository,
+        int                    $id,
+        EventRepository        $eventRepository,
         EntityManagerInterface $entityManager
     ): Response
     {
@@ -113,7 +115,7 @@ final class EventController extends AbstractController
 
         $imageFilename = $event->getImage();
 
-        if(!$event){
+        if (!$event) {
             throw $this->createNotFoundException('Actualité non trouvée.');
         }
 
@@ -122,9 +124,9 @@ final class EventController extends AbstractController
         $entityManager->flush();
 
         //Suppression de l'image
-        if($imageFilename){
-            $imagePath = $this->getParameter('kernel.project_dir').'/public/images/event/'.$imageFilename;
-            if(file_exists($imagePath)){
+        if ($imageFilename) {
+            $imagePath = $this->getParameter('kernel.project_dir') . '/public/images/event/' . $imageFilename;
+            if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
         }

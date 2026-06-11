@@ -55,16 +55,14 @@
 /* LIGHTBOX */
 
 .gallery-lightbox {
-    display: none;
     position: fixed;
     inset: 0;
     z-index: 9999;
-
-    background: rgba(0, 0, 0, 0.92);
-
+    display: none;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    background: rgba(0, 0, 0, 0.92);
 }
 
 .gallery-lightbox.active {
@@ -72,21 +70,21 @@
 }
 
 .gallery-lightbox-image {
-    width: 80%;
+    width: auto;
+    height: auto;
+    max-width: 80vw;
     max-height: 80vh;
-    border-radius: 12px;
     object-fit: contain;
+    border-radius: 14px;
 }
 
 .gallery-lightbox-close {
     position: absolute;
     top: 20px;
     right: 30px;
-
     color: white;
     font-size: 3rem;
     font-weight: bold;
-
     cursor: pointer;
 }
 

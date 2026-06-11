@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 
+use App\Form\UserFilterType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +19,29 @@ final class AdminController extends AbstractController
 
     #[Route('/userList', name: 'userList')]
     public function userList(
+        Request $request,
         UserRepository $userRepository,
-    ): Response{
-        $users = $userRepository->findAll();
+        PaginatorInterface $paginator
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $form = $this->createForm(UserFilterType::class, null, [
+            'method' => 'GET',
+        ]);
+
+        $form->handleRequest($request);
+
+        $query = $userRepository->findByFiltersQuery($form->getData() ?? []);
+
+        $users = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('admin/userList.html.twig', [
             'users' => $users,
+            'filterForm' => $form->createView(),
         ]);
     }
 

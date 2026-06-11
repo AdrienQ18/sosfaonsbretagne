@@ -53,13 +53,10 @@
 .boutique-card {
     display: flex;
     flex-direction: column;
-
     overflow: hidden;
-
     background: var(--white);
     border-radius: 24px;
     box-shadow: var(--shadow);
-
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease;
@@ -83,6 +80,60 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.boutique-image:hover {
+    transform: scale(1.05);
+}
+
+/* LIGHTBOX */
+
+.image-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.92);
+}
+
+.image-viewer.active {
+    display: flex;
+}
+
+.image-viewer-img {
+    width: auto;
+    height: auto;
+    max-width: 80vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 14px;
+}
+
+.image-viewer-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    border: none;
+    background: transparent;
+    color: var(--white);
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.image-viewer-close:hover {
+    transform: scale(1.1);
+}
+
+.image-item{
+    cursor: pointer;
 }
 
 /* CONTENT */
@@ -109,46 +160,14 @@
     line-height: 1.25;
 }
 
-.boutique-info-button {
-    width: 34px;
-    height: 34px;
-    flex-shrink: 0;
-
-    border: none;
-    border-radius: 50%;
-
-    background: var(--input-bg);
-    color: var(--green-dark);
-
-    font-size: 16px;
-    font-weight: 900;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        color 0.2s ease;
-}
-
-.boutique-info-button:hover {
-    transform: translateY(-2px);
-    background: var(--green-main);
-    color: var(--white);
-}
-
 .boutique-badge {
     display: inline-flex;
     width: fit-content;
-
     margin-bottom: 12px;
     padding: 6px 12px;
-
     border-radius: 999px;
-
     background: #e7f8ed;
     color: #207245;
-
     font-size: 12px;
     font-weight: 800;
 }
@@ -163,9 +182,7 @@
 .boutique-description {
     min-height: 88px;
     margin-bottom: 18px;
-
     color: var(--text);
-
     font-size: 14px;
     line-height: 1.6;
 }
@@ -185,11 +202,8 @@
 .boutique-options > span,
 .boutique-quantity span {
     display: block;
-
     margin-bottom: 8px;
-
     color: var(--green-dark);
-
     font-size: 13px;
     font-weight: 800;
 }
@@ -209,7 +223,6 @@
     padding: 10px 12px;
 
     border-radius: 999px;
-
     background: var(--input-bg);
     color: var(--green-dark);
 
@@ -217,11 +230,9 @@
     font-weight: 800;
 
     cursor: pointer;
-
     transition:
         transform 0.2s ease,
-        background 0.2s ease,
-        color 0.2s ease;
+        background 0.2s ease;
 }
 
 .boutique-radio-group label:hover {
@@ -241,17 +252,14 @@
 .boutique-quantity input {
     width: 100%;
     height: 48px;
-
     padding: 13px 16px;
 
     border: 1px solid transparent;
     border-radius: 14px;
-
     background: var(--input-bg);
 
     font-family: inherit;
     font-size: 14px;
-
     outline: none;
 
     transition:
@@ -265,16 +273,11 @@
     background: var(--white);
     box-shadow: 0 0 0 4px rgba(110, 142, 100, 0.12);
 }
-.boutique-submit-button--contact {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-}
+
+/* BUTTON */
 
 .boutique-submit-button {
     width: 100%;
-
     padding: 14px 18px;
 
     border: none;
@@ -293,9 +296,9 @@
 
     letter-spacing: 0.8px;
     text-transform: uppercase;
+    text-decoration: none;
 
     cursor: pointer;
-
     transition:
         transform 0.2s ease,
         background 0.2s ease,
@@ -312,146 +315,10 @@
     box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
 }
 
-/* MODAL FULLSCREEN */
-
-.boutique-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 99999;
-
-    display: none;
-    justify-content: center;
-    align-items: center;
-
-    width: 100vw;
-    height: 100vh;
-
-    padding: 24px;
-
-    background: rgba(0, 0, 0, 0.88);
-}
-
-.boutique-modal.is-open {
-    display: flex;
-}
-
-.boutique-modal-content {
-    position: relative;
-
+.boutique-submit-button--contact {
     display: flex;
     justify-content: center;
     align-items: center;
-
-    width: 100%;
-    height: 100%;
-}
-
-.boutique-modal-content h2 {
-    position: absolute;
-
-    width: 1px;
-    height: 1px;
-
-    overflow: hidden;
-
-    clip-path: inset(50%);
-    white-space: nowrap;
-}
-
-.boutique-modal-image {
-    display: block;
-
-    max-width: 95vw;
-    max-height: 95vh;
-
-    width: auto;
-    height: auto;
-
-    object-fit: contain;
-
-    border-radius: 16px;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
-}
-
-.boutique-modal-close {
-    position: fixed;
-    top: 22px;
-    right: 22px;
-    z-index: 100000;
-
-    width: 52px;
-    height: 52px;
-
-    border: none;
-    border-radius: 50%;
-
-    background: rgba(255, 255, 255, 0.18);
-    color: var(--white);
-
-    font-size: 32px;
-    line-height: 1;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-.boutique-modal-close:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.28);
-}
-
-/* RESPONSIVE */
-
-@media screen and (max-width: 950px) {
-    .boutique-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media screen and (max-width: 620px) {
-    .boutique-page {
-        padding: 28px 14px 45px;
-    }
-
-    .boutique-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .boutique-header h1 {
-        font-size: 2rem;
-    }
-
-    .boutique-content {
-        padding: 20px;
-    }
-
-    .boutique-image-wrapper {
-        height: 230px;
-    }
-
-    .boutique-description {
-        min-height: auto;
-    }
-
-    .boutique-modal {
-        padding: 14px;
-    }
-
-    .boutique-modal-image {
-        max-width: 96vw;
-        max-height: 90vh;
-    }
-
-    .boutique-modal-close {
-        top: 14px;
-        right: 14px;
-        width: 44px;
-        height: 44px;
-        font-size: 28px;
-    }
 }
 
 /* =========================
@@ -504,7 +371,11 @@
     letter-spacing: 0.8px;
     text-decoration: none;
     text-transform: uppercase;
-    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .admin-article-add-button:hover {
@@ -526,7 +397,10 @@
     background: var(--white);
     border-radius: 24px;
     box-shadow: var(--shadow);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 .admin-article-card:hover {
@@ -536,8 +410,8 @@
 
 .admin-article-image-wrapper {
     height: 220px;
-    background: var(--input-bg);
     overflow: hidden;
+    background: var(--input-bg);
 }
 
 .admin-article-image {
@@ -601,7 +475,10 @@
     text-decoration: none;
     text-transform: uppercase;
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
 }
 
 .admin-article-edit-button {
@@ -734,6 +611,11 @@
     cursor: pointer;
 }
 
+.admin-article-form-file-input:hover {
+    border-color: var(--green-main);
+    background: var(--white);
+}
+
 .admin-article-form-file-input::file-selector-button {
     margin-right: 14px;
     padding: 11px 18px;
@@ -747,11 +629,6 @@
     letter-spacing: 0.6px;
     text-transform: uppercase;
     cursor: pointer;
-}
-
-.admin-article-form-file-input:hover {
-    border-color: var(--green-main);
-    background: var(--white);
 }
 
 .admin-article-form-file-help {
@@ -906,10 +783,6 @@
         font-size: 2rem;
     }
 
-    .admin-article-header h1 {
-        font-size: 1.8rem;
-    }
-
     .boutique-content {
         padding: 20px;
     }
@@ -920,6 +793,25 @@
 
     .boutique-description {
         min-height: auto;
+    }
+
+    .image-viewer {
+        padding: 14px;
+    }
+
+    .image-viewer-img {
+        max-width: 90vw;
+        max-height: 80vh;
+    }
+
+    .image-viewer-close {
+        top: 14px;
+        right: 20px;
+        font-size: 2.8rem;
+    }
+
+    .admin-article-header h1 {
+        font-size: 1.8rem;
     }
 
     .admin-article-add-button {

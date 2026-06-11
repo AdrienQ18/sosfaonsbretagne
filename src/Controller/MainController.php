@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ContactType;
+use App\Service\Utils\ImageUploader;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,32 +56,6 @@ final class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/galerie', name: 'main_galerie')]
-    public function galerie(): Response
-    {
-        $galleryDirectory = $this->getParameter('kernel.project_dir') . '/public/images/gallery';
-
-        $photos = [];
-
-        if (is_dir($galleryDirectory)) {
-            $files = scandir($galleryDirectory);
-
-            foreach ($files as $file) {
-                $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-
-                if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
-                    $photos[] = $file;
-                }
-            }
-        }
-
-        sort($photos);
-
-        return $this->render('main/galerie.html.twig', [
-            'photos' => $photos,
-        ]);
-    }
-
     #[Route('/cgu', name: 'main_cgu')]
     public function cgu(): Response{
         return $this->render('main/cgu.html.twig');
@@ -105,5 +80,93 @@ public function mentionsLegales(): Response{
     public function presse(): Response
     {
         return $this->render('main/presse.html.twig');
+    }
+
+    #[Route('/galerie', name: 'main_galerie')]
+    public function galerie(): Response
+    {
+        return $this->render('main/galerie.html.twig', [
+            'photos' => $this->getGalleryImages(),
+        ]);
+    }
+
+    #[Route('/admin/gallery', name: 'admin_gallery')]
+    public function galleryAdmin(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        return $this->render('admin/adminGallery.html.twig', [
+            'images' => $this->getGalleryImages(),
+        ]);
+    }
+    #[Route('/admin/gallery/add', name: 'admin_gallery_add', methods: ['POST'])]
+    public function addGalleryImage(
+        Request $request,
+        ImageUploader $imageUploader
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $file = $request->files->get('gallery_image');
+
+        if (!$file) {
+            $this->addFlash('error', 'Aucune image sélectionnée.');
+
+            return $this->redirectToRoute('admin_gallery');
+        }
+
+        $imageUploader->upload(
+            $file,
+            'gallery'
+        );
+
+        $this->addFlash('success', 'L’image a bien été ajoutée à la galerie.');
+
+        return $this->redirectToRoute('admin_gallery');
+    }
+    #[Route('/admin/gallery/delete/{filename}', name: 'admin_gallery_delete', methods: ['POST'])]
+    public function deleteGalleryImage(
+        string $filename,
+        Request $request,
+        ImageUploader $imageUploader
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $filename = basename($filename);
+
+        if (!$this->isCsrfTokenValid('delete_gallery_' . $filename, $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $imageUploader->delete(
+            $filename,
+            'gallery'
+        );
+
+        $this->addFlash('success', 'L’image a bien été supprimée.');
+
+        return $this->redirectToRoute('admin_gallery');
+    }
+
+    private function getGalleryImages(): array
+    {
+        $directory = $this->getParameter('kernel.project_dir') . '/public/images/gallery';
+
+        $images = [];
+
+        if (!is_dir($directory)) {
+            return $images;
+        }
+
+        foreach (scandir($directory) as $file) {
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true)) {
+                $images[] = $file;
+            }
+        }
+
+        sort($images);
+
+        return $images;
     }
 }

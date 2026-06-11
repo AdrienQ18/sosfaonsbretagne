@@ -14,7 +14,7 @@ use App\Repository\ArticleRepository;
 use App\Repository\PreOrderRepository;
 use App\Service\ServiceHelloAsso\HelloAssoService;
 use App\Service\ServiceHelloAsso\HelloAssoWebhookService;
-use App\Service\Utils\FileUploaderShop;
+use App\Service\Utils\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -485,7 +485,7 @@ final class ShopController extends AbstractController
         Request                $request,
         ArticleRepository      $articleRepository,
         EntityManagerInterface $entityManager,
-        FileUploaderShop       $fileUploaderShop,
+        ImageUploader          $imageUploader,
         ?int                   $id = null,
     ): Response
     {
@@ -507,7 +507,7 @@ final class ShopController extends AbstractController
             $file = $formAddArticle->get('image')->getData();
 
             if ($file) {
-                $article->setImage($fileUploaderShop->uploadShop($file, 'shop', $article->getImage()));
+                $article->setImage($imageUploader->upload($file, 'shop', $article->getImage()));
             }
 
             if ($id === null) {

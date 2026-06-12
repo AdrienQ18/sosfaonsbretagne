@@ -166,6 +166,7 @@ class HelloAssoWebhookService
 
             try {
                 $pdfPath = $this->preOrderPdfService->generateInvoice($preOrder);
+                $this->entityManager->flush();
                 $this->preOrderMailerService->sendPaymentConfirmation($preOrder, $pdfPath);
                 $this->preOrderMailerService->sendPreOrderPaymentConfirmationNotificationToAssociation($preOrder);
             } catch (\Throwable $e) {

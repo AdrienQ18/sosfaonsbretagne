@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Don confirmé | SOS Faons Bretagne
+{% endblock %}
+
+{% block body %}
+
+    <section class="donation-success-page">
+        <div class="donation-success-card">
+
+            <h1>Merci pour votre don</h1>
+
+            <p>
+                Votre paiement a bien été pris en compte par HelloAsso.
+            </p>
+
+            <p>
+                Votre don est en cours de validation par l'association.
+                Vous recevrez votre reçu fiscal par email dès que le traitement sera finalisé.
+            </p>
+
+            <a href="{{ path('main_home') }}" class="donation-success-button">
+                Retour à l'accueil
+            </a>
+
+        </div>
+    </section>
+
+{% endblock %}

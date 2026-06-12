@@ -159,10 +159,12 @@ final class DonationController extends AbstractController
         );
     }
     #[Route('/donation/valider/{id}', name: 'donation_success')]
-    public function success(): Response
+    public function success(Donation $donation): Response
     {
-        $this->addFlash('success', 'Paiement terminé. Votre don est en cours de validation.');
-        return $this->redirectToRoute('donation');    }
+        return $this->render('donation/success.html.twig', [
+            'donation' => $donation,
+        ]);
+    }
 
     #[Route('/donation/annuler/{id}', name: 'donation_cancel')]
     public function cancel(Donation $donation, EntityManagerInterface $entityManager): Response
@@ -170,7 +172,7 @@ final class DonationController extends AbstractController
         $donation->setStatus(DonationStatus::DONATION_REFUSEE);
         $entityManager->flush();
         $this->addFlash('error', 'Paiement annulé.');
-        return $this->redirectToRoute('donation');    }
+        return $this->redirectToRoute('donation_');    }
 
     #[Route('/helloasso/webhook', name: 'helloasso_webhook', methods: ['POST'])]
     public function helloAssoWebhook(

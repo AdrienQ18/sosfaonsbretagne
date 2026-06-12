@@ -23,7 +23,6 @@ class PreOrderPdfService
             return $preOrder->getInvoicePdfPath();
         }
         $options = new Options();
-
         $options->set('defaultFont', 'Arial');
         $options->set('isRemoteEnabled', true);
         $options->set('isHtml5ParserEnabled', true);
@@ -51,6 +50,7 @@ class PreOrderPdfService
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $directory = $this->projectDir . '/var/invoice';
+
         if (!is_dir($directory)) {
             mkdir($directory, 0777, true);
         }
@@ -62,7 +62,6 @@ class PreOrderPdfService
         $preOrder->setInvoiceGeneratedAt(new \DateTimeImmutable());
 
         return $path;
-
     }
 
 }

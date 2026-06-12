@@ -7,7 +7,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Twig\Environment;
 
-class DonationPdfService
+final class DonationPdfService
 {
     public function __construct(
         private Environment $twig,
@@ -17,15 +17,15 @@ class DonationPdfService
 
     public function generateFiscalReceipt(Donation $donation): string
     {
-        if ($donation->getReceiptPdfPath()) {
-            return $donation->getReceiptPdfPath();
+        $existingPath = $donation->getReceiptPdfPath();
+        if ($existingPath && is_file($existingPath)) {
+            return $existingPath;
         }
 
         $options = new Options();
         $options->set('defaultFont', 'Arial');
         $options->set('isRemoteEnabled', true);
         $options->set('isHtml5ParserEnabled', true);
-//        $options->set('chroot', $this->projectDir . '/public');
 
         $dompdf = new Dompdf($options);
 
@@ -38,7 +38,6 @@ class DonationPdfService
 
         $logoPath = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($logoRealPath));
         $signaturePath = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($signatureRealPath));
-//      dd($logoPath, file_exists($logoPath), $signaturePath, file_exists($signaturePath));
 
         $receiptNumber = 'don-SOSFB-' . date('Y') . '-' . str_pad(
                 (string) $donation->getId(),
@@ -57,14 +56,19 @@ class DonationPdfService
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $directory = $this->projectDir . '/var/receipts';
 
-        if (!is_dir($directory)) {
-            mkdir($directory, 0777, true);
+        $directory = $this->projectDir . '/var/receipts';
+        if (!is_dir($directory) && !mkdir($directory, 0775, true) && !is_dir($directory)) {
+            throw new \RuntimeException(sprintf('Impossible de créer le dossier %s', $directory));
         }
 
-        $filename = 'Reçu-fiscal-' . $receiptNumber . '.pdf';
-        $path = $directory . '/' . $filename;
+        $filename = 'Recu-fiscal-' . $receiptNumber . '.pdf';
+        $path = $directory . DIRECTORY_SEPARATOR . $filename;
+
+        $bytes = file_put_contents($path, $dompdf->output());
+        if ($bytes === false || !is_file($path)) {
+            throw new \RuntimeException(sprintf('Écriture du PDF impossible : %s', $path));
+        }
 
         $donation->setFiscalReceiptNumber($receiptNumber);
         $donation->setReceiptPdfPath($path);

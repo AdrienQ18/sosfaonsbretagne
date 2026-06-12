@@ -321,6 +321,34 @@
     align-items: center;
 }
 
+.boutique-info-button {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--input-bg);
+    color: var(--green-dark);
+
+    font-size: 16px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.boutique-info-button:hover {
+    transform: translateY(-2px);
+    background: var(--green-main);
+    color: var(--white);
+}
+
 /* =========================
    ADMIN ARTICLE LIST
 ========================= */
@@ -737,6 +765,74 @@
 
 .admin-article-form-submit-button:hover {
     box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
+}
+
+/* MODAL FULLSCREEN */
+
+.boutique-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.92);
+}
+
+.boutique-modal.is-open {
+    display: flex;
+}
+
+.boutique-modal-content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.boutique-modal-content h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.boutique-modal-image {
+    width: auto;
+    height: auto;
+    max-width: 80vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 14px;
+}
+
+.boutique-modal-close {
+    position: fixed;
+    top: 22px;
+    right: 22px;
+    z-index: 100000;
+    width: 52px;
+    height: 52px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--white);
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.boutique-modal-close:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.28);
 }
 
 /* RESPONSIVE */

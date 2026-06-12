@@ -54,9 +54,9 @@ class HelloAssoService
                     'itemName' => $donation->getDonorType()?->value === 'entreprise'
                         ? 'Don entreprise SOS Faons Bretagne'
                         : 'Don particulier SOS Faons Bretagne',
-                    'backUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/cancel/' . $donation->getId(),
-                    'errorUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/cancel/' . $donation->getId(),
-                    'returnUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/success/' . $donation->getId(),
+                    'backUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/annuler/' . $donation->getId(),
+                    'errorUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/annuler/' . $donation->getId(),
+                    'returnUrl' => $_ENV['APP_PUBLIC_URL'] . '/donation/valider/' . $donation->getId(),
                     'containsDonation' => true,
                     'payer' => [
                         'firstName' => $donation->getFirstname(),
@@ -112,7 +112,7 @@ class HelloAssoService
                     'itemName' => 'Précommande SOS Faons Bretagne',
                     'backUrl' => $_ENV['APP_PUBLIC_URL'] . '/cart',
                     'errorUrl' => $_ENV['APP_PUBLIC_URL'] . '/cart',
-                    'returnUrl' => $_ENV['APP_PUBLIC_URL'] . '/pre-order/payment/success/' . $preOrder->getId(),
+                    'returnUrl' => $_ENV['APP_PUBLIC_URL'] . '/pre-order/paiement/valider/' . $preOrder->getId(),
                     'containsDonation' => false,
                     'payer' => [
                         'firstName' => $preOrder->getUser()->getFirstname(),

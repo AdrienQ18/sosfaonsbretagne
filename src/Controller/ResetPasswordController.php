@@ -151,7 +151,7 @@ class ResetPasswordController extends AbstractController
             ->from(new Address('contact@sosfaonsbretagne.fr', 'SOS Faons Bretagne'))
             ->to((string) $user->getEmail())
             ->subject('Réinitialisation de votre mot de passe')
-            ->htmlTemplate('reset_password/email.html.twig')
+            ->htmlTemplate('reset_password/password_reset_email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
             ])

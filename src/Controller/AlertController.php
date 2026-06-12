@@ -7,6 +7,7 @@ use App\Enum\AlertStatus;
 use App\Form\AlertFilterType;
 use App\Form\AlertType;
 use App\Repository\AlertRepository;
+use App\Service\Signalement\AlertMailerService;
 use App\Service\Utils\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -25,7 +26,7 @@ final class AlertController extends AbstractController
     public function alert(
         Request $request,
         EntityManagerInterface $entityManager,
-        MailerInterface $mailer,
+        AlertMailerService $alertMailerService,
         ImageUploader $imageUploader,
     ): Response {
         $alert = new Alert();
@@ -61,7 +62,7 @@ final class AlertController extends AbstractController
             $entityManager->persist($alert);
             $entityManager->flush();
 
-            $this->sendNotificationEmail($mailer, $alert);
+            $alertMailerService->sendAdminNotification($alert);
 
             $this->addFlash(
                 'success',
@@ -74,23 +75,6 @@ final class AlertController extends AbstractController
         return $this->render('alert/alert.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    private function sendNotificationEmail(
-        MailerInterface $mailer,
-        Alert $alert
-    ): void {
-        $email = (new TemplatedEmail())
-            ->from('contact@sosfaonsbretagne.fr')
-            ->to('contact@sosfaonsbretagne.fr')
-            ->replyTo($alert->getUser()?->getEmail() ?? 'contact@sosfaonsbretagne.fr')
-            ->subject('[Signalement] ' . $alert->getType())
-            ->htmlTemplate('alert/email/alert_receipt.html.twig')
-            ->context([
-                'alert' => $alert,
-            ]);
-            $mailer->send($email);
-
     }
 
     #[Route('/admin/signalement', name: 'admin_alert')]

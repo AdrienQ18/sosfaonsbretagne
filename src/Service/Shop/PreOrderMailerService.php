@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\ServiceShop;
+namespace App\Service\Shop;
 
 use App\Entity\PreOrder;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -20,7 +20,7 @@ class PreOrderMailerService
             ->from('contact@sosfaonsbretagne.fr')
             ->to($preOrder->getUser()->getEmail())
             ->subject('Votre précommande a bien été reçue')
-            ->htmlTemplate('shop/email/pre_order_confirmation.html.twig')
+            ->htmlTemplate('emails/shop/pre_order_created_user.html.twig')
             ->context([
                 'preOrder' => $preOrder,
             ]);
@@ -34,7 +34,7 @@ class PreOrderMailerService
             ->from('contact@sosfaonsbretagne.fr')
             ->to($preOrder->getUser()->getEmail())
             ->subject('Votre précommande a été validée')
-            ->htmlTemplate('shop/email/pre_order_payment.html.twig')
+            ->htmlTemplate('emails/shop/pre_order_payment_link.html.twig')
             ->context([
                 'preOrder' => $preOrder,
             ]);
@@ -47,7 +47,7 @@ class PreOrderMailerService
             ->from('contact@sosfaonsbretagne.fr')
             ->to($preOrder->getUser()->getEmail())
             ->subject('Paiement confirmé - Votre facture')
-            ->htmlTemplate('shop/email/pre_order_payment_confirmation.html.twig')
+            ->htmlTemplate('emails/shop/pre_order_paid_user.html.twig')
             ->context([
                 'preOrder' => $preOrder,
             ])
@@ -62,7 +62,7 @@ class PreOrderMailerService
             ->to('contact@sosfaonsbretagne.fr')
             ->replyTo($preOrder->getUser()?->getEmail() ?? 'contact@sosfaonsbretagne.fr')
             ->subject('Nouvelle précommande reçu - SOS Faons Bretagne')
-            ->htmlTemplate('shop/email/pre_order_notification.html.twig')
+            ->htmlTemplate('emails/shop/pre_order_created_admin.html.twig')
             ->context([
                 'preOrder' => $preOrder,
             ]);
@@ -76,7 +76,7 @@ class PreOrderMailerService
             ->to('contact@sosfaonsbretagne.fr')
             ->replyTo($preOrder->getUser()?->getEmail() ?? 'contact@sosfaonsbretagne.fr')
             ->subject('Nouvelle précommande reçu - SOS Faons Bretagne')
-            ->htmlTemplate('shop/email/pre_order_payment_notification.html.twig')
+            ->htmlTemplate('emails/shop/pre_order_paid_admin.html.twig')
             ->context([
                 'preOrder' => $preOrder,
             ]);

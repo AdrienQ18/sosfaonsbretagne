@@ -96,7 +96,7 @@ class SecurityController extends AbstractController
                     ->from(new Address('contact@sosfaonsbretagne.fr', 'SOS Faons Bretagne'))
                     ->to((string) $user->getEmail())
                     ->subject('Confirmez votre adresse email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('emails/registration/confirmation_email.html.twig')
             );
 
             $this->addFlash(

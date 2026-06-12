@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\ServiceHelloAsso\HelloAssoWebhookService;
+use App\Service\HelloAsso\HelloAssoWebhookService;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

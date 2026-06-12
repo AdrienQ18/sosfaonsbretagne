@@ -12,7 +12,7 @@ use App\Form\ArticleType;
 use App\Form\PreOrderFilterType;
 use App\Repository\ArticleRepository;
 use App\Repository\PreOrderRepository;
-use App\Service\ServiceHelloAsso\HelloAssoService;
+use App\Service\HelloAsso\HelloAssoService;
 use App\Service\Utils\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -24,8 +24,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Service\ServiceShop\PreOrderMailerService;
-use App\Service\ServiceShop\PreOrderValidationService;
+use App\Service\Shop\PreOrderMailerService;
+use App\Service\Shop\PreOrderValidationService;
 
 final class ShopController extends AbstractController
 {

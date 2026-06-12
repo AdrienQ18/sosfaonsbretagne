@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Service\ServiceHelloAsso;
+namespace App\Service\HelloAsso;
 
 use App\Enum\DonationStatus;
 use App\Enum\PreOrderStatus;
 use App\Repository\DonationRepository;
 use App\Repository\PreOrderRepository;
-use App\Service\ServiceDonation\DonationMailerService;
-use App\Service\ServiceDonation\DonationPdfService;
-use App\Service\ServiceShop\PreOrderMailerService;
-use App\Service\ServiceShop\PreOrderPdfService;
+use App\Service\Donation\DonationMailerService;
+use App\Service\Donation\DonationPdfService;
+use App\Service\Shop\PreOrderMailerService;
+use App\Service\Shop\PreOrderPdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 

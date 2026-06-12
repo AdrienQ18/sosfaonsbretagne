@@ -9,7 +9,7 @@ use App\Enum\DonorType;
 use App\Form\DonationFilterType;
 use App\Form\DonationType;
 use App\Repository\DonationRepository;
-use App\Service\ServiceHelloAsso\HelloAssoService;
+use App\Service\HelloAsso\HelloAssoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Psr\Log\LoggerInterface;

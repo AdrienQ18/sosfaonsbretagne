@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\ServiceDonation;
+namespace App\Service\Donation;
 
 use App\Entity\Donation;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -26,7 +26,7 @@ class DonationMailerService
             ->from('contact@sosfaonsbretagne.fr')
             ->to($donation->getEmail())
             ->subject('Votre reçu fiscal - SOS Faons Bretagne')
-            ->htmlTemplate('donation/email/donation_receipt.html.twig')
+            ->htmlTemplate('emails/donation/donation_fiscal_receipt.html.twig')
             ->context([
                 'donation' => $donation,
             ])
@@ -44,7 +44,7 @@ class DonationMailerService
             ->to('contact@sosfaonsbretagne.fr')
             ->replyTo($donation->getUser()?->getEmail() ?? 'contact@sosfaonsbretagne.fr')
             ->subject('Nouveau don reçu - SOS Faons Bretagne')
-            ->htmlTemplate('donation/email/donation_notification.html.twig')
+            ->htmlTemplate('emails/donation/donation_notification.html.twig')
             ->context([
                 'donation' => $donation,
             ]);

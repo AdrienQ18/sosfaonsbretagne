@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\ServiceShop;
+namespace App\Service\Shop;
 
 use App\Entity\PreOrder;
 use App\Enum\PreOrderStatus;

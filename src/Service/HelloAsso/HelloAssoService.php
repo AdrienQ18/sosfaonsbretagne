@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\ServiceHelloAsso;
+namespace App\Service\HelloAsso;
 
 use App\Entity\Donation;
 use App\Entity\PreOrder;
@@ -37,6 +37,7 @@ final class HelloAssoService
         $token = $this->getAccessToken();
         $organizationSlug = $_ENV['HELLOASSO_ORGANIZATION_SLUG'];
         $amountInCents = (int) round((float) $donation->getAmount() * 100);
+        $baseUrl = rtrim($_ENV['APP_PUBLIC_URL'], '/');
 
         $payload = [
             'totalAmount' => $amountInCents,
@@ -44,21 +45,9 @@ final class HelloAssoService
             'itemName' => $donation->getDonorType()?->value === 'entreprise'
                 ? 'Don entreprise SOS Faons Bretagne'
                 : 'Don particulier SOS Faons Bretagne',
-            'backUrl' => $this->urlGenerator->generate(
-                'donation_cancel',
-                ['id' => $donation->getId()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-            'errorUrl' => $this->urlGenerator->generate(
-                'donation_cancel',
-                ['id' => $donation->getId()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-            'returnUrl' => $this->urlGenerator->generate(
-                'donation_success',
-                ['id' => $donation->getId()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
+            'backUrl' => $baseUrl . '/donation/annuler/' . $donation->getId(),
+            'errorUrl' => $baseUrl . '/donation/annuler/' . $donation->getId(),
+            'returnUrl' => $baseUrl . '/donation/valider/' . $donation->getId(),
             'containsDonation' => true,
             'payer' => [
                 'firstName' => $donation->getFirstname(),
@@ -125,26 +114,15 @@ final class HelloAssoService
 
         $organizationSlug = $_ENV['HELLOASSO_ORGANIZATION_SLUG'];
         $amountInCents = (int) round((float) $preOrder->getTotalAmount() * 100);
+        $baseUrl = rtrim($_ENV['APP_PUBLIC_URL'], '/');
 
         $payload = [
             'totalAmount' => $amountInCents,
             'initialAmount' => $amountInCents,
             'itemName' => 'Précommande SOS Faons Bretagne',
-            'backUrl' => $this->urlGenerator->generate(
-                'cart_index',
-                [],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-            'errorUrl' => $this->urlGenerator->generate(
-                'cart_index',
-                [],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-            'returnUrl' => $this->urlGenerator->generate(
-                'pre_order_payment_success',
-                ['id' => $preOrder->getId()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
+            'backUrl' => $baseUrl . '/panier',
+            'errorUrl' => $baseUrl . '/panier',
+            'returnUrl' => $baseUrl . '/pre-order/paiement/valider/' . $preOrder->getId(),
             'containsDonation' => false,
             'payer' => [
                 'firstName' => $preOrder->getUser()->getFirstname(),
@@ -165,7 +143,9 @@ final class HelloAssoService
             'pre_order_id' => $preOrder->getId(),
             'amount_cents' => $amountInCents,
         ]);
-
+        $this->logger->info('PREORDER METADATA', [
+            'pre_order_id' => $preOrder->getId(),
+        ]);
         $response = $this->httpClient->request(
             'POST',
             $_ENV['HELLOASSO_API_URL'] . '/organizations/' . $organizationSlug . '/checkout-intents',

@@ -1,0 +1,54 @@
+/* ==========================================================================
+   tokens.css
+   ========================================================================== */
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/montserrat/Montserrat-VariableFont_wght.ttf')
+    format('truetype');
+
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+:root {
+    --green-dark: #1b4a3a;
+    --green-main: #6e8e64;
+    --green-soft: #88a37f;
+    --red-dark: #7c2525;
+    --red-main: #d54444;
+    --red-soft: #f17b7b;
+    --brown: #8f4d26;
+    --cream-light: #f6f1e8;
+    --input-bg: #f4efe8;
+    --white: #ffffff;
+    --text: #2b2b2b;
+    --error: #c0392b;
+    --shadow: 0 14px 28px rgba(0, 0, 0, 0.16),
+    0 10px 10px rgba(0, 0, 0, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--cream-light);
+    color: var(--text);
+}
+.container {
+    /*max-width: 1200px;*/
+    margin: auto;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    min-height: 95vh;
+}
+img{
+    width: 120px;
+    height: auto;
+}
+.strong-text {
+    color: var(--green-dark);
+    font-weight: 800;
+}

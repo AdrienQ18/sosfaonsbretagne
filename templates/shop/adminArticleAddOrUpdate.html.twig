@@ -17,13 +17,13 @@
 
 {% block body %}
 
-    <section class="admin-article-form-page">
+    <section class="admin-article-form-page ui-page">
 
-        <div class="admin-article-form-container">
+        <div class="admin-article-form-container ui-container">
 
-            <div class="admin-article-form-card">
+            <div class="admin-article-form-card ui-card">
 
-                <header class="admin-article-form-header">
+                <header class="admin-article-form-header ui-header">
 
                     <h1>
                         {% if formAddArticle.vars.value.id %}
@@ -87,7 +87,7 @@
                 <div class="admin-article-form-actions">
                     <a
                         href="{{ path('admin_article_index') }}"
-                        class="admin-article-form-back-button"
+                        class="admin-article-form-back-button ui-button ui-button--secondary"
                         aria-label="Retour à la liste des articles"
                     >
                         Retour
@@ -95,7 +95,7 @@
 
                     <button
                         type="submit"
-                        class="admin-article-form-submit-button"
+                        class="admin-article-form-submit-button ui-button ui-button--primary"
                         aria-label="Enregistrer l’article"
                     >
                         Enregistrer

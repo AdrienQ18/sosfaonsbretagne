@@ -55,7 +55,7 @@
 
                     {{ form_errors(formDonation) }}
 
-                    <section id="step-amount" class="don-card">
+                    <section id="step-amount" class="don-card ui-card">
                         <h2 class="visually-hidden">
                             Choisir le montant du don
                         </h2>
@@ -102,13 +102,13 @@
                             {{ form_errors(formDonation.amount) }}
                         </div>
 
-                        <button type="button" id="go-to-infos" class="don-primary-button">
+                        <button type="button" id="go-to-infos" class="don-primary-button ui-button ui-button--primary">
                             Faire un don
                         </button>
 
                     </section>
 
-                    <section id="step-infos" class="don-card don-infos">
+                    <section id="step-infos" class="don-card don-infos ui-card">
                         <h2 class="visually-hidden">
                             Informations du donateur
                         </h2>
@@ -184,7 +184,7 @@
                         <button
                             type="submit"
                             id="submit-donation"
-                            class="don-submit-button"
+                            class="don-submit-button ui-button ui-button--primary"
                             aria-live="polite"
                         >
                             Donner
@@ -208,7 +208,7 @@
 
                 </div>
 
-                <aside class="don-card don-side-card">
+                <aside class="don-card don-side-card ui-card">
                     <h3>Exemples de dons</h3>
 
                     <div class="don-example-list">

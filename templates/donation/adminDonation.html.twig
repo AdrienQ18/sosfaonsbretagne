@@ -7,18 +7,18 @@
 {% endblock %}
 {% block canonical %}{% endblock %}
 {% block body %}
-    <section class="admin-donation-page">
-        <div class="admin-donation-container">
-            <header class="admin-donation-header">
+    <section class="admin-donation-page ui-page">
+        <div class="admin-donation-container ui-container">
+            <header class="admin-donation-header ui-header">
                 <h1>Administration des donations</h1>
                 <div class="admin-donation-total">
                     <span>Total des dons validés</span>
                     <strong>{{ totalValidatedAmount|number_format(2, ',', ' ') }} €</strong>
                 </div>
             </header>
-            <div class="admin-donation-card admin-donation-filter-card">
+            <div class="admin-donation-card admin-donation-filter-card ui-card">
                 {{ form_start(filterForm, {attr: {id: 'donation-filter-form',class: 'admin-donation-filter-form','data-reset-url': path('admin_donation')}}) }}
-                <div class="admin-donation-filter-grid">
+                <div class="admin-donation-filter-grid ui-form-grid">
                     <div class="admin-donation-form-group">
                         {{ form_label(filterForm.search) }}
                         {{ form_widget(filterForm.search) }}
@@ -52,14 +52,14 @@
                     <button
                         type="button"
                         id="reset-filters"
-                        class="admin-donation-reset-button"
+                        class="admin-donation-reset-button ui-button ui-button--secondary"
                         aria-label="Réinitialiser les filtres de recherche"
                     >
                         Réinitialiser
                     </button>
                     <a
                         href="{{ path('admin_donation_download_pdfs', app.request.query.all) }}"
-                        class="admin-donation-download-button"
+                        class="admin-donation-download-button ui-button ui-button--primary"
                         aria-label="Télécharger les PDF correspondant à la recherche"
                     >
                         Télécharger les reçus fiscaux
@@ -67,7 +67,7 @@
                 </div>
                 {{ form_end(filterForm) }}
             </div>
-            <div class="admin-donation-card">
+            <div class="admin-donation-card ui-card">
 
                 <div class="admin-donation-table-wrapper">
                     <table class="admin-donation-table">

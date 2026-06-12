@@ -1,50 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const route = document.body.dataset.route;
+import {isRoute, onReady} from './dom.js';
+import {initSelectAllCheckboxGroup} from './checkboxGroup.js';
 
-    if (route !== 'user_profile_edit') {
+onReady(() => {
+    if (!isRoute('user_profile_edit')) {
         return;
     }
 
-    initAvailabilityAllCheckbox();
+    initSelectAllCheckboxGroup('.availability-options input[type="checkbox"]');
 });
-
-function initAvailabilityAllCheckbox() {
-    const availabilityCheckboxes = document.querySelectorAll(
-        '.availability-options input[type="checkbox"]'
-    );
-
-    if (!availabilityCheckboxes.length) {
-        return;
-    }
-
-    const allCheckbox = Array.from(availabilityCheckboxes).find((checkbox) => {
-        const label = document.querySelector(`label[for="${checkbox.id}"]`);
-
-        return label?.textContent.trim().toLowerCase() === 'toutes';
-    });
-
-    if (!allCheckbox) {
-        return;
-    }
-
-    allCheckbox.addEventListener('change', () => {
-        availabilityCheckboxes.forEach((checkbox) => {
-            if (checkbox !== allCheckbox) {
-                checkbox.checked = allCheckbox.checked;
-            }
-        });
-    });
-
-    availabilityCheckboxes.forEach((checkbox) => {
-        if (checkbox === allCheckbox) {
-            return;
-        }
-
-        checkbox.addEventListener('change', () => {
-            const otherCheckboxes = Array.from(availabilityCheckboxes)
-                .filter((checkbox) => checkbox !== allCheckbox);
-
-            allCheckbox.checked = otherCheckboxes.every((checkbox) => checkbox.checked);
-        });
-    });
-}

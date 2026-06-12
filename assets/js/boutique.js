@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
+import {isRoute, onReady} from './dom.js';
+import {initImageLightbox} from './lightbox.js';
 
-    const route = document.body.dataset.route;
-
-    if (route !== 'shop') {
+onReady(() => {
+    if (!isRoute('shop')) {
         return;
     }
 
@@ -10,38 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
        LIGHTBOX IMAGES
     ===================== */
 
-    const viewer = document.getElementById('image-viewer');
-    const viewerImg = document.getElementById('image-viewer-img');
-    const closeBtn = document.querySelector('.image-viewer-close');
-
-    document.querySelectorAll('.js-image-viewer').forEach((image) => {
-
-        image.addEventListener('click', () => {
-
-            viewerImg.src = image.src;
-            viewerImg.alt = image.alt;
-
-            viewer.classList.add('active');
-
-        });
-
+    initImageLightbox({
+        triggerSelector: '.js-image-viewer',
+        lightboxSelector: '#image-viewer',
+        imageSelector: '#image-viewer-img',
+        closeSelector: '.image-viewer-close',
     });
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            viewer.classList.remove('active');
-        });
-    }
-
-    if (viewer) {
-        viewer.addEventListener('click', (event) => {
-
-            if (event.target === viewer) {
-                viewer.classList.remove('active');
-            }
-
-        });
-    }
 
     /* =====================
        MODALS PRODUITS

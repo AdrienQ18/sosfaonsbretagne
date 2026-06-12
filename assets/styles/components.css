@@ -1,0 +1,94 @@
+/* ==========================================================================
+   components.css
+   Styles partages par plusieurs pages.
+   ========================================================================== */
+
+.ui-page {
+    padding: 40px 20px 60px;
+    background: var(--cream-light);
+}
+
+.ui-container {
+    width: min(1250px, 100%);
+    margin: 0 auto;
+}
+
+.ui-header {
+    margin-bottom: 30px;
+}
+
+.ui-card {
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.ui-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.ui-button:hover,
+.ui-button:focus-visible {
+    transform: translateY(-1px);
+}
+
+.ui-button--primary {
+    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+    color: var(--white);
+}
+
+.ui-button--primary:hover,
+.ui-button--primary:focus-visible {
+    background: linear-gradient(135deg, var(--green-main), var(--green-soft));
+    box-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
+}
+
+.ui-button--secondary {
+    background: var(--input-bg);
+    color: var(--green-dark);
+}
+
+.ui-button--secondary:hover,
+.ui-button--secondary:focus-visible {
+    background: var(--green-soft);
+    color: var(--white);
+}
+
+.ui-button--danger {
+    background: var(--red-dark);
+    color: var(--white);
+}
+
+.ui-button--danger:hover,
+.ui-button--danger:focus-visible {
+    background: var(--red-main);
+}
+
+.ui-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+}
+
+.ui-empty-state {
+    padding: 32px;
+    text-align: center;
+}
+
+@media (max-width: 720px) {
+    .ui-page {
+        padding: 28px 14px 45px;
+    }
+}

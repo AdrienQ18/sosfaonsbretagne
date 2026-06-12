@@ -1,7 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const route = document.body.dataset.route;
+import {isRoute, onReady} from './dom.js';
+import {findCheckboxByLabelText, initSelectAllCheckboxGroup} from './checkboxGroup.js';
 
-    if (route !== 'admin_modify') {
+onReady(() => {
+    if (!isRoute('admin_modify')) {
         return;
     }
 
@@ -11,61 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initAvailabilityAllCheckbox() {
-    const availabilityCheckboxes = document.querySelectorAll(
+    initSelectAllCheckboxGroup(
         '#user_Availabilitys input[type="checkbox"], #user_availabilitys input[type="checkbox"]'
     );
-
-    if (!availabilityCheckboxes.length) {
-        return;
-    }
-
-    const allCheckbox = Array.from(availabilityCheckboxes).find((checkbox) => {
-        const label = document.querySelector(`label[for="${checkbox.id}"]`);
-
-        return label?.textContent.trim().toLowerCase() === 'toutes';
-    });
-
-    if (!allCheckbox) {
-        return;
-    }
-
-    allCheckbox.addEventListener('change', () => {
-        availabilityCheckboxes.forEach((checkbox) => {
-            if (checkbox !== allCheckbox) {
-                checkbox.checked = allCheckbox.checked;
-            }
-        });
-    });
-
-    availabilityCheckboxes.forEach((checkbox) => {
-        if (checkbox === allCheckbox) {
-            return;
-        }
-
-        checkbox.addEventListener('change', () => {
-            const otherCheckboxes = Array.from(availabilityCheckboxes)
-                .filter((cb) => cb !== allCheckbox);
-
-            allCheckbox.checked = otherCheckboxes.every((cb) => cb.checked);
-        });
-    });
 }
 
 function initAdminRoleConfirmation() {
-    const roleCheckboxes = document.querySelectorAll(
-        '#user_roles input[type="checkbox"]'
+    const adminCheckbox = findCheckboxByLabelText(
+        '#user_roles input[type="checkbox"]',
+        (label, checkbox) => label.includes('administrateur') || checkbox.value === 'ROLE_ADMIN'
     );
-
-    if (!roleCheckboxes.length) {
-        return;
-    }
-
-    const adminCheckbox = Array.from(roleCheckboxes).find((checkbox) => {
-        const label = document.querySelector(`label[for="${checkbox.id}"]`);
-
-        return label?.textContent.trim().toLowerCase().includes('administrateur')
-            || checkbox.value === 'ROLE_ADMIN';
-    });
 
     if (!adminCheckbox) {
         return;

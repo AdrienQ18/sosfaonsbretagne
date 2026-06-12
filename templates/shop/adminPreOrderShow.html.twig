@@ -12,10 +12,10 @@
 
 {% block body %}
 
-    <section class="admin-preorder-show-page">
-        <div class="admin-preorder-show-container">
+    <section class="admin-preorder-show-page ui-page">
+        <div class="admin-preorder-show-container ui-container">
 
-            <header class="admin-preorder-show-header">
+            <header class="admin-preorder-show-header ui-header">
                 <div>
                     <h1>Précommande #{{ preOrder.id }}</h1>
 
@@ -43,7 +43,7 @@
 
                 <main class="admin-preorder-show-main">
 
-                    <section class="admin-preorder-show-card">
+                    <section class="admin-preorder-show-card ui-card">
                         <h2>Informations client</h2>
 
                         <div class="admin-preorder-show-info-grid">
@@ -98,7 +98,7 @@
                         </div>
                     </section>
 
-                    <section class="admin-preorder-show-card">
+                    <section class="admin-preorder-show-card ui-card">
                         <h2>Articles commandés</h2>
 
                         <div class="admin-preorder-show-items">
@@ -163,7 +163,7 @@
 
                 <aside class="admin-preorder-show-sidebar">
 
-                    <section class="admin-preorder-show-card admin-preorder-show-summary">
+                    <section class="admin-preorder-show-card admin-preorder-show-summary ui-card">
                         <h2>Actions</h2>
 
                         {% if preOrder.invoicePdfPath %}
@@ -171,7 +171,7 @@
                                 href="{{ path('admin_pre_order_invoice', { id: preOrder.id }) }}"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="admin-preorder-show-button"
+                                class="admin-preorder-show-button ui-button ui-button--primary"
                             >
                                 Voir la facture PDF
                             </a>
@@ -184,7 +184,7 @@
                             >
                                 <button
                                     type="submit"
-                                    class="admin-preorder-show-button"
+                                    class="admin-preorder-show-button ui-button ui-button--primary"
                                 >
                                     Valider la précommande
                                 </button>
@@ -197,7 +197,7 @@
                             >
                                 <button
                                     type="submit"
-                                    class="admin-preorder-show-button admin-preorder-show-button--danger"
+                                    class="admin-preorder-show-button admin-preorder-show-button--danger ui-button ui-button--danger"
                                 >
                                     Refuser la précommande
                                 </button>
@@ -206,7 +206,7 @@
 
                         <a
                             href="{{ path('admin_pre_order') }}"
-                            class="admin-preorder-show-back-link"
+                            class="admin-preorder-show-back-link ui-button ui-button--secondary"
                         >
                             Retour à la liste
                         </a>

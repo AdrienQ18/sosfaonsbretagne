@@ -12,11 +12,11 @@
 
 {% block body %}
 
-    <section class="admin-user-page">
+    <section class="admin-user-page ui-page">
 
-        <div class="admin-user-container">
+        <div class="admin-user-container ui-container">
 
-            <header class="admin-user-header">
+            <header class="admin-user-header ui-header">
 
                 <h1>Liste des utilisateurs</h1>
 
@@ -27,7 +27,7 @@
 
             </header>
 
-            <div class="admin-user-filter-card">
+            <div class="admin-user-filter-card ui-card">
 
                 {{ form_start(filterForm, {
                     method: 'GET',
@@ -38,7 +38,7 @@
                     }
                 }) }}
 
-                <div class="admin-user-filter-grid">
+                <div class="admin-user-filter-grid ui-form-grid">
 
                     <div class="admin-user-form-group">
                         {{ form_label(filterForm.search) }}
@@ -77,7 +77,7 @@
                     <button
                         type="button"
                         id="reset-user-filters"
-                        class="admin-user-reset-button"
+                        class="admin-user-reset-button ui-button ui-button--secondary"
                     >
                         Réinitialiser
                     </button>
@@ -88,7 +88,7 @@
 
             </div>
 
-            <div class="admin-user-card">
+            <div class="admin-user-card ui-card">
 
                 <div class="admin-user-table-wrapper">
 
@@ -169,7 +169,7 @@
                                 <td>
                                     <a
                                         href="{{ path('admin_modify', { id: user.id }) }}"
-                                        class="admin-user-edit-button"
+                                        class="admin-user-edit-button ui-button ui-button--primary"
                                         aria-label="Modifier l'utilisateur {{ user.firstname }} {{ user.lastname }}"
                                         onclick="return confirm('Êtes-vous sûr de vouloir modifier cet utilisateur ?');"
                                     >

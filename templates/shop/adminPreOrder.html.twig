@@ -12,10 +12,10 @@
 
 {% block body %}
 
-    <section class="admin-preorder-page">
-        <div class="admin-preorder-container">
+    <section class="admin-preorder-page ui-page">
+        <div class="admin-preorder-container ui-container">
 
-            <header class="admin-preorder-header">
+            <header class="admin-preorder-header ui-header">
                 <h1>Gestion des précommandes</h1>
 
                 <div class="admin-preorder-count">
@@ -24,7 +24,7 @@
                 </div>
             </header>
 
-            <div class="admin-preorder-card admin-preorder-filter-card">
+            <div class="admin-preorder-card admin-preorder-filter-card ui-card">
 
                 {{ form_start(filterForm, {
                     method: 'GET',
@@ -35,7 +35,7 @@
                     }
                 }) }}
 
-                <div class="admin-preorder-filter-grid">
+                <div class="admin-preorder-filter-grid ui-form-grid">
                     <div class="admin-preorder-form-group">
                         {{ form_label(filterForm.search) }}
                         {{ form_widget(filterForm.search) }}
@@ -66,7 +66,7 @@
                     <button
                         type="button"
                         id="reset-preorder-filters"
-                        class="admin-preorder-reset-button"
+                        class="admin-preorder-reset-button ui-button ui-button--secondary"
                         aria-label="Réinitialiser les filtres de recherche"
                     >
                         Réinitialiser
@@ -79,7 +79,7 @@
 
             <div class="admin-preorder-grid">
                 {% for preOrder in preOrders %}
-                    <article class="admin-preorder-card">
+                    <article class="admin-preorder-card ui-card">
 
                         <div class="admin-preorder-card-header">
                             <h2>Précommande #{{ preOrder.id }}</h2>
@@ -128,7 +128,7 @@
                         <div class="admin-preorder-actions">
                             <a
                                 href="{{ path('admin_pre_order_show', { id: preOrder.id }) }}"
-                                class="admin-preorder-button"
+                                class="admin-preorder-button ui-button ui-button--primary"
                             >
                                 Voir le détail
                             </a>
@@ -138,7 +138,7 @@
                                     href="{{ path('admin_pre_order_invoice', { id: preOrder.id }) }}"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="admin-preorder-button admin-preorder-button--secondary"
+                                    class="admin-preorder-button admin-preorder-button--secondary ui-button ui-button--secondary"
                                 >
                                     Voir la facture
                                 </a>
@@ -147,7 +147,7 @@
 
                     </article>
                 {% else %}
-                    <div class="admin-preorder-empty">
+                    <div class="admin-preorder-empty ui-empty-state">
                         <h2>Aucune précommande trouvée</h2>
 
                         <p>

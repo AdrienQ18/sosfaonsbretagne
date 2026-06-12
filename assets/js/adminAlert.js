@@ -2,12 +2,13 @@ import {isRoute, onReady} from './dom.js';
 import {initAutoSubmitFilterForm} from './filterForm.js';
 
 onReady(() => {
-    if (!isRoute('admin_userList')) {
+    if (!isRoute('admin_alert')) {
         return;
     }
 
     initAutoSubmitFilterForm({
-        formSelector: '#user-filter-form',
-        resetSelector: '#reset-user-filters',
+        formSelector: '#alert-filter-form',
+        resetSelector: '#reset-alert-filters',
+        fallbackResetUrl: '/admin/alert',
     });
 });

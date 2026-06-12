@@ -16,17 +16,17 @@
 
 {% block body %}
 
-    <section class="availability-page">
-        <div class="availability-container">
+    <section class="availability-page ui-page">
+        <div class="availability-container ui-container">
 
-            <div class="availability-header">
+            <div class="availability-header ui-header">
                 <h1>Gestion des disponibilités</h1>
                 <p>Ajoutez, modifiez ou supprimez les disponibilités proposées aux bénévoles.</p>
             </div>
 
             <div class="availability-grid">
 
-                <section class="availability-card availability-list-card">
+                <section class="availability-card availability-list-card ui-card">
                     <div class="availability-card-header">
                         <h2>Disponibilités existantes</h2>
                         <span>{{ availabilityList|length }} élément(s)</span>
@@ -54,7 +54,7 @@
                                         <div class="availability-actions">
                                             <a
                                                 href="{{ path('admin_availability_update', { id: availability.id }) }}"
-                                                class="availability-edit-link"
+                                                class="availability-edit-link ui-button ui-button--primary"
                                                 aria-label="Modifier la disponibilité {{ availability.label }}"
                                             >
                                                 Modifier
@@ -73,7 +73,7 @@
 
                                                 <button
                                                     type="submit"
-                                                    class="availability-delete-button"
+                                                    class="availability-delete-button ui-button ui-button--danger"
                                                     aria-label="Supprimer la disponibilité {{ availability.label }}"
                                                 >
                                                     Supprimer
@@ -94,7 +94,7 @@
                     </div>
                 </section>
 
-                <section class="availability-card availability-form-card">
+                <section class="availability-card availability-form-card ui-card">
                     <h2>
                         {% if isEdit %}
                             Modifier une disponibilité
@@ -129,7 +129,7 @@
                         {{ form_errors(formAvailability.label) }}
                     </div>
 
-                    <button type="submit" class="availability-submit-button">
+                    <button type="submit" class="availability-submit-button ui-button ui-button--primary">
                         {% if isEdit %}
                             Modifier la disponibilité
                         {% else %}

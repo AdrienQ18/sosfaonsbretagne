@@ -32,7 +32,7 @@
 
             {% if editMode %}
 
-                <div class="profile-card">
+                <div class="profile-card ui-card">
                     {{ form_start(formProfile, {
                         attr: {
                             novalidate: 'novalidate',
@@ -115,7 +115,7 @@
 
             {% else %}
 
-                <div class="profile-card">
+                <div class="profile-card ui-card">
                     <div class="profile-details-grid">
 
                         <div class="user-detail-item">
@@ -179,7 +179,7 @@
                     </div>
 
                     <div class="profile-actions">
-                        <a href="{{ path('user_profile_edit') }}" class="profile-button">
+                        <a href="{{ path('user_profile_edit') }}" class="profile-button ui-button ui-button--primary">
                             Modifier mon profil
                         </a>
                     </div>
@@ -189,7 +189,7 @@
 
             <div class="profile-documents-grid">
 
-                <section class="profile-card document-card">
+                <section class="profile-card document-card ui-card">
                     <h2>Mes reçus fiscaux</h2>
 
                     {% if userById.donations|length > 0 %}
@@ -217,7 +217,7 @@
                     {% endif %}
                 </section>
 
-                <section class="profile-card document-card">
+                <section class="profile-card document-card ui-card">
                     <h2>Mes factures de précommandes</h2>
 
                     {% if userById.preOrders|length > 0 %}

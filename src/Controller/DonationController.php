@@ -6,14 +6,21 @@ use App\Entity\Donation;
 use App\Entity\User;
 use App\Enum\DonationStatus;
 use App\Enum\DonorType;
+use App\Form\DonationFilterType;
 use App\Form\DonationType;
+use App\Repository\DonationRepository;
 use App\Service\ServiceHelloAsso\HelloAssoService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
+use ZipArchive;
 
 final class DonationController extends AbstractController
 {
@@ -102,4 +109,84 @@ final class DonationController extends AbstractController
         return $this->redirectToRoute('donation');
     }
 
+    #[Route('/admin/donation', name: 'admin_donation')]
+    public function indexAdminDonation(
+        DonationRepository $donationRepository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response {
+        $filterForm = $this->createForm(DonationFilterType::class, null, [
+            'method' => 'GET',
+        ]);
+
+        $filterForm->handleRequest($request);
+
+        $filters = $filterForm->getData() ?? [];
+        $totalValidatedAmount = $donationRepository->getValidatedTotalAmount($filters);
+        $queryBuilder = $donationRepository->searchDonations($filters);
+
+        $donations = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('donation/adminDonation.html.twig', [
+            'donations' => $donations,
+            'filterForm' => $filterForm->createView(),
+            'totalValidatedAmount' => $totalValidatedAmount,
+        ]);
+    }
+
+    #[Route('/admin/donation/{id}/pdf', name: 'admin_donation_pdf')]
+    public function showDonationPdf(Donation $donation): Response
+    {
+        $pdfPath = $donation->getReceiptPdfPath();
+
+        if (!$pdfPath || !file_exists($pdfPath)) {
+            throw $this->createNotFoundException('Le reÃ§u fiscal PDF est introuvable.');
+        }
+
+        return $this->file(
+            new File($pdfPath),
+            'recu-fiscal-' . $donation->getId() . '.pdf',
+            ResponseHeaderBag::DISPOSITION_INLINE
+        );
+    }
+
+    #[Route('/admin/donation/telecharger-pdfs', name: 'admin_donation_download_pdfs')]
+    public function downloadDonationPdfs(
+        Request $request,
+        DonationRepository $donationRepository
+    ): BinaryFileResponse {
+        $filters = $request->query->all('donation_filter');
+
+        $donations = $donationRepository
+            ->searchDonations($filters)
+            ->getQuery()
+            ->getResult();
+
+        $zipPath = sys_get_temp_dir() . '/recus-fiscaux-' . date('Y-m-d-H-i-s') . '.zip';
+        $zip = new ZipArchive();
+
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+            throw new \RuntimeException('Impossible de crÃ©er le fichier ZIP.');
+        }
+
+        foreach ($donations as $donation) {
+            $pdfPath = $donation->getReceiptPdfPath();
+
+            if ($pdfPath && file_exists($pdfPath)) {
+                $zip->addFile($pdfPath, basename($pdfPath));
+            }
+        }
+
+        $zip->close();
+
+        return $this->file(
+            $zipPath,
+            'recus-fiscaux.zip',
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT
+        );
+    }
 }

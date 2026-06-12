@@ -10,11 +10,11 @@
 
 {% block body %}
 
-    <section class="admin-gallery-page">
+    <section class="admin-gallery-page ui-page">
 
-        <div class="admin-gallery-container">
+        <div class="admin-gallery-container ui-container">
 
-            <header class="admin-gallery-header">
+            <header class="admin-gallery-header ui-header">
 
                 <h1>Gestion des partenaires</h1>
 
@@ -24,7 +24,7 @@
 
             </header>
 
-            <div class="admin-gallery-upload-card">
+            <div class="admin-gallery-upload-card ui-card">
 
                 <h2>Ajouter une image</h2>
 
@@ -44,7 +44,7 @@
 
                     <button
                         type="submit"
-                        class="admin-gallery-upload-button"
+                        class="admin-gallery-upload-button ui-button ui-button--primary"
                     >
                         Ajouter au carousel
                     </button>
@@ -57,7 +57,7 @@
 
                 {% for image in images %}
 
-                    <article class="admin-gallery-card">
+                    <article class="admin-gallery-card ui-card">
 
                         <img
                             src="{{ asset('images/partenaire/' ~ image) }}"
@@ -85,7 +85,7 @@
 
                                 <button
                                     type="submit"
-                                    class="admin-gallery-delete-button"
+                                    class="admin-gallery-delete-button ui-button ui-button--danger"
                                     onclick="return confirm('Supprimer cette image ?')"
                                 >
                                     Supprimer
@@ -99,7 +99,7 @@
 
                 {% else %}
 
-                    <div class="admin-gallery-empty">
+                    <div class="admin-gallery-empty ui-empty-state">
 
                         <h2>Aucune image</h2>
 

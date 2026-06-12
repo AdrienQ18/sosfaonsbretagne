@@ -1,10 +1,11 @@
-document.addEventListener('DOMContentLoaded', () => {
+import {onReady} from './dom.js';
 
+onReady(() => {
     const items = document.querySelectorAll('.carousel-item');
     const prevBtn = document.querySelector('.carousel-control.prev');
     const nextBtn = document.querySelector('.carousel-control.next');
 
-    if (!items.length) {
+    if (!items.length || !prevBtn || !nextBtn) {
         return;
     }
 

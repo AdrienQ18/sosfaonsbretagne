@@ -42,7 +42,7 @@ final class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/cart/add/{id}', name: 'cart_add', methods: ['POST'])]
+    #[Route('/panier/ajouter/{id}', name: 'cart_add', methods: ['POST'])]
     public function cart(
         int               $id,
         Request           $request,
@@ -112,7 +112,7 @@ final class ShopController extends AbstractController
         return $this->redirectToRoute('shop');
     }
 
-    #[Route('/cart', name: 'cart_index', methods: ['GET'])]
+    #[Route('/panier', name: 'cart_index', methods: ['GET'])]
     public function cartIndex(
         SessionInterface  $session,
         ArticleRepository $articleRepository
@@ -145,7 +145,7 @@ final class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/cart/remove/{index}', name: 'cart_remove', methods: ['POST'])]
+    #[Route('/panier/supprimer/{index}', name: 'cart_remove', methods: ['POST'])]
     public function removeCartItem(
         int $index,
         Request $request,
@@ -174,7 +174,7 @@ final class ShopController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-    #[Route('/cart/update/{index}', name: 'cart_update', methods: ['POST'])]
+    #[Route('/panier/modifier/{index}', name: 'cart_update', methods: ['POST'])]
     public function updateCartItem(
         int               $index,
         Request           $request,
@@ -238,7 +238,7 @@ final class ShopController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-    #[Route('/pre-order/validate', name: 'pre_order_validate', methods: ['POST'])]
+    #[Route('/precommande/valider', name: 'pre_order_validate', methods: ['POST'])]
     public function validatePreOrder(
         SessionInterface       $session,
         ArticleRepository      $articleRepository,
@@ -323,7 +323,7 @@ final class ShopController extends AbstractController
         return $this->redirectToRoute('shop');
     }
 
-    #[Route('/admin/pre-order', name: 'admin_pre_order')]
+    #[Route('/admin/precommande', name: 'admin_pre_order')]
     public function adminPreOrder(
         Request $request,
         PreOrderRepository $preOrderRepository,
@@ -351,7 +351,7 @@ final class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/pre-order/{id}', name: 'admin_pre_order_show', methods: ['GET'])]
+    #[Route('/admin/precommande/{id}', name: 'admin_pre_order_show', methods: ['GET'])]
     public function showPreOrder(PreOrder $preOrder): Response
     {
         return $this->render('shop/adminPreOrderShow.html.twig', [
@@ -359,7 +359,7 @@ final class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/pre-order/{id}/invoice', name: 'admin_pre_order_invoice', methods: ['GET'])]
+    #[Route('/admin/precommande/{id}/facture', name: 'admin_pre_order_invoice', methods: ['GET'])]
     public function showPreOrderInvoice(PreOrder $preOrder): BinaryFileResponse
     {
         $pdfPath = $preOrder->getInvoicePdfPath();
@@ -375,7 +375,7 @@ final class ShopController extends AbstractController
         );
     }
 
-    #[Route('/admin/pre-order/{id}/validate', name: 'admin_pre_order_validate', methods: ['POST'])]
+    #[Route('/admin/precommande/{id}/valider', name: 'admin_pre_order_validate', methods: ['POST'])]
     public function adminValidatePreOrder(
         PreOrder                  $preOrder,
         PreOrderValidationService $preOrderValidationService
@@ -389,7 +389,7 @@ final class ShopController extends AbstractController
     }
 
     #[Route(
-        '/admin/pre-order/{id}/refuse',
+        '/admin/precommande/{id}/refuser',
         name: 'admin_pre_order_refuse',
         methods: ['POST']
     )]
@@ -413,7 +413,7 @@ final class ShopController extends AbstractController
         return $this->redirectToRoute('admin_pre_order');
     }
 
-    #[Route('/pre-order/pay/{id}', name: 'pre_order_pay')]
+    #[Route('/precommande/payer/{id}', name: 'pre_order_pay')]
     public function pay(
         PreOrder               $preOrder,
         HelloAssoService       $helloAssoService,
@@ -434,7 +434,7 @@ final class ShopController extends AbstractController
         return $this->redirect($paymentUrl);
     }
 
-    #[Route('/pre-order/payment/success/{id}', name: 'pre_order_payment_success', methods: ['GET'])]
+    #[Route('/pre-order/paiement/valider/{id}', name: 'pre_order_payment_success', methods: ['GET'])]
     public function preOrderPaymentSuccess(PreOrder $preOrder): Response
     {
         return $this->render('shop/preOrderSuccess.html.twig', [
@@ -479,8 +479,8 @@ final class ShopController extends AbstractController
     }
 
 // Ajout article Ou Modification article
-    #[Route('/admin/article/add', name: 'admin_article_add', methods: ['GET', 'POST'])]
-    #[Route('/admin/article/update/{id}', name: 'admin_article_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route('/admin/article/ajouter', name: 'admin_article_add', methods: ['GET', 'POST'])]
+    #[Route('/admin/article/modfier/{id}', name: 'admin_article_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addOrUpdateArticle(
         Request                $request,
         ArticleRepository      $articleRepository,
@@ -528,7 +528,7 @@ final class ShopController extends AbstractController
     }
 
 // Suppression article
-    #[Route('/admin/article/delete/{id}', name: 'admin_article_delete', methods: ['POST'])]
+    #[Route('/admin/article/supprimer/{id}', name: 'admin_article_delete', methods: ['POST'])]
     public function deleteArticle(
         int                    $id,
         ArticleRepository      $articleRepository,

@@ -13,8 +13,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AvailabilityController extends AbstractController
 {
-    #[Route('/admin/availability', name: 'admin_availability', methods: ['GET', 'POST'])]
-    #[Route('/admin/availability/update/{id}', name: 'admin_availability_update', methods: ['GET', 'POST'])]
+    #[Route('/admin/disponibilite', name: 'admin_availability', methods: ['GET', 'POST'])]
+    #[Route('/admin/disponibilite/modifer/{id}', name: 'admin_availability_update', methods: ['GET', 'POST'])]
     public function index(
         AvailabilityRepository $availabilityRepository,
         EntityManagerInterface $entityManager,
@@ -50,7 +50,7 @@ final class AvailabilityController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/availability/delete/{id}', name: 'admin_availability_delete', methods: ['POST'])]
+    #[Route('/admin/disponibilite/supprimer/{id}', name: 'admin_availability_delete', methods: ['POST'])]
     public function deleteAvailability(
         int $id,
         Request $request,

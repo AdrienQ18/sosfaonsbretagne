@@ -123,7 +123,7 @@ class SecurityController extends AbstractController
         );
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
+    #[Route('/verification/email', name: 'app_verify_email')]
     public function verifyUserEmail(
         Request $request,
         TranslatorInterface $translator,

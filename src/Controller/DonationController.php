@@ -119,7 +119,7 @@ final class DonationController extends AbstractController
         );
     }
 
-    #[Route('/admin/donation/download-pdfs', name: 'admin_donation_download_pdfs')]
+    #[Route('/admin/donation/telecharger-pdfs', name: 'admin_donation_download_pdfs')]
     public function downloadDonationPdfs(
         Request $request,
         DonationRepository $donationRepository
@@ -158,13 +158,13 @@ final class DonationController extends AbstractController
             ResponseHeaderBag::DISPOSITION_ATTACHMENT
         );
     }
-    #[Route('/donation/success/{id}', name: 'donation_success')]
+    #[Route('/donation/valider/{id}', name: 'donation_success')]
     public function success(): Response
     {
         $this->addFlash('success', 'Paiement terminé. Votre don est en cours de validation.');
         return $this->redirectToRoute('donation');    }
 
-    #[Route('/donation/cancel/{id}', name: 'donation_cancel')]
+    #[Route('/donation/annuler/{id}', name: 'donation_cancel')]
     public function cancel(Donation $donation, EntityManagerInterface $entityManager): Response
     {
         $donation->setStatus(DonationStatus::DONATION_REFUSEE);

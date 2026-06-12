@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RolesController extends AbstractController
 {
     #[Route('/admin/roles', name: 'admin_roles', methods: ['GET', 'POST'])]
-    #[Route('/admin/roles/update/{id}', name: 'admin_roles_update', methods: ['GET', 'POST'])]
+    #[Route('/admin/roles/modifier/{id}', name: 'admin_roles_update', methods: ['GET', 'POST'])]
     public function index(
         RoleRepository         $roleRepository,
         EntityManagerInterface $entityManager,
@@ -50,7 +50,7 @@ final class RolesController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/roles/delete/{id}', name: 'admin_roles_delete', methods: ['POST'])]
+    #[Route('/admin/roles/supprimer/{id}', name: 'admin_roles_delete', methods: ['POST'])]
     public function deleteRole(
         int $id,
         Request $request,

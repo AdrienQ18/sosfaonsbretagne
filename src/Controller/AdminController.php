@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AdminController extends AbstractController
 {
 
-    #[Route('/userList', name: 'userList')]
+    #[Route('/liste-utilisateurs', name: 'userList')]
     public function userList(
         Request $request,
         UserRepository $userRepository,
@@ -46,7 +46,7 @@ final class AdminController extends AbstractController
     }
 
 
-    #[Route('/modify/{id}',name: 'modify', methods: ['GET', 'POST'])]
+    #[Route('/modifier-utilisateur/{id}',name: 'modify', methods: ['GET', 'POST'])]
     public function modify(
         Request $request,
         EntityManagerInterface $entityManager,

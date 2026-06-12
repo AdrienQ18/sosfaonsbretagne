@@ -42,6 +42,7 @@ class DonationMailerService
         $email = (new TemplatedEmail())
             ->from('contact@sosfaonsbretagne.fr')
             ->to('contact@sosfaonsbretagne.fr')
+            ->replyTo($donation->getUser()?->getEmail() ?? 'contact@sosfaonsbretagne.fr')
             ->subject('Nouveau don reçu - SOS Faons Bretagne')
             ->htmlTemplate('donation/email/donation_notification.html.twig')
             ->context([

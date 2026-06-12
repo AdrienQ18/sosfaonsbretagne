@@ -60,6 +60,7 @@ class PreOrderMailerService
         $email = (new TemplatedEmail())
             ->from('contact@sosfaonsbretagne.fr')
             ->to('contact@sosfaonsbretagne.fr')
+            ->replyTo($preOrder->getUser()?->getEmail() ?? 'contact@sosfaonsbretagne.fr')
             ->subject('Nouvelle précommande reçu - SOS Faons Bretagne')
             ->htmlTemplate('shop/email/pre_order_notification.html.twig')
             ->context([
@@ -73,6 +74,7 @@ class PreOrderMailerService
         $email = (new TemplatedEmail())
             ->from('contact@sosfaonsbretagne.fr')
             ->to('contact@sosfaonsbretagne.fr')
+            ->replyTo($preOrder->getUser()?->getEmail() ?? 'contact@sosfaonsbretagne.fr')
             ->subject('Nouvelle précommande reçu - SOS Faons Bretagne')
             ->htmlTemplate('shop/email/pre_order_payment_notification.html.twig')
             ->context([

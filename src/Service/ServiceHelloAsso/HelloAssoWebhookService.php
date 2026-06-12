@@ -84,14 +84,20 @@ class HelloAssoWebhookService
                 ];
             }
             $donation->setStatus(DonationStatus::DONATION_VALIDEE);
-
-            $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);
-
             $this->entityManager->flush();
 
-            $this->donationMailerService->sendFiscalReceipt($donation, $pdfPath);
+            try {
+                $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);
 
-            $this->donationMailerService->sendDonationNotificationToAssociation($donation);
+                $this->donationMailerService->sendFiscalReceipt($donation, $pdfPath);
+                $this->donationMailerService->sendDonationNotificationToAssociation($donation);
+            } catch (\Throwable $e) {
+                return [
+                    'status' => 200,
+                    'message' => 'Donation validée, mais erreur lors de l’envoi des emails.',
+                    'error' => $e->getMessage(),
+                ];
+            }
 
         } elseif (
             $paymentState === 'Refused'
@@ -99,6 +105,7 @@ class HelloAssoWebhookService
             || $paymentState === 'Error'
         ) {
             $donation->setStatus(DonationStatus::DONATION_REFUSEE);
+            $this->entityManager->flush();
         } else {
             return [
                 'status' => 200,
@@ -106,8 +113,6 @@ class HelloAssoWebhookService
                 'state' => $paymentState,
             ];
         }
-
-        $this->entityManager->flush();
 
         return [
             'status' => 200,
@@ -156,12 +161,22 @@ class HelloAssoWebhookService
 
             $preOrder->setStatus(PreOrderStatus::PAYEE);
             $preOrder->setPaidAt(new \DateTimeImmutable());
-            $pdfPath = $this->preOrderPdfService->generateInvoice($preOrder);
 
             $this->entityManager->flush();
 
-            $this->preOrderMailerService->sendPaymentConfirmation($preOrder, $pdfPath);
-            $this->preOrderMailerService->sendPreOrderPaymentConfirmationNotificationToAssociation($preOrder);
+            try {
+                $pdfPath = $this->preOrderPdfService->generateInvoice($preOrder);
+
+                $this->preOrderMailerService->sendPaymentConfirmation($preOrder, $pdfPath);
+                $this->preOrderMailerService->sendPreOrderPaymentConfirmationNotificationToAssociation($preOrder);
+            } catch (\Throwable $e) {
+                return [
+                    'status' => 200,
+                    'message' => 'Précommande payée, mais erreur lors de l’envoi des emails.',
+                    'error' => $e->getMessage(),
+                ];
+            }
+
             return [
                 'status' => 200,
                 'message' => 'Précommande payée.',

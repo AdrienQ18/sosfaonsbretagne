@@ -80,15 +80,15 @@ final class AlertController extends AbstractController
         MailerInterface $mailer,
         Alert $alert
     ): void {
-
-            $email = (new TemplatedEmail())
-                ->from('contact@sosfaonsbretagne.fr')
-                ->to('contact@sosfaonsbretagne.fr')
-                ->subject('[Signalement] ' . $alert->getType())
-                ->htmlTemplate('alert/email/alert_receipt.html.twig')
-                ->context([
-                    'alert' => $alert,
-                ]);
+        $email = (new TemplatedEmail())
+            ->from('contact@sosfaonsbretagne.fr')
+            ->to('contact@sosfaonsbretagne.fr')
+            ->replyTo($alert->getUser()?->getEmail() ?? 'contact@sosfaonsbretagne.fr')
+            ->subject('[Signalement] ' . $alert->getType())
+            ->htmlTemplate('alert/email/alert_receipt.html.twig')
+            ->context([
+                'alert' => $alert,
+            ]);
             $mailer->send($email);
 
     }

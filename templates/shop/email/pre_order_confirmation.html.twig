@@ -4,14 +4,13 @@
     Précommande reçue
 {% endblock %}
 
-{% block email_header %}
-    <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.3;">
-        Précommande reçue
-    </h1>
+{% block email_header %} <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.3;">
+    Précommande reçue </h1>
 
     <p style="margin:8px 0 0 0; color:#ffffff;">
         SOS Faons Bretagne
     </p>
+
 {% endblock %}
 
 {% block email_content %}
@@ -22,255 +21,135 @@
 
     <p style="margin:0 0 18px 0;">
         Nous avons bien reçu votre précommande.
-        Elle va être vérifiée par l'équipe de
-        <strong>SOS Faons Bretagne</strong>.
     </p>
 
-    <div
-        style="
-            background-color:#f4efe8;
-            border-left:4px solid #6e8e64;
-            padding:16px;
-            margin:20px 0;
-            color:#2b2b2b;
-            line-height:1.6;
-        "
-    >
-        Vous recevrez un nouvel email avec le lien de paiement dès que votre précommande aura été validée.
-    </div>
+    <p style="margin:0 0 24px 0;">
+        Celle-ci va maintenant être vérifiée par l'équipe de
+        <strong>SOS Faons Bretagne</strong> avant validation.
+    </p>
 
-    <h2
-        style="
-            color:#1b4a3a;
-            font-size:20px;
-            margin:0 0 16px 0;
-        "
-    >
-        Détail de la précommande
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin-bottom:24px;">
+        <tr>
+            <td style="background-color:#f4efe8; border-left:4px solid #6e8e64; padding:18px; color:#2b2b2b; line-height:1.6;">
+                Une fois votre précommande validée, vous recevrez un nouvel email contenant le lien de paiement sécurisé.
+            </td>
+        </tr>
+    </table>
+
+    <h2 style="margin:0 0 16px 0; color:#1b4a3a; font-size:20px; font-weight:bold;">
+        Récapitulatif de votre précommande
     </h2>
 
-    <table
-        width="100%"
-        cellpadding="0"
-        cellspacing="0"
-        border="0"
-        style="
-            border-collapse:collapse;
-            margin-bottom:24px;
-        "
-    >
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse; margin-bottom:24px;">
 
         <thead>
         <tr>
-
-            <th
-                style="
-                    background:#f4efe8;
-                    border:1px solid #ddd5cc;
-                    padding:12px;
-                    color:#1b4a3a;
-                    text-align:left;
-                "
-            >
+            <th style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; color:#1b4a3a; text-align:left;">
                 Article
             </th>
 
-            <th
-                style="
-                    background:#f4efe8;
-                    border:1px solid #ddd5cc;
-                    padding:12px;
-                    color:#1b4a3a;
-                    text-align:left;
-                "
-            >
+            <th style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; color:#1b4a3a; text-align:center;">
                 Diamètre
             </th>
 
-            <th
-                style="
-                    background:#f4efe8;
-                    border:1px solid #ddd5cc;
-                    padding:12px;
-                    color:#1b4a3a;
-                    text-align:center;
-                "
-            >
-                Qté
+            <th style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; color:#1b4a3a; text-align:center;">
+                Quantité
             </th>
 
-            <th
-                style="
-                    background:#f4efe8;
-                    border:1px solid #ddd5cc;
-                    padding:12px;
-                    color:#1b4a3a;
-                    text-align:right;
-                "
-            >
-                Prix
+            <th style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; color:#1b4a3a; text-align:right;">
+                Prix unitaire
             </th>
 
-            <th
-                style="
-                    background:#f4efe8;
-                    border:1px solid #ddd5cc;
-                    padding:12px;
-                    color:#1b4a3a;
-                    text-align:right;
-                "
-            >
+            <th style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; color:#1b4a3a; text-align:right;">
                 Total
             </th>
-
         </tr>
         </thead>
 
         <tbody>
 
         {% for item in preOrder.preOrderItems %}
-
             <tr>
 
-                <td
-                    style="
-                        border:1px solid #ddd5cc;
-                        padding:12px;
-                    "
-                >
+                <td style="border:1px solid #ddd5cc; padding:12px;">
                     {{ item.article.name }}
                 </td>
 
-                <td
-                    style="
-                        border:1px solid #ddd5cc;
-                        padding:12px;
-                    "
-                >
+                <td style="border:1px solid #ddd5cc; padding:12px; text-align:center;">
                     {% if item.diameter %}
                         {{ item.diameter.value }} mm
                     {% else %}
-                        Aucun
+                        —
                     {% endif %}
                 </td>
 
-                <td
-                    style="
-                        border:1px solid #ddd5cc;
-                        padding:12px;
-                        text-align:center;
-                    "
-                >
+                <td style="border:1px solid #ddd5cc; padding:12px; text-align:center;">
                     {{ item.quantity }}
                 </td>
 
-                <td
-                    style="
-                        border:1px solid #ddd5cc;
-                        padding:12px;
-                        text-align:right;
-                    "
-                >
+                <td style="border:1px solid #ddd5cc; padding:12px; text-align:right;">
                     {{ item.unitPrice|number_format(2, ',', ' ') }} €
                 </td>
 
-                <td
-                    style="
-                        border:1px solid #ddd5cc;
-                        padding:12px;
-                        text-align:right;
-                    "
-                >
+                <td style="border:1px solid #ddd5cc; padding:12px; text-align:right;">
                     {{ item.totalPrice|number_format(2, ',', ' ') }} €
                 </td>
 
             </tr>
-
         {% endfor %}
 
         </tbody>
 
     </table>
 
-    <table
-        width="100%"
-        cellpadding="0"
-        cellspacing="0"
-        border="0"
-        style="
-            border-collapse:collapse;
-            margin-bottom:24px;
-        "
-    >
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin-bottom:24px; border-collapse:collapse;">
 
         <tr>
-            <td
-                style="
-                    background:#f4efe8;
-                    border:1px solid #ddd5cc;
-                    padding:12px;
-                    font-weight:bold;
-                    width:180px;
-                    color:#1b4a3a;
-                "
-            >
+            <td style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; width:180px; font-weight:bold; color:#1b4a3a;">
                 Date de précommande
             </td>
 
-            <td
-                style="
-                    border:1px solid #ddd5cc;
-                    padding:12px;
-                "
-            >
-                {{ preOrder.preOrderDate|date('d/m/Y') }}
+            <td style="border:1px solid #ddd5cc; padding:12px;">
+                {{ preOrder.preOrderDate|date('d/m/Y H:i') }}
             </td>
         </tr>
 
         <tr>
-            <td
-                style="
-                    background:#f4efe8;
-                    border:1px solid #ddd5cc;
-                    padding:12px;
-                    font-weight:bold;
-                    color:#1b4a3a;
-                "
-            >
+            <td style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; font-weight:bold; color:#1b4a3a;">
+                Statut
+            </td>
+
+            <td style="border:1px solid #ddd5cc; padding:12px;">
+                En attente de validation
+            </td>
+        </tr>
+
+        <tr>
+            <td style="background:#f4efe8; border:1px solid #ddd5cc; padding:12px; font-weight:bold; color:#1b4a3a;">
                 Montant total
             </td>
 
-            <td
-                style="
-                    border:1px solid #ddd5cc;
-                    padding:12px;
-                "
-            >
-                <span
-                    style="
-                        color:#1b4a3a;
-                        font-size:22px;
-                        font-weight:bold;
-                    "
-                >
-                    {{ preOrder.totalAmount|number_format(2, ',', ' ') }} €
-                </span>
+            <td style="border:1px solid #ddd5cc; padding:12px;">
+            <span style="color:#1b4a3a; font-size:22px; font-weight:bold;">
+                {{ preOrder.totalAmount|number_format(2, ',', ' ') }} €
+            </span>
             </td>
         </tr>
 
     </table>
 
     <p style="margin:0 0 18px 0;">
-        Merci pour votre soutien et votre confiance.
+        Merci pour votre confiance et votre soutien à nos actions de protection de la faune sauvage.
     </p>
 
     <p style="margin:0;">
         L'équipe <strong>SOS Faons Bretagne</strong>
     </p>
 
+
 {% endblock %}
 
 {% block email_footer %}
-    Cet email a été généré automatiquement suite à l'enregistrement de votre précommande.<br>
-    SOS Faons Bretagne — contact@sosfaonsbretagne.fr
+    Cet email a été envoyé automatiquement suite à l'enregistrement de votre précommande.<br>
+    SOS Faons Bretagne — [contact@sosfaonsbretagne.fr](mailto:contact@sosfaonsbretagne.fr)
 {% endblock %}

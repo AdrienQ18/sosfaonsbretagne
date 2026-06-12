@@ -4,14 +4,13 @@
     Réinitialisation de votre mot de passe
 {% endblock %}
 
-{% block email_header %}
-    <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.3;">
-        Mot de passe oublié
-    </h1>
+{% block email_header %} <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.3;">
+    Réinitialisation de votre mot de passe </h1>
 
     <p style="margin:8px 0 0 0; color:#ffffff;">
         SOS Faons Bretagne
     </p>
+
 {% endblock %}
 
 {% block email_content %}
@@ -21,44 +20,81 @@
     </p>
 
     <p style="margin:0 0 18px 0;">
-        Vous avez demandé la réinitialisation du mot de passe associé à votre compte
-        <strong>SOS Faons Bretagne</strong>.
+        Une demande de réinitialisation du mot de passe associé à votre compte
+        <strong>SOS Faons Bretagne</strong> a été effectuée.
     </p>
 
     <p style="margin:0 0 24px 0;">
-        Cliquez sur le bouton ci-dessous pour définir un nouveau mot de passe sécurisé :
+        Pour définir un nouveau mot de passe, cliquez sur le bouton ci-dessous :
     </p>
 
-    <p style="margin:0 0 26px 0; text-align:center;">
-        <a
-            href="{{ url('app_reset_password', {token: resetToken.token}) }}"
-            style="display:inline-block; background-color:#1b4a3a; color:#ffffff; padding:14px 28px; text-decoration:none; font-weight:bold; border-radius:8px;"
-        >
-            Réinitialiser mon mot de passe
-        </a>
-    </p>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin:24px 0;">
+        <tr>
+            <td align="center">
+                <a
+                    href="{{ url('app_reset_password', {token: resetToken.token}) }}"
+                    style="
+                    display:inline-block;
+                    padding:14px 28px;
+                    background-color:#1b4a3a;
+                    color:#ffffff;
+                    text-decoration:none;
+                    font-weight:bold;
+                    border-radius:8px;
+                "
+                >
+                    Réinitialiser mon mot de passe
+                </a>
+            </td>
+        </tr>
+    </table>
 
-    <div
-        style="
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin:20px 0;">
+        <tr>
+            <td style="
             background-color:#f4efe8;
             border-left:4px solid #6e8e64;
             padding:16px;
-            margin:20px 0;
             color:#2b2b2b;
             line-height:1.6;
-        "
-    >
-        Ce lien expirera dans
-        <strong>
-            {{ resetToken.expirationMessageKey|trans(
-                resetToken.expirationMessageData,
-                'ResetPasswordBundle'
-            ) }}
-        </strong>.
-    </div>
+        ">
+                Ce lien expirera dans
+                <strong>
+                    {{ resetToken.expirationMessageKey|trans(
+                        resetToken.expirationMessageData,
+                        'ResetPasswordBundle'
+                    ) }}
+                </strong>.
+            </td>
+        </tr>
+    </table>
 
-    <p style="margin:20px 0 0 0;">
-        Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer cet email.
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin:20px 0;">
+        <tr>
+            <td style="
+            background-color:#fff8e8;
+            border-left:4px solid #d6a400;
+            padding:16px;
+            color:#2b2b2b;
+            line-height:1.6;
+        ">
+                Pour des raisons de sécurité, ce lien ne peut être utilisé qu'une seule fois.
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin:0 0 18px 0;">
+        Si vous n'êtes pas à l'origine de cette demande, aucune action n'est nécessaire.
+        Votre mot de passe actuel reste inchangé tant qu'un nouveau mot de passe n'a pas été défini.
     </p>
 
+    <p style="margin:24px 0 0 0;">
+        Cordialement,<br>
+        <strong>L'équipe SOS Faons Bretagne</strong>
+    </p>
+{% endblock %}
+
+{% block email_footer %}
+    Cet email vous a été envoyé automatiquement suite à une demande de réinitialisation de mot de passe.<br>
+    Pour toute question, vous pouvez nous contacter à l'adresse : [contact@sosfaonsbretagne.fr](mailto: contact@sosfaonsbretagne.fr)
 {% endblock %}

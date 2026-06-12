@@ -4,98 +4,79 @@
     Nouveau don reçu
 {% endblock %}
 
-{% block email_header %}
-    <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.3;">
-        Nouveau don reçu
-    </h1>
+{% block email_header %} <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.3;">
+    Nouveau don reçu </h1>
 
     <p style="margin:8px 0 0 0; color:#ffffff;">
-        SOS Faons Bretagne
+        Notification SOS Faons Bretagne
     </p>
+
 {% endblock %}
 
 {% block email_content %}
 
     <p style="margin:0 0 20px 0;">
-        Un nouveau don vient d'être validé via HelloAsso.
+        Un nouveau don vient d'être validé via <strong>HelloAsso</strong>.
     </p>
 
-    <div
-        style="
-            background-color:#f4efe8;
-            border-left:4px solid #6e8e64;
-            padding:18px;
-            margin-bottom:24px;
-        "
-    >
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin-bottom:24px;">
+        <tr>
+            <td style="background-color:#f4efe8; border-left:4px solid #6e8e64; padding:18px; color:#2b2b2b; line-height:1.6;">
 
-        <p style="margin:0 0 16px 0;">
-            <strong>Donateur :</strong><br>
-            {{ donation.firstname }} {{ donation.lastname }}
-        </p>
+                <p style="margin:0 0 16px 0;">
+                    <strong>Donateur :</strong><br>
+                    {{ donation.firstname }} {{ donation.lastname }}
+                </p>
 
-        <p style="margin:0 0 16px 0;">
-            <strong>Email :</strong><br>
-            {{ donation.email }}
-        </p>
+                <p style="margin:0 0 16px 0;">
+                    <strong>Email :</strong><br>
+                    {{ donation.email }}
+                </p>
 
-        <p style="margin:0 0 16px 0;">
-            <strong>Montant :</strong><br>
+                <p style="margin:0 0 16px 0;">
+                    <strong>Montant :</strong><br>
+                    <span style="color:#1b4a3a; font-size:24px; font-weight:bold;">
+                    {{ donation.amount|number_format(2, ',', ' ') }} €
+                </span>
+                </p>
 
-            <span
-                style="
-                    color:#1b4a3a;
-                    font-size:24px;
-                    font-weight:bold;
-                "
-            >
-                {{ donation.amount|number_format(2, ',', ' ') }} €
-            </span>
-        </p>
+                <p style="margin:0 0 16px 0;">
+                    <strong>Numéro du reçu fiscal :</strong><br>
+                    {{ donation.fiscalReceiptNumber }}
+                </p>
 
-        <p style="margin:0 0 16px 0;">
-            <strong>Numéro du reçu fiscal :</strong><br>
-            {{ donation.fiscalReceiptNumber }}
-        </p>
+                <p style="margin:0;">
+                    <strong>Date :</strong><br>
+                    {{ donation.donationDate|date('d/m/Y H:i') }}
+                </p>
 
-        <p style="margin:0;">
-            <strong>Date :</strong><br>
-            {{ donation.donationDate|date('d/m/Y H:i') }}
-        </p>
-
-    </div>
+            </td>
+        </tr>
+    </table>
 
     {% if donation.donorType.value == 'entreprise' %}
 
-        <h2
-            style="
-                color:#1b4a3a;
-                font-size:20px;
-                margin:0 0 16px 0;
-            "
-        >
+        <h2 style="margin:0 0 16px 0; color:#1b4a3a; font-size:20px; font-weight:bold;">
             Informations de l'entreprise
         </h2>
 
-        <div
-            style="
-                background-color:#f4efe8;
-                border-left:4px solid #6e8e64;
-                padding:18px;
-            "
-        >
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+            <tr>
+                <td style="background-color:#f4efe8; border-left:4px solid #6e8e64; padding:18px; color:#2b2b2b; line-height:1.6;">
 
-            <p style="margin:0 0 16px 0;">
-                <strong>Entreprise :</strong><br>
-                {{ donation.companyName }}
-            </p>
+                    <p style="margin:0 0 16px 0;">
+                        <strong>Entreprise :</strong><br>
+                        {{ donation.companyName }}
+                    </p>
 
-            <p style="margin:0;">
-                <strong>SIRET :</strong><br>
-                {{ donation.companySiret }}
-            </p>
+                    <p style="margin:0;">
+                        <strong>SIRET :</strong><br>
+                        {{ donation.companySiret }}
+                    </p>
 
-        </div>
+                </td>
+            </tr>
+        </table>
 
     {% endif %}
 
@@ -103,5 +84,5 @@
 
 {% block email_footer %}
     Notification automatique SOS Faons Bretagne.<br>
-    Ce message vous informe qu'un nouveau don a été enregistré sur la plateforme.
+    Ce message vous informe qu'un nouveau don a été enregistré via HelloAsso.
 {% endblock %}

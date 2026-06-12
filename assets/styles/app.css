@@ -45,3 +45,7 @@ img{
     width: 120px;
     height: auto;
 }
+.strong-text {
+    color: var(--green-dark);
+    font-weight: 800;
+}

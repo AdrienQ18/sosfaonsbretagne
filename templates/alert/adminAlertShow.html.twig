@@ -84,6 +84,8 @@
                                 <div><span>Téléphone</span><strong>{{ alert.user.phone ?: '-' }}</strong></div>
                                 <div><span>Nom</span><strong>{{ alert.user.lastname ?: '-' }}</strong></div>
                                 <div><span>Prénom</span><strong>{{ alert.user.firstname ?: '-' }}</strong></div>
+                                <div><span>Ville - Code Postal</span><strong>{{ alert.user.city ?: '-' }} - {{ alert.user.zipcode ?: '-' }}</strong></div>
+                                <div><span>Adresse</span><strong>{{ alert.user.address ?: '-' }}</strong></div>
                             </div>
                         </section>
                     {% endif %}

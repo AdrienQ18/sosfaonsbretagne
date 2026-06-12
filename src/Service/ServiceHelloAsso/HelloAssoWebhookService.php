@@ -88,7 +88,7 @@ class HelloAssoWebhookService
 
             try {
                 $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);
-
+                $this->entityManager->flush();
                 $this->donationMailerService->sendFiscalReceipt($donation, $pdfPath);
                 $this->donationMailerService->sendDonationNotificationToAssociation($donation);
             } catch (\Throwable $e) {
@@ -166,7 +166,6 @@ class HelloAssoWebhookService
 
             try {
                 $pdfPath = $this->preOrderPdfService->generateInvoice($preOrder);
-
                 $this->preOrderMailerService->sendPaymentConfirmation($preOrder, $pdfPath);
                 $this->preOrderMailerService->sendPreOrderPaymentConfirmationNotificationToAssociation($preOrder);
             } catch (\Throwable $e) {

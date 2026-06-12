@@ -57,7 +57,6 @@ class PreOrderPdfService
 
         $filename = 'Facture-' . $invoiceNumber . '.pdf';
         $path = $directory . '/' . $filename;
-        file_put_contents($path, $dompdf->output());
         $preOrder->setInvoiceReceiptNumber($invoiceNumber);
         $preOrder->setInvoicePdfPath($path);
         $preOrder->setInvoiceGeneratedAt(new \DateTimeImmutable());

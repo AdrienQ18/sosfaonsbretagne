@@ -66,7 +66,6 @@ class DonationPdfService
         $filename = 'Reçu-fiscal-' . $receiptNumber . '.pdf';
         $path = $directory . '/' . $filename;
 
-        file_put_contents($path, $dompdf->output());
         $donation->setFiscalReceiptNumber($receiptNumber);
         $donation->setReceiptPdfPath($path);
         $donation->setReceiptGeneratedAt(new \DateTimeImmutable());

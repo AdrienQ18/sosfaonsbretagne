@@ -63,7 +63,13 @@
                             <div class="boutique-card-header">
 
                                 <h2>{{ article.name }}</h2>
-
+                                <button
+                                    type="button"
+                                    class="boutique-info-button"
+                                    data-modal="boutique-modal-{{ article.id }}"
+                                    aria-label="Voir les informations complémentaires sur {{ article.name }}"                                >
+                                    ?
+                                </button>
                             </div>
 
                             <span class="boutique-badge">
@@ -194,7 +200,37 @@
             >
 
         </div>
+        {% for article in articleList %}
+            <div
+                id="boutique-modal-{{ article.id }}"
+                class="boutique-modal"
+                aria-hidden="true"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="boutique-modal-title-{{ article.id }}"
+            >
+                <div class="boutique-modal-content">
+                    <button
+                        type="button"
+                        class="boutique-modal-close"
+                        aria-label="Fermer la fenêtre"
+                    >
+                        &times;
+                    </button>
 
+                    <h2 id="boutique-modal-title-{{ article.id }}">
+                        Information
+                    </h2>
+
+                    <img
+                        src="{{ asset('images/about/bien-choisir-son-nichoir.png') }}"
+                        alt="Guide d'information"
+                        class="boutique-modal-image"
+                        loading="lazy"
+                    >
+                </div>
+            </div>
+        {% endfor %}
     </section>
 
 {% endblock %}

@@ -86,18 +86,13 @@ class HelloAssoWebhookService
             $donation->setStatus(DonationStatus::DONATION_VALIDEE);
             $this->entityManager->flush();
 
-            try {
-                $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);
-                $this->entityManager->flush();
-                $this->donationMailerService->sendFiscalReceipt($donation, $pdfPath);
-                $this->donationMailerService->sendDonationNotificationToAssociation($donation);
-            } catch (\Throwable $e) {
-                return [
-                    'status' => 200,
-                    'message' => 'Donation validée, mais erreur lors de l’envoi des emails.',
-                    'error' => $e->getMessage(),
-                ];
-            }
+            $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);
+
+            $this->entityManager->flush();
+
+            $this->donationMailerService->sendFiscalReceipt($donation, $pdfPath);
+
+            $this->donationMailerService->sendDonationNotificationToAssociation($donation);
 
         } elseif (
             $paymentState === 'Refused'

@@ -47,7 +47,7 @@ class DonationPdfService
                 STR_PAD_LEFT
             );
 
-        $html = $this->twig->render('donation/pdf/receipt.html.twig', [
+        $html = $this->twig->render('pdf/recu_Fiscale_Pdf_Donation.html.twig', [
             'donation' => $donation,
             'logoPath' => $logoPath,
             'signaturePath' => $signaturePath,

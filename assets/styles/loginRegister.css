@@ -661,8 +661,7 @@ textarea::placeholder {
     }
 
     .login-logo {
-        width: 95px;
-        margin-bottom: 16px;
+        width: 110px;
     }
 
     .login-overlay-panel h2 {
@@ -670,10 +669,10 @@ textarea::placeholder {
         font-size: 1.8rem;
     }
 
-    .login-overlay-panel p {
-        margin-bottom: 18px;
-        font-size: 14px;
-        line-height: 1.5;
+
+    .login-overlay-panel {
+        min-height: auto;
+        padding: 0;
     }
 
     .login-overlay-panel .login-ghost-btn {

@@ -6,75 +6,80 @@
 
     <style>
         @page {
-            margin: 24px;
+            margin: 15px;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            font-size: 11px;
+            margin: 0;
+            font-family: DejaVu Sans, Arial, sans-serif;
+            font-size: 10px;
             color: #2b2b2b;
-            line-height: 1.35;
+            line-height: 1.25;
+            background: #ffffff;
         }
 
         .pdf-header {
-            border-bottom: 3px solid #1b4a3a;
-            padding-bottom: 12px;
-            margin-bottom: 18px;
+            padding: 14px 0 16px;
+            margin-bottom: 10px;
+            border-bottom: 4px solid #1b4a3a;
         }
 
         .pdf-logo {
-            width: 90px;
+            width: 55px;
+            height: auto;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .pdf-title {
             margin: 0;
             color: #1b4a3a;
-            font-size: 22px;
+            font-size: 18px;
+            font-weight: bold;
             text-transform: uppercase;
         }
 
         .pdf-subtitle {
-            margin: 4px 0 0;
+            margin: 5px 0 0;
             color: #6e8e64;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: bold;
         }
 
         .pdf-section {
+            margin-bottom: 8px;
+            padding: 8px;
             border: 1px solid #ddd5cc;
-            border-radius: 6px;
-            padding: 10px 12px;
-            margin-bottom: 12px;
+            background: #fbfaf7;
         }
 
         .pdf-section-title {
             margin: 0 0 8px;
             color: #1b4a3a;
             font-size: 13px;
+            font-weight: bold;
             text-transform: uppercase;
         }
 
         .pdf-row {
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .pdf-label {
-            font-weight: bold;
             color: #1b4a3a;
+            font-weight: bold;
         }
 
         .pdf-table {
             width: 100%;
+            margin: 14px 0;
             border-collapse: collapse;
-            margin: 12px 0;
         }
 
         .pdf-table th,
         .pdf-table td {
-            border: 1px solid #ddd5cc;
             padding: 8px;
+            border: 1px solid #ddd5cc;
             text-align: left;
             vertical-align: top;
         }
@@ -86,25 +91,19 @@
         }
 
         .pdf-total {
-            text-align: right;
             margin-top: 18px;
+            padding: 12px;
+            background: #f4efe8;
             color: #1b4a3a;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: bold;
-        }
-
-        .pdf-footer {
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px solid #ddd5cc;
-            color: #666;
-            font-size: 9px;
-            text-align: justify;
+            text-align: right;
         }
 
         .pdf-two-columns {
             width: 100%;
-            border-spacing: 0;
+            border-collapse: collapse;
+            margin-bottom: 14px;
         }
 
         .pdf-two-columns td {
@@ -113,11 +112,65 @@
         }
 
         .pdf-left {
-            padding-right: 6px;
+            padding-right: 4px;
         }
 
         .pdf-right {
-            padding-left: 6px;
+            padding-left: 4px;
+        }
+
+        .pdf-note {
+            margin-top: 12px;
+            padding: 10px;
+            background: #f4efe8;
+            border-left: 4px solid #6e8e64;
+            color: #2b2b2b;
+        }
+        .pdf-signature-table {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .pdf-signature-cell {
+            width: 180px;
+            text-align: center;
+        }
+
+        .pdf-signature-cell img {
+            width: 70px;
+        }
+        .pdf-footer {
+            margin-top: 10px;
+            padding-top: 6px;
+            border-top: 1px solid #ddd5cc;
+            color: #666666;
+            font-size: 8px;
+            line-height: 1.45;
+            text-align: justify;
+        }
+
+        .pdf-reference-box {
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: #f4efe8;
+            border-left: 4px solid #6e8e64;
+        }
+
+        .pdf-legal-reference {
+            margin: 8px 0 14px;
+            color: #1b4a3a;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .pdf-signature {
+            margin-top: 14px;
+            text-align: right;
+        }
+
+        .pdf-signature img {
+            width: 95px;
+            height: auto;
         }
     </style>
 </head>

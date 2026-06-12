@@ -41,7 +41,7 @@ class PreOrderPdfService
         $dompdf = new Dompdf($options);
         $invoiceNumber = 'precommande-SOSFB-' . date('Y') . '-' . str_pad((string)$preOrder->getId(), 6, '0', STR_PAD_LEFT);
         $html = $this->twig->render(
-            'shop/pdf/invoicePaidPreOrder.html.twig', [
+            'pdf/facture_Precommande_Pdf_acquittee.html.twig', [
             'preOrder' => $preOrder,
             'logoPath' => $logoPath,
             'signaturePath' => $signaturePath,

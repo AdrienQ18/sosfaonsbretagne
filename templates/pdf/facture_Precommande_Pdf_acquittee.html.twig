@@ -4,10 +4,17 @@
     Facture {{ invoiceNumber }}
 {% endblock %}
 
-{% block pdf_header %} <img class="pdf-logo" src="{{ logoPath }}" alt="Logo SOS Faons Bretagne">
+{% block pdf_header %}
+
+    <img class="pdf-logo" src="{{ logoPath }}" alt="Logo SOS Faons Bretagne">
 
     <h1 class="pdf-title">Facture acquittée</h1>
     <p class="pdf-subtitle">Précommande validée et payée</p>
+
+    <div class="pdf-reference-box">
+        <span class="pdf-label">Numéro de facture :</span>
+        {{ invoiceNumber }}
+    </div>
 
 {% endblock %}
 
@@ -21,13 +28,13 @@
                     <h2 class="pdf-section-title">Facturation</h2>
 
                     <div class="pdf-row">
-                        <span class="pdf-label">Numéro de facture :</span>
-                        {{ invoiceNumber }}
+                        <span class="pdf-label">Date :</span>
+                        {{ preOrder.paidAt|date('d/m/Y H:i') }}
                     </div>
 
                     <div class="pdf-row">
-                        <span class="pdf-label">Date :</span>
-                        {{ preOrder.paidAt|date('d/m/Y H:i') }}
+                        <span class="pdf-label">Statut :</span>
+                        Facture acquittée
                     </div>
                 </div>
 
@@ -39,13 +46,27 @@
                     <h2 class="pdf-section-title">Client</h2>
 
                     <div class="pdf-row">
-                        <span class="pdf-label">Nom :</span>
-                        {{ preOrder.user.firstname }}
-                        {{ preOrder.user.lastname }}
+                        <span class="pdf-label">Contact :</span>
+                        {{ preOrder.user.firstname }} {{ preOrder.user.lastname }}
                     </div>
 
                     <div class="pdf-row">
-                        <span class="pdf-label">Email :</span>
+                        <span class="pdf-label">Adresse :</span>
+                        {{ preOrder.user.address ?: 'Non renseignée' }}
+                    </div>
+
+                    <div class="pdf-row">
+                        <span class="pdf-label">Code postal :</span>
+                        {{ preOrder.user.zipcode ?: 'Non renseigné' }}
+                    </div>
+
+                    <div class="pdf-row">
+                        <span class="pdf-label">Ville :</span>
+                        {{ preOrder.user.city ?: 'Non renseignée' }}
+                    </div>
+
+                    <div class="pdf-row">
+                        <span class="pdf-label">E-mail :</span>
                         {{ preOrder.user.email }}
                     </div>
                 </div>
@@ -67,7 +88,6 @@
         </thead>
 
         <tbody>
-
         {% for item in preOrder.preOrderItems %}
             <tr>
                 <td>{{ item.article.name }}</td>
@@ -81,7 +101,7 @@
                 </td>
 
                 <td>{{ item.quantity }}</td>
-                <td>
+
                 <td>
                     {% if item.unitPrice > 0 %}
                         {{ item.unitPrice|number_format(2, ',', ' ') }} €
@@ -89,6 +109,7 @@
                         Nous contacter
                     {% endif %}
                 </td>
+
                 <td>
                     {% if item.totalPrice > 0 %}
                         {{ item.totalPrice|number_format(2, ',', ' ') }} €
@@ -97,32 +118,23 @@
                     {% endif %}
                 </td>
             </tr>
-            {% if preOrder.totalAmount > 0 %}
-                <div class="pdf-total">
-                    Total : {{ preOrder.totalAmount|number_format(2, ',', ' ') }} €
-                </div>
-            {% else %}
-                <div class="pdf-total">
-                    Total : Prix à définir avec l'association
-                </div>
-            {% endif %}
         {% endfor %}
-
         </tbody>
 
     </table>
 
-    <div class="pdf-total">
-        Total : {{ preOrder.totalAmount }} €
-    </div>
-
-    <div class="pdf-section" style="margin-top:15px;">
-        <h2 class="pdf-section-title">Paiement</h2>
-
-        <div class="pdf-row">
-            <span class="pdf-label">Statut :</span>
-            Facture acquittée
+    {% if preOrder.totalAmount > 0 %}
+        <div class="pdf-total">
+            Total : {{ preOrder.totalAmount|number_format(2, ',', ' ') }} €
         </div>
+    {% else %}
+        <div class="pdf-total">
+            Total : Prix à définir avec l'association
+        </div>
+    {% endif %}
+
+    <div class="pdf-section pdf-payment-section">
+        <h2 class="pdf-section-title">Paiement</h2>
 
         <div class="pdf-row">
             <span class="pdf-label">Mode de paiement :</span>
@@ -134,6 +146,7 @@
             {{ preOrder.paidAt|date('d/m/Y H:i') }}
         </div>
     </div>
+
 {% endblock %}
 
 {% block pdf_footer %}

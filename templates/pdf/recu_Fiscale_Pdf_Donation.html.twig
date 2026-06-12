@@ -5,29 +5,27 @@
 {% endblock %}
 
 {% block pdf_header %}
+
     <img class="pdf-logo" src="{{ logoPath }}" alt="Logo SOS Faons Bretagne">
 
     <h1 class="pdf-title">Attestation de don</h1>
     <p class="pdf-subtitle">Reçu fiscal</p>
 
-    <div class="pdf-section" style="margin-top: 12px;">
-        <h2 class="pdf-section-title">Référence du reçu</h2>
-
-        <div class="pdf-row">
-            <span class="pdf-label">Numéro du reçu fiscal :</span>
-            {{ receiptNumber }}
-        </div>
+    <div class="pdf-reference-box">
+        <span class="pdf-label">Numéro du reçu fiscal :</span>
+        {{ receiptNumber }}
     </div>
+
 {% endblock %}
 
 {% block pdf_content %}
 
     {% if donation.donorType.value == 'entreprise' %}
-        <p style="text-align:center; font-style:italic; margin: 8px 0 14px;">
+        <p class="pdf-legal-reference">
             Article 238 bis du Code général des impôts
         </p>
     {% else %}
-        <p style="text-align:center; font-style:italic; margin: 8px 0 14px;">
+        <p class="pdf-legal-reference">
             Article 200 du Code général des impôts
         </p>
     {% endif %}
@@ -53,26 +51,25 @@
         <tr>
             <td class="pdf-left">
                 <div class="pdf-section">
+
                     {% if donation.donorType.value == 'entreprise' %}
                         <h2 class="pdf-section-title">Entreprise donatrice</h2>
 
                         <div class="pdf-row"><span class="pdf-label">Entreprise :</span> {{ donation.companyName }}</div>
                         <div class="pdf-row"><span class="pdf-label">SIRET :</span> {{ donation.companySiret }}</div>
                         <div class="pdf-row"><span class="pdf-label">Contact :</span> {{ donation.firstname }} {{ donation.lastname }}</div>
-                        <div class="pdf-row"><span class="pdf-label">Adresse :</span> {{ donation.address }}</div>
-                        <div class="pdf-row"><span class="pdf-label">Code postal :</span> {{ donation.zipcode }}</div>
-                        <div class="pdf-row"><span class="pdf-label">Ville :</span> {{ donation.city }}</div>
-                        <div class="pdf-row"><span class="pdf-label">E-mail :</span> {{ donation.email }}</div>
                     {% else %}
                         <h2 class="pdf-section-title">Donateur</h2>
 
                         <div class="pdf-row"><span class="pdf-label">Nom :</span> {{ donation.lastname }}</div>
                         <div class="pdf-row"><span class="pdf-label">Prénom :</span> {{ donation.firstname }}</div>
-                        <div class="pdf-row"><span class="pdf-label">Adresse :</span> {{ donation.address }}</div>
-                        <div class="pdf-row"><span class="pdf-label">Code postal :</span> {{ donation.zipcode }}</div>
-                        <div class="pdf-row"><span class="pdf-label">Ville :</span> {{ donation.city }}</div>
-                        <div class="pdf-row"><span class="pdf-label">E-mail :</span> {{ donation.email }}</div>
                     {% endif %}
+
+                    <div class="pdf-row"><span class="pdf-label">Adresse :</span> {{ donation.address }}</div>
+                    <div class="pdf-row"><span class="pdf-label">Code postal :</span> {{ donation.zipcode }}</div>
+                    <div class="pdf-row"><span class="pdf-label">Ville :</span> {{ donation.city }}</div>
+                    <div class="pdf-row"><span class="pdf-label">E-mail :</span> {{ donation.email }}</div>
+
                 </div>
             </td>
 
@@ -80,7 +77,7 @@
                 <div class="pdf-section">
                     <h2 class="pdf-section-title">Don effectué</h2>
 
-                    <div class="pdf-row"><span class="pdf-label">Montant du don :</span> {{ donation.amount }} €</div>
+                    <div class="pdf-row"><span class="pdf-label">Montant du don :</span> {{ donation.amount|number_format(2, ',', ' ') }} €</div>
                     <div class="pdf-row"><span class="pdf-label">Date du don :</span> {{ donation.donationDate|date('d/m/Y H:i:s') }}</div>
                     <div class="pdf-row"><span class="pdf-label">Forme du don :</span> Don manuel</div>
                     <div class="pdf-row"><span class="pdf-label">Nature du don :</span> Paiement en ligne HelloAsso</div>
@@ -98,7 +95,7 @@
         </tr>
     </table>
 
-    <div class="pdf-section">
+    <div class="pdf-note">
         {% if donation.donorType.value == 'entreprise' %}
             <p>
                 Le bénéficiaire certifie sur l'honneur que les dons et versements qu'il reçoit ouvrent droit à la réduction
@@ -121,16 +118,24 @@
             </p>
         {% endif %}
 
-        <p>
-            Document généré automatiquement. À conserver par le donateur pour ses démarches administratives.
-        </p>
-    </div>
+        <table class="pdf-signature-table">
+            <tr>
+                <td>
+                    <p>
+                        Document généré automatiquement.
+                        À conserver par le donateur pour ses démarches administratives.
+                    </p>
+                </td>
 
-    <div style="margin-top: 12px; text-align: right;">
-        <p>Fait à Gosné, le {{ "now"|date('d/m/Y H:i:s') }}</p>
-        <img src="{{ signaturePath }}" alt="Signature Trésorier" style="width: 95px;">
-        <p><strong>Trésorier</strong></p>
-    </div>
+                <td class="pdf-signature-cell">
+                    <p>Fait à Gosné, le {{ "now"|date('d/m/Y') }}</p>
+
+                    <img src="{{ signaturePath }}" alt="Signature">
+
+                    <p><strong>Trésorier</strong></p>
+                </td>
+            </tr>
+        </table>
 
 {% endblock %}
 

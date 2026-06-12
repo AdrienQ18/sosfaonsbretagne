@@ -457,7 +457,7 @@ final class ShopController extends AbstractController
 
 // Ajout article Ou Modification article
     #[Route('/admin/article/ajouter', name: 'admin_article_add', methods: ['GET', 'POST'])]
-    #[Route('/admin/article/modfier/{id}', name: 'admin_article_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route('/admin/article/modifier/{id}', name: 'admin_article_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addOrUpdateArticle(
         Request                $request,
         ArticleRepository      $articleRepository,

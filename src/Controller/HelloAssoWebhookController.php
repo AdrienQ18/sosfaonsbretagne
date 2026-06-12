@@ -11,11 +11,15 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class HelloAssoWebhookController extends AbstractController
 {
+    public function __construct(
+        private LoggerInterface $logger,
+    ) {
+    }
+
     #[Route('/helloasso/webhook', name: 'helloasso_webhook', methods: ['POST'])]
     public function __invoke(
         Request $request,
         HelloAssoWebhookService $service,
-        LoggerInterface $logger,
     ): JsonResponse {
         $rawBody = $request->getContent();
 
@@ -27,7 +31,7 @@ final class HelloAssoWebhookController extends AbstractController
             $computed = hash_hmac('sha256', $rawBody, $signatureKey);
 
             if (!hash_equals($computed, $receivedSignature)) {
-                $logger->warning('helloasso.webhook.invalid_signature');
+                $this->logger->warning('helloasso.webhook.invalid_signature');
                 return new JsonResponse(['error' => 'Signature invalide.'], 403);
             }
         } else {
@@ -36,7 +40,7 @@ final class HelloAssoWebhookController extends AbstractController
             $expectedSecret = $_ENV['HELLOASSO_WEBHOOK_SECRET'] ?? null;
 
             if (!$expectedSecret || !hash_equals($expectedSecret, (string) $receivedSecret)) {
-                $logger->warning('helloasso.webhook.invalid_legacy_secret');
+                $this->logger->warning('helloasso.webhook.invalid_legacy_secret');
                 return new JsonResponse(['error' => 'Webhook non autorisé.'], 403);
             }
         }

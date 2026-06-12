@@ -27,8 +27,22 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Service\Shop\PreOrderMailerService;
 use App\Service\Shop\PreOrderValidationService;
 
+/**
+ * Contrôleur de gestion de la boutique.
+ *
+ * Il permet :
+ * - la consultation des articles ;
+ * - la gestion du panier en session ;
+ * - la création des précommandes ;
+ * - le paiement des précommandes via HelloAsso ;
+ * - la gestion administrative des précommandes ;
+ * - la gestion administrative des articles.
+ */
 final class ShopController extends AbstractController
 {
+    /**
+     * Affiche la liste des articles disponibles dans la boutique.
+     */
     #[Route('/boutique', name: 'shop')]
     public function index(
         ArticleRepository $articleRepository,
@@ -40,6 +54,13 @@ final class ShopController extends AbstractController
         ]);
     }
 
+    /**
+     * Ajoute un article au panier.
+     *
+     * Le panier est stocké dans la session utilisateur.
+     * Si le même article avec le même diamètre existe déjà,
+     * la quantité est incrémentée.
+     */
     #[Route('/panier/ajouter/{id}', name: 'cart_add', methods: ['POST'])]
     public function cart(
         int               $id,
@@ -53,7 +74,7 @@ final class ShopController extends AbstractController
         if (!$article) {
             throw $this->createNotFoundException('Article introuvable.');
         }
-
+        // Vérification du token CSRF avant modification du panier.
         if (!$this->isCsrfTokenValid('cart_add_' . $article->getId(), $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Token CSRF invalide.');
         }
@@ -62,6 +83,7 @@ final class ShopController extends AbstractController
 
         $diameter = null;
 
+        // Contrôle spécifique aux nichoirs nécessitant un diamètre.
         if ($article->isRequiresDiameter()) {
             $diameter = $request->request->get('diameter');
 
@@ -81,7 +103,7 @@ final class ShopController extends AbstractController
         $cart = $session->get('cart', []);
 
         $itemFound = false;
-
+        // Fusion des lignes identiques dans le panier.
         foreach ($cart as &$item) {
             if (
                 $item['article_id'] === $article->getId()
@@ -110,6 +132,11 @@ final class ShopController extends AbstractController
         return $this->redirectToRoute('shop');
     }
 
+    /**
+     * Affiche le contenu du panier.
+     *
+     * Calcule également le montant total de la commande.
+     */
     #[Route('/panier', name: 'cart_index', methods: ['GET'])]
     public function cartIndex(
         SessionInterface  $session,
@@ -142,11 +169,13 @@ final class ShopController extends AbstractController
             'totalCart' => $totalCart,
         ]);
     }
-
+    /**
+     * Supprime un article du panier.
+     */
     #[Route('/panier/supprimer/{index}', name: 'cart_remove', methods: ['POST'])]
     public function removeCartItem(
-        int $index,
-        Request $request,
+        int              $index,
+        Request          $request,
         SessionInterface $session
     ): Response
     {
@@ -171,7 +200,9 @@ final class ShopController extends AbstractController
 
         return $this->redirectToRoute('cart_index');
     }
-
+    /**
+     * Met à jour la quantité ou le diamètre d'un article du panier.
+     */
     #[Route('/panier/modifier/{index}', name: 'cart_update', methods: ['POST'])]
     public function updateCartItem(
         int               $index,
@@ -235,7 +266,13 @@ final class ShopController extends AbstractController
 
         return $this->redirectToRoute('cart_index');
     }
-
+    /**
+     * Transforme le panier en précommande.
+     *
+     * La précommande est enregistrée en base,
+     * les lignes de commande sont créées
+     * puis les emails de confirmation sont envoyés.
+     */
     #[Route('/precommande/valider', name: 'pre_order_validate', methods: ['POST'])]
     public function validatePreOrder(
         SessionInterface       $session,
@@ -259,7 +296,7 @@ final class ShopController extends AbstractController
             $this->addFlash('error', 'Votre panier est vide.');
             return $this->redirectToRoute('cart_index');
         }
-
+// Une précommande nécessite obligatoirement un utilisateur connecté.
         /** @var User|null $user */
         $user = $this->getUser();
 
@@ -323,10 +360,11 @@ final class ShopController extends AbstractController
 
     #[Route('/admin/precommande', name: 'admin_pre_order')]
     public function adminPreOrder(
-        Request $request,
+        Request            $request,
         PreOrderRepository $preOrderRepository,
         PaginatorInterface $paginator
-    ): Response {
+    ): Response
+    {
         $form = $this->createForm(PreOrderFilterType::class, null, [
             'method' => 'GET',
         ]);
@@ -348,10 +386,13 @@ final class ShopController extends AbstractController
             'filterForm' => $form->createView(),
         ]);
     }
-
+    /**
+     * Affiche le détail d'une précommande.
+     */
     #[Route('/admin/precommande/{id}', name: 'admin_pre_order_show', methods: ['GET'])]
     public function showPreOrder(PreOrder $preOrder): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('shop/adminPreOrderShow.html.twig', [
             'preOrder' => $preOrder,
         ]);

@@ -6,6 +6,17 @@ use App\Entity\PreOrder;
 use App\Enum\PreOrderStatus;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Service de validation des précommandes.
+ *
+ * Ce service est utilisé lorsqu'un administrateur
+ * valide une précommande.
+ *
+ * La validation :
+ * - met à jour le statut ;
+ * - enregistre la date de validation ;
+ * - envoie le lien de paiement au client.
+ */
 final class PreOrderValidationService
 {
     public function __construct(
@@ -14,19 +25,42 @@ final class PreOrderValidationService
     ) {
     }
 
+    /**
+     * Valide une précommande.
+     *
+     * Une précommande déjà payée ne peut plus être validée.
+     *
+     * @param PreOrder $preOrder Précommande à valider
+     */
     public function validate(PreOrder $preOrder): void
     {
+        // Une précommande déjà payée ne doit pas être retraitée.
         if ($preOrder->getStatus() === PreOrderStatus::PAYEE) {
             return;
         }
 
-        $preOrder->setStatus(PreOrderStatus::EN_ATTENTE_PAIEMENT);
+        /**
+         * Passage au statut :
+         * "En attente de paiement".
+         *
+         * Le client recevra ensuite un lien HelloAsso
+         * lui permettant de régler sa commande.
+         */
+        $preOrder->setStatus(
+            PreOrderStatus::EN_ATTENTE_PAIEMENT
+        );
 
+        // Enregistrement de la date de validation uniquement la première fois.
         if (!$preOrder->getValidatedAt()) {
-            $preOrder->setValidatedAt(new \DateTimeImmutable());
+            $preOrder->setValidatedAt(
+                new \DateTimeImmutable()
+            );
         }
 
+        // Sauvegarde des modifications en base.
         $this->entityManager->flush();
+
+        // Envoi du lien de paiement au client.
         $this->preOrderMailerService->sendPaymentLink($preOrder);
     }
 }

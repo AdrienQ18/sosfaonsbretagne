@@ -5,22 +5,39 @@ namespace App\Service\HelloAsso;
 use App\Entity\Donation;
 use App\Entity\PreOrder;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * Service de communication avec l'API HelloAsso.
+ *
+ * Il permet :
+ * - de récupérer un token d'accès OAuth ;
+ * - de créer une intention de paiement pour un don ;
+ * - de créer une intention de paiement pour une précommande.
+ */
 final class HelloAssoService
 {
     public function __construct(
         private HttpClientInterface $httpClient,
-        private UrlGeneratorInterface $urlGenerator,
         private LoggerInterface $logger,
     ) {
     }
 
+    /**
+     * Récupère un token d'accès auprès de l'API HelloAsso.
+     *
+     * Ce token est nécessaire pour appeler les routes protégées
+     * de l'API HelloAsso.
+     *
+     * @return string Token d'accès OAuth
+     */
     public function getAccessToken(): string
     {
+        // Appel OAuth client_credentials pour obtenir le token API.
         $response = $this->httpClient->request('POST', $_ENV['HELLOASSO_AUTH_URL'], [
-            'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
             'body' => [
                 'grant_type' => 'client_credentials',
                 'client_id' => $_ENV['HELLOASSO_CLIENT_ID'],
@@ -29,16 +46,42 @@ final class HelloAssoService
         ]);
 
         $data = $response->toArray();
+
         return $data['access_token'];
     }
 
+    /**
+     * Crée une intention de paiement HelloAsso pour un don.
+     *
+     * Le montant est envoyé en centimes comme attendu par HelloAsso.
+     * Les métadonnées permettent ensuite d'identifier le don
+     * lors du retour webhook.
+     *
+     * @param Donation $donation Don concerné
+     *
+     * @return array{
+     *     redirectUrl: string,
+     *     checkoutIntentId: mixed
+     * }
+     */
     public function createDonationCheckout(Donation $donation): array
     {
         $token = $this->getAccessToken();
+
         $organizationSlug = $_ENV['HELLOASSO_ORGANIZATION_SLUG'];
+
+        // HelloAsso attend les montants en centimes.
         $amountInCents = (int) round((float) $donation->getAmount() * 100);
+
+        // URL publique du site utilisée pour construire les URLs de retour.
         $baseUrl = rtrim($_ENV['APP_PUBLIC_URL'], '/');
 
+        /**
+         * Payload envoyé à HelloAsso.
+         *
+         * Les URLs permettent de rediriger l'utilisateur
+         * après validation, annulation ou erreur.
+         */
         $payload = [
             'totalAmount' => $amountInCents,
             'initialAmount' => $amountInCents,
@@ -58,6 +101,8 @@ final class HelloAssoService
                 'zipCode' => $donation->getZipcode(),
                 'country' => 'FRA',
             ],
+
+            // Métadonnées utilisées pour retrouver le don dans le webhook.
             'metadata' => [
                 'donation_id' => $donation->getId(),
                 'donor_type' => $donation->getDonorType()?->value,
@@ -66,6 +111,7 @@ final class HelloAssoService
             ],
         ];
 
+        // Journalisation technique sans données personnelles sensibles.
         $this->logger->info('helloasso.checkout.request', [
             'donation_id' => $donation->getId(),
             'amount_cents' => $amountInCents,
@@ -73,7 +119,10 @@ final class HelloAssoService
 
         $response = $this->httpClient->request(
             'POST',
-            $_ENV['HELLOASSO_API_URL'] . '/organizations/' . $organizationSlug . '/checkout-intents',
+            $_ENV['HELLOASSO_API_URL']
+            . '/organizations/'
+            . $organizationSlug
+            . '/checkout-intents',
             [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
@@ -86,6 +135,7 @@ final class HelloAssoService
         try {
             $data = $response->toArray();
         } catch (\Throwable $e) {
+            // Journalisation détaillée en cas d'erreur API HelloAsso.
             $this->logger->error('helloasso.checkout.response_error', [
                 'donation_id' => $donation->getId(),
                 'status_code' => $response->getStatusCode(),
@@ -93,7 +143,11 @@ final class HelloAssoService
                 'error' => $e->getMessage(),
             ]);
 
-            throw new \RuntimeException('Impossible de créer le paiement HelloAsso.', 0, $e);
+            throw new \RuntimeException(
+                'Impossible de créer le paiement HelloAsso.',
+                0,
+                $e
+            );
         }
 
         $this->logger->info('helloasso.checkout.created', [
@@ -107,13 +161,29 @@ final class HelloAssoService
         ];
     }
 
-
+    /**
+     * Crée une intention de paiement HelloAsso pour une précommande.
+     *
+     * Les métadonnées contiennent l'identifiant de la précommande
+     * afin de la retrouver lors du webhook de paiement.
+     *
+     * @param PreOrder $preOrder Précommande concernée
+     *
+     * @return array{
+     *     redirectUrl: string,
+     *     checkoutIntentId: mixed
+     * }
+     */
     public function createPreOrderCheckout(PreOrder $preOrder): array
     {
         $token = $this->getAccessToken();
 
         $organizationSlug = $_ENV['HELLOASSO_ORGANIZATION_SLUG'];
+
+        // HelloAsso attend les montants en centimes.
         $amountInCents = (int) round((float) $preOrder->getTotalAmount() * 100);
+
+        // URL publique du site utilisée pour construire les URLs de retour.
         $baseUrl = rtrim($_ENV['APP_PUBLIC_URL'], '/');
 
         $payload = [
@@ -133,6 +203,8 @@ final class HelloAssoService
                 'zipCode' => $preOrder->getUser()->getZipcode(),
                 'country' => 'FRA',
             ],
+
+            // Métadonnées utilisées pour retrouver la précommande dans le webhook.
             'metadata' => [
                 'pre_order_id' => $preOrder->getId(),
                 'type' => 'pre_order',
@@ -143,12 +215,13 @@ final class HelloAssoService
             'pre_order_id' => $preOrder->getId(),
             'amount_cents' => $amountInCents,
         ]);
-        $this->logger->info('PREORDER METADATA', [
-            'pre_order_id' => $preOrder->getId(),
-        ]);
+
         $response = $this->httpClient->request(
             'POST',
-            $_ENV['HELLOASSO_API_URL'] . '/organizations/' . $organizationSlug . '/checkout-intents',
+            $_ENV['HELLOASSO_API_URL']
+            . '/organizations/'
+            . $organizationSlug
+            . '/checkout-intents',
             [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
@@ -161,6 +234,7 @@ final class HelloAssoService
         try {
             $data = $response->toArray();
         } catch (\Throwable $e) {
+            // Journalisation détaillée en cas d'erreur API HelloAsso.
             $this->logger->error('helloasso.pre_order.checkout.response_error', [
                 'pre_order_id' => $preOrder->getId(),
                 'status_code' => $response->getStatusCode(),

@@ -27,6 +27,18 @@ services:
         arguments:
             $projectDir: '%kernel.project_dir%'
 
+    App\Service\ServiceHelloAsso\HelloAssoService:
+        arguments:
+            $logger: '@monolog.logger.helloasso'
+
+    App\Service\ServiceHelloAsso\HelloAssoWebhookService:
+        arguments:
+            $logger: '@monolog.logger.helloasso'
+
+    App\Controller\HelloAssoWebhookController:
+        arguments:
+            $logger: '@monolog.logger.helloasso'
+
     App\Service\Utils\ImageUploader:
         arguments:
             $projectDir: '%kernel.project_dir%'

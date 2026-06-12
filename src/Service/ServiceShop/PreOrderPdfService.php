@@ -19,11 +19,11 @@ class PreOrderPdfService
     public function generateInvoice(PreOrder $preOrder): string
     {
 
-        if ($preOrder->getInvoicePdfPath()) {
-            return $preOrder->getInvoicePdfPath();
+        $existingPath = $preOrder->getInvoicePdfPath();
+        if ($existingPath && is_file($existingPath)) {
+            return $existingPath;
         }
         $options = new Options();
-
         $options->set('defaultFont', 'Arial');
         $options->set('isRemoteEnabled', true);
         $options->set('isHtml5ParserEnabled', true);
@@ -51,19 +51,24 @@ class PreOrderPdfService
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $directory = $this->projectDir . '/var/invoice';
-        if (!is_dir($directory)) {
-            mkdir($directory, 0777, true);
+
+        if (!is_dir($directory) && !mkdir($directory, 0775, true) && !is_dir($directory)) {
+            throw new \RuntimeException(sprintf('Impossible de creer le dossier %s', $directory));
         }
 
         $filename = 'Facture-' . $invoiceNumber . '.pdf';
-        $path = $directory . '/' . $filename;
-        file_put_contents($path, $dompdf->output());
+        $path = $directory . DIRECTORY_SEPARATOR . $filename;
+
+        $bytes = file_put_contents($path, $dompdf->output());
+        if ($bytes === false || !is_file($path)) {
+            throw new \RuntimeException(sprintf('Ecriture du PDF impossible : %s', $path));
+        }
+
         $preOrder->setInvoiceReceiptNumber($invoiceNumber);
         $preOrder->setInvoicePdfPath($path);
         $preOrder->setInvoiceGeneratedAt(new \DateTimeImmutable());
 
         return $path;
-
     }
 
 }

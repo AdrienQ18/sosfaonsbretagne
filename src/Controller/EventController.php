@@ -44,7 +44,7 @@ final class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/actualite/ajouter', name: 'create')]
+    #[Route('/ajouter', name: 'create')]
     public function create(
         Request                $request,
         EntityManagerInterface $entityManager,
@@ -80,7 +80,7 @@ final class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/actualite/modifier/{id}', name: 'modify', methods: ['GET', 'POST'])]
+    #[Route('/modifier/{id}', name: 'modify', methods: ['GET', 'POST'])]
     public function modify(
         Request                $request,
         EntityManagerInterface $entityManager,
@@ -104,7 +104,7 @@ final class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/actualite/supprimer/{id}', name: 'delete', methods: ['GET', 'POST'])]
+    #[Route('/supprimer/{id}', name: 'delete', methods: ['GET', 'POST'])]
     public function delete(
         int                    $id,
         EventRepository        $eventRepository,
@@ -113,13 +113,13 @@ final class EventController extends AbstractController
     {
         $event = $eventRepository->find($id);
 
-        $imageFilename = $event->getImage();
-
         if (!$event) {
             throw $this->createNotFoundException('Actualité non trouvée.');
         }
 
         //Suppression de l'activité
+        $imageFilename = $event->getImage();
+
         $entityManager->remove($event);
         $entityManager->flush();
 

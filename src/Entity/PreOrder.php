@@ -58,6 +58,12 @@ class PreOrder
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $invoiceGeneratedAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $invoiceEmailSentAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $associationNotifiedAt = null;
+
     public function __construct()
     {
         $this->preOrderItems = new ArrayCollection();
@@ -202,6 +208,30 @@ class PreOrder
     public function setInvoiceGeneratedAt(?\DateTimeImmutable $invoiceGeneratedAt): static
     {
         $this->invoiceGeneratedAt = $invoiceGeneratedAt;
+
+        return $this;
+    }
+
+    public function getInvoiceEmailSentAt(): ?\DateTimeImmutable
+    {
+        return $this->invoiceEmailSentAt;
+    }
+
+    public function setInvoiceEmailSentAt(?\DateTimeImmutable $invoiceEmailSentAt): static
+    {
+        $this->invoiceEmailSentAt = $invoiceEmailSentAt;
+
+        return $this;
+    }
+
+    public function getAssociationNotifiedAt(): ?\DateTimeImmutable
+    {
+        return $this->associationNotifiedAt;
+    }
+
+    public function setAssociationNotifiedAt(?\DateTimeImmutable $associationNotifiedAt): static
+    {
+        $this->associationNotifiedAt = $associationNotifiedAt;
 
         return $this;
     }

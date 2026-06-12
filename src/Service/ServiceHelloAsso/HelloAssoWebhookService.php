@@ -3,6 +3,7 @@
 namespace App\Service\ServiceHelloAsso;
 
 use App\Enum\DonationStatus;
+use App\Enum\PreOrderStatus;
 use App\Repository\DonationRepository;
 use App\Repository\PreOrderRepository;
 use App\Service\ServiceDonation\DonationMailerService;
@@ -10,198 +11,272 @@ use App\Service\ServiceDonation\DonationPdfService;
 use App\Service\ServiceShop\PreOrderMailerService;
 use App\Service\ServiceShop\PreOrderPdfService;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Enum\PreOrderStatus;
+use Psr\Log\LoggerInterface;
 
-class HelloAssoWebhookService
+final class HelloAssoWebhookService
 {
     public function __construct(
-        private DonationRepository     $donationRepository,
+        private DonationRepository $donationRepository,
+        private PreOrderRepository $preOrderRepository,
         private EntityManagerInterface $entityManager,
-        private DonationPdfService     $donationPdfService,
-        private DonationMailerService  $donationMailerService,
-        private PreOrderRepository     $preOrderRepository,
-        private PreOrderPdfService     $preOrderPdfService,
-        private PreOrderMailerService  $preOrderMailerService,
-    )
-    {
+        private DonationPdfService $donationPdfService,
+        private DonationMailerService $donationMailerService,
+        private PreOrderPdfService $preOrderPdfService,
+        private PreOrderMailerService $preOrderMailerService,
+        private LoggerInterface $logger,
+    ) {
     }
 
     public function handle(array $payload): array
     {
-        $metadata = $payload['metadata'] ?? [];
+        $metadata = $payload['metadata'] ?? $payload['data']['metadata'] ?? [];
 
         if (isset($metadata['donation_id'])) {
-            return $this->handleDonation($payload);
+            return $this->handleDonation($payload, (int) $metadata['donation_id']);
         }
 
         if (isset($metadata['pre_order_id'])) {
-            return $this->handlePreOrder($payload);
+            return $this->handlePreOrder($payload, (int) $metadata['pre_order_id']);
         }
 
         return [
             'status' => 400,
-            'message' => 'Aucun identifiant donation ou précommande trouvé.',
+            'message' => 'Identifiant donation ou precommande manquant.',
         ];
     }
 
-    public function handleDonation(array $payload): array
+    private function handleDonation(array $payload, int $donationId): array
     {
         $eventType = $payload['eventType'] ?? null;
-        $metadata = $payload['metadata'] ?? [];
-        $donationId = $metadata['donation_id'] ?? null;
 
-        if (!$donationId) {
+        if ($eventType === 'Order') {
+            $this->logger->info('helloasso.webhook.order_received', [
+                'donation_id' => $donationId,
+                'order_id' => $payload['data']['id'] ?? null,
+                'checkout_intent_id' => $payload['data']['checkoutIntentId'] ?? null,
+            ]);
+
             return [
-                'status' => 400,
-                'message' => 'Identifiant de donation manquant.',
+                'status' => 200,
+                'message' => 'Event Order recu.',
+            ];
+        }
+
+        if ($eventType !== 'Payment') {
+            return [
+                'status' => 200,
+                'message' => 'Event ignore.',
             ];
         }
 
         $donation = $this->donationRepository->find($donationId);
-
         if (!$donation) {
             return [
                 'status' => 404,
-                'message' => 'Aucune donation ne correspond à cet identifiant.',
-            ];
-        }
-
-        if ($eventType !== 'Payment' && $eventType !== 'Order') {
-            return [
-                'status' => 200,
-                'message' => 'Notification reçue, mais aucun changement nécessaire.',
+                'message' => 'Donation introuvable.',
             ];
         }
 
         $paymentState = $payload['data']['state'] ?? null;
 
-        if ($paymentState === 'Authorized' || $paymentState === 'Paid') {
+        $this->logger->info('helloasso.webhook.payment_received', [
+            'donation_id' => $donationId,
+            'state' => $paymentState,
+            'payment_id' => $payload['data']['id'] ?? null,
+            'order_id' => $payload['data']['order']['id'] ?? null,
+        ]);
 
-            if ($donation->getStatus() === DonationStatus::DONATION_VALIDEE) {
-                return [
-                    'status' => 200,
-                    'message' => 'Donation déjà validée.',
-                ];
-            }
-            $donation->setStatus(DonationStatus::DONATION_VALIDEE);
-            $this->entityManager->flush();
-
+        if (in_array($paymentState, ['Authorized', 'Paid'], true)) {
             try {
-                $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);
+                if ($donation->getStatus() !== DonationStatus::DONATION_VALIDEE) {
+                    $donation->setStatus(DonationStatus::DONATION_VALIDEE);
+                    $this->entityManager->flush();
+                }
 
-                $this->donationMailerService->sendFiscalReceipt($donation, $pdfPath);
-                $this->donationMailerService->sendDonationNotificationToAssociation($donation);
-            } catch (\Throwable $e) {
+                $pdfPath = $donation->getReceiptPdfPath();
+                $needsReceipt = !$donation->getFiscalReceiptNumber()
+                    || !$pdfPath
+                    || !is_file($pdfPath);
+
+                if ($needsReceipt) {
+                    $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);
+                    $this->entityManager->flush();
+
+                    $this->logger->info('helloasso.receipt.generated', [
+                        'donation_id' => $donationId,
+                        'path' => $pdfPath,
+                    ]);
+                }
+
+                if (!$donation->getReceiptEmailSentAt()) {
+                    $this->donationMailerService->sendFiscalReceipt($donation, $pdfPath);
+                    $donation->setReceiptEmailSentAt(new \DateTimeImmutable());
+                    $this->entityManager->flush();
+                }
+
+                if (!$donation->getAssociationNotifiedAt()) {
+                    $this->donationMailerService->sendDonationNotificationToAssociation($donation);
+                    $donation->setAssociationNotifiedAt(new \DateTimeImmutable());
+                    $this->entityManager->flush();
+                }
+
                 return [
                     'status' => 200,
-                    'message' => 'Donation validée, mais erreur lors de l’envoi des emails.',
+                    'message' => 'Donation validee et post-traitee.',
+                ];
+            } catch (\Throwable $e) {
+                $this->logger->error('helloasso.webhook.payment_processing_failed', [
+                    'donation_id' => $donationId,
+                    'state' => $paymentState,
                     'error' => $e->getMessage(),
+                ]);
+
+                return [
+                    'status' => 500,
+                    'message' => 'Erreur temporaire pendant le post-traitement.',
                 ];
             }
+        }
 
-        } elseif (
-            $paymentState === 'Refused'
-            || $paymentState === 'Canceled'
-            || $paymentState === 'Error'
-        ) {
-            $donation->setStatus(DonationStatus::DONATION_REFUSEE);
-            $this->entityManager->flush();
-        } else {
+        if (in_array($paymentState, ['Refused', 'Canceled', 'Error'], true)) {
+            if ($donation->getStatus() !== DonationStatus::DONATION_REFUSEE) {
+                $donation->setStatus(DonationStatus::DONATION_REFUSEE);
+                $this->entityManager->flush();
+            }
+
             return [
                 'status' => 200,
-                'message' => 'Notification reçue, mais le statut du paiement est inconnu.',
-                'state' => $paymentState,
+                'message' => 'Paiement refuse.',
             ];
         }
 
         return [
             'status' => 200,
-            'message' => 'Statut de la donation mis à jour.',
+            'message' => 'Statut HelloAsso non traite.',
+            'meta' => ['state' => $paymentState],
         ];
     }
 
-    private function handlePreOrder(array $payload): array
+    private function handlePreOrder(array $payload, int $preOrderId): array
     {
         $eventType = $payload['eventType'] ?? null;
-        $metadata = $payload['metadata'] ?? [];
-        $preOrderId = $metadata['pre_order_id'] ?? null;
 
-        if (!$preOrderId) {
+        if ($eventType === 'Order') {
+            $preOrder = $this->preOrderRepository->find($preOrderId);
+            if ($preOrder && !$preOrder->getHelloassoOrderId()) {
+                $preOrder->setHelloassoOrderId((string) ($payload['data']['id'] ?? ''));
+                $this->entityManager->flush();
+            }
+
+            $this->logger->info('helloasso.webhook.pre_order.order_received', [
+                'pre_order_id' => $preOrderId,
+                'order_id' => $payload['data']['id'] ?? null,
+                'checkout_intent_id' => $payload['data']['checkoutIntentId'] ?? null,
+            ]);
+
             return [
-                'status' => 400,
-                'message' => 'Identifiant de précommande manquant.',
+                'status' => 200,
+                'message' => 'Event Order precommande recu.',
+            ];
+        }
+
+        if ($eventType !== 'Payment') {
+            return [
+                'status' => 200,
+                'message' => 'Event precommande ignore.',
             ];
         }
 
         $preOrder = $this->preOrderRepository->find($preOrderId);
-
         if (!$preOrder) {
             return [
                 'status' => 404,
-                'message' => 'Précommande introuvable.',
-            ];
-        }
-
-        if ($eventType !== 'Payment' && $eventType !== 'Order') {
-            return [
-                'status' => 200,
-                'message' => 'Notification reçue, mais aucun changement nécessaire.',
+                'message' => 'Precommande introuvable.',
             ];
         }
 
         $paymentState = $payload['data']['state'] ?? null;
 
-        if ($paymentState === 'Authorized' || $paymentState === 'Paid') {
-            if ($preOrder->getStatus() === PreOrderStatus::PAYEE) {
-                return [
-                    'status' => 200,
-                    'message' => 'Précommande déjà payée.',
-                ];
-            }
+        $this->logger->info('helloasso.webhook.pre_order.payment_received', [
+            'pre_order_id' => $preOrderId,
+            'state' => $paymentState,
+            'payment_id' => $payload['data']['id'] ?? null,
+            'order_id' => $payload['data']['order']['id'] ?? null,
+        ]);
 
-            $preOrder->setStatus(PreOrderStatus::PAYEE);
-            $preOrder->setPaidAt(new \DateTimeImmutable());
-
-            $this->entityManager->flush();
-
+        if (in_array($paymentState, ['Authorized', 'Paid'], true)) {
             try {
-                $pdfPath = $this->preOrderPdfService->generateInvoice($preOrder);
+                if ($preOrder->getStatus() !== PreOrderStatus::PAYEE) {
+                    $preOrder->setStatus(PreOrderStatus::PAYEE);
 
-                $this->preOrderMailerService->sendPaymentConfirmation($preOrder, $pdfPath);
-                $this->preOrderMailerService->sendPreOrderPaymentConfirmationNotificationToAssociation($preOrder);
-            } catch (\Throwable $e) {
+                    if (!$preOrder->getPaidAt()) {
+                        $preOrder->setPaidAt(new \DateTimeImmutable());
+                    }
+
+                    $this->entityManager->flush();
+                }
+
+                $pdfPath = $preOrder->getInvoicePdfPath();
+                $needsInvoice = !$preOrder->getInvoiceReceiptNumber()
+                    || !$pdfPath
+                    || !is_file($pdfPath);
+
+                if ($needsInvoice) {
+                    $pdfPath = $this->preOrderPdfService->generateInvoice($preOrder);
+                    $this->entityManager->flush();
+
+                    $this->logger->info('helloasso.pre_order.invoice.generated', [
+                        'pre_order_id' => $preOrderId,
+                        'path' => $pdfPath,
+                    ]);
+                }
+
+                if (!$preOrder->getInvoiceEmailSentAt()) {
+                    $this->preOrderMailerService->sendPaymentConfirmation($preOrder, $pdfPath);
+                    $preOrder->setInvoiceEmailSentAt(new \DateTimeImmutable());
+                    $this->entityManager->flush();
+                }
+
+                if (!$preOrder->getAssociationNotifiedAt()) {
+                    $this->preOrderMailerService->sendPreOrderPaymentConfirmationNotificationToAssociation($preOrder);
+                    $preOrder->setAssociationNotifiedAt(new \DateTimeImmutable());
+                    $this->entityManager->flush();
+                }
+
                 return [
                     'status' => 200,
-                    'message' => 'Précommande payée, mais erreur lors de l’envoi des emails.',
+                    'message' => 'Precommande payee et post-traitee.',
+                ];
+            } catch (\Throwable $e) {
+                $this->logger->error('helloasso.webhook.pre_order.payment_processing_failed', [
+                    'pre_order_id' => $preOrderId,
+                    'state' => $paymentState,
                     'error' => $e->getMessage(),
+                ]);
+
+                return [
+                    'status' => 500,
+                    'message' => 'Erreur temporaire pendant le post-traitement de la precommande.',
                 ];
             }
-
-            return [
-                'status' => 200,
-                'message' => 'Précommande payée.',
-            ];
         }
 
-        if (
-            $paymentState === 'Refused'
-            || $paymentState === 'Canceled'
-            || $paymentState === 'Error'
-        ) {
-            $preOrder->setStatus(PreOrderStatus::PAIEMENT_REFUSE);
-
-            $this->entityManager->flush();
+        if (in_array($paymentState, ['Refused', 'Canceled', 'Error'], true)) {
+            if ($preOrder->getStatus() !== PreOrderStatus::PAIEMENT_REFUSE) {
+                $preOrder->setStatus(PreOrderStatus::PAIEMENT_REFUSE);
+                $this->entityManager->flush();
+            }
 
             return [
                 'status' => 200,
-                'message' => 'Paiement précommande refusé.',
+                'message' => 'Paiement precommande refuse.',
             ];
         }
 
         return [
             'status' => 200,
-            'message' => 'Notification reçue, mais le statut du paiement est inconnu.',
-            'state' => $paymentState,
+            'message' => 'Statut HelloAsso precommande non traite.',
+            'meta' => ['state' => $paymentState],
         ];
     }
 }

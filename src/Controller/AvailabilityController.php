@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AvailabilityController extends AbstractController
 {
     #[Route('/admin/disponibilite', name: 'admin_availability', methods: ['GET', 'POST'])]
-    #[Route('/admin/disponibilite/modifer/{id}', name: 'admin_availability_update', methods: ['GET', 'POST'])]
+    #[Route('/admin/disponibilite/modifier/{id}', name: 'admin_availability_update', methods: ['GET', 'POST'])]
     public function index(
         AvailabilityRepository $availabilityRepository,
         EntityManagerInterface $entityManager,

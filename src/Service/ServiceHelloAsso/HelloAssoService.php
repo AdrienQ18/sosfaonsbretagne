@@ -119,12 +119,52 @@ final class HelloAssoService
     }
 
 
-public function createPreOrderCheckout(PreOrder $preOrder): string
+    public function createPreOrderCheckout(PreOrder $preOrder): array
     {
         $token = $this->getAccessToken();
 
         $organizationSlug = $_ENV['HELLOASSO_ORGANIZATION_SLUG'];
-        $amountInCents = (int) ((float) $preOrder->getTotalAmount() * 100);
+        $amountInCents = (int) round((float) $preOrder->getTotalAmount() * 100);
+
+        $payload = [
+            'totalAmount' => $amountInCents,
+            'initialAmount' => $amountInCents,
+            'itemName' => 'Précommande SOS Faons Bretagne',
+            'backUrl' => $this->urlGenerator->generate(
+                'cart_index',
+                [],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            ),
+            'errorUrl' => $this->urlGenerator->generate(
+                'cart_index',
+                [],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            ),
+            'returnUrl' => $this->urlGenerator->generate(
+                'pre_order_payment_success',
+                ['id' => $preOrder->getId()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            ),
+            'containsDonation' => false,
+            'payer' => [
+                'firstName' => $preOrder->getUser()->getFirstname(),
+                'lastName' => $preOrder->getUser()->getLastname(),
+                'email' => $preOrder->getUser()->getEmail(),
+                'address' => $preOrder->getUser()->getAddress(),
+                'city' => $preOrder->getUser()->getCity(),
+                'zipCode' => $preOrder->getUser()->getZipcode(),
+                'country' => 'FRA',
+            ],
+            'metadata' => [
+                'pre_order_id' => $preOrder->getId(),
+                'type' => 'pre_order',
+            ],
+        ];
+
+        $this->logger->info('helloasso.pre_order.checkout.request', [
+            'pre_order_id' => $preOrder->getId(),
+            'amount_cents' => $amountInCents,
+        ]);
 
         $response = $this->httpClient->request(
             'POST',
@@ -134,44 +174,35 @@ public function createPreOrderCheckout(PreOrder $preOrder): string
                     'Authorization' => 'Bearer ' . $token,
                     'Content-Type' => 'application/json',
                 ],
-                'json' => [
-                    'totalAmount' => $amountInCents,
-                    'initialAmount' => $amountInCents,
-                    'itemName' => 'Précommande SOS Faons Bretagne',
-                    'backUrl' => $_ENV['APP_PUBLIC_URL'] . '/cart',
-                    'errorUrl' => $_ENV['APP_PUBLIC_URL'] . '/cart',
-                    'returnUrl' => $_ENV['APP_PUBLIC_URL'] . '/pre-order/paiement/valider/' . $preOrder->getId(),
-                    'containsDonation' => false,
-                    'payer' => [
-                        'firstName' => $preOrder->getUser()->getFirstname(),
-                        'lastName' => $preOrder->getUser()->getLastname(),
-                        'email' => $preOrder->getUser()->getEmail(),
-                        'address' => $preOrder->getUser()->getAddress(),
-                        'city' => $preOrder->getUser()->getCity(),
-                        'zipCode' => $preOrder->getUser()->getZipcode(),
-                        'country' => 'FRA',
-                    ],
-                    'metadata' => [
-                        'pre_order_id' => $preOrder->getId(),
-                        'type' => 'pre_order',
-                    ],
-                ],
+                'json' => $payload,
             ]
         );
 
         try {
             $data = $response->toArray();
         } catch (\Throwable $e) {
-            $this->logger->error('Erreur lors de la création du checkout HelloAsso pour une précommande.', [
+            $this->logger->error('helloasso.pre_order.checkout.response_error', [
                 'pre_order_id' => $preOrder->getId(),
                 'status_code' => $response->getStatusCode(),
                 'response' => $response->getContent(false),
-                'exception' => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
 
-            throw new \RuntimeException('Impossible de créer le paiement HelloAsso pour la précommande.');
+            throw new \RuntimeException(
+                'Impossible de créer le paiement HelloAsso pour la précommande.',
+                0,
+                $e
+            );
         }
 
-        return $data['redirectUrl'];
+        $this->logger->info('helloasso.pre_order.checkout.created', [
+            'pre_order_id' => $preOrder->getId(),
+            'checkout_intent_id' => $data['id'] ?? null,
+        ]);
+
+        return [
+            'redirectUrl' => $data['redirectUrl'],
+            'checkoutIntentId' => $data['id'] ?? null,
+        ];
     }
 }

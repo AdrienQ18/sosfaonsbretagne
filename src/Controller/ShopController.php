@@ -13,14 +13,12 @@ use App\Form\PreOrderFilterType;
 use App\Repository\ArticleRepository;
 use App\Repository\PreOrderRepository;
 use App\Service\ServiceHelloAsso\HelloAssoService;
-use App\Service\ServiceHelloAsso\HelloAssoWebhookService;
 use App\Service\Utils\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -431,7 +429,7 @@ final class ShopController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirect($paymentUrl);
+        return $this->redirect($paymentUrl['redirectUrl']);
     }
 
     #[Route('/pre-order/paiement/valider/{id}', name: 'pre_order_payment_success', methods: ['GET'])]
@@ -442,27 +440,6 @@ final class ShopController extends AbstractController
         ]);
     }
 
-    #[Route('/helloasso/webhook', name: 'helloasso_webhook', methods: ['POST'])]
-    public function webhook(
-        Request                 $request,
-        HelloAssoWebhookService $webhookService
-    ): JsonResponse
-    {
-        $receivedSecret = $request->query->get('secret');
-        $expectedSecret = $_ENV['HELLOASSO_WEBHOOK_SECRET'];
-
-        if (!$receivedSecret || !hash_equals($expectedSecret, $receivedSecret)) {
-            return $this->json([
-                'error' => 'Webhook non autorisé.',
-            ], 403);
-        }
-
-        $payload = json_decode($request->getContent(), true);
-
-        $result = $webhookService->handle($payload);
-
-        return $this->json($result, $result['status']);
-    }
 
     // Liste des articles
     #[Route('/admin/article', name: 'admin_article_index', methods: ['GET'])]

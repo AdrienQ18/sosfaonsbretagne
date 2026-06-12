@@ -63,6 +63,12 @@ class Donation
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $receiptGeneratedAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $receiptEmailSentAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $associationNotifiedAt = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $companyName = null;
 
@@ -217,6 +223,26 @@ class Donation
     public function setReceiptGeneratedAt(?\DateTimeImmutable $receiptGeneratedAt): void
     {
         $this->receiptGeneratedAt = $receiptGeneratedAt;
+    }
+
+    public function getReceiptEmailSentAt(): ?\DateTimeImmutable
+    {
+        return $this->receiptEmailSentAt;
+    }
+
+    public function setReceiptEmailSentAt(?\DateTimeImmutable $receiptEmailSentAt): void
+    {
+        $this->receiptEmailSentAt = $receiptEmailSentAt;
+    }
+
+    public function getAssociationNotifiedAt(): ?\DateTimeImmutable
+    {
+        return $this->associationNotifiedAt;
+    }
+
+    public function setAssociationNotifiedAt(?\DateTimeImmutable $associationNotifiedAt): void
+    {
+        $this->associationNotifiedAt = $associationNotifiedAt;
     }
 
     public function getCompanyName(): ?string

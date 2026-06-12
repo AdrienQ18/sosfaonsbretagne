@@ -109,7 +109,8 @@ final class AlertController extends AbstractController
     public function showAdminAlert(
         Alert $alert,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        AlertMailerService $alertMailerService
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -120,6 +121,8 @@ final class AlertController extends AbstractController
             )) {
                 throw $this->createAccessDeniedException('Token CSRF invalide.');
             }
+
+            $oldStatus = $alert->getStatus();
 
             $interventionDate = $request->request->get('interventionDate');
             $status = $request->request->get('status');
@@ -134,9 +137,21 @@ final class AlertController extends AbstractController
 
             $entityManager->flush();
 
+            $newStatus = $alert->getStatus();
+
+            if ($oldStatus !== $newStatus) {
+                if ($newStatus === AlertStatus::SIGNALEMENT_VALIDEE) {
+                    $alertMailerService->sendValidatedNotification($alert);
+                }
+
+                if ($newStatus === AlertStatus::SIGNALEMENT_REFUSEE) {
+                    $alertMailerService->sendRefusedNotification($alert);
+                }
+            }
+
             $this->addFlash('success', 'Le signalement a bien été mis à jour.');
 
-            return $this->redirectToRoute('admin_alert_show', [
+            return $this->redirectToRoute('admin_alert', [
                 'id' => $alert->getId(),
             ]);
         }

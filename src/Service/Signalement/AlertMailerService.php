@@ -23,9 +23,47 @@ final class AlertMailerService
                 ?? 'contact@sosfaonsbretagne.fr'
             )
             ->subject('[Signalement] ' . $alert->getType())
-            ->htmlTemplate(
-                'emails/signalement/alert_admin_notification.html.twig'
-            )
+            ->htmlTemplate('emails/signalement/alert_admin_notification.html.twig')
+            ->context([
+                'alert' => $alert,
+            ]);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendValidatedNotification(Alert $alert): void
+    {
+        $recipient = $alert->getUser()?->getEmail();
+
+        if (!$recipient) {
+            return;
+        }
+
+        $email = (new TemplatedEmail())
+            ->from('contact@sosfaonsbretagne.fr')
+            ->to($recipient)
+            ->subject('Votre signalement a été validé - SOS Faons Bretagne')
+            ->htmlTemplate('emails/signalement/alert_validated_user.html.twig')
+            ->context([
+                'alert' => $alert,
+            ]);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendRefusedNotification(Alert $alert): void
+    {
+        $recipient = $alert->getUser()?->getEmail();
+
+        if (!$recipient) {
+            return;
+        }
+
+        $email = (new TemplatedEmail())
+            ->from('contact@sosfaonsbretagne.fr')
+            ->to($recipient)
+            ->subject('Votre signalement a été refusé - SOS Faons Bretagne')
+            ->htmlTemplate('emails/signalement/alert_refused_user.html.twig')
             ->context([
                 'alert' => $alert,
             ]);

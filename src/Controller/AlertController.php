@@ -10,6 +10,7 @@ use App\Repository\AlertRepository;
 use App\Service\Utils\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,21 +80,17 @@ final class AlertController extends AbstractController
         MailerInterface $mailer,
         Alert $alert
     ): void {
-        $adminEmails = [
-            'contact@sosfaonsbretagne.fr',
-        ];
 
-        foreach ($adminEmails as $adminEmail) {
-            $email = (new Email())
+            $email = (new TemplatedEmail())
                 ->from('contact@sosfaonsbretagne.fr')
-                ->to($adminEmail)
+                ->to('contact@sosfaonsbretagne.fr')
                 ->subject('[Signalement] ' . $alert->getType())
-                ->html($this->renderView('alert/email/alert_receipt.html.twig', [
+                ->htmlTemplate('alert/email/alert_receipt.html.twig')
+                ->context([
                     'alert' => $alert,
-                ]));
-
+                ]);
             $mailer->send($email);
-        }
+
     }
 
     #[Route('/admin/signalement', name: 'admin_alert')]

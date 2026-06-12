@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Donation;
+use App\Entity\User;
 use App\Enum\DonationStatus;
 use App\Enum\DonorType;
 use App\Form\DonationType;
@@ -29,6 +30,7 @@ final class DonationController extends AbstractController
 
         $user = $this->getUser();
         if ($user) {
+            /** @var User $user */
             $donation->setUser($user);
             $donation->setFirstname($user->getFirstname());
             $donation->setLastname($user->getLastname());
@@ -42,7 +44,7 @@ final class DonationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $donation->setDonationDate(new \DateTimeImmutable());
+            $donation->setDonationDate(new \DateTime());
             $donation->setStatus(DonationStatus::DONATION_PASSEE);
 
             $entityManager->persist($donation);

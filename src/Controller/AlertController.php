@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AlertController extends AbstractController
 {
-    #[Route('/alert', name: 'main_alert', methods: ['GET', 'POST'])]
+    #[Route('/signalement', name: 'main_alert', methods: ['GET', 'POST'])]
     public function alert(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -96,7 +96,7 @@ final class AlertController extends AbstractController
         }
     }
 
-    #[Route('/admin/alert', name: 'admin_alert')]
+    #[Route('/admin/signalement', name: 'admin_alert')]
     public function indexAdminAlert(
         AlertRepository $alertRepository,
         PaginatorInterface $paginator,
@@ -124,7 +124,7 @@ final class AlertController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/alert/{id}', name: 'admin_alert_show', methods: ['GET', 'POST'])]
+    #[Route('/admin/signalement/{id}', name: 'admin_alert_show', methods: ['GET', 'POST'])]
     public function showAdminAlert(
         Alert $alert,
         Request $request,

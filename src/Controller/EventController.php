@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/event', name: 'event_')]
+#[Route('/actualite', name: 'event_')]
 final class EventController extends AbstractController
 {
     #[Route('', name: 'list')]
@@ -44,7 +44,7 @@ final class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/create', name: 'create')]
+    #[Route('/actualite/ajouter', name: 'create')]
     public function create(
         Request                $request,
         EntityManagerInterface $entityManager,
@@ -80,7 +80,7 @@ final class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/modify/{id}', name: 'modify', methods: ['GET', 'POST'])]
+    #[Route('/actualite/modifier/{id}', name: 'modify', methods: ['GET', 'POST'])]
     public function modify(
         Request                $request,
         EntityManagerInterface $entityManager,
@@ -104,7 +104,7 @@ final class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{id}', name: 'delete', methods: ['GET', 'POST'])]
+    #[Route('/actualite/supprimer/{id}', name: 'delete', methods: ['GET', 'POST'])]
     public function delete(
         int                    $id,
         EventRepository        $eventRepository,

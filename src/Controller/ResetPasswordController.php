@@ -21,7 +21,7 @@ use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 
-#[Route('/reset-password')]
+#[Route('/reinitialiser-mot-de-passe')]
 class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
@@ -52,7 +52,7 @@ class ResetPasswordController extends AbstractController
     }
 
 
-    #[Route('/check-email', name: 'app_check_email')]
+    #[Route('/verification-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {
         if (null === ($resetToken = $this->getTokenObjectFromSession())) {
@@ -63,7 +63,7 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
-    #[Route('/reset/{token}', name: 'app_reset_password')]
+    #[Route('/reinitialiser/{token}', name: 'app_reset_password')]
     public function reset(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,

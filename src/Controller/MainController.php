@@ -20,7 +20,7 @@ final class MainController extends AbstractController
         return $this->render('main/home.html.twig');
     }
 
-    #[Route('/about', name: 'main_about')]
+    #[Route('/a-propos', name: 'main_about')]
     public function about(): Response
     {
         return $this->render('main/about.html.twig');
@@ -57,13 +57,13 @@ final class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/cgu', name: 'main_cgu')]
+    #[Route('/conditions-generales-d-utilisation', name: 'main_cgu')]
     public function cgu(): Response
     {
         return $this->render('main/cgu.html.twig');
     }
 
-    #[Route('/pdc', name: 'main_pdc')]
+    #[Route('/politique-de-confidentialite', name: 'main_pdc')]
     public function pdc(): Response
     {
         return $this->render('main/pdc.html.twig');
@@ -75,7 +75,7 @@ final class MainController extends AbstractController
         return $this->render('main/mentionsLegales.html.twig');
     }
 
-    #[Route('/admin', name: 'admin_dashboard')]
+    #[Route('/admin/tableau-de-bord', name: 'admin_dashboard')]
     public function dashboard(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -97,7 +97,7 @@ final class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/gallery', name: 'admin_gallery')]
+    #[Route('/admin/galerie', name: 'admin_gallery')]
     public function galleryAdmin(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -107,7 +107,7 @@ final class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/gallery/add', name: 'admin_gallery_add', methods: ['POST'])]
+    #[Route('/admin/galerie/ajouter', name: 'admin_gallery_add', methods: ['POST'])]
     public function addGalleryImage(
         Request       $request,
         ImageUploader $imageUploader
@@ -133,7 +133,7 @@ final class MainController extends AbstractController
         return $this->redirectToRoute('admin_gallery');
     }
 
-    #[Route('/admin/gallery/delete/{filename}', name: 'admin_gallery_delete', methods: ['POST'])]
+    #[Route('/admin/galerie/supprimer/{filename}', name: 'admin_gallery_delete', methods: ['POST'])]
     public function deleteGalleryImage(
         string        $filename,
         Request       $request,
@@ -200,7 +200,7 @@ final class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/carousel/add', name: 'admin_carousel_add', methods: ['POST'])]
+    #[Route('/admin/carousel/ajouter', name: 'admin_carousel_add', methods: ['POST'])]
     public function addCarouselImage(
         Request       $request,
         ImageUploader $imageUploader
@@ -226,7 +226,7 @@ final class MainController extends AbstractController
         return $this->redirectToRoute('admin_carousel');
     }
 
-    #[Route('/admin/carousel/delete/{filename}', name: 'admin_carousel_delete', methods: ['POST'])]
+    #[Route('/admin/carousel/supprimer/{filename}', name: 'admin_carousel_delete', methods: ['POST'])]
     public function deleteCarouselImage(
         string        $filename,
         Request       $request,

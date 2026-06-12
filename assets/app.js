@@ -22,6 +22,5 @@ import './js/gallery.js';
 import './js/userList.js';
 import './js/userProfil.js';
 
-
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+// console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 

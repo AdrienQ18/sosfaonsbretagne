@@ -1,25 +1,31 @@
 <div class="carousel">
-    <h1 class="carousel">Nos partenaires :</h1>
-    <div class="carousel-inner">
-        {% set images = [
-            'slide1.jpg',
-            'slide2.svg',
-            'slide3.webp',
-            'slide4.webp',
-            'slide5.png',
-            'slide6.png',
-            'slide7.jpg',
-            'slide8.svg',
-            'slide9.jpg',
-            'slide10.svg',
-            'slide11.png',
-            'slide12.png']  %}
+
+    <h2 class="carousel-title">Nos soutiens</h2>
+    <div class="carousel-text">
+        <span class="strong-text">SOS Faons Bretagne remercie chaleureusement l’ensemble de ses partenaires, mécènes et soutiens.</span>
+        Grâce à votre aide, nous pouvons agir sur le terrain pour protéger les jeunes faons lors des périodes de fauche,
+        mais
+        aussi préserver la nature. Chaque action contribue à mieux connaître, sensibiliser et protéger la biodiversité.
+        Votre engagement, qu’il soit financier, matériel ou humain, rend possible notre présence sur le terrain.
+        Au nom de tous les bénévoles,
+        <span class="strong-text">merci à toutes et tous pour votre soutien.</span>
+    </div>
+
+    <button class="carousel-control prev" type="button">‹</button>
+
+    <div class="carousel-track">
+
         {% for image in images %}
             <div class="carousel-item">
-                <img src="{{ asset('images/partenaire/' ~ image) }}" alt="Slide">
+                <img
+                    src="{{ asset('images/partenaire/' ~ image) }}"
+                    alt="Partenaire"
+                >
             </div>
         {% endfor %}
+
     </div>
-    <button class="carousel-control prev">&#10094;</button>
-    <button class="carousel-control next">&#10095;</button>
+
+    <button class="carousel-control next" type="button">›</button>
+
 </div>

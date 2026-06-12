@@ -38,6 +38,16 @@ final class AlertController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if (!$this->getUser()) {
+
+                $this->addFlash(
+                    'warning',
+                    'Vous devez être connecté pour envoyer un signalement.'
+                );
+
+                return $this->redirectToRoute('app_login');
+            }
             /** @var UploadedFile|null $file */
             $file = $form->get('image')->getData();
 

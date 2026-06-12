@@ -12,23 +12,22 @@
                     <div class="nav-menu-top">
                         <ul>
                             <li><a title="Accès à la boutique" href="{{ path('shop') }}"><img class="menu-icon"
-                                                                                              src="{{ asset('images/icons/shop.png') }}"
-                                                                                              alt="Boutique"></a></li>
+                                                                                              src="{{ asset('images/icones/shop.png') }}"
+                                                                                              alt="Boutique"><span>Boutique</span></a></li>
                             <li><a title="Panier" href="{{ path('cart_index') }}"><img class="menu-icon"
-                                                                                       src="{{ asset('images/icons/caddie.png') }}"
-                                                                                       alt="Panier"></a></li>
+                                                                                       src="{{ asset('images/icones/caddie.png') }}"
+                                                                                       alt="Panier"><span>Panier</span></a></li>
                             {% if app.user %}
                                 <li><a title="Déconnexion" href="{{ path('app_logout') }}"><img class="menu-icon"
-                                                                                                src="{{ asset('images/icons/logout.png') }}"
-                                                                                                alt="Déconnexion"></a>
-                                </li>
+                                                                                                src="{{ asset('images/icones/logout.png') }}"
+                                                                                                alt="Déconnexion"><span>Déconnexion</span></a></li>
                                 <li><a title="Profil utilisateur" href="{{ path('user_profile') }}"><img
-                                            class="menu-icon" src="{{ asset('images/icons/profile.png') }}"
-                                            alt="Mon profil"></a></li>
+                                            class="menu-icon" src="{{ asset('images/icones/profile.png') }}"
+                                            alt="Mon profil"><span>Mon Profil</span></a></li>
                             {% else %}
                                 <li><a title="Connexion" href="{{ path('app_login') }}"><img class="menu-icon"
-                                                                                             src="{{ asset('images/icons/login.png') }}"
-                                                                                             alt="Connexion"></a></li>
+                                                                                             src="{{ asset('images/icones/login.png') }}"
+                                                                                             alt="Connexion"><span>Connexion</span></a></li>
                             {% endif %}
                         </ul>
                     </div>
@@ -37,7 +36,7 @@
                             <li><a href="{{ path('main_home') }}">Accueil</a></li>
                             <li><a href="{{ path('main_about') }}">A propos</a></li>
                             <li><a href="{{ path('main_galerie') }}">Galerie</a></li>
-                            <li><a href="{{ path('event_list') }}">Actualité</a></li>
+                            <li><a href="{{ path('event_list') }}">Actualités</a></li>
                             {% if is_granted("ROLE_ADMIN") %}
                                 <li>
                                     <a href="{{ path('admin_dashboard') }}">Administration</a>

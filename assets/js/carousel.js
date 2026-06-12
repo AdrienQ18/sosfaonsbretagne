@@ -1,27 +1,49 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const carouselInner = document.querySelector('.carousel-inner');
+document.addEventListener('DOMContentLoaded', () => {
+
     const items = document.querySelectorAll('.carousel-item');
     const prevBtn = document.querySelector('.carousel-control.prev');
     const nextBtn = document.querySelector('.carousel-control.next');
-    let currentIndex = 0;
+
+    if (!items.length) {
+        return;
+    }
+
+    let current = 0;
 
     function updateCarousel() {
-        carouselInner.style.transform = `translateX(-${currentIndex * 50}%)`;
+
+        items.forEach(item => {
+            item.style.display = 'none';
+            item.classList.remove('active');
+        });
+
+        const previous =
+            (current - 1 + items.length) % items.length;
+
+        const next =
+            (current + 1) % items.length;
+
+        items[previous].style.display = 'flex';
+        items[current].style.display = 'flex';
+        items[next].style.display = 'flex';
+
+        items[current].classList.add('active');
     }
 
     prevBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        current = (current - 1 + items.length) % items.length;
         updateCarousel();
     });
 
     nextBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % items.length;
+        current = (current + 1) % items.length;
         updateCarousel();
     });
 
-    //Défilement automatique
     setInterval(() => {
-        currentIndex = (currentIndex + 1) % items.length;
+        current = (current + 1) % items.length;
         updateCarousel();
     }, 5000);
+
+    updateCarousel();
 });

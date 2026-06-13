@@ -74,7 +74,12 @@ class PreOrderMailerService
     public function sendRefusedNotification(PreOrder $preOrder): void
     {
         $email = (new TemplatedEmail())
-            ->from('contact@sosfaonsbretagne.fr')
+            ->from(
+                new Address(
+                    'contact@sosfaonsbretagne.fr',
+                    'SOS Faons Bretagne'
+                )
+            )
             ->to($preOrder->getUser()->getEmail())
             ->subject('Votre précommande a été refusée')
             ->htmlTemplate('emails/shop/pre_order_refused_user.html.twig')

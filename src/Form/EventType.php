@@ -26,6 +26,9 @@ class EventType extends AbstractType
             ->add('description', TextareaType::class)
             ->add('image', FileType::class, [
                 'mapped' => false,
+                'attr' => [
+                    'accept' => '.jpg,.jpeg,.png,.webp,.svg,image/svg+xml',
+                ],
             ])
             ->add('nbParticipant')
             ->add('eventDate', DateType::class)

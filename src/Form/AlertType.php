@@ -86,6 +86,9 @@ class AlertType extends AbstractType
                 'label' => 'Image',
                 'mapped' => false,
                 'required' => false,
+                'attr' => [
+                    'accept' => '.jpg,.jpeg,.png,.webp,.svg,image/svg+xml',
+                ],
             ]);
     }
 

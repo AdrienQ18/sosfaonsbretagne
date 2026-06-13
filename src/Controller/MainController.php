@@ -256,7 +256,7 @@ final class MainController extends AbstractController
             $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 
             // Filtre pour ne récupérer que les fichiers image autorisés.
-            if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true)) {
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'svg'], true)) {
                 $images[] = $file;
             }
         }
@@ -389,7 +389,7 @@ final class MainController extends AbstractController
             $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 
             // Filtre pour ne récupérer que les fichiers image autorisés.
-            if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true)) {
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'svg'], true)) {
                 $images[] = $file;
             }
         }

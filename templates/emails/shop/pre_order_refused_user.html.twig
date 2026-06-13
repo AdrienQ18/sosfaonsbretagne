@@ -1,0 +1,40 @@
+{% extends 'emails/_base_email.html.twig' %}
+
+{% block email_title %}
+    Précommande refusée
+{% endblock %}
+
+{% block email_header %} <h1 style="margin:0; color:#ffffff; font-size:26px; line-height:1.3;">
+    Précommande refusée </h1>
+
+    <p style="margin:8px 0 0 0; color:#ffffff;">
+        SOS Faons Bretagne
+    </p>
+
+{% endblock %}
+
+{% block email_content %}
+
+    <p style="margin:0 0 18px 0;">
+        Bonjour {{ preOrder.user.firstname }} {{ preOrder.user.lastname }},
+    </p>
+
+    <p style="margin:0 0 18px 0;">
+        Votre précommande n°{{ preOrder.id }} a été refusée par l’association <strong>SOS Faons Bretagne</strong>.
+
+    </p>
+
+    <p style="margin:0 0 18px 0;">
+        Merci pour votre soutien.
+    </p>
+
+    <p style="margin:0;">
+        L'équipe <strong>SOS Faons Bretagne</strong>
+    </p>
+
+{% endblock %}
+
+{% block email_footer %}
+    Cet email a été généré automatiquement suite du refus de votre précommande.<br>
+    SOS Faons Bretagne — [contact@sosfaonsbretagne.fr](mailto:contact@sosfaonsbretagne.fr)
+{% endblock %}

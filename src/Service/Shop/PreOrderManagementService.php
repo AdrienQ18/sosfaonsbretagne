@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
  * - enregistre la date de validation ;
  * - envoie le lien de paiement au client.
  */
-final class PreOrderValidationService
+final class PreOrderManagementService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -65,5 +65,18 @@ final class PreOrderValidationService
         // de paiement de la précommande validée.
         // Envoi du lien de paiement au client.
         $this->preOrderMailerService->sendPaymentLink($preOrder);
+    }
+
+    public function refuse(PreOrder $preOrder): void
+    {
+        if ($preOrder->getStatus() === PreOrderStatus::PAYEE) {
+            return;
+        }
+
+        $preOrder->setStatus(PreOrderStatus::REFUSEE);
+
+        $this->entityManager->flush();
+
+        $this->preOrderMailerService->sendRefusedNotification($preOrder);
     }
 }

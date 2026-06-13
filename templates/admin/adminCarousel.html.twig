@@ -79,6 +79,7 @@
                             </span>
 
                             <form
+                                id="delete-carousel-{{ loop.index }}"
                                 method="post"
                                 action="{{ path('admin_carousel_delete', { filename: image }) }}"
                             >
@@ -91,6 +92,9 @@
 
                                 <button
                                     type="submit"
+                                    form="delete-carousel-{{ loop.index }}"
+                                    formmethod="post"
+                                    formaction="{{ path('admin_carousel_delete', { filename: image }) }}"
                                     class="admin-gallery-delete-button ui-button ui-button--delete ui-button--full"
                                     onclick="return confirm('Supprimer cette image ?')"
                                 >

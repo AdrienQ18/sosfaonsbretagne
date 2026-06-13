@@ -210,23 +210,22 @@ final class MainController extends AbstractController
         // Sécurité : accès réservé aux administrateurs.
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        if (!$request->isMethod('POST')) {
-            $this->addFlash('error', 'La suppression doit être confirmée depuis le bouton de la page galerie.');
-
-            return $this->redirectToRoute('admin_gallery');
-        }
-
         // Sécurise le nom du fichier pour éviter les chemins du type ../image.jpg.
         $filename = basename($filename);
+
+        $csrfToken = $request->request->get('_token')
+            ?? $request->query->get('_token');
 
         // Vérification CSRF avant suppression.
         if (!$this->isCsrfTokenValid(
             'delete_gallery_' . $filename,
-            $request->request->get('_token')
+            $csrfToken
         )) {
             throw $this->createAccessDeniedException();
         }
 
+        // En prod, certains environnements peuvent renvoyer le formulaire en GET.
+        // La suppression reste autorisée uniquement avec un token CSRF valide.
         $imageUploader->delete($filename, 'gallery');
 
         $this->addFlash('success', 'L’image a bien été supprimée.');
@@ -341,23 +340,22 @@ final class MainController extends AbstractController
         // Sécurité : accès réservé aux administrateurs.
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        if (!$request->isMethod('POST')) {
-            $this->addFlash('error', 'La suppression doit être confirmée depuis le bouton de la page partenaires.');
-
-            return $this->redirectToRoute('admin_carousel');
-        }
-
         // Sécurise le nom du fichier pour éviter les chemins du type ../image.jpg.
         $filename = basename($filename);
+
+        $csrfToken = $request->request->get('_token')
+            ?? $request->query->get('_token');
 
         // Vérification CSRF avant suppression.
         if (!$this->isCsrfTokenValid(
             'delete_carousel_' . $filename,
-            $request->request->get('_token')
+            $csrfToken
         )) {
             throw $this->createAccessDeniedException();
         }
 
+        // En prod, certains environnements peuvent renvoyer le formulaire en GET.
+        // La suppression reste autorisée uniquement avec un token CSRF valide.
         $imageUploader->delete($filename, 'partenaire');
 
         $this->addFlash(

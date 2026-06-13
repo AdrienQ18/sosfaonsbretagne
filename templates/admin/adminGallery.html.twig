@@ -79,6 +79,7 @@
                         </span>
 
                             <form
+                                id="delete-gallery-{{ loop.index }}"
                                 method="post"
                                 action="{{ path('admin_gallery_delete', { filename: image }) }}"
                             >
@@ -91,6 +92,9 @@
 
                                 <button
                                     type="submit"
+                                    form="delete-gallery-{{ loop.index }}"
+                                    formmethod="post"
+                                    formaction="{{ path('admin_gallery_delete', { filename: image }) }}"
                                     class="admin-gallery-delete-button ui-button ui-button--delete ui-button--full"
                                     onclick="return confirm('Supprimer cette image ?')"
                                 >

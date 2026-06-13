@@ -494,11 +494,13 @@ final class ShopController extends AbstractController
     #[Route('/pre-order/paiement/valider/{id}', name: 'pre_order_payment_success', methods: ['GET'])]
     public function preOrderPaymentSuccess(PreOrder $preOrder): Response
     {
-        // Comme pour les dons, cette page confirme le retour utilisateur.
-        // Le statut définitif reste piloté par le webhook HelloAsso.
-        return $this->render('shop/preOrderSuccess.html.twig', [
-            'preOrder' => $preOrder,
-        ]);
+
+        $this->addFlash(
+            'success',
+            'Paiement en cours de validation. Votre facture sera envoyé par email.'
+        );
+
+        return $this->redirectToRoute('main_home');
     }
 
 

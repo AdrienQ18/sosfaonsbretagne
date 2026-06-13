@@ -8,6 +8,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     locale: 'fr'
+    timezone: 'Europe/Paris'
+
 services:
     # default configuration for services in *this* file
     _defaults:

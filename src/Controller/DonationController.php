@@ -141,7 +141,7 @@ final class DonationController extends AbstractController
             'Paiement en cours de validation. Votre reçu fiscal sera envoyé par email.'
         );
 
-        return $this->redirectToRoute('donation');
+        return $this->redirectToRoute('main_home');
     }
 
     /**

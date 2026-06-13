@@ -201,7 +201,7 @@ final class MainController extends AbstractController
     /**
      * Supprime une image de la galerie.
      */
-    #[Route('/admin/galerie/supprimer/{filename}', name: 'admin_gallery_delete', methods: ['POST'])]
+    #[Route('/admin/galerie/supprimer/{filename}', name: 'admin_gallery_delete', methods: ['GET', 'POST'])]
     public function deleteGalleryImage(
         string $filename,
         Request $request,
@@ -209,6 +209,12 @@ final class MainController extends AbstractController
     ): Response {
         // Sécurité : accès réservé aux administrateurs.
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        if (!$request->isMethod('POST')) {
+            $this->addFlash('error', 'La suppression doit être confirmée depuis le bouton de la page galerie.');
+
+            return $this->redirectToRoute('admin_gallery');
+        }
 
         // Sécurise le nom du fichier pour éviter les chemins du type ../image.jpg.
         $filename = basename($filename);
@@ -326,7 +332,7 @@ final class MainController extends AbstractController
     /**
      * Supprime une image du carousel des partenaires.
      */
-    #[Route('/admin/carousel/supprimer/{filename}', name: 'admin_carousel_delete', methods: ['POST'])]
+    #[Route('/admin/carousel/supprimer/{filename}', name: 'admin_carousel_delete', methods: ['GET', 'POST'])]
     public function deleteCarouselImage(
         string $filename,
         Request $request,
@@ -334,6 +340,12 @@ final class MainController extends AbstractController
     ): Response {
         // Sécurité : accès réservé aux administrateurs.
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        if (!$request->isMethod('POST')) {
+            $this->addFlash('error', 'La suppression doit être confirmée depuis le bouton de la page partenaires.');
+
+            return $this->redirectToRoute('admin_carousel');
+        }
 
         // Sécurise le nom du fichier pour éviter les chemins du type ../image.jpg.
         $filename = basename($filename);

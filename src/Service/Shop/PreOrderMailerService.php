@@ -71,6 +71,20 @@ class PreOrderMailerService
         $this->mailer->send($email);
     }
 
+    public function sendRefusedNotification(PreOrder $preOrder): void
+    {
+        $email = (new TemplatedEmail())
+            ->from('contact@sosfaonsbretagne.fr')
+            ->to($preOrder->getUser()->getEmail())
+            ->subject('Votre précommande a été refusée')
+            ->htmlTemplate('emails/shop/pre_order_refused_user.html.twig')
+            ->context([
+                'preOrder' => $preOrder,
+            ]);
+
+        $this->mailer->send($email);
+    }
+
     /**
      * Envoie la confirmation de paiement avec la facture en pièce jointe.
      */

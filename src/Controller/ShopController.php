@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\Shop\PreOrderMailerService;
-use App\Service\Shop\PreOrderValidationService;
+use App\Service\Shop\PreOrderManagementService;
 
 /**
  * Contrôleur de gestion de la boutique.
@@ -450,7 +450,7 @@ final class ShopController extends AbstractController
     #[Route('/admin/precommande/{id}/valider', name: 'admin_pre_order_validate', methods: ['POST'])]
     public function adminValidatePreOrder(
         PreOrder                  $preOrder,
-        PreOrderValidationService $preOrderValidationService
+        PreOrderManagementService $preOrderValidationService
     ): Response
     {
         // Toute la logique métier de validation est centralisée dans le service :
@@ -468,21 +468,12 @@ final class ShopController extends AbstractController
         methods: ['POST']
     )]
     public function adminRefusePreOrder(
-        PreOrder               $preOrder,
-        EntityManagerInterface $entityManager
-    ): Response
-    {
+        PreOrder $preOrder,
+        PreOrderManagementService $preOrderValidationService
+    ): Response {
+        $preOrderValidationService->refuse($preOrder);
 
-        $preOrder->setStatus(
-            PreOrderStatus::REFUSEE
-        );
-
-        $entityManager->flush();
-
-        $this->addFlash(
-            'success',
-            'Précommande refusée.'
-        );
+        $this->addFlash('success', 'Précommande refusée. Un email a été envoyé à l’utilisateur.');
 
         return $this->redirectToRoute('admin_pre_order');
     }

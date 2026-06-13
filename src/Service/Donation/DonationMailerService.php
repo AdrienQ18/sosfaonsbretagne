@@ -36,6 +36,8 @@ class DonationMailerService
         Donation $donation,
         string $pdfPath
     ): void {
+        // L'appelant vérifie l'idempotence via receiptEmailSentAt :
+        // ce service ne fait qu'envoyer l'email demandé.
         // Email envoyé au donateur avec son reçu fiscal en pièce jointe.
         $email = (new TemplatedEmail())
             ->from(
@@ -68,6 +70,7 @@ class DonationMailerService
     public function sendDonationNotificationToAssociation(
         Donation $donation
     ): void {
+        // L'appelant vérifie l'idempotence via associationNotifiedAt.
         // Notification interne envoyée à l'association.
         $email = (new TemplatedEmail())
             ->from(

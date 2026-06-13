@@ -2,14 +2,6 @@
    BOUTIQUE
 ========================= */
 
-/* GRID */
-
-.boutique-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-}
-
 /* CARD */
 
 .boutique-card {
@@ -48,30 +40,6 @@
 }
 
 /* LIGHTBOX */
-
-.image-viewer {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.92);
-}
-
-.image-viewer.active {
-    display: flex;
-}
-
-.image-viewer-img {
-    width: auto;
-    height: auto;
-    max-width: 80vw;
-    max-height: 80vh;
-    object-fit: contain;
-    border-radius: 14px;
-}
 
 .image-viewer-close {
     position: absolute;
@@ -258,4 +226,3 @@
     background: var(--green-main);
     color: var(--white);
 }
-

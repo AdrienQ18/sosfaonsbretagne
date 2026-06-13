@@ -29,6 +29,7 @@ class AlertRepository extends ServiceEntityRepository
      */
     public function readAlert(): array
     {
+        // Méthode conservée pour les appels existants qui attendent tous les signalements.
         return $this->findAll();
     }
 
@@ -47,6 +48,7 @@ class AlertRepository extends ServiceEntityRepository
     public function findByFiltersQuery(array $filters): QueryBuilder
     {
         // Création de la requête de base avec jointure sur l'utilisateur.
+        // L'email utilisateur est utilisé dans la recherche globale admin.
         $qb = $this->createQueryBuilder('a')
             ->leftJoin('a.user', 'u')
             ->addSelect('u')

@@ -1,7 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Créer un post | SOS Faons Bretagne
+    {% if isEdit|default(false) %}Modifier un post{% else %}Créer un post{% endif %} | SOS Faons Bretagne
+{% endblock %}
+
+{% block meta_description %}
+    Interface privée de création et modification des actualités SOS Faons Bretagne.
 {% endblock %}
 
 {% block robots %}
@@ -18,11 +22,21 @@
 
             <header class="ui-header ui-header--center">
 
-                <h1>Création d'un post</h1>
+                <h1>
+                    {% if isEdit|default(false) %}
+                        Modification d'un post
+                    {% else %}
+                        Création d'un post
+                    {% endif %}
+                </h1>
 
                 <p>
-                    Créez un nouvel article, événement ou actualité
-                    qui sera publié sur le site SOS Faons Bretagne.
+                    {% if isEdit|default(false) %}
+                        Modifiez l'article, l'événement ou l'actualité sélectionné.
+                    {% else %}
+                        Créez un nouvel article, événement ou actualité
+                        qui sera publié sur le site SOS Faons Bretagne.
+                    {% endif %}
                 </p>
 
             </header>

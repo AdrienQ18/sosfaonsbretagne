@@ -7,6 +7,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des rôles métier.
+ *
+ * Les rôles sont actuellement lus via les méthodes standard Doctrine.
+ *
  * @extends ServiceEntityRepository<Role>
  */
 class RoleRepository extends ServiceEntityRepository

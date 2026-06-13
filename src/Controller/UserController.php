@@ -36,6 +36,8 @@ final class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
+        // Le même template sert à la lecture et à l'édition du profil.
+        // editMode pilote l'affichage sans dupliquer la page Twig.
         $response = $this->render('user/userDetailById.html.twig', [
             'userById' => $user,
             'editMode' => false,
@@ -92,6 +94,8 @@ final class UserController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         // Vérifie que le don demandé appartient bien à l'utilisateur connecté.
+        // Cette comparaison évite qu'un utilisateur accède au PDF d'un autre
+        // compte en modifiant simplement l'identifiant dans l'URL.
         if ($donation->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException(
                 'Vous ne pouvez pas accéder à ce PDF.'
@@ -124,6 +128,7 @@ final class UserController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         // Vérifie que la précommande demandée appartient bien à l'utilisateur connecté.
+        // Même protection que pour les reçus fiscaux : le document reste privé.
         if ($preOrder->getUser() !== $this->getUser()) {
             throw $this->createAccessDeniedException(
                 'Vous ne pouvez pas accéder à ce PDF.'

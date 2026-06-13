@@ -101,6 +101,8 @@ class ResetPasswordController extends AbstractController
     ): Response {
         // Si un token est présent dans l'URL, il est stocké en session.
         if ($token) {
+            // Le token est retiré de l'URL après stockage pour limiter son
+            // exposition dans l'historique navigateur et les éventuels logs.
             $this->storeTokenInSession($token);
 
             return $this->redirectToRoute('app_reset_password');
@@ -116,6 +118,8 @@ class ResetPasswordController extends AbstractController
         }
 
         try {
+            // Cette validation récupère l'utilisateur uniquement si le token est
+            // authentique, non expiré et encore associé à une demande active.
             /** @var User $user */
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
@@ -199,6 +203,8 @@ class ResetPasswordController extends AbstractController
             // Génération du token sécurisé de réinitialisation.
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
+            // Même redirection en cas d'erreur pour conserver le même comportement
+            // vis-à-vis de l'utilisateur et ne pas exposer l'état du compte.
             return $this->redirectToRoute('app_check_email');
         }
 

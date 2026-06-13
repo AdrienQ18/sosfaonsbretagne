@@ -63,6 +63,7 @@ final class RolesController extends AbstractController
         if ($formRole->isSubmitted() && $formRole->isValid()) {
 
             // Persist uniquement lors de la création.
+            // En édition, l'entité est déjà suivie par Doctrine.
             if ($id === null) {
                 $entityManager->persist($role);
             }

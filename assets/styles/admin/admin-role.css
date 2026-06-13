@@ -1,32 +1,32 @@
-/* =========================
-   ROLE ADMIN PAGE
-========================= */
+/* ==========================================================================
+   Roles et disponibilites admin
+   Page commune : liste a gauche, formulaire a droite.
+   ========================================================================== */
 
-.role-page {
+.admin-meta-page {
     min-height: 80vh;
 }
 
-.role-container {
+.admin-meta-container {
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
 }
 
-/* HEADER */
-
-.role-header {
+/* En-tete */
+.admin-meta-header {
     margin-bottom: 22px;
     text-align: center;
 }
 
-.role-header h1 {
+.admin-meta-header h1 {
     margin-bottom: 8px;
     color: var(--green-dark);
     font-size: 2.2rem;
     font-weight: 800;
 }
 
-.role-header p {
+.admin-meta-header p {
     max-width: 520px;
     margin: 0 auto;
     color: #6f6f6f;
@@ -34,38 +34,36 @@
     line-height: 1.5;
 }
 
-/* GRID */
-
-.role-grid {
+/* Layout */
+.admin-meta-grid {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
     gap: 22px;
     align-items: start;
 }
 
-/* CARD */
-
-.role-card {
+.admin-meta-card {
     padding: 24px;
     border-radius: 22px;
 }
 
-.role-card-header {
+.admin-meta-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     margin-bottom: 18px;
 }
 
-.role-card-header h2,
-.role-card h2 {
+.admin-meta-card h2,
+.admin-meta-card-header h2 {
     margin: 0;
     color: var(--green-dark);
     font-size: 1.45rem;
     font-weight: 800;
 }
 
-.role-card-header span {
+.admin-meta-card-header span {
     padding: 7px 12px;
     border-radius: 999px;
     background: var(--input-bg);
@@ -74,148 +72,132 @@
     font-weight: 700;
 }
 
-/* TABLE */
-
-.role-table-wrapper {
+/* Tableaux */
+.admin-meta-table-wrapper {
+    width: 100%;
     overflow-x: auto;
 }
 
-.role-table {
+.admin-meta-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.role-table th {
+.admin-meta-table th {
     padding: 12px 14px;
-    text-align: left;
     color: var(--green-dark);
     font-size: 12px;
     font-weight: 800;
+    text-align: left;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.role-table td {
+.admin-meta-table td {
     padding: 12px 14px;
     border-top: 1px solid #eee6dc;
+    vertical-align: middle;
 }
 
-.role-badge {
+.admin-meta-badge {
     display: inline-flex;
     align-items: center;
     padding: 8px 14px;
     border-radius: 999px;
-    background: linear-gradient(
-        135deg,
-        var(--green-dark),
-        var(--green-main)
-    );
+    background: var(--gradient-green);
     color: var(--white);
     font-size: 13px;
     font-weight: 700;
 }
 
-/* ACTIONS */
-
-.role-actions {
+/* Actions */
+.admin-meta-actions {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     gap: 10px;
 }
 
-.role-actions form {
+.admin-meta-actions form {
     margin: 0;
 }
 
-.role-edit-link,
-.role-delete-button,
-.role-submit-button {
+.admin-meta-edit-link,
+.admin-meta-submit-button {
     min-height: 38px;
-
     padding: 10px 16px;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: .5px;
+    letter-spacing: 0.5px;
 }
 
-.role-edit-link {
+.admin-meta-edit-link {
     background: var(--input-bg);
     color: var(--green-dark);
 }
 
-.role-edit-link:hover {
+.admin-meta-edit-link:hover {
     background: var(--surface-hover);
 }
 
-.role-delete-button {
-    background: #ffe5e5;
-    color: #b20000;
-}
-
-.role-delete-button:hover {
-    background: #ffd4d4;
-}
-
-.role-empty {
-    text-align: center;
+.admin-meta-empty {
     padding: 24px !important;
     color: #777;
+    font-size: 14px;
+    text-align: center;
 }
 
-/* FORM */
-
-.role-form-card p {
+/* Formulaires */
+.admin-meta-form-card p {
     margin: 10px 0 22px;
     color: #6f6f6f;
     font-size: 14px;
+    line-height: 1.5;
 }
 
-.role-form {
+.admin-meta-form {
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
 
-
-.role-submit-button {
+.admin-meta-submit-button {
     width: 100%;
 }
-/* RESPONSIVE */
 
-@media (max-width: 850px) {
-    .role-grid {
+/* Responsive */
+@media screen and (max-width: 850px) {
+    .admin-meta-grid {
         grid-template-columns: 1fr;
     }
 
-    .role-header h1 {
+    .admin-meta-header h1 {
         font-size: 1.9rem;
     }
-
 }
 
-@media (max-width: 560px) {
-    .role-page {
+@media screen and (max-width: 560px) {
+    .admin-meta-page {
         padding: 24px 14px 40px;
     }
 
-    .role-card {
+    .admin-meta-card {
         padding: 18px;
     }
 
-    .role-card-header {
+    .admin-meta-card-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 10px;
     }
 
-    .role-actions {
+    .admin-meta-actions {
         flex-direction: column;
+        align-items: stretch;
     }
 
-    .role-edit-link,
-    .role-delete-button {
+    .admin-meta-edit-link,
+    .admin-meta-delete-button {
         width: 100%;
     }
-
 }

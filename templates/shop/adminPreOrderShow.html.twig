@@ -4,6 +4,10 @@
     Précommande #{{ preOrder.id }} | SOS Faons Bretagne
 {% endblock %}
 
+{% block meta_description %}
+    Détail privé d'une précommande SOS Faons Bretagne.
+{% endblock %}
+
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
@@ -24,7 +28,7 @@
                     </p>
                 </div>
 
-                <span class="admin-preorder-show-status admin-preorder-show-status--{{ preOrder.status.value }}">
+                <span class="admin-preorder-show-status admin-preorder-show-status--{{ preOrder.status.value }} ui-status{% if preOrder.status.value in ['validee', 'payee'] %} ui-status--success{% elseif preOrder.status.value == 'en_attente' %} ui-status--warning{% elseif preOrder.status.value == 'en_attente_paiement' %} ui-status--info{% elseif preOrder.status.value == 'refusee' %} ui-status--danger{% endif %}">
                 {% if preOrder.status.value == 'en_attente' %}
                     En attente
                 {% elseif preOrder.status.value == 'validee' %}
@@ -197,7 +201,7 @@
                             >
                                 <button
                                     type="submit"
-                                    class="admin-preorder-show-button admin-preorder-show-button--danger ui-button ui-button--danger"
+                                    class="admin-preorder-show-button admin-preorder-show-button--danger ui-button ui-button--delete"
                                 >
                                     Refuser la précommande
                                 </button>
@@ -206,7 +210,7 @@
 
                         <a
                             href="{{ path('admin_pre_order') }}"
-                            class="admin-preorder-show-back-link ui-button ui-button--secondary"
+                            class="admin-preorder-show-back-link ui-button ui-button--cancel"
                         >
                             Retour à la liste
                         </a>

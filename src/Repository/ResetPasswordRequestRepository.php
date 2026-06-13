@@ -55,6 +55,8 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
         string $selector,
         string $hashedToken
     ): ResetPasswordRequestInterface {
+        // Le token brut n'est jamais stocké : seul son hash est conservé
+        // pour limiter l'impact d'une lecture non autorisée de la base.
         // Création de l'entité contenant les informations
         // de réinitialisation du mot de passe.
         return new ResetPasswordRequest(

@@ -4,6 +4,10 @@
     Administration des précommandes | SOS Faons Bretagne
 {% endblock %}
 
+{% block meta_description %}
+    Interface privée de gestion des précommandes SOS Faons Bretagne.
+{% endblock %}
+
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
@@ -18,13 +22,13 @@
             <header class="admin-preorder-header ui-admin-header ui-header">
                 <h1>Gestion des précommandes</h1>
 
-                <div class="admin-preorder-count ui-card">
+                <div class="admin-preorder-count ui-counter ui-card">
                     <span>Nombre de précommandes</span>
                     <strong>{{ preOrders.getTotalItemCount }}</strong>
                 </div>
             </header>
 
-            <div class="admin-preorder-card admin-preorder-filter-card ui-card">
+            <div class="admin-preorder-card admin-preorder-filter-card ui-card ui-filter-card">
 
                 {{ form_start(filterForm, {
                     method: 'GET',
@@ -62,11 +66,11 @@
                     </div>
                 </div>
 
-                <div class="admin-preorder-filter-actions">
+                <div class="admin-preorder-filter-actions ui-actions">
                     <button
                         type="button"
                         id="reset-preorder-filters"
-                        class="admin-preorder-reset-button ui-button ui-button--secondary"
+                        class="admin-preorder-reset-button ui-button ui-button--secondary ui-button--filter"
                         aria-label="Réinitialiser les filtres de recherche"
                     >
                         Réinitialiser
@@ -77,14 +81,14 @@
 
             </div>
 
-            <div class="admin-preorder-grid">
+            <div class="admin-preorder-grid ui-grid ui-grid--cards">
                 {% for preOrder in preOrders %}
                     <article class="admin-preorder-card ui-card">
 
                         <div class="admin-preorder-card-header">
                             <h2>Précommande #{{ preOrder.id }}</h2>
 
-                            <span class="admin-preorder-status admin-preorder-status--{{ preOrder.status.value }}">
+                            <span class="admin-preorder-status admin-preorder-status--{{ preOrder.status.value }} ui-status ui-status--wide{% if preOrder.status.value in ['validee', 'payee'] %} ui-status--success{% elseif preOrder.status.value == 'en_attente' %} ui-status--warning{% elseif preOrder.status.value == 'en_attente_paiement' %} ui-status--info{% elseif preOrder.status.value == 'refusee' %} ui-status--danger{% endif %}">
                                 {% if preOrder.status.value == 'en_attente' %}
                                     En attente
                                 {% elseif preOrder.status.value == 'validee' %}

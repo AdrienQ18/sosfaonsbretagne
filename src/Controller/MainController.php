@@ -187,6 +187,7 @@ final class MainController extends AbstractController
         }
 
         // Upload dans le dossier public/images/gallery.
+        // La validation du type et le nommage sécurisé sont portés par ImageUploader.
         $imageUploader->upload($file, 'gallery');
 
         $this->addFlash(
@@ -266,9 +267,14 @@ final class MainController extends AbstractController
     #[Route('/carousel', name: 'main_carousel')]
     public function carousel(): Response
     {
-        return $this->render('carousel/carousel.html.twig', [
+        $response = $this->render('carousel/carousel.html.twig', [
             'images' => $this->getCarouselImages(),
         ]);
+
+        // Cette route sert de fragment réutilisable : elle ne doit pas être indexée comme une page autonome.
+        $response->headers->set('X-Robots-Tag', 'noindex, nofollow');
+
+        return $response;
     }
 
     /**
@@ -306,6 +312,7 @@ final class MainController extends AbstractController
         }
 
         // Upload dans le dossier public/images/partenaire.
+        // La validation du type et le nommage sécurisé sont portés par ImageUploader.
         $imageUploader->upload($file, 'partenaire');
 
         $this->addFlash(

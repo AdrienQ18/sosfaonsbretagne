@@ -40,6 +40,7 @@ class PreOrderRepository extends ServiceEntityRepository
     public function findByFiltersQuery(array $filters): QueryBuilder
     {
         // Requête de base avec jointure sur l'utilisateur.
+        // La jointure évite un chargement paresseux utilisateur par précommande.
         $qb = $this->createQueryBuilder('p')
             ->leftJoin('p.user', 'u')
             ->addSelect('u')
@@ -65,6 +66,7 @@ class PreOrderRepository extends ServiceEntityRepository
 
             // Si la recherche est numérique,
             // on ajoute une recherche sur l'identifiant.
+            // Cela permet de retrouver rapidement une précommande par numéro.
             if (ctype_digit($search)) {
                 $orX->add('p.id = :searchId');
 

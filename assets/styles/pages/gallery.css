@@ -57,30 +57,6 @@
 }
 /* LIGHTBOX */
 
-.gallery-lightbox {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.92);
-}
-
-.gallery-lightbox.active {
-    display: flex;
-}
-
-.gallery-lightbox-image {
-    width: auto;
-    height: auto;
-    max-width: 80vw;
-    max-height: 80vh;
-    object-fit: contain;
-    border-radius: 14px;
-}
-
 .gallery-lightbox-close {
     position: absolute;
     top: 20px;

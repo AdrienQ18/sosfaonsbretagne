@@ -53,6 +53,8 @@ final class HelloAssoWebhookController extends AbstractController
         $signatureKey = $_ENV['HELLOASSO_SIGNATURE_KEY'] ?? null;
         $receivedSignature = $request->headers->get('x-ha-signature');
 
+        // Priorité à la signature HMAC : c'est la protection attendue pour
+        // vérifier l'intégrité du corps exact envoyé par HelloAsso.
         if ($signatureKey && $receivedSignature) {
             $computed = hash_hmac(
                 'sha256',
@@ -76,6 +78,9 @@ final class HelloAssoWebhookController extends AbstractController
              *
              * Utilisation d'un secret passé dans l'URL :
              * /helloasso/webhook?secret=xxx
+             *
+             * Ce fallback ne sert que lorsque la signature HMAC n'est pas
+             * disponible côté configuration ou côté requête.
              */
             $receivedSecret = $request->query->get('secret');
             $expectedSecret = $_ENV['HELLOASSO_WEBHOOK_SECRET'] ?? null;

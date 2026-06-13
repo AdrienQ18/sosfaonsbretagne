@@ -4,9 +4,15 @@
     Gestion de la galerie | SOS Faons Bretagne
 {% endblock %}
 
+{% block meta_description %}
+    Interface d'administration de la galerie photo de SOS Faons Bretagne.
+{% endblock %}
+
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
+
+{% block canonical %}{% endblock %}
 
 {% block body %}
 
@@ -53,7 +59,7 @@
 
             </div>
 
-            <div class="admin-gallery-grid">
+            <div class="admin-gallery-grid ui-grid ui-grid--3">
 
                 {% for image in images %}
 
@@ -85,7 +91,7 @@
 
                                 <button
                                     type="submit"
-                                    class="admin-gallery-delete-button ui-button ui-button--danger"
+                                    class="admin-gallery-delete-button ui-button ui-button--delete ui-button--full"
                                     onclick="return confirm('Supprimer cette image ?')"
                                 >
                                     Supprimer

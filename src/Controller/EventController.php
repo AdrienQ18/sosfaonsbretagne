@@ -104,6 +104,7 @@ final class EventController extends AbstractController
 
         return $this->render('post/create.html.twig', [
             'eventForm' => $eventForm->createView(),
+            'isEdit' => false,
         ]);
     }
 
@@ -140,6 +141,8 @@ final class EventController extends AbstractController
 
             // Remplacement de l'image si une nouvelle image est envoyée.
             if ($file) {
+                // L'uploader reçoit l'ancien nom pour pouvoir le remplacer
+                // sans laisser de fichier orphelin.
                 $event->setImage(
                     $imageUploader->upload($file, 'event/', $event->getImage())
                 );
@@ -156,6 +159,7 @@ final class EventController extends AbstractController
 
         return $this->render('post/create.html.twig', [
             'eventForm' => $eventForm->createView(),
+            'isEdit' => true,
         ]);
     }
 
@@ -215,6 +219,8 @@ final class EventController extends AbstractController
         $action = $request->request->get('action');
         $successMessage = 'Action non reconnue.';
 
+        // Les deux boutons du formulaire envoient le même formulaire,
+        // seule leur valeur d'action décide du statut de publication.
         if ($action === 'enregistrer') {
             // Enregistrement en brouillon.
             $event->setIsPublished(false);

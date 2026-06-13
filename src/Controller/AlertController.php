@@ -164,6 +164,8 @@ final class AlertController extends AbstractController
             $interventionDate = $request->request->get('interventionDate');
             $status = $request->request->get('status');
 
+            // Le champ est optionnel : l'absence de date conserve la valeur
+            // actuellement enregistrée sur le signalement.
             // Mise à jour de la date d’intervention si elle est renseignée.
             if ($interventionDate) {
                 $alert->setInterventionDate(new \DateTime($interventionDate));
@@ -181,6 +183,7 @@ final class AlertController extends AbstractController
 
             // Envoi d’un email uniquement si le statut a réellement changé.
             if ($oldStatus !== $newStatus) {
+                // On notifie uniquement les décisions finales utiles à l'utilisateur.
                 if ($newStatus === AlertStatus::SIGNALEMENT_VALIDEE) {
                     $alertMailerService->sendValidatedNotification($alert);
                 }

@@ -51,7 +51,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         );
 
         return new Passport(
-        // Identifiant de l'utilisateur.
+            // Identifiant de l'utilisateur.
             new UserBadge($email),
 
             // Mot de passe saisi dans le formulaire.
@@ -66,7 +66,8 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
                     $request->getPayload()->getString('_csrf_token')
                 ),
 
-                // Active la fonctionnalité "Se souvenir de moi" si configurée.
+                // Le badge autorise Symfony à utiliser le remember_me configuré
+                // dans security.yaml lorsque la case est cochée.
                 new RememberMeBadge(),
             ]
         );
@@ -88,6 +89,8 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             $request->getSession(),
             $firewallName
         )) {
+            // Respecte l'URL initialement demandée au lieu de renvoyer
+            // systématiquement vers l'accueil.
             return new RedirectResponse($targetPath);
         }
 

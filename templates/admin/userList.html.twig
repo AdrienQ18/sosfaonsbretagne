@@ -4,6 +4,10 @@
     Administration des utilisateurs | SOS Faons Bretagne
 {% endblock %}
 
+{% block meta_description %}
+    Interface privée de gestion des utilisateurs SOS Faons Bretagne.
+{% endblock %}
+
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
@@ -20,7 +24,7 @@
 
                 <h1>Liste des utilisateurs</h1>
 
-                <div class="admin-user-count ui-card">
+                <div class="admin-user-count ui-counter ui-card">
                     <span>Nombre d'utilisateurs</span>
                     <strong>{{ users.getTotalItemCount }}</strong>
                 </div>
@@ -72,12 +76,12 @@
 
                 </div>
 
-                <div class="admin-user-filter-actions">
+                <div class="admin-user-filter-actions ui-actions ui-actions--end">
 
                     <button
                         type="button"
                         id="reset-user-filters"
-                        class="admin-user-reset-button ui-button ui-button--secondary"
+                        class="admin-user-reset-button ui-button ui-button--secondary ui-button--filter"
                     >
                         Réinitialiser
                     </button>
@@ -90,11 +94,11 @@
 
             <div class="admin-user-card ui-card">
 
-                <div class="admin-user-table-wrapper">
+                <div class="admin-user-table-wrapper ui-table-wrapper">
 
-                    <table class="admin-user-table">
+                    <table class="admin-user-table ui-table ui-table--1200">
 
-                        <caption class="admin-user-sr-only">
+                        <caption class="admin-user-sr-only ui-sr-only">
                             Liste des utilisateurs enregistrés
                         </caption>
 
@@ -140,11 +144,11 @@
 
                                 <td>
                                     {% if user.actif %}
-                                        <span class="admin-user-status admin-user-status--active">
+                                        <span class="admin-user-status admin-user-status--active ui-status ui-status--success">
                                             Actif
                                         </span>
                                     {% else %}
-                                        <span class="admin-user-status admin-user-status--inactive">
+                                        <span class="admin-user-status admin-user-status--inactive ui-status ui-status--danger">
                                             Inactif
                                         </span>
                                     {% endif %}
@@ -156,11 +160,11 @@
 
                                 <td>
                                     {% if 'ROLE_ADMIN' in user.roles %}
-                                        <span class="admin-user-badge admin-user-badge--admin">
+                                        <span class="admin-user-badge admin-user-badge--admin ui-status ui-status--info">
                                             Administrateur
                                         </span>
                                     {% else %}
-                                        <span class="admin-user-badge">
+                                        <span class="admin-user-badge ui-status">
                                             Utilisateur
                                         </span>
                                     {% endif %}

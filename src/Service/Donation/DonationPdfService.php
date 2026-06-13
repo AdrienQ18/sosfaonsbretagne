@@ -36,6 +36,7 @@ final class DonationPdfService
     public function generateFiscalReceipt(Donation $donation): string
     {
         // Si un reçu fiscal existe déjà pour ce don, on retourne son chemin.
+        // Cela évite de produire deux numéros de reçu pour le même paiement.
         $existingPath = $donation->getReceiptPdfPath();
 
         if ($existingPath && is_file($existingPath)) {
@@ -97,6 +98,7 @@ final class DonationPdfService
         $dompdf->render();
 
         // Dossier privé dans lequel les reçus fiscaux sont stockés.
+        // Le dossier var/ n'est pas exposé directement par le serveur web.
         $directory = $this->projectDir . '/var/receipts';
 
         // Création du dossier s'il n'existe pas.
@@ -119,6 +121,8 @@ final class DonationPdfService
         }
 
         // Mise à jour des informations du don liées au reçu fiscal.
+        // Le flush reste volontairement dans le service appelant pour garder
+        // une transaction cohérente avec l'envoi des emails.
         $donation->setFiscalReceiptNumber($receiptNumber);
         $donation->setReceiptPdfPath($path);
         $donation->setReceiptGeneratedAt(new \DateTimeImmutable());

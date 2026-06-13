@@ -4,6 +4,10 @@
     Détail du signalement | SOS Faons Bretagne
 {% endblock %}
 
+{% block meta_description %}
+    Détail privé d'un signalement transmis à SOS Faons Bretagne.
+{% endblock %}
+
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
@@ -21,7 +25,7 @@
                     <p>Détail complet du signalement transmis.</p>
                 </div>
 
-                <span class="admin-alert-status admin-alert-status--{{ alert.status.value }}">
+                <span class="admin-alert-status admin-alert-status--{{ alert.status.value }} ui-status ui-status--wide{% if alert.status.value == 'signalement_validee' %} ui-status--success{% elseif alert.status.value == 'signalement_passee' %} ui-status--warning{% elseif alert.status.value == 'signalement_refusee' %} ui-status--danger{% endif %}">
                {{ alert.status.getLabel() }}
             </span>
             </header>
@@ -147,7 +151,7 @@
 
                         <a
                             href="{{ path('admin_alert') }}"
-                            class="admin-alert-show-back-link"
+                            class="admin-alert-show-back-link ui-button ui-button--cancel"
                             aria-label="Retour à la liste des signalements"
                         >
                             Retour à la liste

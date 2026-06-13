@@ -68,6 +68,7 @@ final class AvailabilityController extends AbstractController
         if ($formAvailability->isSubmitted() && $formAvailability->isValid()) {
 
             // Persist uniquement lors de la création.
+            // En édition, l'entité est déjà suivie par Doctrine.
             if ($id === null) {
                 $entityManager->persist($availability);
             }

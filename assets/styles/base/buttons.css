@@ -52,6 +52,40 @@
     background: var(--red-main);
 }
 
+.ui-button--delete {
+    min-height: 38px;
+    padding: 10px 16px;
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.ui-button--delete:hover,
+.ui-button--delete:focus-visible {
+    background: var(--danger-hover-bg);
+    color: var(--danger-text);
+}
+
+.ui-button--cancel {
+    min-height: 38px;
+    padding: 10px 16px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.ui-button--cancel:hover,
+.ui-button--cancel:focus-visible {
+    background: var(--surface-hover);
+    color: var(--green-dark);
+}
+
 /* Modificateurs de taille/comportement pour eviter les classes de page. */
 .ui-button--full {
     width: 100%;
@@ -81,6 +115,27 @@
 
 .ui-button--padded-large {
     padding: 15px 20px;
+}
+
+.ui-button--filter {
+    padding: 13px 20px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.ui-button--filter:hover,
+.ui-button--filter:focus-visible {
+    background: var(--surface-hover);
+    color: var(--green-dark);
+}
+
+.ui-button--primary.ui-button--filter:hover,
+.ui-button--primary.ui-button--filter:focus-visible {
+    background: var(--gradient-green-hover);
+    color: var(--white);
+    box-shadow: var(--green-hover-shadow);
 }
 
 .ui-button--static-hover:hover,

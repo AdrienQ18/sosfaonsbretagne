@@ -124,11 +124,30 @@
     box-shadow: var(--shadow);
 }
 
+.ui-filter-card {
+    margin-bottom: 30px;
+    padding: 26px;
+    border: 2px solid rgba(110, 142, 100, 0.08);
+}
+
 /* Grilles et etats vides frequents. */
 .ui-form-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 18px;
+}
+
+.ui-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.ui-grid--cards {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+
+.ui-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .ui-form-row {
@@ -143,6 +162,23 @@
 
 .ui-form-row--relaxed {
     gap: 16px;
+}
+
+.ui-choice-grid > div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.ui-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.ui-actions--end {
+    justify-content: flex-end;
 }
 
 .ui-field {
@@ -267,6 +303,219 @@
     text-align: center;
 }
 
+.ui-counter {
+    min-width: 180px;
+    padding: 16px 22px;
+    border-radius: 18px;
+    text-align: center;
+}
+
+.ui-counter span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text);
+    font-size: 13px;
+}
+
+.ui-counter strong {
+    color: var(--green-dark);
+    font-size: 1.6rem;
+}
+
+.ui-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.ui-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ui-table--1150 {
+    min-width: 1150px;
+}
+
+.ui-table--1200 {
+    min-width: 1200px;
+}
+
+.ui-table th,
+.ui-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #eee8df;
+    color: var(--text);
+    font-size: 13px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.ui-table th {
+    background: var(--input-bg);
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.ui-table tbody tr:hover {
+    background: rgba(110, 142, 100, 0.06);
+}
+
+.ui-table a {
+    color: var(--green-dark);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.ui-table a:hover {
+    color: var(--green-main);
+}
+
+.ui-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Overlay image partage par les galeries et la boutique. */
+.ui-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.92);
+}
+
+.ui-overlay.active,
+.ui-overlay.is-open {
+    display: flex;
+}
+
+.ui-overlay-image {
+    width: auto;
+    height: auto;
+    max-width: 80vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 14px;
+}
+
+@media screen and (max-width: 950px) {
+    .ui-grid--3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .ui-grid--3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .ui-choice-grid > div {
+        grid-template-columns: 1fr;
+    }
+}
+
+.ui-status {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.ui-status--wide {
+    min-width: 130px;
+    padding-inline: 12px;
+}
+
+.ui-status--success {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.ui-status--warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+}
+
+.ui-status--info {
+    background: var(--info-bg);
+    color: var(--info-text);
+}
+
+.ui-status--danger {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+}
+
+.ui-check {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ui-check label {
+    margin: 0;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.ui-check input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    width: 24px !important;
+    height: 24px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0;
+    border: 2px solid var(--green-dark);
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.ui-check input[type='checkbox']::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 12px;
+    border: solid var(--green-main);
+    border-width: 0 3px 3px 0;
+    transform: translate(-50%, -60%) rotate(45deg) scale(0);
+    transform-origin: center;
+    transition: 0.2s ease;
+}
+
+.ui-check input[type='checkbox']:checked {
+    border-color: var(--green-main);
+}
+
+.ui-check input[type='checkbox']:checked::before {
+    transform: translate(-50%, -60%) rotate(45deg) scale(1);
+}
+
 /* En-tetes admin et pagination partagee. */
 .ui-admin-header {
     display: flex;
@@ -296,22 +545,27 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     flex-wrap: wrap;
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.ui-pagination .pagination span,
-.ui-pagination .pagination a,
-.ui-pagination .pagination .current {
+.ui-pagination .pagination > span:not(.current) {
+    display: contents;
+}
+
+.ui-pagination .pagination > span > a,
+.ui-pagination .pagination > .current,
+.ui-pagination .pagination .page-link {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    min-width: 42px;
+    min-width: 44px;
     height: 42px;
     padding: 0 14px;
+    border: 0;
     background: var(--input-bg);
     color: var(--green-dark);
     border-radius: 12px;
@@ -321,21 +575,23 @@
     transition: all 0.2s ease;
 }
 
-.ui-pagination .pagination a:hover {
+.ui-pagination .pagination > span > a:hover,
+.ui-pagination .pagination .page-link:hover {
     transform: translateY(-2px);
     background: var(--green-main);
     color: var(--white);
 }
 
-.ui-pagination .pagination .current {
+.ui-pagination .pagination > .current,
+.ui-pagination .pagination .active .page-link,
+.ui-pagination .pagination .page-link[aria-current='page'] {
     background: var(--gradient-green);
     color: var(--white);
     box-shadow: var(--green-active-shadow);
 }
 
-.ui-pagination :is(.first, .previous, .next, .last) a {
-    min-width: auto;
-    padding: 0 18px;
+.ui-pagination :is(.first, .previous, .next, .last) > a {
+    min-width: 72px;
 }
 
 .ui-file-group input[type='file'] {

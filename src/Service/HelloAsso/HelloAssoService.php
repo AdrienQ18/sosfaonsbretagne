@@ -33,6 +33,8 @@ final class HelloAssoService
      */
     public function getAccessToken(): string
     {
+        // Le token n'est pas mis en cache ici : chaque appel part d'un état sûr
+        // et évite d'utiliser un jeton expiré lors d'une action de paiement.
         // Appel OAuth client_credentials pour obtenir le token API.
         $response = $this->httpClient->request('POST', $_ENV['HELLOASSO_AUTH_URL'], [
             'headers' => [
@@ -73,6 +75,8 @@ final class HelloAssoService
         // HelloAsso attend les montants en centimes.
         $amountInCents = (int) round((float) $donation->getAmount() * 100);
 
+        // L'URL publique doit être celle accessible par HelloAsso et par le
+        // navigateur du donateur, pas l'URL locale de développement.
         // URL publique du site utilisée pour construire les URLs de retour.
         $baseUrl = rtrim($_ENV['APP_PUBLIC_URL'], '/');
 
@@ -103,6 +107,7 @@ final class HelloAssoService
             ],
 
             // Métadonnées utilisées pour retrouver le don dans le webhook.
+            // Elles sont indispensables car le webhook ne connait pas nos routes Symfony.
             'metadata' => [
                 'donation_id' => $donation->getId(),
                 'donor_type' => $donation->getDonorType()?->value,
@@ -183,6 +188,8 @@ final class HelloAssoService
         // HelloAsso attend les montants en centimes.
         $amountInCents = (int) round((float) $preOrder->getTotalAmount() * 100);
 
+        // Même principe que pour les dons : les URLs doivent rester publiques
+        // pour les redirections HelloAsso.
         // URL publique du site utilisée pour construire les URLs de retour.
         $baseUrl = rtrim($_ENV['APP_PUBLIC_URL'], '/');
 
@@ -205,6 +212,7 @@ final class HelloAssoService
             ],
 
             // Métadonnées utilisées pour retrouver la précommande dans le webhook.
+            // Le type facilite le diagnostic si d'autres paiements HelloAsso sont ajoutés.
             'metadata' => [
                 'pre_order_id' => $preOrder->getId(),
                 'type' => 'pre_order',

@@ -17,21 +17,22 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class ImageUploader
 {
+    private const BITMAP_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
+    private const SVG_EXTENSION = 'svg';
+
     public function __construct(
         private string $projectDir,
     ) {
     }
 
     /**
-     * Upload une image et la convertit au format WebP.
+     * Upload une image.
      *
      * Les étapes sont les suivantes :
      * - création du dossier cible si nécessaire ;
      * - suppression éventuelle de l'ancienne image ;
-     * - upload du fichier temporaire ;
-     * - redimensionnement ;
-     * - conversion en WebP ;
-     * - suppression du fichier temporaire.
+     * - conservation des SVG validés ;
+     * - conversion des images bitmap en WebP.
      *
      * @param UploadedFile $file Image à traiter
      * @param string $directory Dossier cible dans public/images
@@ -68,13 +69,26 @@ class ImageUploader
             $this->delete($oldFileName, $directory);
         }
 
+        $extension = strtolower(
+            $file->guessExtension()
+            ?: $file->getClientOriginalExtension()
+        );
+
+        if ($extension === self::SVG_EXTENSION) {
+            return $this->uploadSvg($file, $uploadDirectory);
+        }
+
+        if (!in_array($extension, self::BITMAP_EXTENSIONS, true)) {
+            throw new \InvalidArgumentException('Format image non autorisé.');
+        }
+
         /**
          * Nom temporaire utilisé pour enregistrer
          * le fichier uploadé avant conversion.
          */
         $tempFileName = uniqid('', true)
             . '.'
-            . $file->guessExtension();
+            . $extension;
 
         $file->move(
             $uploadDirectory,
@@ -115,6 +129,36 @@ class ImageUploader
 
         // Suppression du fichier temporaire après conversion.
         unlink($uploadDirectory . '/' . $tempFileName);
+
+        return $newFileName;
+    }
+
+    /**
+     * Enregistre un SVG sans conversion WebP.
+     *
+     * Les SVG sont volontairement contrôlés avant déplacement afin d'éviter
+     * les scripts ou gestionnaires d'événements injectés dans le fichier.
+     */
+    private function uploadSvg(
+        UploadedFile $file,
+        string $uploadDirectory
+    ): string {
+        $content = file_get_contents($file->getPathname());
+
+        if (
+            $content === false
+            || !preg_match('/<svg[\s>]/i', $content)
+            || preg_match('/<script\b|on[a-z]+\s*=|javascript:/i', $content)
+        ) {
+            throw new \InvalidArgumentException('SVG non valide ou potentiellement dangereux.');
+        }
+
+        $newFileName = uniqid('', true) . '.svg';
+
+        $file->move(
+            $uploadDirectory,
+            $newFileName
+        );
 
         return $newFileName;
     }

@@ -39,7 +39,10 @@ class ArticleType extends AbstractType
                 'label' => 'Image de l’article',
                 'mapped' => false,
                 'required' => false,
-                'help' => 'Format conseillé : image carrée, JPG, PNG ou WebP.',
+                'help' => 'Format conseillé : image carrée, JPG, PNG, WebP ou SVG.',
+                'attr' => [
+                    'accept' => '.jpg,.jpeg,.png,.webp,.svg,image/svg+xml',
+                ],
             ]);
     }
 

@@ -338,9 +338,21 @@ final class ShopController extends AbstractController
             $preOrderItem->setUnitPrice((string)$unitPrice);
             $preOrderItem->setTotalPrice((string)$totalPrice);
             if ($article->isRequiresDiameter()) {
-                $preOrderItem->setDiameter(
-                    BirdhouseDiameter::from((int)$item['diameter'])
-                );
+                if (empty($item['diameter'])) {
+                    $this->addFlash('error', 'Un diamètre est manquant dans votre panier.');
+
+                    return $this->redirectToRoute('cart_index');
+                }
+
+                try {
+                    $preOrderItem->setDiameter(
+                        BirdhouseDiameter::from((int) $item['diameter'])
+                    );
+                } catch (\ValueError) {
+                    $this->addFlash('error', 'Un diamètre invalide est présent dans votre panier.');
+
+                    return $this->redirectToRoute('cart_index');
+                }
             } else {
                 $preOrderItem->setDiameter(null);
             }
@@ -360,8 +372,15 @@ final class ShopController extends AbstractController
 
         // Les emails sont envoyés après le flush afin d'avoir un numéro
         // de précommande fiable dans les templates et les liens.
-        $mailerService->sendPreOrderConfirmation($preOrder);
-        $mailerService->sendPreOrderNotificationToAssociation($preOrder);
+        try {
+            $mailerService->sendPreOrderConfirmation($preOrder);
+            $mailerService->sendPreOrderNotificationToAssociation($preOrder);
+        } catch (\Throwable $e) {
+            $this->addFlash(
+                'warning',
+                'Votre précommande a été enregistrée, mais l’email de confirmation n’a pas pu être envoyé.'
+            );
+        }
         $session->remove('cart');
 
         $this->addFlash('success', 'Votre précommande a bien été envoyée.');
@@ -497,7 +516,7 @@ final class ShopController extends AbstractController
 
         $this->addFlash(
             'success',
-            'Paiement en cours de validation. Votre facture sera envoyé par email.'
+            'Paiement en cours de validation. Votre facture sera envoyée par email.'
         );
 
         return $this->redirectToRoute('main_home');

@@ -16,41 +16,90 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+/**
+ * Authenticator personnalisé pour la connexion des utilisateurs.
+ *
+ * Il gère :
+ * - la récupération de l'email et du mot de passe ;
+ * - la vérification du token CSRF ;
+ * - l'option "Se souvenir de moi" ;
+ * - la redirection après connexion.
+ */
 class UserAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator
+    ) {
     }
 
+    /**
+     * Crée le Passport utilisé par Symfony pour authentifier l'utilisateur.
+     */
     public function authenticate(Request $request): Passport
     {
+        // Récupération de l'email envoyé par le formulaire de connexion.
         $email = $request->getPayload()->getString('email');
 
-        $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
+        // Stocke le dernier email saisi pour le réafficher en cas d'erreur.
+        $request->getSession()->set(
+            SecurityRequestAttributes::LAST_USERNAME,
+            $email
+        );
 
         return new Passport(
+        // Identifiant de l'utilisateur.
             new UserBadge($email),
-            new PasswordCredentials($request->getPayload()->getString('password')),
+
+            // Mot de passe saisi dans le formulaire.
+            new PasswordCredentials(
+                $request->getPayload()->getString('password')
+            ),
+
             [
-                new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
+                // Protection CSRF du formulaire de connexion.
+                new CsrfTokenBadge(
+                    'authenticate',
+                    $request->getPayload()->getString('_csrf_token')
+                ),
+
+                // Active la fonctionnalité "Se souvenir de moi" si configurée.
                 new RememberMeBadge(),
             ]
         );
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-    {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+    /**
+     * Redirige l'utilisateur après une connexion réussie.
+     */
+    public function onAuthenticationSuccess(
+        Request $request,
+        TokenInterface $token,
+        string $firewallName
+    ): ?Response {
+        /**
+         * Si l'utilisateur voulait accéder à une page protégée
+         * avant connexion, il est redirigé vers cette page.
+         */
+        if ($targetPath = $this->getTargetPath(
+            $request->getSession(),
+            $firewallName
+        )) {
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('main_home'));
+        // Redirection par défaut après connexion.
+        return new RedirectResponse(
+            $this->urlGenerator->generate('main_home')
+        );
     }
 
+    /**
+     * Retourne l'URL de la page de connexion.
+     */
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);

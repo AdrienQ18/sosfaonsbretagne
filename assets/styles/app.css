@@ -1,51 +1,37 @@
-@font-face {
-    font-family: 'Montserrat';
-    src: url('../fonts/montserrat/Montserrat-VariableFont_wght.ttf')
-    format('truetype');
+@import url('./base/variables.css');
+@import url('./base/reset.css');
+@import url('./base/global.css');
+@import url('./base/buttons.css');
 
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
-}
-:root {
-    --green-dark: #1b4a3a;
-    --green-main: #6e8e64;
-    --green-soft: #88a37f;
-    --red-dark: #7c2525;
-    --red-main: #d54444;
-    --red-soft: #f17b7b;
-    --brown: #8f4d26;
-    --cream-light: #f6f1e8;
-    --input-bg: #f4efe8;
-    --white: #ffffff;
-    --text: #2b2b2b;
-    --error: #c0392b;
-    --shadow: 0 14px 28px rgba(0, 0, 0, 0.16),
-    0 10px 10px rgba(0, 0, 0, 0.08);
-}
+@import url('./layout/nav.css');
+@import url('./layout/footer.css');
+@import url('./layout/flash.css');
 
-* {
-    box-sizing: border-box;
-}
+@import url('./pages/home.css');
+@import url('./pages/about.css');
+@import url('./pages/contact.css');
+@import url('./pages/donation.css');
+@import url('./pages/shop.css');
+@import url('./pages/cart.css');
+@import url('./pages/auth.css');
+@import url('./pages/reset-password.css');
+@import url('./pages/profile.css');
+@import url('./pages/gallery.css');
+@import url('./pages/legal.css');
+@import url('./pages/presse.css');
+@import url('./pages/alert.css');
+@import url('./pages/carousel.css');
+@import url('./pages/easy-access.css');
+@import url('./pages/error.css');
+@import url('./pages/posts.css');
 
-body {
-    font-family: 'Montserrat', sans-serif;
-    background: var(--cream-light);
-    color: var(--text);
-}
-.container {
-    /*max-width: 1200px;*/
-    margin: auto;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    min-height: 95vh;
-}
-img{
-    width: 120px;
-    height: auto;
-}
-.strong-text {
-    color: var(--green-dark);
-    font-weight: 800;
-}
+@import url('./admin/admin.css');
+@import url('./admin/admin-dashboard.css');
+@import url('./admin/admin-user.css');
+@import url('./admin/admin-role.css');
+@import url('./admin/admin-availability.css');
+@import url('./admin/admin-preorder.css');
+@import url('./admin/admin-donation.css');
+@import url('./admin/admin-alert.css');
+@import url('./admin/admin-article.css');
+@import url('./admin/admin-gallery.css');

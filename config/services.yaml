@@ -19,25 +19,13 @@ services:
     App\:
         resource: '../src/'
 
-    App\Service\ServiceDonation\DonationPdfService:
+    App\Service\Donation\DonationPdfService:
         arguments:
             $projectDir: '%kernel.project_dir%'
 
-    App\Service\ServiceShop\PreOrderPdfService:
+    App\Service\Shop\PreOrderPdfService:
         arguments:
             $projectDir: '%kernel.project_dir%'
-
-    App\Service\ServiceHelloAsso\HelloAssoService:
-        arguments:
-            $logger: '@monolog.logger.helloasso'
-
-    App\Service\ServiceHelloAsso\HelloAssoWebhookService:
-        arguments:
-            $logger: '@monolog.logger.helloasso'
-
-    App\Controller\HelloAssoWebhookController:
-        arguments:
-            $logger: '@monolog.logger.helloasso'
 
     App\Service\Utils\ImageUploader:
         arguments:

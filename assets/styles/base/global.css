@@ -1,0 +1,431 @@
+/* ==========================================================================
+   components.css
+   Briques partagees entre les pages publiques et admin.
+   ========================================================================== */
+
+/* Mise en page generique : page, conteneur et en-tete. */
+.ui-page {
+    min-height: 80vh;
+    padding: 40px 20px 60px;
+    background: var(--cream-light);
+}
+
+.ui-page--radial {
+    background:
+        radial-gradient(circle at top, var(--green-tint), transparent 35%),
+        var(--cream-light);
+}
+
+.ui-page--compact {
+    padding: 34px 20px 60px;
+}
+
+.ui-page--large {
+    padding: 45px 20px 70px;
+}
+
+.ui-container {
+    width: min(1250px, 100%);
+    margin: 0 auto;
+}
+
+.ui-container--980 {
+    max-width: 980px;
+}
+
+.ui-container--1000 {
+    max-width: 1000px;
+}
+
+.ui-container--900 {
+    max-width: 900px;
+}
+
+.ui-container--1040 {
+    max-width: 1040px;
+}
+
+.ui-container--1080 {
+    max-width: 1080px;
+}
+
+.ui-container--1150 {
+    max-width: 1150px;
+}
+
+.ui-container--1160 {
+    max-width: 1160px;
+}
+
+.ui-container--1180 {
+    max-width: 1180px;
+}
+
+.ui-container--mobile-620 {
+}
+
+.ui-header {
+    margin-bottom: 30px;
+}
+
+.ui-header--center {
+    max-width: 760px;
+    margin: 0 auto 34px;
+    text-align: center;
+}
+
+.ui-header--compact {
+    max-width: 720px;
+    margin: 0 auto 28px;
+    text-align: center;
+}
+
+.ui-header--720 {
+    max-width: 720px;
+}
+
+.ui-header--780 {
+    max-width: 780px;
+}
+
+.ui-header h1 {
+    margin-bottom: 14px;
+    color: var(--green-dark);
+    font-size: 2.4rem;
+    font-weight: 800;
+}
+
+.ui-header p {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.ui-header--compact h1 {
+    margin-bottom: 8px;
+    font-size: 2.35rem;
+    line-height: 1.1;
+}
+
+.ui-header--compact p {
+    margin: 0 auto 8px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.ui-header--loose p {
+    line-height: 1.8;
+}
+
+/* Surface commune pour les cartes blanches avec ombre. */
+.ui-card {
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+/* Grilles et etats vides frequents. */
+.ui-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+}
+
+.ui-form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.ui-form-row--wide {
+    gap: 18px;
+}
+
+.ui-form-row--relaxed {
+    gap: 16px;
+}
+
+.ui-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.ui-field label {
+    margin-bottom: 7px;
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.ui-field :is(input, select, textarea) {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ui-field :is(input, select, textarea):focus {
+    border-color: var(--green-main);
+    background: var(--white);
+    box-shadow: var(--focus-ring);
+}
+
+.ui-field textarea {
+    resize: vertical;
+}
+
+.ui-field ul {
+    margin-top: 8px;
+    padding-left: 18px;
+    color: var(--error);
+    font-size: 13px;
+}
+
+.ui-field--compact label {
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+.ui-field--compact :is(input, select, textarea) {
+    padding: 12px 14px;
+}
+
+.ui-field--don {
+    margin-bottom: 13px;
+}
+
+.ui-field--don label {
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.ui-field--don :is(input, select, textarea) {
+    min-height: 46px;
+    padding: 12px 15px;
+    border-radius: 13px;
+}
+
+.ui-field--rounded :is(input, select, textarea) {
+    border-radius: 14px;
+}
+
+.ui-field--auth {
+    margin-bottom: 16px;
+}
+
+.ui-field--auth label {
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.ui-field--auth :is(input, select, textarea) {
+    margin-bottom: 8px;
+    padding: 14px 18px;
+}
+
+.ui-field--reset {
+    margin-bottom: 18px;
+}
+
+.ui-field--reset label {
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.ui-field--reset :is(input, select, textarea) {
+    padding: 14px 18px;
+}
+
+.ui-field--admin-form label {
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.ui-field--admin-form :is(input, select, textarea) {
+    padding: 14px 16px;
+}
+
+.ui-field--profile label {
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.ui-field--profile :is(input, select, textarea) {
+    padding: 13px 16px;
+}
+
+.ui-empty-state {
+    padding: 32px;
+    text-align: center;
+}
+
+/* En-tetes admin et pagination partagee. */
+.ui-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.ui-admin-header h1 {
+    color: var(--green-dark);
+    font-size: 2.2rem;
+    font-weight: 800;
+}
+
+.ui-admin-header p {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.ui-pagination {
+    margin-top: 28px;
+}
+
+.ui-pagination .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ui-pagination .pagination span,
+.ui-pagination .pagination a,
+.ui-pagination .pagination .current {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 14px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.ui-pagination .pagination a:hover {
+    transform: translateY(-2px);
+    background: var(--green-main);
+    color: var(--white);
+}
+
+.ui-pagination .pagination .current {
+    background: var(--gradient-green);
+    color: var(--white);
+    box-shadow: var(--green-active-shadow);
+}
+
+.ui-pagination :is(.first, .previous, .next, .last) a {
+    min-width: auto;
+    padding: 0 18px;
+}
+
+.ui-file-group input[type='file'] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 14px;
+    background: var(--input-bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.ui-file-group input[type='file']::file-selector-button {
+    margin-right: 14px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+    color: var(--white);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.ui-file-group input[type='file']::file-selector-button:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, var(--green-main), var(--green-soft));
+}
+
+.ui-file-group .help-text,
+.ui-file-group small,
+.ui-file-group p {
+    margin-top: 8px;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Focus des champs restes hors ui-field. */
+:where(
+    .don-free-amount,
+    .boutique-quantity,
+    .panier-quantity
+) :is(input, select, textarea):focus,
+.login-signin-container input:focus {
+    border-color: var(--green-main);
+    background: var(--white);
+    box-shadow: var(--focus-ring);
+}
+
+/* Messages d'erreurs Symfony globaux. */
+.don-errors ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    color: var(--error);
+    font-size: 13px;
+}
+
+@media (max-width: 720px) {
+    .ui-page {
+        padding: 28px 14px 45px;
+    }
+
+    .ui-header h1 {
+        font-size: 2rem;
+    }
+
+    .ui-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .ui-form-row--wide {
+        gap: 14px;
+    }
+
+    .ui-file-group input[type='file']::file-selector-button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 900px) {
+    .ui-container--mobile-620 {
+        max-width: 620px;
+    }
+}

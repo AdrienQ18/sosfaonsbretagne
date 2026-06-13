@@ -1,0 +1,117 @@
+/* =========================
+   ALERT / SIGNALEMENT FAUCHAGE
+========================= */
+
+/* LAYOUT */
+
+.alert-layout {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.alert-card {
+    padding: 30px;
+}
+
+/* INFO CARD */
+
+.alert-info-card h2,
+.alert-form-card h2 {
+    margin-bottom: 20px;
+    color: var(--green-dark);
+    font-size: 1.55rem;
+    font-weight: 800;
+}
+
+.alert-info-card h3 {
+    margin: 24px 0 12px;
+    color: var(--green-dark);
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.alert-info-card p {
+    margin-bottom: 18px;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.alert-info-card ul {
+    margin: 0 0 20px;
+    padding-left: 22px;
+    color: var(--text);
+}
+
+.alert-info-card li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.alert-warning {
+    margin: 22px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--green-main);
+    border-radius: 14px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+/* FORM */
+
+.alert-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.alert-form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+
+/* RGPD */
+
+.alert-rgpd {
+    margin-top: 4px;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.alert-rgpd a {
+    color: var(--green-dark);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.alert-rgpd a:hover {
+    color: var(--green-main);
+    text-decoration: underline;
+}
+
+/* BUTTON */
+
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 950px) {
+    .alert-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .alert-card {
+        padding: 24px;
+    }
+
+}
+
+

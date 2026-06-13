@@ -15,7 +15,7 @@
     <section class="admin-alert-show-page">
         <div class="admin-alert-show-container">
 
-            <header class="admin-alert-show-header">
+            <header class="admin-alert-show-header ui-admin-header">
                 <div>
                     <h1>Signalement #{{ alert.id }}</h1>
                     <p>Détail complet du signalement transmis.</p>
@@ -106,7 +106,7 @@
                                 name="_token"
                                 value="{{ csrf_token('admin_alert_update_' ~ alert.id) }}"
                             >
-                            <div class="admin-alert-show-form-group">
+                            <div class="admin-alert-show-form-group ui-field ui-field--compact">
                                 <label for="interventionDate">Date d'intervention</label>
                                 <input
                                     type="datetime-local"
@@ -117,7 +117,7 @@
                                 >
                             </div>
 
-                            <div class="admin-alert-show-form-group">
+                            <div class="admin-alert-show-form-group ui-field ui-field--compact">
                                 <label for="status">Statut</label>
                                 <select
                                     id="status"

@@ -16,25 +16,43 @@ use App\Enum\BirdhouseDiameter;
 use App\Enum\DonationStatus;
 use App\Enum\DonorType;
 use App\Enum\PreOrderStatus;
-use App\Service\ServiceDonation\DonationPdfService;
-use App\Service\ServiceShop\PreOrderPdfService;
+use App\Service\Donation\DonationPdfService;
+use App\Service\Shop\PreOrderPdfService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-
+/**
+ * Jeu de données de démonstration utilisé pour :
+ * - les tests de développement ;
+ * - les démonstrations ;
+ * - les recettes fonctionnelles.
+ *
+ * Les données générées permettent de simuler :
+ * - les utilisateurs ;
+ * - les rôles ;
+ * - les disponibilités ;
+ * - les dons ;
+ * - les précommandes ;
+ * - les signalements ;
+ * - les actualités.
+ */
 class AppFixtures extends Fixture
 {
 
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
         private DonationPdfService          $donationPdfService,
-        private PreOrderPdfService         $preOrderPdfService,
+        private PreOrderPdfService          $preOrderPdfService,
     )
     {
     }
 
+    /**
+     * Chargement des données dans un ordre précis
+     * afin de respecter les dépendances entre entités.
+     */
     public function load(ObjectManager $manager): void
     {
         $this->addAvailability($manager);
@@ -57,6 +75,12 @@ class AppFixtures extends Fixture
 
     }
 
+    /**
+     * Création des utilisateurs de démonstration.
+     *
+     * Certains comptes disposent du rôle administrateur
+     * afin de faciliter les tests de l'interface d'administration.
+     */
     public function addUsers(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
@@ -76,6 +100,7 @@ class AppFixtures extends Fixture
             $user->setLastname($userData['lastname']);
             $user->setEmail($userData['email']);
             $user->setRoles($userData['roles']);
+            // Mot de passe commun utilisé uniquement pour les données de test.
             $user->setPassword($this->passwordHasher->hashPassword($user, '123456'));
             $user->setPhone($faker->phoneNumber);
             $user->setAddress($faker->address);
@@ -87,6 +112,7 @@ class AppFixtures extends Fixture
             $user->setActif(true);
             $user->setIsVerified(true);
 
+            // Attribution aléatoire de disponibilités à chaque utilisateur.
             $randomAvailabilities = $faker->randomElements(
                 $availabilities,
                 $faker->numberBetween(1, count($availabilities))
@@ -144,6 +170,13 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Génération de dons fictifs.
+     *
+     * Les dons peuvent être réalisés :
+     * - par des particuliers ;
+     * - par des entreprises.
+     */
     public function addDonations(ObjectManager $manager): void
     {
         $users = $manager->getRepository(User::class)->findAll();
@@ -153,6 +186,7 @@ class AppFixtures extends Fixture
             for ($i = 0; $i < rand(1, 10); $i++) {
                 $donation = new Donation();
 
+                // Environ 35 % des dons sont réalisés par des entreprises.
                 $isCompanyDonation = $faker->boolean(35);
 
                 $donation->setUser($user);
@@ -186,6 +220,7 @@ class AppFixtures extends Fixture
                 $manager->persist($donation);
                 $manager->flush();
 
+                // Génération automatique du reçu fiscal associé au don.
                 $this->donationPdfService->generateFiscalReceipt($donation);
 
                 $manager->flush();
@@ -193,6 +228,15 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Génération de précommandes fictives.
+     *
+     * Chaque précommande contient :
+     * - un ou plusieurs articles ;
+     * - une quantité ;
+     * - un diamètre de nichoir ;
+     * - un statut métier.
+     */
     public function addPreOrders(ObjectManager $manager): void
     {
         $users = $manager->getRepository(User::class)->findAll();
@@ -207,6 +251,7 @@ class AppFixtures extends Fixture
                 $preOrder = new PreOrder();
                 $status = $faker->randomElement($statuses);
                 $preOrder->setUser($user);
+                // Attribution d'un statut aléatoire à la précommande.
                 $preOrder->setStatus($status);
                 $preOrder->setPreOrderDate(\DateTimeImmutable::createFromMutable($faker->dateTime()));
                 $totalAmount = 0;
@@ -228,7 +273,7 @@ class AppFixtures extends Fixture
                 }
 
                 $preOrder->setTotalAmount((string)$totalAmount);
-
+                // Une précommande validée est considérée comme traitée par l'association.
                 if (
                     $status === PreOrderStatus::VALIDEE
                     || $status === PreOrderStatus::EN_ATTENTE_PAIEMENT
@@ -236,10 +281,10 @@ class AppFixtures extends Fixture
                 ) {
                     $preOrder->setValidatedAt(new \DateTimeImmutable());
                 }
-
+                // Les précommandes payées disposent également d'une facture PDF.
                 if ($status === PreOrderStatus::PAYEE) {
                     $preOrder->setPaidAt(new \DateTimeImmutable());
-                    $preOrder->setHelloassoOrderId((string) $faker->numberBetween(100000, 999999));
+                    $preOrder->setHelloassoOrderId((string)$faker->numberBetween(100000, 999999));
 
                     $manager->persist($preOrder);
                     $manager->flush();
@@ -255,12 +300,18 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Génération de signalements fictifs.
+     *
+     * Les signalements permettent de simuler les demandes
+     * d'intervention effectuées par les utilisateurs.
+     */
     public function addAlert(ObjectManager $manager): void
     {
         $users = $manager->getRepository(User::class)->findAll();
         $statues = AlertStatus::cases();
         $faker = Factory::create('fr_FR');
-
+        // Types d'animaux pouvant faire l'objet d'un signalement.
         $typeData = ['Faons', 'Oiseau'];
 
         $cultureTypeData = ['Blé', 'Colza', 'Herbe', 'Maïs', 'Orge', 'Sorgho'];
@@ -286,6 +337,9 @@ class AppFixtures extends Fixture
         }
     }
 
+    /**
+     * Génération des actualités de démonstration.
+     */
     public function addEvents(ObjectManager $manager): void
     {
         $users = $manager->getRepository(User::class)->findAll();
@@ -301,6 +355,7 @@ class AppFixtures extends Fixture
                 $event->setNbParticipant($faker->numberBetween(1, 50));
                 $event->setEventDate($faker->dateTime());
                 $event->setUser($user);
+                // Les actualités générées sont directement publiées.
                 $event->setIsPublished(true);
                 $manager->persist($event);
             }

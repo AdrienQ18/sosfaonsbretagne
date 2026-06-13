@@ -1,7 +1,9 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const route = document.body.dataset.route;
+import {isRoute, onReady} from './dom.js';
+import {initSelectAllCheckboxGroup} from './checkboxGroup.js';
+import {initPasswordToggle} from './passwordToggle.js';
 
-    if (route === 'app_login') {
+onReady(() => {
+    if (isRoute('app_login')) {
         initLoginRegisterPage();
     }
 
@@ -52,100 +54,15 @@ function initVolunteerRoles() {
 }
 
 function initAvailabilityAllCheckbox() {
-    const availabilityCheckboxes = document.querySelectorAll(
-        '#registration_form_availabilitys input[type="checkbox"]'
-    );
-
-    if (!availabilityCheckboxes.length) {
-        return;
-    }
-
-    const allCheckbox = Array.from(availabilityCheckboxes).find((checkbox) => {
-        const label = document.querySelector(`label[for="${checkbox.id}"]`);
-
-        return label?.textContent.trim().toLowerCase() === 'toutes';
-    });
-
-    if (!allCheckbox) {
-        return;
-    }
-
-    allCheckbox.addEventListener('change', () => {
-        availabilityCheckboxes.forEach((checkbox) => {
-            if (checkbox !== allCheckbox) {
-                checkbox.checked = allCheckbox.checked;
-            }
-        });
-    });
-
-    availabilityCheckboxes.forEach((checkbox) => {
-        if (checkbox === allCheckbox) {
-            return;
-        }
-
-        checkbox.addEventListener('change', () => {
-            const otherCheckboxes = Array.from(availabilityCheckboxes)
-                .filter((cb) => cb !== allCheckbox);
-
-            allCheckbox.checked = otherCheckboxes.every((cb) => cb.checked);
-        });
-    });
+    initSelectAllCheckboxGroup('#registration_form_availabilitys input[type="checkbox"]');
 }
 
 function initLoginPasswordToggle() {
-    const togglePasswordButtons = document.querySelectorAll('.login-toggle-password');
-
-    if (!togglePasswordButtons.length) {
-        return;
-    }
-
-    togglePasswordButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            togglePassword(button);
-        });
-    });
+    initPasswordToggle('.login-toggle-password');
 }
 
 function initResetPasswordToggle() {
-    const togglePasswordButtons = document.querySelectorAll('.reset-toggle-password');
-
-    if (!togglePasswordButtons.length) {
-        return;
-    }
-
-    togglePasswordButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            togglePassword(button);
-        });
-    });
-}
-
-function togglePassword(button) {
-    const targetId = button.dataset.target;
-    const eyeOpen = button.dataset.eyeOpen;
-    const eyeClose = button.dataset.eyeClose;
-
-    const input = document.getElementById(targetId);
-    const image = button.querySelector('img');
-
-    if (!input || !image || !eyeOpen || !eyeClose) {
-        return;
-    }
-
-    const isHidden = input.type === 'password';
-
-    input.type = isHidden ? 'text' : 'password';
-    image.src = isHidden ? eyeClose : eyeOpen;
-
-    button.setAttribute(
-        'aria-label',
-        isHidden ? 'Masquer le mot de passe' : 'Afficher le mot de passe'
-    );
-
-    button.setAttribute(
-        'aria-pressed',
-        isHidden ? 'true' : 'false'
-    );
+    initPasswordToggle('.reset-toggle-password');
 }
 
 function initRegisterPasswordStrength() {

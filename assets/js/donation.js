@@ -1,11 +1,12 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const route = document.body.dataset.route;
+import {isRoute, onReady} from './dom.js';
+import {initAutoSubmitFilterForm} from './filterForm.js';
 
-    if (route === 'donation') {
+onReady(() => {
+    if (isRoute('donation')) {
         initDonationPage();
     }
 
-    if (route === 'admin_donation') {
+    if (isRoute('admin_donation')) {
         initAdminDonationPage();
     }
 });
@@ -129,41 +130,9 @@ function initDonationPage() {
 }
 
 function initAdminDonationPage() {
-    const filterForm = document.querySelector('#donation-filter-form');
-
-    if (!filterForm) {
-        return;
-    }
-
-    const resetButton = document.querySelector('#reset-filters');
-
-    if (resetButton) {
-        resetButton.addEventListener('click', () => {
-            window.location.href = filterForm.dataset.resetUrl || '/admin/donation';
-        });
-    }
-
-    filterForm.querySelectorAll('select').forEach((field) => {
-        field.addEventListener('change', () => {
-            filterForm.submit();
-        });
-    });
-
-    filterForm.querySelectorAll('input[type="date"]').forEach((field) => {
-        field.addEventListener('change', () => {
-            filterForm.submit();
-        });
-    });
-
-    let timeout;
-
-    filterForm.querySelectorAll('input[type="text"], input[type="search"], input[type="email"]').forEach((field) => {
-        field.addEventListener('input', () => {
-            clearTimeout(timeout);
-
-            timeout = setTimeout(() => {
-                filterForm.submit();
-            }, 600);
-        });
+    initAutoSubmitFilterForm({
+        formSelector: '#donation-filter-form',
+        resetSelector: '#reset-filters',
+        fallbackResetUrl: '/admin/donation',
     });
 }

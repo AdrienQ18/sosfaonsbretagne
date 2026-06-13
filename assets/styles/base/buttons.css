@@ -1,0 +1,90 @@
+/* Base des boutons : les tailles restent dans les CSS de page. */
+.ui-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.ui-button:hover,
+.ui-button:focus-visible {
+    transform: translateY(-1px);
+}
+
+.ui-button--primary {
+    background: var(--gradient-green);
+    color: var(--white);
+}
+
+.ui-button--primary:hover,
+.ui-button--primary:focus-visible {
+    background: var(--gradient-green-hover);
+    box-shadow: var(--green-hover-shadow);
+}
+
+.ui-button--secondary {
+    background: var(--input-bg);
+    color: var(--green-dark);
+}
+
+.ui-button--secondary:hover,
+.ui-button--secondary:focus-visible {
+    background: var(--green-soft);
+    color: var(--white);
+}
+
+.ui-button--danger {
+    background: var(--red-dark);
+    color: var(--white);
+}
+
+.ui-button--danger:hover,
+.ui-button--danger:focus-visible {
+    background: var(--red-main);
+}
+
+/* Modificateurs de taille/comportement pour eviter les classes de page. */
+.ui-button--full {
+    width: 100%;
+}
+
+.ui-button--wide {
+    min-width: 180px;
+}
+
+.ui-button--caps {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.ui-button--caps-large {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.ui-button--padded {
+    padding: 14px 22px;
+}
+
+.ui-button--padded-large {
+    padding: 15px 20px;
+}
+
+.ui-button--static-hover:hover,
+.ui-button--static-hover:focus-visible {
+    box-shadow: none;
+    transform: none;
+}

@@ -1,0 +1,443 @@
+/* =========================
+   ADMIN ARTICLE LIST
+========================= */
+
+.admin-article-container {
+    width: 100%;
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.admin-article-add-button {
+    min-width: 190px;
+    padding: 14px 22px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.admin-article-add-button:hover {
+    transform: translateY(-2px);
+}
+
+.admin-article-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.admin-article-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.admin-article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+}
+
+.admin-article-image-wrapper {
+    height: 220px;
+    overflow: hidden;
+    background: var(--input-bg);
+}
+
+.admin-article-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.admin-article-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 24px;
+}
+
+.admin-article-content h2 {
+    margin-bottom: 10px;
+    color: var(--green-dark);
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.admin-article-price {
+    margin-bottom: 12px;
+    color: var(--green-main);
+    font-size: 1.4rem;
+    font-weight: 900;
+}
+
+.admin-article-description {
+    flex: 1;
+    margin-bottom: 20px;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.admin-article-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.admin-article-actions form {
+    flex: 1;
+}
+
+.admin-article-edit-button,
+.admin-article-delete-button {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.admin-article-edit-button {
+    flex: 1;
+    background: var(--input-bg);
+    color: var(--green-dark);
+}
+
+.admin-article-delete-button {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+}
+
+.admin-article-edit-button:hover,
+.admin-article-delete-button:hover {
+    transform: translateY(-2px);
+}
+
+.admin-article-edit-button:hover {
+    background: var(--surface-hover);
+}
+
+.admin-article-delete-button:hover {
+    background: var(--danger-hover-bg);
+}
+
+.admin-article-empty {
+    grid-column: 1 / -1;
+    padding: 30px;
+    border-radius: 20px;
+    color: var(--text);
+    text-align: center;
+    font-weight: 700;
+}
+
+/* =========================
+   ADMIN ARTICLE FORM
+========================= */
+
+.admin-article-form-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.admin-article-form-card {
+    padding: 32px;
+}
+
+.admin-article-form-header {
+    margin-bottom: 30px;
+}
+
+.admin-article-form-header h1 {
+    margin-bottom: 10px;
+    color: var(--green-dark);
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.admin-article-form-header p {
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.admin-article-form-group textarea {
+    min-height: 180px;
+    resize: vertical;
+}
+
+
+/* FILE INPUT */
+
+.admin-article-form-file-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px dashed rgba(27, 74, 58, 0.25);
+    border-radius: 14px;
+    background: var(--input-bg);
+    cursor: pointer;
+}
+
+.admin-article-form-file-input:hover {
+    border-color: var(--green-main);
+    background: var(--white);
+}
+
+.admin-article-form-file-input::file-selector-button {
+    margin-right: 14px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 999px;
+    background: var(--gradient-green);
+    color: var(--white);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.admin-article-form-file-help {
+    display: block;
+    margin-top: 8px;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* CHECKBOX */
+
+.admin-article-form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 8px 0 25px;
+}
+
+.admin-article-form-checkbox label {
+    margin: 0;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.admin-article-form-checkbox input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px !important;
+    height: 24px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0;
+    border: 2px solid var(--green-dark);
+    border-radius: 6px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.admin-article-form-checkbox input[type='checkbox']::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 12px;
+    top: 50%;
+    left: 50%;
+    border: solid var(--green-main);
+    border-width: 0 3px 3px 0;
+    transform: translate(-50%, -60%) rotate(45deg) scale(0);
+    transform-origin: center;
+    transition: 0.2s ease;
+}
+
+.admin-article-form-checkbox input[type='checkbox']:checked {
+    border-color: var(--green-main);
+}
+
+.admin-article-form-checkbox input[type='checkbox']:checked::before {
+    transform: translate(-50%, -60%) rotate(45deg) scale(1);
+}
+
+/* FORM ACTIONS */
+
+.admin-article-form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.admin-article-form-back-button,
+.admin-article-form-submit-button {
+    min-width: 180px;
+    padding: 14px 22px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.admin-article-form-back-button:hover,
+.admin-article-form-submit-button:hover {
+    transform: translateY(-2px);
+}
+
+.admin-article-form-back-button:hover {
+    background: var(--input-bg);
+    color: var(--green-dark);
+}
+/* MODAL FULLSCREEN */
+
+.boutique-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.92);
+}
+
+.boutique-modal.is-open {
+    display: flex;
+}
+
+.boutique-modal-content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.boutique-modal-content h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.boutique-modal-image {
+    width: auto;
+    height: auto;
+    max-width: 80vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 14px;
+}
+
+.boutique-modal-close {
+    position: fixed;
+    top: 22px;
+    right: 22px;
+    z-index: 100000;
+    width: 52px;
+    height: 52px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--white);
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.boutique-modal-close:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.28);
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 950px) {
+    .boutique-grid,
+    .admin-article-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-article-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .admin-article-form-card {
+        padding: 24px;
+    }
+
+    .admin-article-form-actions {
+        flex-direction: column;
+    }
+
+    .admin-article-form-back-button,
+    .admin-article-form-submit-button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .admin-article-page {
+        padding: 28px 14px 45px;
+    }
+
+    .admin-article-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .boutique-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .boutique-content {
+        padding: 20px;
+    }
+
+    .boutique-image-wrapper {
+        height: 230px;
+    }
+
+    .boutique-description {
+        min-height: auto;
+    }
+
+    .image-viewer {
+        padding: 14px;
+    }
+
+    .image-viewer-img {
+        max-width: 90vw;
+        max-height: 80vh;
+    }
+
+    .image-viewer-close {
+        top: 14px;
+        right: 20px;
+        font-size: 2.8rem;
+    }
+
+    .admin-article-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .admin-article-add-button {
+        width: 100%;
+    }
+
+    .admin-article-actions {
+        flex-direction: column;
+    }
+}

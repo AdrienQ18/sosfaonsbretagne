@@ -16,10 +16,10 @@
 
 {% block body %}
 
-    <section class="panier-page">
-        <div class="panier-container">
+    <section class="ui-page ui-page--radial">
+        <div class="ui-container ui-container--1150">
 
-            <header class="panier-header">
+            <header class="ui-header ui-header--center ui-header--720">
                 <h1>Mon panier</h1>
 
                 <p>
@@ -28,14 +28,14 @@
             </header>
 
             {% if cart is empty %}
-                <div class="panier-empty">
+                <div class="panier-empty ui-card">
                     <h2>Votre panier est vide</h2>
 
                     <p>
                         Aucun article n'a encore été ajouté à votre panier.
                     </p>
 
-                    <a href="{{ path('shop') }}" class="panier-back-shop-button">
+                    <a href="{{ path('shop') }}" class="ui-button ui-button--primary ui-button--padded ui-button--caps">
                         Retour à la boutique
                     </a>
                 </div>
@@ -46,7 +46,7 @@
                     <div class="panier-items">
 
                         {% for item in cart %}
-                            <article class="panier-item">
+                            <article class="panier-item ui-card">
 
                                 <div class="panier-item-image-wrapper">
                                     <img
@@ -165,7 +165,7 @@
 
                     </div>
 
-                    <aside class="panier-summary">
+                    <aside class="panier-summary ui-card">
 
                         <h2>Résumé</h2>
 
@@ -195,7 +195,7 @@
                                 name="_token"
                                 value="{{ csrf_token('pre_order_validate') }}"
                             >
-                            <button type="submit" class="panier-validate-button">
+                            <button type="submit" class="ui-button ui-button--primary ui-button--full ui-button--padded ui-button--caps">
                                 Valider la précommande
                             </button>
                         </form>

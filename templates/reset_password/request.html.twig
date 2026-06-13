@@ -18,7 +18,7 @@
 
     <section class="reset-page">
         <div class="reset-container">
-            <div class="reset-card">
+            <div class="reset-card ui-card">
 
                 <h1>Mot de passe oublié ?</h1>
 
@@ -40,7 +40,7 @@
                     }
                 }) }}
 
-                <div class="reset-form-group">
+                <div class="reset-form-group ui-field ui-field--reset">
                     {{ form_label(requestForm.email, 'Adresse email') }}
 
                     {{ form_widget(requestForm.email, {
@@ -53,7 +53,7 @@
                     {{ form_errors(requestForm.email) }}
                 </div>
 
-                <button type="submit" class="reset-submit-button">
+                <button type="submit" class="ui-button ui-button--primary ui-button--full ui-button--padded-large ui-button--caps-large ui-button--static-hover">
                     Envoyer le lien
                 </button>
 

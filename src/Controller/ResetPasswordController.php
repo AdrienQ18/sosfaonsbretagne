@@ -20,7 +20,16 @@ use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
-
+/**
+ * Contrôleur de réinitialisation du mot de passe.
+ *
+ * Il gère :
+ * - la demande de réinitialisation ;
+ * - l'envoi de l'email contenant le lien sécurisé ;
+ * - la vérification du token ;
+ * - la modification du mot de passe ;
+ * - l'envoi d'un email de confirmation après changement.
+ */
 #[Route('/reinitialiser-mot-de-passe')]
 class ResetPasswordController extends AbstractController
 {
@@ -32,9 +41,15 @@ class ResetPasswordController extends AbstractController
     ) {
     }
 
+    /**
+     * Affiche et traite le formulaire de demande de réinitialisation.
+     */
     #[Route('', name: 'app_forgot_password_request')]
-    public function request(Request $request, MailerInterface $mailer, TranslatorInterface $translator): Response
-    {
+    public function request(
+        Request $request,
+        MailerInterface $mailer,
+        TranslatorInterface $translator
+    ): Response {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         $form->handleRequest($request);
 
@@ -42,7 +57,10 @@ class ResetPasswordController extends AbstractController
             /** @var string $email */
             $email = $form->get('email')->getData();
 
-            return $this->processSendingPasswordResetEmail($email, $mailer, $translator
+            return $this->processSendingPasswordResetEmail(
+                $email,
+                $mailer,
+                $translator
             );
         }
 
@@ -51,18 +69,28 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
-
+    /**
+     * Affiche la page de confirmation après demande de réinitialisation.
+     *
+     * Cette page est affichée même si l'adresse email n'existe pas,
+     * afin d'éviter de révéler si un compte est inscrit ou non.
+     */
     #[Route('/verification-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {
+        // Si aucun token réel n'existe en session, on génère un faux token.
         if (null === ($resetToken = $this->getTokenObjectFromSession())) {
             $resetToken = $this->resetPasswordHelper->generateFakeResetToken();
         }
+
         return $this->render('reset_password/check_email.html.twig', [
             'resetToken' => $resetToken,
         ]);
     }
 
+    /**
+     * Vérifie le token de réinitialisation et permet de définir un nouveau mot de passe.
+     */
     #[Route('/reinitialiser/{token}', name: 'app_reset_password')]
     public function reset(
         Request $request,
@@ -71,12 +99,14 @@ class ResetPasswordController extends AbstractController
         MailerInterface $mailer,
         ?string $token = null
     ): Response {
+        // Si un token est présent dans l'URL, il est stocké en session.
         if ($token) {
             $this->storeTokenInSession($token);
 
             return $this->redirectToRoute('app_reset_password');
         }
 
+        // Récupération du token depuis la session.
         $token = $this->getTokenFromSession();
 
         if (null === $token) {
@@ -89,11 +119,22 @@ class ResetPasswordController extends AbstractController
             /** @var User $user */
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
-            $this->addFlash('reset_password_error', sprintf(
-                '%s - %s',
-                $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, [], 'ResetPasswordBundle'),
-                $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
-            ));
+            $this->addFlash(
+                'reset_password_error',
+                sprintf(
+                    '%s - %s',
+                    $translator->trans(
+                        ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE,
+                        [],
+                        'ResetPasswordBundle'
+                    ),
+                    $translator->trans(
+                        $e->getReason(),
+                        [],
+                        'ResetPasswordBundle'
+                    )
+                )
+            );
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
@@ -102,19 +143,23 @@ class ResetPasswordController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Suppression de la demande de réinitialisation pour empêcher la réutilisation du lien.
             $this->resetPasswordHelper->removeResetRequest($token);
 
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
+            // Hash du nouveau mot de passe avant enregistrement.
             $user->setPassword(
                 $passwordHasher->hashPassword($user, $plainPassword)
             );
 
             $this->entityManager->flush();
 
+            // Envoi d'un email informant l'utilisateur que son mot de passe a été modifié.
             $this->sendPasswordChangedEmail($mailer, $user);
 
+            // Nettoyage de la session après réinitialisation.
             $this->cleanSessionAfterReset();
 
             $this->addFlash(
@@ -130,53 +175,72 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
-    private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer, TranslatorInterface $translator): RedirectResponse
-    {
+    /**
+     * Génère un token de réinitialisation et envoie l'email associé.
+     *
+     * Si l'utilisateur n'existe pas, la redirection reste identique
+     * pour ne pas indiquer si l'adresse email est connue du site.
+     */
+    private function processSendingPasswordResetEmail(
+        string $emailFormData,
+        MailerInterface $mailer,
+        TranslatorInterface $translator
+    ): RedirectResponse {
         $user = $this->entityManager->getRepository(User::class)->findOneBy([
             'email' => $emailFormData,
         ]);
 
+        // Même comportement si l'email n'existe pas : protection contre l'énumération des comptes.
         if (!$user) {
             return $this->redirectToRoute('app_check_email');
         }
 
         try {
+            // Génération du token sécurisé de réinitialisation.
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
-
             return $this->redirectToRoute('app_check_email');
         }
 
+        // Email contenant le lien de réinitialisation.
         $email = (new TemplatedEmail())
-            ->from(new Address('contact@sosfaonsbretagne.fr', 'SOS Faons Bretagne'))
+            ->from(new Address(
+                'contact@sosfaonsbretagne.fr',
+                'SOS Faons Bretagne'
+            ))
             ->to((string) $user->getEmail())
             ->subject('Réinitialisation de votre mot de passe')
-            ->htmlTemplate('reset_password/email.html.twig')
+            ->htmlTemplate('reset_password/password_reset_email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
-            ])
-        ;
+            ]);
 
         $mailer->send($email);
 
+        // Stockage du token en session pour l'affichage de la page de confirmation.
         $this->setTokenObjectInSession($resetToken);
 
         return $this->redirectToRoute('app_check_email');
     }
 
+    /**
+     * Envoie un email de confirmation après modification du mot de passe.
+     */
     private function sendPasswordChangedEmail(
         MailerInterface $mailer,
         User $user
     ): void {
         $email = (new TemplatedEmail())
-            ->from('contact@sosfaonsbretagne.fr')
-            ->to($user->getEmail())
+            ->from(new Address(
+                'contact@sosfaonsbretagne.fr',
+                'SOS Faons Bretagne'
+            ))
+            ->to((string) $user->getEmail())
             ->subject('Votre mot de passe a été modifié')
-            ->htmlTemplate('emails/password_changed_notication.html.twig')
+            ->htmlTemplate('emails/password_changed_notification.html.twig')
             ->context([
                 'user' => $user,
             ]);
-
 
         $mailer->send($email);
     }

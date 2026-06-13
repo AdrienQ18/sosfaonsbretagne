@@ -18,6 +18,15 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+/**
+ * Contrôleur de sécurité.
+ *
+ * Il gère :
+ * - la connexion ;
+ * - l'inscription ;
+ * - la déconnexion ;
+ * - la vérification de l'adresse email.
+ */
 class SecurityController extends AbstractController
 {
     public function __construct(
@@ -25,15 +34,24 @@ class SecurityController extends AbstractController
     ) {
     }
 
+    /**
+     * Affiche la page de connexion.
+     *
+     * Si l'utilisateur est déjà connecté,
+     * il est redirigé vers la page d'accueil.
+     */
     #[Route(path: '/connexion', name: 'app_login')]
     public function login(
         AuthenticationUtils $authenticationUtils,
     ): Response {
+        // Redirection si l'utilisateur est déjà connecté.
         if ($this->getUser()) {
             return $this->redirectToRoute('main_home');
         }
 
         $user = new User();
+
+        // Création du formulaire d'inscription affiché sur la même page que la connexion.
         $formRegister = $this->createForm(RegistrationFormType::class, $user, [
             'action' => $this->generateUrl('app_register'),
         ]);
@@ -46,6 +64,15 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    /**
+     * Affiche et traite le formulaire d'inscription.
+     *
+     * Lors de la création du compte :
+     * - le mot de passe est hashé ;
+     * - le rôle Symfony ROLE_USER est ajouté ;
+     * - le rôle métier "Utilisateur" est associé ;
+     * - un email de confirmation est envoyé.
+     */
     #[Route('/inscription', name: 'app_register')]
     public function register(
         Request $request,
@@ -54,11 +81,13 @@ class SecurityController extends AbstractController
         RoleRepository $roleRepository,
         AuthenticationUtils $authenticationUtils,
     ): Response {
+        // Redirection si l'utilisateur est déjà connecté.
         if ($this->getUser()) {
             return $this->redirectToRoute('main_home');
         }
 
         $user = new User();
+
         $formRegister = $this->createForm(RegistrationFormType::class, $user, [
             'action' => $this->generateUrl('app_register'),
         ]);
@@ -66,8 +95,10 @@ class SecurityController extends AbstractController
         $formRegister->handleRequest($request);
 
         if ($formRegister->isSubmitted() && $formRegister->isValid()) {
+            /** @var User $user */
             $user = $formRegister->getData();
 
+            // Hash du mot de passe avant enregistrement en base de données.
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -75,11 +106,13 @@ class SecurityController extends AbstractController
                 )
             );
 
+            // Initialisation des informations par défaut du compte.
             $user->setRoles(['ROLE_USER']);
             $user->setActif(true);
             $user->setIsVerified(false);
             $user->setCreationDate(new \DateTime());
 
+            // Attribution du rôle métier "Utilisateur".
             $roleUser = $roleRepository->findOneBy([
                 'name' => 'Utilisateur',
             ]);
@@ -89,14 +122,18 @@ class SecurityController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            // Envoi de l'email de confirmation d'adresse email.
             $this->emailVerifier->sendEmailConfirmation(
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('contact@sosfaonsbretagne.fr', 'SOS Faons Bretagne'))
+                    ->from(new Address(
+                        'contact@sosfaonsbretagne.fr',
+                        'SOS Faons Bretagne'
+                    ))
                     ->to((string) $user->getEmail())
                     ->subject('Confirmez votre adresse email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('emails/registration/confirmation_email.html.twig')
             );
 
             $this->addFlash(
@@ -115,6 +152,12 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    /**
+     * Déconnecte l'utilisateur.
+     *
+     * Cette méthode est interceptée automatiquement
+     * par le système de sécurité Symfony.
+     */
     #[Route(path: '/deconnexion', name: 'app_logout')]
     public function logout(): void
     {
@@ -123,22 +166,32 @@ class SecurityController extends AbstractController
         );
     }
 
+    /**
+     * Vérifie l'adresse email d'un utilisateur après clic
+     * sur le lien reçu par email.
+     */
     #[Route('/verification/email', name: 'app_verify_email')]
     public function verifyUserEmail(
         Request $request,
         TranslatorInterface $translator,
     ): Response {
+        // L'utilisateur doit être connecté pour valider son adresse email.
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         try {
             /** @var User $user */
             $user = $this->getUser();
 
+            // Validation de la signature présente dans le lien d'email.
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash(
                 'verify_email_error',
-                $translator->trans($exception->getReason(), [], 'VerifyEmailBundle')
+                $translator->trans(
+                    $exception->getReason(),
+                    [],
+                    'VerifyEmailBundle'
+                )
             );
 
             return $this->redirectToRoute('app_login');

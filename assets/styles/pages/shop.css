@@ -1,0 +1,261 @@
+/* =========================
+   BOUTIQUE
+========================= */
+
+/* GRID */
+
+.boutique-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+/* CARD */
+
+.boutique-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.boutique-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* IMAGE */
+
+.boutique-image-wrapper {
+    height: 240px;
+    overflow: hidden;
+    background: var(--input-bg);
+}
+
+.boutique-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.boutique-image:hover {
+    transform: scale(1.05);
+}
+
+/* LIGHTBOX */
+
+.image-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.92);
+}
+
+.image-viewer.active {
+    display: flex;
+}
+
+.image-viewer-img {
+    width: auto;
+    height: auto;
+    max-width: 80vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 14px;
+}
+
+.image-viewer-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    border: none;
+    background: transparent;
+    color: var(--white);
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.image-viewer-close:hover {
+    transform: scale(1.1);
+}
+
+.image-item{
+    cursor: pointer;
+}
+
+/* CONTENT */
+
+.boutique-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 24px;
+}
+
+.boutique-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.boutique-card-header h2 {
+    color: var(--green-dark);
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.boutique-badge {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--success-bg);
+    color: var(--success-text);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.boutique-price {
+    margin-bottom: 12px;
+    color: var(--green-main);
+    font-size: 1.55rem;
+    font-weight: 900;
+}
+
+.boutique-description {
+    min-height: 88px;
+    margin-bottom: 18px;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* FORM */
+
+.boutique-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+}
+
+.boutique-options {
+    margin-bottom: 16px;
+}
+
+.boutique-options > span,
+.boutique-quantity span {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--green-dark);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.boutique-radio-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.boutique-radio-group label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 38px;
+    padding: 10px 12px;
+
+    border-radius: 999px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+
+    font-size: 13px;
+    font-weight: 800;
+
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.boutique-radio-group label:hover {
+    transform: translateY(-1px);
+    background: rgba(110, 142, 100, 0.18);
+}
+
+.boutique-radio-group input {
+    margin-right: 7px;
+}
+
+.boutique-quantity {
+    display: block;
+    margin-bottom: 18px;
+}
+
+.boutique-quantity input {
+    width: 100%;
+    height: 48px;
+    padding: 13px 16px;
+
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background: var(--input-bg);
+
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* BUTTON */
+
+
+.boutique-info-button {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--input-bg);
+    color: var(--green-dark);
+
+    font-size: 16px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.boutique-info-button:hover {
+    transform: translateY(-2px);
+    background: var(--green-main);
+    color: var(--white);
+}
+

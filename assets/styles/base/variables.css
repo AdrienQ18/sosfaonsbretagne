@@ -1,0 +1,79 @@
+/* ==========================================================================
+   tokens.css
+   ========================================================================== */
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../fonts/montserrat/Montserrat-VariableFont_wght.ttf')
+    format('truetype');
+
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+/* Couleurs, effets et espacements réutilisables dans tout le site. */
+:root {
+    /* Palette principale */
+    --green-dark: #1b4a3a;
+    --green-main: #6e8e64;
+    --green-soft: #88a37f;
+    --red-dark: #7c2525;
+    --red-main: #d54444;
+    --red-soft: #f17b7b;
+    --brown: #8f4d26;
+    --cream-light: #f6f1e8;
+    --input-bg: #f4efe8;
+    --white: #ffffff;
+    --text: #2b2b2b;
+    --error: #c0392b;
+
+    /* Fonds et couleurs de statuts */
+    --success-bg: #e7f8ed;
+    --success-text: #207245;
+    --warning-bg: #fff4d6;
+    --warning-text: #9b6a00;
+    --info-bg: #e8f1ff;
+    --info-text: #2457a6;
+    --danger-bg: #fde7e7;
+    --danger-hover-bg: #f9caca;
+    --danger-text: #b42318;
+
+    /* Etats interactifs */
+    --surface-hover: #e9e3da;
+    --surface-hover-strong: #e8e1d7;
+    --focus-ring: 0 0 0 4px rgba(110, 142, 100, 0.12);
+    --green-hover-shadow: 0 8px 18px rgba(27, 74, 58, 0.16);
+    --green-active-shadow: 0 8px 18px rgba(27, 74, 58, 0.18);
+    --green-border-hover: rgba(27, 74, 58, 0.18);
+    --green-tint: rgba(110, 142, 100, 0.12);
+
+    /* Ombres et gradients */
+    --gradient-green: linear-gradient(135deg, var(--green-dark), var(--green-main));
+    --gradient-green-hover: linear-gradient(135deg, var(--green-main), var(--green-soft));
+    --shadow: 0 14px 28px rgba(0, 0, 0, 0.16),
+    0 10px 10px rgba(0, 0, 0, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--cream-light);
+    color: var(--text);
+}
+.container {
+    margin: auto;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    min-height: 95vh;
+}
+img{
+    width: 120px;
+    height: auto;
+}
+.strong-text {
+    color: var(--green-dark);
+    font-weight: 800;
+}

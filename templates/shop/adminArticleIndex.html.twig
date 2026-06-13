@@ -12,10 +12,10 @@
 
 {% block body %}
 
-    <section class="admin-article-page">
-        <div class="admin-article-container">
+    <section class="admin-article-page ui-page">
+        <div class="admin-article-container ui-container">
 
-            <header class="admin-article-header">
+            <header class="admin-article-header ui-admin-header ui-header">
                 <div>
                     <h1>Administration des articles</h1>
 
@@ -26,7 +26,7 @@
 
                 <a
                     href="{{ path('admin_article_add') }}"
-                    class="admin-article-add-button"
+                    class="admin-article-add-button ui-button ui-button--primary"
                 >
                     Ajouter un article
                 </a>
@@ -34,7 +34,7 @@
 
             <section class="admin-article-grid">
                 {% for article in articleList %}
-                    <article class="admin-article-card">
+                    <article class="admin-article-card ui-card">
 
                         <div class="admin-article-image-wrapper">
                             <img
@@ -59,7 +59,7 @@
                             <div class="admin-article-actions">
                                 <a
                                     href="{{ path('admin_article_update', {id: article.id}) }}"
-                                    class="admin-article-edit-button"
+                                    class="admin-article-edit-button ui-button ui-button--primary"
                                 >
                                     Modifier
                                 </a>
@@ -76,7 +76,7 @@
                                     >
                                     <button
                                         type="submit"
-                                        class="admin-article-delete-button"
+                                        class="admin-article-delete-button ui-button ui-button--danger"
                                     >
                                         Supprimer
                                     </button>
@@ -86,7 +86,7 @@
 
                     </article>
                 {% else %}
-                    <div class="admin-article-empty">
+                    <div class="admin-article-empty ui-empty-state">
                         Aucun article trouvé.
                     </div>
                 {% endfor %}

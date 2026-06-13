@@ -18,7 +18,7 @@
 
     <section class="reset-page">
         <div class="reset-container">
-            <div class="reset-card">
+            <div class="reset-card ui-card">
 
                 <h1>Nouveau mot de passe</h1>
 
@@ -34,7 +34,7 @@
                     }
                 }) }}
 
-                <div class="reset-form-group">
+                <div class="reset-form-group ui-field ui-field--reset">
                     {{ form_label(resetForm.plainPassword.first) }}
 
                     <div class="reset-password-wrapper">
@@ -67,7 +67,7 @@
                     {{ form_errors(resetForm.plainPassword.first) }}
                 </div>
 
-                <div class="reset-form-group">
+                <div class="reset-form-group ui-field ui-field--reset">
                     {{ form_label(resetForm.plainPassword.second) }}
 
                     <div class="reset-password-wrapper">
@@ -107,7 +107,7 @@
                     aria-live="polite"
                 ></p>
 
-                <button type="submit" class="reset-submit-button">
+                <button type="submit" class="ui-button ui-button--primary ui-button--full ui-button--padded-large ui-button--caps-large ui-button--static-hover">
                     Réinitialiser le mot de passe
                 </button>
 

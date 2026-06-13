@@ -16,11 +16,11 @@
 
 {% block body %}
 
-    <section class="role-page">
+    <section class="role-page ui-page">
 
-        <div class="role-container">
+        <div class="role-container ui-container">
 
-            <div class="role-header">
+            <div class="role-header ui-header">
                 <h1>Gestion des rôles</h1>
                 <p>
                     Gérez les rôles attribuables aux utilisateurs du site.
@@ -29,7 +29,7 @@
 
             <div class="role-grid">
 
-                <section class="role-card role-list-card">
+                <section class="role-card role-list-card ui-card">
 
                     <div class="role-card-header">
                         <h2>Rôles existants</h2>
@@ -65,7 +65,7 @@
 
                                             <a
                                                 href="{{ path('admin_roles_update', {id: role.id}) }}"
-                                                class="role-edit-link"
+                                                class="role-edit-link ui-button ui-button--primary"
                                                 aria-label="Modifier le rôle {{ role.name }}"
                                             >
                                                 Modifier
@@ -83,7 +83,7 @@
                                                 >
                                                 <button
                                                     type="submit"
-                                                    class="role-delete-button"
+                                                    class="role-delete-button ui-button ui-button--danger"
                                                     aria-label="Supprimer le rôle {{ role.name }}"
                                                 >
                                                     Supprimer
@@ -114,7 +114,7 @@
 
                 </section>
 
-                <section class="role-card role-form-card">
+                <section class="role-card role-form-card ui-card">
 
                     <h2>
                         {% if isEdit %}
@@ -139,7 +139,7 @@
                         }
                     }) }}
 
-                    <div class="role-form-group">
+                    <div class="role-form-group ui-field">
 
                         {{ form_label(formRole.name, 'Nom du rôle') }}
 
@@ -156,7 +156,7 @@
 
                     <button
                         type="submit"
-                        class="role-submit-button"
+                        class="role-submit-button ui-button ui-button--primary"
                     >
                         {% if isEdit %}
                             Modifier le rôle

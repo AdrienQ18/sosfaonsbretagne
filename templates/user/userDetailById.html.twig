@@ -32,7 +32,7 @@
 
             {% if editMode %}
 
-                <div class="profile-card">
+                <div class="profile-card ui-card">
                     {{ form_start(formProfile, {
                         attr: {
                             novalidate: 'novalidate',
@@ -41,49 +41,49 @@
                     }) }}
 
                     <div class="profile-form-grid">
-                        <div class="form-group">
+                        <div class="form-group ui-field ui-field--profile">
                             {{ form_label(formProfile.firstname) }}
                             {{ form_widget(formProfile.firstname) }}
                             {{ form_errors(formProfile.firstname) }}
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group ui-field ui-field--profile">
                             {{ form_label(formProfile.lastname) }}
                             {{ form_widget(formProfile.lastname) }}
                             {{ form_errors(formProfile.lastname) }}
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group ui-field ui-field--profile">
                             {{ form_label(formProfile.email) }}
                             {{ form_widget(formProfile.email) }}
                             {{ form_errors(formProfile.email) }}
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group ui-field ui-field--profile">
                             {{ form_label(formProfile.phone) }}
                             {{ form_widget(formProfile.phone) }}
                             {{ form_errors(formProfile.phone) }}
                         </div>
 
-                        <div class="form-group profile-full">
+                        <div class="form-group profile-full ui-field ui-field--profile">
                             {{ form_label(formProfile.address) }}
                             {{ form_widget(formProfile.address) }}
                             {{ form_errors(formProfile.address) }}
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group ui-field ui-field--profile">
                             {{ form_label(formProfile.city) }}
                             {{ form_widget(formProfile.city) }}
                             {{ form_errors(formProfile.city) }}
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group ui-field ui-field--profile">
                             {{ form_label(formProfile.zipcode) }}
                             {{ form_widget(formProfile.zipcode) }}
                             {{ form_errors(formProfile.zipcode) }}
                         </div>
 
-                        <div class="form-group profile-full">
+                        <div class="form-group profile-full ui-field ui-field--profile">
                             {{ form_label(formProfile.birthday) }}
                             {{ form_widget(formProfile.birthday) }}
                             {{ form_errors(formProfile.birthday) }}
@@ -101,7 +101,10 @@
                     </div>
 
                     <div class="profile-actions">
-                        <button type="submit">
+                        <button
+                            type="submit"
+                            class="ui-button ui-button--primary"
+                        >
                             Enregistrer
                         </button>
 
@@ -115,7 +118,7 @@
 
             {% else %}
 
-                <div class="profile-card">
+                <div class="profile-card ui-card">
                     <div class="profile-details-grid">
 
                         <div class="user-detail-item">
@@ -179,7 +182,7 @@
                     </div>
 
                     <div class="profile-actions">
-                        <a href="{{ path('user_profile_edit') }}" class="profile-button">
+                        <a href="{{ path('user_profile_edit') }}" class="profile-button ui-button ui-button--primary">
                             Modifier mon profil
                         </a>
                     </div>
@@ -189,7 +192,7 @@
 
             <div class="profile-documents-grid">
 
-                <section class="profile-card document-card">
+                <section class="profile-card document-card ui-card">
                     <h2>Mes reçus fiscaux</h2>
 
                     {% if userById.donations|length > 0 %}
@@ -217,7 +220,7 @@
                     {% endif %}
                 </section>
 
-                <section class="profile-card document-card">
+                <section class="profile-card document-card ui-card">
                     <h2>Mes factures de précommandes</h2>
 
                     {% if userById.preOrders|length > 0 %}

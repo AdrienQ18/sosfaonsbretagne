@@ -1,0 +1,361 @@
+/* ==========================================================================
+   profile.css
+   ========================================================================== */
+/* =========================
+   PROFILE PAGE
+========================= */
+
+.profile-page {
+    min-height: 80vh;
+    padding: 30px 20px 50px;
+    background: var(--cream-light);
+}
+
+.profile-container {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.profile-header {
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.profile-header h1 {
+    margin-bottom: 6px;
+    color: var(--green-dark);
+    font-size: 2.3rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.profile-header p {
+    max-width: 420px;
+    margin: 0 auto;
+    color: #6f6f6f;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* =========================
+   CARD BASE
+========================= */
+
+.profile-card {
+    padding: 24px;
+    border-radius: 22px;
+}
+
+/* =========================
+   PROFILE DETAILS
+========================= */
+
+.profile-details-grid,
+.profile-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.profile-full {
+    grid-column: 1 / -1;
+}
+
+.user-detail-item {
+    min-height: 64px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: var(--input-bg);
+}
+
+.user-detail-item .label {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--green-dark);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.user-detail-item .value {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+/* =========================
+   TAGS
+========================= */
+
+.profile-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.profile-tags span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--gradient-green);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.profile-actions {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.profile-actions button,
+.profile-button {
+    min-width: 150px;
+    padding: 13px 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.profile-actions button:hover,
+.profile-button:hover {
+    transform: translateY(-2px);
+}
+
+.profile-secondary-link {
+    color: var(--brown);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.profile-secondary-link:hover {
+    color: var(--green-dark);
+    text-decoration: underline;
+}
+
+/* =========================
+   DOCUMENTS
+========================= */
+
+.profile-documents-grid {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    align-items: stretch;
+}
+
+.document-card {
+    height: 100%;
+    min-height: 230px;
+    display: grid;
+    grid-template-rows: 70px 1fr;
+    align-content: start;
+}
+
+.document-card h2 {
+    margin: 0;
+    color: var(--green-dark);
+    font-size: 1.45rem;
+    font-weight: 800;
+    line-height: 1.15;
+    display: flex;
+    align-items: center;
+}
+
+.document-card p {
+    margin: 0;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.document-list li {
+    min-height: 82px;
+    padding: 14px;
+    border-radius: 14px;
+    background: var(--input-bg);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 14px;
+}
+
+.document-list li div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.document-list strong {
+    color: var(--green-dark);
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.document-list span {
+    color: var(--text);
+    font-size: 13px;
+}
+
+.document-list a {
+    white-space: nowrap;
+    color: var(--brown);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.document-list a:hover {
+    color: var(--green-dark);
+    text-decoration: underline;
+}
+
+/* =========================
+   FORM EDIT MODE
+========================= */
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media screen and (max-width: 850px) {
+    .profile-details-grid,
+    .profile-form-grid,
+    .profile-documents-grid {
+    grid-template-columns: 1fr;
+    }
+
+    .profile-card {
+    padding: 20px;
+    }
+
+    .document-card {
+    min-height: auto;
+        grid-template-rows: auto 1fr;
+        gap: 18px;
+    }
+
+    .profile-actions {
+    flex-direction: column;
+        align-items: stretch;
+    }
+
+    .profile-actions button,
+    .profile-button {
+    width: 100%;
+    }
+}
+/* =========================
+   AVAILABILITY CHECKBOXES
+========================= */
+
+.availability-group {
+    margin-top: 18px;
+}
+
+.availability-options > div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.availability-options > div > div {
+    position: relative;
+}
+
+.availability-options input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.availability-options label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 48px;
+    margin: 0;
+    padding: 12px 18px;
+
+    border-radius: 999px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.availability-options label:hover {
+    transform: translateY(-2px);
+    background: rgba(110, 142, 100, 0.18);
+}
+
+.availability-options input[type='checkbox']:checked + label {
+    background: linear-gradient(
+        135deg,
+        var(--green-dark),
+        var(--green-main)
+    );
+    color: var(--white);
+    box-shadow: var(--green-hover-shadow);
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 650px) {
+    .availability-options > div {
+    grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .profile-page {
+    padding: 25px 14px;
+    }
+
+    .profile-header h1 {
+    font-size: 1.8rem;
+    }
+
+    .document-list li {
+    grid-template-columns: 1fr;
+        align-items: flex-start;
+    }
+}

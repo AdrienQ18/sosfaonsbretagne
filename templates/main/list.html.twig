@@ -18,11 +18,11 @@
 
 {% block body %}
 
-    <section class="post-page">
+    <section class="ui-page ui-page--radial">
 
-        <div class="post-container">
+        <div class="ui-container ui-container--1180">
 
-            <header class="post-header">
+            <header class="ui-header ui-header--center">
                 <h1>Actualités</h1>
 
                 <p>
@@ -35,7 +35,7 @@
 
                 {% for event in events %}
 
-                    <article class="post-card">
+                    <article class="post-card ui-card">
 
                         <div class="post-photo">
                             {% if event.image %}
@@ -83,7 +83,7 @@
 
                                     <a
                                         href="{{ path('event_modify', { id: event.id }) }}"
-                                        class="post-admin-button post-admin-button--edit"
+                                        class="post-admin-button post-admin-button--edit ui-button ui-button--primary"
                                         onclick="return confirm('Êtes-vous sûr de vouloir modifier ce post ?')"
                                     >
                                         Modifier
@@ -91,7 +91,7 @@
 
                                     <a
                                         href="{{ path('event_delete', { id: event.id }) }}"
-                                        class="post-admin-button post-admin-button--delete"
+                                        class="post-admin-button post-admin-button--delete ui-button ui-button--danger"
                                         onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce post ?')"
                                     >
                                         Supprimer
@@ -107,7 +107,7 @@
 
                 {% else %}
 
-                    <div class="post-empty">
+                    <div class="post-empty ui-empty-state ui-card">
                         <h2>Aucune actualité</h2>
 
                         <p>
@@ -121,7 +121,7 @@
 
         </div>
 
-        <div class="post-pagination">
+        <div class="post-pagination ui-pagination">
             {{ knp_pagination_render(events) }}
         </div>
 

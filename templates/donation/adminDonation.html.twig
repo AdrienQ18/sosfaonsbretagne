@@ -11,7 +11,7 @@
         <div class="admin-donation-container ui-container">
             <header class="admin-donation-header ui-header">
                 <h1>Administration des donations</h1>
-                <div class="admin-donation-total">
+                <div class="admin-donation-total ui-card">
                     <span>Total des dons validés</span>
                     <strong>{{ totalValidatedAmount|number_format(2, ',', ' ') }} €</strong>
                 </div>
@@ -19,31 +19,31 @@
             <div class="admin-donation-card admin-donation-filter-card ui-card">
                 {{ form_start(filterForm, {attr: {id: 'donation-filter-form',class: 'admin-donation-filter-form','data-reset-url': path('admin_donation')}}) }}
                 <div class="admin-donation-filter-grid ui-form-grid">
-                    <div class="admin-donation-form-group">
+                    <div class="admin-donation-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.search) }}
                         {{ form_widget(filterForm.search) }}
                     </div>
-                    <div class="admin-donation-form-group">
+                    <div class="admin-donation-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.donorType) }}
                         {{ form_widget(filterForm.donorType) }}
                     </div>
-                    <div class="admin-donation-form-group">
+                    <div class="admin-donation-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.status) }}
                         {{ form_widget(filterForm.status) }}
                     </div>
-                    <div class="admin-donation-form-group">
+                    <div class="admin-donation-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.dateStart) }}
                         {{ form_widget(filterForm.dateStart) }}
                     </div>
-                    <div class="admin-donation-form-group">
+                    <div class="admin-donation-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.dateEnd) }}
                         {{ form_widget(filterForm.dateEnd) }}
                     </div>
-                    <div class="admin-donation-form-group">
+                    <div class="admin-donation-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.email) }}
                         {{ form_widget(filterForm.email) }}
                     </div>
-                    <div class="admin-donation-form-group">
+                    <div class="admin-donation-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.companySiret) }}
                         {{ form_widget(filterForm.companySiret) }}
                     </div>
@@ -159,7 +159,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="admin-donation-pagination">
+                <div class="admin-donation-pagination ui-pagination">
                     {{ knp_pagination_render(donations) }}
                 </div>
             </div>

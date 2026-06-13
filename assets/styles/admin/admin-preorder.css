@@ -1,0 +1,559 @@
+/* =========================
+   ADMIN PREORDER LIST
+========================= */
+
+.admin-preorder-container {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+/* HEADER */
+
+.admin-preorder-count {
+    min-width: 180px;
+    padding: 16px 22px;
+    border-radius: 18px;
+    text-align: center;
+}
+
+.admin-preorder-count span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text);
+    font-size: 13px;
+}
+
+.admin-preorder-count strong {
+    color: var(--green-dark);
+    font-size: 1.6rem;
+}
+
+/* FILTERS */
+
+.admin-preorder-filter-card {
+    margin-bottom: 30px;
+    padding: 26px;
+    border: 2px solid rgba(110, 142, 100, 0.08);
+}
+
+.admin-preorder-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+
+.admin-preorder-filter-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.admin-preorder-reset-button {
+    padding: 13px 20px;
+    font-size: 13px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.admin-preorder-reset-button:hover {
+    transform: translateY(-2px);
+    background: var(--surface-hover);
+    color: var(--green-dark);
+}
+
+/* GRID */
+
+.admin-preorder-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+}
+
+/* CARD */
+
+.admin-preorder-card {
+    padding: 24px;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-preorder-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+.admin-preorder-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.admin-preorder-card-header h2 {
+    color: var(--green-dark);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+/* STATUS */
+
+.admin-preorder-status {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 130px;
+    padding: 6px 12px;
+
+    border-radius: 999px;
+
+    background: var(--input-bg);
+    color: var(--green-dark);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.admin-preorder-status--validee,
+.admin-preorder-status--payee {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.admin-preorder-status--en_attente {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+}
+
+.admin-preorder-status--en_attente_paiement {
+    background: var(--info-bg);
+    color: var(--info-text);
+}
+
+.admin-preorder-status--refusee {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+}
+
+/* INFOS */
+
+.admin-preorder-infos {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.admin-preorder-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.admin-preorder-row span {
+    color: var(--text);
+    font-size: 14px;
+}
+
+.admin-preorder-row strong {
+    color: var(--green-dark);
+    font-size: 14px;
+    text-align: right;
+}
+
+.admin-preorder-amount {
+    color: var(--green-main) !important;
+    font-size: 1.15rem !important;
+    font-weight: 900;
+}
+
+/* ACTIONS */
+
+.admin-preorder-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.admin-preorder-button {
+    flex: 1;
+    min-width: 160px;
+    min-height: 44px;
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-preorder-button:hover {
+    transform: translateY(-2px);
+}
+
+.admin-preorder-button--secondary:hover {
+    background: var(--surface-hover);
+    color: var(--green-dark);
+}
+
+/* EMPTY */
+
+.admin-preorder-empty {
+    grid-column: 1 / -1;
+
+    padding: 40px;
+
+    text-align: center;
+}
+
+.admin-preorder-empty h2 {
+    margin-bottom: 12px;
+    color: var(--green-dark);
+}
+
+.admin-preorder-empty p {
+    color: var(--text);
+}
+
+/* PAGINATION */
+
+/* =========================
+   ADMIN PREORDER SHOW
+========================= */
+
+.admin-preorder-show-container {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+/* HEADER */
+
+/* STATUS SHOW */
+
+.admin-preorder-show-status {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px 14px;
+
+    border-radius: 999px;
+
+    background: var(--input-bg);
+    color: var(--green-dark);
+
+    font-size: 13px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.admin-preorder-show-status--validee,
+.admin-preorder-show-status--payee {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.admin-preorder-show-status--en_attente {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+}
+
+.admin-preorder-show-status--en_attente_paiement {
+    background: var(--info-bg);
+    color: var(--info-text);
+}
+
+.admin-preorder-show-status--refusee {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+}
+
+/* LAYOUT */
+
+.admin-preorder-show-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 24px;
+    align-items: start;
+}
+
+.admin-preorder-show-main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.admin-preorder-show-sidebar {
+    position: sticky;
+    top: 110px;
+}
+
+/* CARD */
+
+.admin-preorder-show-card {
+    padding: 26px;
+}
+
+.admin-preorder-show-card h2 {
+    margin-bottom: 22px;
+    color: var(--green-dark);
+    font-size: 1.45rem;
+    font-weight: 800;
+}
+
+/* INFOS */
+
+.admin-preorder-show-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.admin-preorder-show-info {
+    padding: 15px 16px;
+    border-radius: 16px;
+    background: var(--input-bg);
+}
+
+.admin-preorder-show-info span {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text);
+    font-size: 13px;
+}
+
+.admin-preorder-show-info strong {
+    color: var(--green-dark);
+    font-size: 14px;
+}
+
+.admin-preorder-show-info a {
+    color: var(--green-dark);
+    text-decoration: none;
+}
+
+.admin-preorder-show-info a:hover {
+    color: var(--green-main);
+}
+
+/* ITEMS */
+
+.admin-preorder-show-items {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.admin-preorder-show-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: var(--input-bg);
+}
+
+.admin-preorder-show-item-image-wrapper {
+    background: var(--input-bg);
+    overflow: hidden;
+}
+
+.admin-preorder-show-item-image {
+    width: 100%;
+    height: 100%;
+    min-height: 210px;
+    object-fit: cover;
+}
+
+.admin-preorder-show-item-content {
+    padding: 20px;
+}
+
+.admin-preorder-show-item-content h3 {
+    margin-bottom: 10px;
+    color: var(--green-dark);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.admin-preorder-show-item-description {
+    margin-bottom: 18px;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.admin-preorder-show-item-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.admin-preorder-show-item-grid div {
+    padding: 12px;
+    border-radius: 14px;
+    background: var(--white);
+}
+
+.admin-preorder-show-item-grid span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.admin-preorder-show-item-grid strong {
+    color: var(--green-dark);
+    font-size: 13px;
+}
+
+/* SIDEBAR */
+
+.admin-preorder-show-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.admin-preorder-show-summary h2 {
+    margin-bottom: 8px;
+}
+
+.admin-preorder-show-summary form {
+    width: 100%;
+}
+
+.admin-preorder-show-button {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 18px;
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.admin-preorder-show-button:hover {
+    transform: translateY(-2px);
+}
+
+.admin-preorder-show-button--danger {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+}
+
+.admin-preorder-show-button--danger:hover {
+    background: var(--danger-hover-bg);
+    box-shadow: none;
+}
+
+.admin-preorder-show-back-link {
+    margin-top: 8px;
+
+    color: var(--brown);
+
+    font-size: 14px;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+.admin-preorder-show-back-link:hover {
+    color: var(--green-dark);
+    text-decoration: underline;
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 1000px) {
+    .admin-preorder-header,
+    .admin-preorder-show-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-preorder-show-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-preorder-show-sidebar {
+        position: static;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .admin-preorder-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-preorder-actions {
+        flex-direction: column;
+    }
+
+    .admin-preorder-button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .admin-preorder-page,
+    .admin-preorder-show-page {
+        padding: 28px 14px 45px;
+    }
+
+    .admin-preorder-show-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-preorder-show-item {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-preorder-show-item-image {
+        height: 220px;
+    }
+
+    .admin-preorder-show-item-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .admin-preorder-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-preorder-reset-button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .admin-preorder-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .admin-preorder-row strong {
+        text-align: left;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .admin-preorder-show-item-grid {
+        grid-template-columns: 1fr;
+    }
+}

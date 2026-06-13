@@ -12,11 +12,11 @@
 
 {% block body %}
 
-    <section class="event-create-page">
+    <section class="ui-page ui-page--radial">
 
-        <div class="event-create-container">
+        <div class="ui-container ui-container--900">
 
-            <header class="event-create-header">
+            <header class="ui-header ui-header--center">
 
                 <h1>Création d'un post</h1>
 
@@ -27,7 +27,7 @@
 
             </header>
 
-            <div class="event-create-card">
+            <div class="event-create-card ui-card">
 
                 {{ form_start(eventForm, {
                     attr: {
@@ -38,15 +38,15 @@
 
                 {{ form_errors(eventForm) }}
 
-                <div class="event-form-row">
+                <div class="ui-form-row ui-form-row--relaxed">
 
-                    <div class="event-form-group">
+                    <div class="event-form-group ui-field">
                         {{ form_label(eventForm.type) }}
                         {{ form_widget(eventForm.type) }}
                         {{ form_errors(eventForm.type) }}
                     </div>
 
-                    <div class="event-form-group">
+                    <div class="event-form-group ui-field">
                         {{ form_label(eventForm.eventDate) }}
                         {{ form_widget(eventForm.eventDate) }}
                         {{ form_errors(eventForm.eventDate) }}
@@ -54,21 +54,21 @@
 
                 </div>
 
-                <div class="event-form-group">
+                <div class="event-form-group ui-field">
                     {{ form_label(eventForm.name) }}
                     {{ form_widget(eventForm.name) }}
                     {{ form_errors(eventForm.name) }}
                 </div>
 
-                <div class="event-form-group">
+                <div class="event-form-group ui-field">
                     {{ form_label(eventForm.localisation) }}
                     {{ form_widget(eventForm.localisation) }}
                     {{ form_errors(eventForm.localisation) }}
                 </div>
 
-                <div class="event-form-row">
+                <div class="ui-form-row ui-form-row--relaxed">
 
-                    <div class="event-form-group">
+                    <div class="event-form-group ui-field">
                         {{ form_label(eventForm.nbParticipant) }}
                         {{ form_widget(eventForm.nbParticipant) }}
                         {{ form_errors(eventForm.nbParticipant) }}
@@ -76,7 +76,7 @@
 
                 </div>
 
-                <div class="event-form-group">
+                <div class="event-form-group ui-field">
 
                     {{ form_label(eventForm.description) }}
                     {{ form_widget(eventForm.description) }}
@@ -84,7 +84,7 @@
 
                 </div>
 
-                <div class="event-form-group event-file-group">
+                <div class="event-form-group ui-field ui-file-group">
 
                     {{ form_label(eventForm.image) }}
 
@@ -105,7 +105,7 @@
                         type="submit"
                         name="action"
                         value="enregistrer"
-                        class="event-button event-button-secondary"
+                        class="event-button event-button-secondary ui-button ui-button--secondary"
                         aria-label="Enregistrer le post comme brouillon"
                     >
                         Enregistrer comme brouillon
@@ -115,7 +115,7 @@
                         type="submit"
                         name="action"
                         value="publier"
-                        class="event-button event-button-primary"
+                        class="event-button event-button-primary ui-button ui-button--primary"
                         aria-label="Publier le post"
                     >
                         Publier

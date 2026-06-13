@@ -16,11 +16,11 @@
 
         <div class="admin-user-container ui-container">
 
-            <header class="admin-user-header ui-header">
+            <header class="admin-user-header ui-admin-header ui-header">
 
                 <h1>Liste des utilisateurs</h1>
 
-                <div class="admin-user-count">
+                <div class="admin-user-count ui-card">
                     <span>Nombre d'utilisateurs</span>
                     <strong>{{ users.getTotalItemCount }}</strong>
                 </div>
@@ -40,32 +40,32 @@
 
                 <div class="admin-user-filter-grid ui-form-grid">
 
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.search) }}
                         {{ form_widget(filterForm.search) }}
                     </div>
 
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.actif) }}
                         {{ form_widget(filterForm.actif) }}
                     </div>
 
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.role) }}
                         {{ form_widget(filterForm.role) }}
                     </div>
 
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.right) }}
                         {{ form_widget(filterForm.right) }}
                     </div>
 
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.dateStart) }}
                         {{ form_widget(filterForm.dateStart) }}
                     </div>
 
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.dateEnd) }}
                         {{ form_widget(filterForm.dateEnd) }}
                     </div>
@@ -196,7 +196,7 @@
 
             </div>
 
-            <div class="admin-user-pagination">
+            <div class="admin-user-pagination ui-pagination">
                 {{ knp_pagination_render(users) }}
             </div>
 

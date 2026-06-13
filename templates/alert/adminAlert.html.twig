@@ -16,11 +16,11 @@
 
         <div class="admin-alert-container ui-container">
 
-            <header class="admin-alert-header ui-header">
+            <header class="admin-alert-header ui-admin-header ui-header">
 
                 <h1>Gestion des signalements</h1>
 
-                <div class="admin-alert-count">
+                <div class="admin-alert-count ui-card">
                     <span>Nombre de signalements</span>
                     <strong>{{ alerts.getTotalItemCount }}</strong>
                 </div>
@@ -37,37 +37,37 @@
                 }) }}
 
                 <div class="admin-alert-filter-grid ui-form-grid">
-                    <div class="admin-alert-form-group">
+                    <div class="admin-alert-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.search) }}
                         {{ form_widget(filterForm.search) }}
                     </div>
 
-                    <div class="admin-alert-form-group">
+                    <div class="admin-alert-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.status) }}
                         {{ form_widget(filterForm.status) }}
                     </div>
 
-                    <div class="admin-alert-form-group">
+                    <div class="admin-alert-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.type) }}
                         {{ form_widget(filterForm.type) }}
                     </div>
 
-                    <div class="admin-alert-form-group">
+                    <div class="admin-alert-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.localisation) }}
                         {{ form_widget(filterForm.localisation) }}
                     </div>
 
-                    <div class="admin-alert-form-group">
+                    <div class="admin-alert-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.cultureType) }}
                         {{ form_widget(filterForm.cultureType) }}
                     </div>
 
-                    <div class="admin-alert-form-group">
+                    <div class="admin-alert-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.dateStart) }}
                         {{ form_widget(filterForm.dateStart) }}
                     </div>
 
-                    <div class="admin-alert-form-group">
+                    <div class="admin-alert-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.dateEnd) }}
                         {{ form_widget(filterForm.dateEnd) }}
                     </div>
@@ -189,7 +189,7 @@
                 {% endfor %}
 
             </div>
-            <div class="admin-alert-pagination">
+            <div class="admin-alert-pagination ui-pagination">
                 {{ knp_pagination_render(alerts) }}
             </div>
         </div>

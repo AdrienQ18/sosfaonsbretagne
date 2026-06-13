@@ -24,11 +24,11 @@
 {% endblock %}
 {% block body %}
 
-    <section class="alert-page">
+    <section class="ui-page ui-page--radial">
 
-        <div class="alert-container">
+        <div class="ui-container ui-container--1180">
 
-            <header class="alert-header">
+            <header class="ui-header ui-header--center">
                 <h1>Signaler un fauchage</h1>
 
                 <p>
@@ -40,7 +40,7 @@
 
             <div class="alert-layout">
 
-                <article class="alert-card alert-info-card">
+                <article class="alert-card alert-info-card ui-card">
 
                     <h2>Demande d'intervention</h2>
 
@@ -78,7 +78,7 @@
 
                 </article>
 
-                <article class="alert-card alert-form-card">
+                <article class="alert-card alert-form-card ui-card">
 
                     <h2>Formulaire de signalement</h2>
 
@@ -91,28 +91,28 @@
 
                     {{ form_errors(form) }}
 
-                    <div class="alert-form-row">
-                        <div class="alert-form-group">
+                    <div class="ui-form-row">
+                        <div class="alert-form-group ui-field">
                             {{ form_label(form.type) }}
                             {{ form_widget(form.type) }}
                             {{ form_errors(form.type) }}
                         </div>
 
-                        <div class="alert-form-group">
+                        <div class="alert-form-group ui-field">
                             {{ form_label(form.surface) }}
                             {{ form_widget(form.surface) }}
                             {{ form_errors(form.surface) }}
                         </div>
                     </div>
 
-                    <div class="alert-form-group">
+                    <div class="alert-form-group ui-field">
                         {{ form_label(form.localisation) }}
                         {{ form_widget(form.localisation) }}
                         {{ form_errors(form.localisation) }}
                     </div>
 
-                    <div class="alert-form-row">
-                        <div class="alert-form-group">
+                    <div class="ui-form-row">
+                        <div class="alert-form-group ui-field">
                             {{ form_label(form.gpsLatitude) }}
                             {{ form_widget(form.gpsLatitude, {
                                 attr: {
@@ -122,7 +122,7 @@
                             {{ form_errors(form.gpsLatitude) }}
                         </div>
 
-                        <div class="alert-form-group">
+                        <div class="alert-form-group ui-field">
                             {{ form_label(form.gpsLongitude) }}
                             {{ form_widget(form.gpsLongitude, {
                                 attr: {
@@ -132,26 +132,26 @@
                             {{ form_errors(form.gpsLongitude) }}
                         </div>
                     </div>
-                    <div class="alert-form-row">
+                    <div class="ui-form-row">
 
-                        <div class="alert-form-group">
+                        <div class="alert-form-group ui-field">
                             {{ form_label(form.cultureType) }}
                             {{ form_widget(form.cultureType) }}
                             {{ form_errors(form.cultureType) }}
                         </div>
-                        <div class="alert-form-group">
+                        <div class="alert-form-group ui-field">
                             {{ form_label(form.interventionDate) }}
                             {{ form_widget(form.interventionDate) }}
                             {{ form_errors(form.interventionDate) }}
                         </div>
 
                     </div>
-                    <div class="alert-form-group">
+                    <div class="alert-form-group ui-field">
                         {{ form_label(form.description) }}
                         {{ form_widget(form.description) }}
                         {{ form_errors(form.description) }}
                     </div>
-                    <div class="alert-form-group alert-file-group">
+                    <div class="alert-form-group ui-field ui-file-group">
                         {{ form_label(form.image) }}
                         {{ form_widget(form.image, {
                             attr: {
@@ -171,7 +171,7 @@
 
                     <button
                         type="submit"
-                        class="alert-submit-button"
+                        class="ui-button ui-button--primary ui-button--full ui-button--padded-large ui-button--caps"
                         aria-label="Envoyer le signalement de fauchage"
                     >
                         Envoyer le signalement

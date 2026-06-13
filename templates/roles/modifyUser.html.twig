@@ -14,7 +14,7 @@
 
     <section class="admin-user-form-page">
         <div class="admin-user-form-container">
-            <div class="admin-user-form-card">
+            <div class="admin-user-form-card ui-card">
                 <header class="admin-user-form-header">
                     <h1>Modifier un utilisateur</h1>
                     <p>
@@ -28,53 +28,53 @@
                     }
                 }) }}
                 <div class="admin-user-form-row">
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--admin-form">
                         {{ form_label(formUser.firstname) }}
                         {{ form_widget(formUser.firstname) }}
                         {{ form_errors(formUser.firstname) }}
                     </div>
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--admin-form">
                         {{ form_label(formUser.lastname) }}
                         {{ form_widget(formUser.lastname) }}
                         {{ form_errors(formUser.lastname) }}
                     </div>
                 </div>
                 <div class="admin-user-form-row">
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--admin-form">
                         {{ form_label(formUser.email) }}
                         {{ form_widget(formUser.email) }}
                         {{ form_errors(formUser.email) }}
                     </div>
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--admin-form">
                         {{ form_label(formUser.phone) }}
                         {{ form_widget(formUser.phone) }}
                         {{ form_errors(formUser.phone) }}
                     </div>
                 </div>
-                <div class="admin-user-form-group">
+                <div class="admin-user-form-group ui-field ui-field--admin-form">
                     {{ form_label(formUser.address) }}
                     {{ form_widget(formUser.address) }}
                     {{ form_errors(formUser.address) }}
                 </div>
                 <div class="admin-user-form-row">
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--admin-form">
                         {{ form_label(formUser.city) }}
                         {{ form_widget(formUser.city) }}
                         {{ form_errors(formUser.city) }}
                     </div>
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--admin-form">
                         {{ form_label(formUser.zipcode) }}
                         {{ form_widget(formUser.zipcode) }}
                         {{ form_errors(formUser.zipcode) }}
                     </div>
                 </div>
                 <div class="admin-user-form-row">
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--admin-form">
                         {{ form_label(formUser.birthday) }}
                         {{ form_widget(formUser.birthday) }}
                         {{ form_errors(formUser.birthday) }}
                     </div>
-                    <div class="admin-user-form-group">
+                    <div class="admin-user-form-group ui-field ui-field--admin-form">
                         {{ form_label(formUser.userRole) }}
                         {{ form_widget(formUser.userRole) }}
                         {{ form_errors(formUser.userRole) }}
@@ -100,7 +100,7 @@
                 <div class="admin-user-form-actions">
                     <a
                         href="{{ path('admin_userList') }}"
-                        class="admin-user-form-back-button"
+                        class="admin-user-form-back-button ui-button ui-button--secondary"
                         aria-label="Retour à la liste des utilisateurs"
                     >
                         Retour
@@ -108,7 +108,7 @@
 
                     <button
                         type="submit"
-                        class="admin-user-form-submit-button"
+                        class="admin-user-form-submit-button ui-button ui-button--primary"
                         aria-label="Modifier l'utilisateur"
                     >
                         Modifier

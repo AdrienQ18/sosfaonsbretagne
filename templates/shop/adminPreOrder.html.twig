@@ -15,10 +15,10 @@
     <section class="admin-preorder-page ui-page">
         <div class="admin-preorder-container ui-container">
 
-            <header class="admin-preorder-header ui-header">
+            <header class="admin-preorder-header ui-admin-header ui-header">
                 <h1>Gestion des précommandes</h1>
 
-                <div class="admin-preorder-count">
+                <div class="admin-preorder-count ui-card">
                     <span>Nombre de précommandes</span>
                     <strong>{{ preOrders.getTotalItemCount }}</strong>
                 </div>
@@ -36,27 +36,27 @@
                 }) }}
 
                 <div class="admin-preorder-filter-grid ui-form-grid">
-                    <div class="admin-preorder-form-group">
+                    <div class="admin-preorder-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.search) }}
                         {{ form_widget(filterForm.search) }}
                     </div>
 
-                    <div class="admin-preorder-form-group">
+                    <div class="admin-preorder-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.status) }}
                         {{ form_widget(filterForm.status) }}
                     </div>
 
-                    <div class="admin-preorder-form-group">
+                    <div class="admin-preorder-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.dateStart) }}
                         {{ form_widget(filterForm.dateStart) }}
                     </div>
 
-                    <div class="admin-preorder-form-group">
+                    <div class="admin-preorder-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.dateEnd) }}
                         {{ form_widget(filterForm.dateEnd) }}
                     </div>
 
-                    <div class="admin-preorder-form-group">
+                    <div class="admin-preorder-form-group ui-field ui-field--compact">
                         {{ form_label(filterForm.email) }}
                         {{ form_widget(filterForm.email) }}
                     </div>
@@ -156,7 +156,7 @@
                     </div>
                 {% endfor %}
             </div>
-            <div class="admin-preorder-pagination">
+            <div class="admin-preorder-pagination ui-pagination">
                 {{ knp_pagination_render(preOrders) }}
             </div>
         </div>

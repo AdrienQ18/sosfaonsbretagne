@@ -25,15 +25,15 @@
 
 {% block body %}
 
-    <section class="don-page">
+    <section class="ui-page ui-page--radial ui-page--compact">
         <noscript>
             <p class="alert alert-warning">
                 JavaScript est nécessaire pour utiliser le formulaire de don.
             </p>
         </noscript>
-        <div class="don-container">
+        <div class="ui-container ui-container--1040 ui-container--mobile-620">
 
-            <div class="don-header">
+            <div class="ui-header ui-header--compact">
                 <h1>Faire un don</h1>
                 <p>Votre soutien fait toute la différence.</p>
                 <p>
@@ -123,13 +123,13 @@
                         </h2>
 
                         <div id="company-fields" style="display: none;">
-                            <div class="don-form-group">
+                            <div class="don-form-group ui-field ui-field--don">
                                 {{ form_label(formDonation.companyName) }}
                                 {{ form_widget(formDonation.companyName) }}
                                 {{ form_errors(formDonation.companyName) }}
                             </div>
 
-                            <div class="don-form-group">
+                            <div class="don-form-group ui-field ui-field--don">
                                 {{ form_label(formDonation.companySiret) }}
                                 {{ form_widget(formDonation.companySiret) }}
                                 {{ form_errors(formDonation.companySiret) }}
@@ -139,20 +139,20 @@
                         <h3 id="contact-title" class="don-subtitle">
                             Coordonnées
                         </h3>
-                        <div class="don-form-row">
-                            <div class="don-form-group">
+                        <div class="ui-form-row ui-form-row--wide">
+                            <div class="don-form-group ui-field ui-field--don">
                                 {{ form_label(formDonation.firstname) }}
                                 {{ form_widget(formDonation.firstname) }}
                                 {{ form_errors(formDonation.firstname) }}
                             </div>
 
-                            <div class="don-form-group">
+                            <div class="don-form-group ui-field ui-field--don">
                                 {{ form_label(formDonation.lastname) }}
                                 {{ form_widget(formDonation.lastname) }}
                                 {{ form_errors(formDonation.lastname) }}
                             </div>
                         </div>
-                        <div class="don-form-group">
+                        <div class="don-form-group ui-field ui-field--don">
                             {{ form_label(formDonation.email) }}
                             {{ form_widget(formDonation.email) }}
                             {{ form_errors(formDonation.email) }}
@@ -162,20 +162,20 @@
                             <h3>Adresse</h3>
                         </div>
 
-                        <div class="don-form-group">
+                        <div class="don-form-group ui-field ui-field--don">
                             {{ form_label(formDonation.address) }}
                             {{ form_widget(formDonation.address) }}
                             {{ form_errors(formDonation.address) }}
                         </div>
-                        <div class="don-form-row">
+                        <div class="ui-form-row ui-form-row--wide">
 
-                            <div class="don-form-group">
+                            <div class="don-form-group ui-field ui-field--don">
                                 {{ form_label(formDonation.zipcode) }}
                                 {{ form_widget(formDonation.zipcode) }}
                                 {{ form_errors(formDonation.zipcode) }}
                             </div>
 
-                            <div class="don-form-group">
+                            <div class="don-form-group ui-field ui-field--don">
                                 {{ form_label(formDonation.city) }}
                                 {{ form_widget(formDonation.city) }}
                                 {{ form_errors(formDonation.city) }}

@@ -1,0 +1,98 @@
+/* ==========================================================================
+   legal.css
+   Pages legales : confidentialite, CGU et mentions legales.
+   ========================================================================== */
+
+.legal-header {
+    margin-bottom: 30px;
+}
+
+.legal-header h1 {
+    margin-bottom: 16px;
+    font-size: 2.5rem;
+}
+
+.legal-header p {
+    max-width: 700px;
+    margin: 0 auto 16px;
+    font-size: 16px;
+}
+
+.legal-update {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--input-bg);
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.legal-card {
+    padding: 40px;
+}
+
+.legal-section {
+    margin-bottom: 35px;
+}
+
+.legal-section:last-child {
+    margin-bottom: 0;
+}
+
+.legal-section h2 {
+    margin-bottom: 14px;
+    color: var(--green-dark);
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.legal-section p {
+    margin-bottom: 12px;
+    color: var(--text);
+    line-height: 1.8;
+}
+
+.legal-section ul {
+    padding-left: 24px;
+}
+
+.legal-section li {
+    margin-bottom: 8px;
+    color: var(--text);
+    line-height: 1.7;
+}
+
+.legal-section a {
+    color: var(--green-main);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.legal-section a:hover {
+    text-decoration: underline;
+}
+
+.legal-section hr {
+    margin: 24px 0;
+    border: 0;
+    border-top: 1px solid #e5e5e5;
+}
+
+@media screen and (max-width: 768px) {
+    .legal-page {
+        padding: 25px 14px 40px;
+    }
+
+    .legal-card {
+        padding: 24px;
+    }
+
+    .legal-header h1 {
+        font-size: 2rem;
+    }
+
+    .legal-section h2 {
+        font-size: 1.2rem;
+    }
+}

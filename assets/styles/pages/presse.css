@@ -1,0 +1,233 @@
+/* ==========================================================================
+   presse.css
+   ========================================================================== */
+/* =========================
+   PRESSE
+========================= */
+
+/* REPORTAGE PRINCIPAL */
+
+.press-feature-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    gap: 28px;
+    align-items: center;
+    margin-bottom: 42px;
+    padding: 28px;
+    border-radius: 28px;
+}
+
+.press-video-wrapper {
+    overflow: hidden;
+    border-radius: 22px;
+    background: #000;
+}
+
+.press-video {
+    display: block;
+    width: 100%;
+    max-height: 520px;
+    background: #000;
+}
+
+.press-feature-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.press-media-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.press-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #dce8de;
+    color: var(--green-dark);
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.press-media-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 60px;
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.press-media-logo:hover,
+.press-media-logo:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+    padding: 2px;
+}
+
+.press-media-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.press-feature-content h2 {
+    margin-bottom: 14px;
+    color: var(--green-dark);
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.press-feature-content p {
+    margin-bottom: 22px;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.press-button {
+    min-height: 46px;
+    padding: 0 24px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+
+.press-button:hover,
+.press-button:focus-visible {
+    transform: translateY(-2px);
+}
+
+.press-credit {
+    grid-column: 1 / -1;
+    margin-top: -6px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(27, 74, 58, 0.12);
+    color: var(--text);
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* ARTICLES DE PRESSE */
+
+.press-section h2 {
+    margin-bottom: 22px;
+    color: var(--green-dark);
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.press-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.press-card {
+    display: block;
+    min-height: 210px;
+    padding: 24px;
+    text-decoration: none;
+    transition: transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.press-card:hover,
+.press-card:focus-visible {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+.press-card span {
+    display: inline-flex;
+    margin-bottom: 12px;
+    color: var(--green-main);
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.press-card h3 {
+    margin-bottom: 12px;
+    color: var(--green-dark);
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1.35;
+}
+
+.press-card p {
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 1000px) {
+    .press-feature-card {
+    grid-template-columns: 1fr;
+    }
+
+    .press-grid {
+    grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .press-feature-card {
+    gap: 22px;
+        padding: 20px;
+        border-radius: 22px;
+    }
+
+    .press-video-wrapper {
+    border-radius: 18px;
+    }
+
+    .press-media-header {
+    flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .press-media-logo {
+    width: 80px;
+        height: 52px;
+    }
+
+    .press-feature-content h2 {
+    font-size: 1.45rem;
+    }
+
+    .press-credit {
+    margin-top: -2px;
+        padding-top: 14px;
+        font-size: 12px;
+    }
+
+    .press-section h2 {
+    font-size: 1.65rem;
+    }
+
+    .press-grid {
+    grid-template-columns: 1fr;
+    }
+
+    .press-button {
+    width: 100%;
+    }
+}

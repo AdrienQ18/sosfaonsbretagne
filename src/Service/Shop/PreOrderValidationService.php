@@ -35,6 +35,7 @@ final class PreOrderValidationService
     public function validate(PreOrder $preOrder): void
     {
         // Une précommande déjà payée ne doit pas être retraitée.
+        // Cela évite notamment de renvoyer un lien de paiement après paiement.
         if ($preOrder->getStatus() === PreOrderStatus::PAYEE) {
             return;
         }
@@ -60,6 +61,8 @@ final class PreOrderValidationService
         // Sauvegarde des modifications en base.
         $this->entityManager->flush();
 
+        // Le lien de paiement est généré dans le template à partir de la route
+        // de paiement de la précommande validée.
         // Envoi du lien de paiement au client.
         $this->preOrderMailerService->sendPaymentLink($preOrder);
     }

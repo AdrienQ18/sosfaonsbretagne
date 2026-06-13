@@ -117,6 +117,8 @@ class SecurityController extends AbstractController
                 'name' => 'Utilisateur',
             ]);
 
+            // Ce rôle métier sert à l'affichage et aux formulaires côté site,
+            // en complément du rôle Symfony utilisé pour la sécurité.
             $user->setUserRole($roleUser);
 
             $entityManager->persist($user);
@@ -182,6 +184,8 @@ class SecurityController extends AbstractController
             /** @var User $user */
             $user = $this->getUser();
 
+            // La signature contient l'identité de l'utilisateur et une date
+            // d'expiration : elle évite la validation manuelle d'un autre compte.
             // Validation de la signature présente dans le lien d'email.
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {

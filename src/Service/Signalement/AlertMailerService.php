@@ -29,6 +29,8 @@ final class AlertMailerService
      */
     public function sendAdminNotification(Alert $alert): void
     {
+        // L'email part dès la création du signalement pour permettre
+        // à l'association de réagir rapidement.
         // Notification interne envoyée à l'association.
         $email = (new TemplatedEmail())
             ->from(
@@ -67,6 +69,8 @@ final class AlertMailerService
     {
         $recipient = $alert->getUser()?->getEmail();
 
+        // Les signalements doivent normalement être liés à un utilisateur,
+        // mais cette garde évite une erreur d'envoi sur des données anciennes.
         // Aucun email à envoyer si aucun utilisateur n'est associé.
         if (!$recipient) {
             return;
@@ -97,6 +101,7 @@ final class AlertMailerService
     {
         $recipient = $alert->getUser()?->getEmail();
 
+        // Même garde que pour la validation : pas de destinataire, pas d'email.
         // Aucun email à envoyer si aucun utilisateur n'est associé.
         if (!$recipient) {
             return;

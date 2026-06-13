@@ -16,24 +16,24 @@
 
 {% block body %}
 
-    <section class="availability-page ui-page">
-        <div class="availability-container ui-container">
+    <section class="availability-page admin-meta-page ui-page">
+        <div class="availability-container admin-meta-container ui-container">
 
-            <div class="availability-header ui-header">
+            <div class="availability-header admin-meta-header ui-header">
                 <h1>Gestion des disponibilités</h1>
                 <p>Ajoutez, modifiez ou supprimez les disponibilités proposées aux bénévoles.</p>
             </div>
 
-            <div class="availability-grid">
+            <div class="availability-grid admin-meta-grid">
 
-                <section class="availability-card availability-list-card ui-card">
-                    <div class="availability-card-header">
+                <section class="availability-card availability-list-card admin-meta-card ui-card">
+                    <div class="availability-card-header admin-meta-card-header">
                         <h2>Disponibilités existantes</h2>
                         <span>{{ availabilityList|length }} élément(s)</span>
                     </div>
 
-                    <div class="availability-table-wrapper">
-                        <table class="availability-table">
+                    <div class="availability-table-wrapper admin-meta-table-wrapper">
+                        <table class="availability-table admin-meta-table">
                             <thead>
                             <tr>
                                 <th>Disponibilité</th>
@@ -45,16 +45,16 @@
                             {% for availability in availabilityList %}
                                 <tr>
                                     <td>
-                                        <span class="availability-badge">
+                                        <span class="availability-badge admin-meta-badge">
                                             {{ availability.label }}
                                         </span>
                                     </td>
 
                                     <td>
-                                        <div class="availability-actions">
+                                        <div class="availability-actions admin-meta-actions">
                                             <a
                                                 href="{{ path('admin_availability_update', { id: availability.id }) }}"
-                                                class="availability-edit-link ui-button ui-button--primary"
+                                                class="availability-edit-link admin-meta-edit-link ui-button ui-button--primary"
                                                 aria-label="Modifier la disponibilité {{ availability.label }}"
                                             >
                                                 Modifier
@@ -73,7 +73,7 @@
 
                                                 <button
                                                     type="submit"
-                                                    class="availability-delete-button ui-button ui-button--danger"
+                                                    class="availability-delete-button admin-meta-delete-button ui-button ui-button--delete"
                                                     aria-label="Supprimer la disponibilité {{ availability.label }}"
                                                 >
                                                     Supprimer
@@ -84,7 +84,7 @@
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="2" class="availability-empty">
+                                    <td colspan="2" class="availability-empty admin-meta-empty">
                                         Aucune disponibilité enregistrée.
                                     </td>
                                 </tr>
@@ -94,7 +94,7 @@
                     </div>
                 </section>
 
-                <section class="availability-card availability-form-card ui-card">
+                <section class="availability-card availability-form-card admin-meta-card admin-meta-form-card ui-card">
                     <h2>
                         {% if isEdit %}
                             Modifier une disponibilité
@@ -114,7 +114,7 @@
                     {{ form_start(formAvailability, {
                         attr: {
                             novalidate: 'novalidate',
-                            class: 'availability-form'
+                            class: 'availability-form admin-meta-form'
                         }
                     }) }}
 
@@ -129,7 +129,7 @@
                         {{ form_errors(formAvailability.label) }}
                     </div>
 
-                    <button type="submit" class="availability-submit-button ui-button ui-button--primary">
+                    <button type="submit" class="availability-submit-button admin-meta-submit-button ui-button ui-button--primary">
                         {% if isEdit %}
                             Modifier la disponibilité
                         {% else %}

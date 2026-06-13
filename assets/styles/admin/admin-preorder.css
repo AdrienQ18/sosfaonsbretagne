@@ -10,32 +10,7 @@
 
 /* HEADER */
 
-.admin-preorder-count {
-    min-width: 180px;
-    padding: 16px 22px;
-    border-radius: 18px;
-    text-align: center;
-}
-
-.admin-preorder-count span {
-    display: block;
-    margin-bottom: 4px;
-    color: var(--text);
-    font-size: 13px;
-}
-
-.admin-preorder-count strong {
-    color: var(--green-dark);
-    font-size: 1.6rem;
-}
-
 /* FILTERS */
-
-.admin-preorder-filter-card {
-    margin-bottom: 30px;
-    padding: 26px;
-    border: 2px solid rgba(110, 142, 100, 0.08);
-}
 
 .admin-preorder-filter-grid {
     display: grid;
@@ -43,36 +18,6 @@
     gap: 16px;
 }
 
-
-.admin-preorder-filter-actions {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    margin-top: 22px;
-}
-
-.admin-preorder-reset-button {
-    padding: 13px 20px;
-    font-size: 13px;
-    font-weight: 800;
-
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-
-.admin-preorder-reset-button:hover {
-    transform: translateY(-2px);
-    background: var(--surface-hover);
-    color: var(--green-dark);
-}
-
-/* GRID */
-
-.admin-preorder-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 24px;
-}
 
 /* CARD */
 
@@ -100,48 +45,6 @@
     color: var(--green-dark);
     font-size: 1.2rem;
     font-weight: 800;
-}
-
-/* STATUS */
-
-.admin-preorder-status {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-
-    min-width: 130px;
-    padding: 6px 12px;
-
-    border-radius: 999px;
-
-    background: var(--input-bg);
-    color: var(--green-dark);
-
-    font-size: 12px;
-    font-weight: 800;
-
-    white-space: nowrap;
-}
-
-.admin-preorder-status--validee,
-.admin-preorder-status--payee {
-    background: var(--success-bg);
-    color: var(--success-text);
-}
-
-.admin-preorder-status--en_attente {
-    background: var(--warning-bg);
-    color: var(--warning-text);
-}
-
-.admin-preorder-status--en_attente_paiement {
-    background: var(--info-bg);
-    color: var(--info-text);
-}
-
-.admin-preorder-status--refusee {
-    background: var(--danger-bg);
-    color: var(--danger-text);
 }
 
 /* INFOS */
@@ -236,47 +139,6 @@
 }
 
 /* HEADER */
-
-/* STATUS SHOW */
-
-.admin-preorder-show-status {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 8px 14px;
-
-    border-radius: 999px;
-
-    background: var(--input-bg);
-    color: var(--green-dark);
-
-    font-size: 13px;
-    font-weight: 800;
-
-    white-space: nowrap;
-}
-
-.admin-preorder-show-status--validee,
-.admin-preorder-show-status--payee {
-    background: var(--success-bg);
-    color: var(--success-text);
-}
-
-.admin-preorder-show-status--en_attente {
-    background: var(--warning-bg);
-    color: var(--warning-text);
-}
-
-.admin-preorder-show-status--en_attente_paiement {
-    background: var(--info-bg);
-    color: var(--info-text);
-}
-
-.admin-preorder-show-status--refusee {
-    background: var(--danger-bg);
-    color: var(--danger-text);
-}
 
 /* LAYOUT */
 
@@ -450,30 +312,8 @@
     transform: translateY(-2px);
 }
 
-.admin-preorder-show-button--danger {
-    background: var(--danger-bg);
-    color: var(--danger-text);
-}
-
-.admin-preorder-show-button--danger:hover {
-    background: var(--danger-hover-bg);
-    box-shadow: none;
-}
-
 .admin-preorder-show-back-link {
     margin-top: 8px;
-
-    color: var(--brown);
-
-    font-size: 14px;
-    font-weight: 700;
-
-    text-align: center;
-}
-
-.admin-preorder-show-back-link:hover {
-    color: var(--green-dark);
-    text-decoration: underline;
 }
 
 /* RESPONSIVE */

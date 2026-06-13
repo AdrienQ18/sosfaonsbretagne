@@ -53,7 +53,7 @@
 
             </header>
 
-            <div class="boutique-grid">
+            <div class="boutique-grid ui-grid ui-grid--3">
 
                 {% for article in articleList %}
 
@@ -194,7 +194,7 @@
             </div>
 
         </div>
-        <div id="image-viewer" class="image-viewer">
+        <div id="image-viewer" class="image-viewer ui-overlay">
 
             <button
                 type="button"
@@ -208,14 +208,14 @@
                 src=""
                 alt=""
                 id="image-viewer-img"
-                class="image-viewer-img"
+                class="image-viewer-img ui-overlay-image"
             >
 
         </div>
         {% for article in articleList %}
             <div
                 id="boutique-modal-{{ article.id }}"
-                class="boutique-modal"
+                class="boutique-modal ui-overlay"
                 aria-hidden="true"
                 role="dialog"
                 aria-modal="true"
@@ -230,14 +230,14 @@
                         &times;
                     </button>
 
-                    <h2 id="boutique-modal-title-{{ article.id }}">
+                    <h2 id="boutique-modal-title-{{ article.id }}" class="ui-sr-only">
                         Information
                     </h2>
 
                     <img
                         src="{{ asset('images/about/bien-choisir-son-nichoir.png') }}"
                         alt="Guide d'information"
-                        class="boutique-modal-image"
+                        class="boutique-modal-image ui-overlay-image"
                         loading="lazy"
                     >
                 </div>

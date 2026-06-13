@@ -78,6 +78,8 @@ final class DonationController extends AbstractController
             $entityManager->persist($donation);
             $entityManager->flush();
 
+            // On enregistre d'abord le don pour disposer d'un identifiant stable
+            // utilisable par HelloAsso et par les journaux applicatifs.
             // Journalisation du don sans stocker d'information sensible en clair.
             $logger->info('helloasso.donation.created', [
                 'donation_id' => $donation->getId(),
@@ -127,6 +129,8 @@ final class DonationController extends AbstractController
         LoggerInterface $logger
     ): Response {
         // Journalisation du retour utilisateur depuis HelloAsso.
+        // Ce retour peut arriver avant le webhook : il ne doit donc pas marquer
+        // le paiement comme valide à lui seul.
         $logger->info('helloasso.return_url.hit', [
             'donation_id' => $donation->getId(),
             'query' => $request->query->all(),
@@ -249,6 +253,8 @@ final class DonationController extends AbstractController
             ->getQuery()
             ->getResult();
 
+        // Le ZIP est généré à la demande pour éviter de conserver des archives
+        // de reçus fiscaux sur le disque après chaque export admin.
         // Création d'un fichier ZIP temporaire.
         $zipPath = sys_get_temp_dir()
             . '/recus-fiscaux-'
@@ -274,6 +280,7 @@ final class DonationController extends AbstractController
 
         $zip->close();
 
+        // Symfony prend en charge l'envoi du fichier temporaire en pièce jointe.
         return $this->file(
             $zipPath,
             'recus-fiscaux.zip',

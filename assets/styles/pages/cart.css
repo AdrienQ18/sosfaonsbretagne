@@ -87,29 +87,6 @@
 
 /* REMOVE */
 
-.panier-remove-button {
-    padding: 10px 14px;
-
-    border: none;
-    border-radius: 999px;
-
-    background: var(--danger-bg);
-    color: var(--danger-text);
-
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 800;
-
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-
-    cursor: pointer;
-}
-
-.panier-remove-button:hover {
-    background: var(--danger-hover-bg);
-}
-
 /* OPTIONS */
 
 .panier-options {

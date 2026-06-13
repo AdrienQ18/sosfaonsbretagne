@@ -4,6 +4,10 @@
     Gestion des signalements | SOS Faons Bretagne
 {% endblock %}
 
+{% block meta_description %}
+    Interface privée de suivi et de traitement des signalements SOS Faons Bretagne.
+{% endblock %}
+
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
@@ -20,13 +24,13 @@
 
                 <h1>Gestion des signalements</h1>
 
-                <div class="admin-alert-count ui-card">
+                <div class="admin-alert-count ui-counter ui-card">
                     <span>Nombre de signalements</span>
                     <strong>{{ alerts.getTotalItemCount }}</strong>
                 </div>
 
             </header>
-            <div class="admin-alert-filter-card ui-card">
+            <div class="admin-alert-filter-card ui-card ui-filter-card">
                 {{ form_start(filterForm, {
                     method: 'GET',
                     attr: {
@@ -73,11 +77,11 @@
                     </div>
                 </div>
 
-                <div class="admin-alert-filter-actions">
+                <div class="admin-alert-filter-actions ui-actions">
                     <button
                         type="button"
                         id="reset-alert-filters"
-                        class="admin-alert-reset-button ui-button ui-button--secondary"
+                        class="admin-alert-reset-button ui-button ui-button--secondary ui-button--filter"
                         aria-label="Réinitialiser les filtres de signalements"
                     >
                         Réinitialiser
@@ -86,7 +90,7 @@
 
                 {{ form_end(filterForm) }}
             </div>
-            <div class="admin-alert-grid">
+            <div class="admin-alert-grid ui-grid ui-grid--cards">
 
                 {% for alert in alerts %}
 
@@ -96,7 +100,7 @@
 
                             <h2>{{ alert.type }}</h2>
 
-                            <span class="admin-alert-status admin-alert-status--{{ alert.status.value }}">
+                            <span class="admin-alert-status admin-alert-status--{{ alert.status.value }} ui-status ui-status--wide{% if alert.status.value == 'signalement_validee' %} ui-status--success{% elseif alert.status.value == 'signalement_passee' %} ui-status--warning{% elseif alert.status.value == 'signalement_refusee' %} ui-status--danger{% endif %}">
                                 {{ alert.status.getLabel() }}
                             </span>
 

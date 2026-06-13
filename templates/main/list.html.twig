@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Actualités | SOS Faons Bretagne
+    Actualités{% if app.request.query.getInt('page', 1) > 1 %} - page {{ app.request.query.getInt('page', 1) }}{% endif %} | SOS Faons Bretagne
 {% endblock %}
 
 {% block meta_description %}
-    Retrouvez les actualités, événements et publications de SOS Faons Bretagne.
+    Retrouvez les actualités, événements et publications de SOS Faons Bretagne{% if app.request.query.getInt('page', 1) > 1 %}, page {{ app.request.query.getInt('page', 1) }}{% endif %}.
 {% endblock %}
 
 {% block robots %}
@@ -13,7 +13,21 @@
 {% endblock %}
 
 {% block canonical %}
-    <link rel="canonical" href="{{ absolute_url(path('event_list')) }}">
+    {% set currentPage = app.request.query.getInt('page', 1) %}
+    <link rel="canonical" href="{{ currentPage > 1 ? absolute_url(path('event_list', { page: currentPage })) : absolute_url(path('event_list')) }}">
+{% endblock %}
+
+{% block og_title %}
+    Actualités{% if app.request.query.getInt('page', 1) > 1 %} - page {{ app.request.query.getInt('page', 1) }}{% endif %} | SOS Faons Bretagne
+{% endblock %}
+
+{% block og_description %}
+    Retrouvez les actualités, événements et publications de SOS Faons Bretagne{% if app.request.query.getInt('page', 1) > 1 %}, page {{ app.request.query.getInt('page', 1) }}{% endif %}.
+{% endblock %}
+
+{% block og_url %}
+    {% set currentPage = app.request.query.getInt('page', 1) %}
+    {{ currentPage > 1 ? absolute_url(path('event_list', { page: currentPage })) : absolute_url(path('event_list')) }}
 {% endblock %}
 
 {% block body %}
@@ -89,13 +103,18 @@
                                         Modifier
                                     </a>
 
-                                    <a
-                                        href="{{ path('event_delete', { id: event.id }) }}"
-                                        class="post-admin-button post-admin-button--delete ui-button ui-button--danger"
-                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce post ?')"
+                                    <form
+                                        method="post"
+                                        action="{{ path('event_delete', { id: event.id }) }}"
+                                        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce post ?');"
                                     >
-                                        Supprimer
-                                    </a>
+                                        <button
+                                            type="submit"
+                                            class="post-admin-button post-admin-button--delete ui-button ui-button--delete"
+                                        >
+                                            Supprimer
+                                        </button>
+                                    </form>
 
                                 </div>
 

@@ -139,18 +139,6 @@
     transform: translateY(-2px);
 }
 
-.profile-secondary-link {
-    color: var(--brown);
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.profile-secondary-link:hover {
-    color: var(--green-dark);
-    text-decoration: underline;
-}
-
 /* =========================
    DOCUMENTS
 ========================= */

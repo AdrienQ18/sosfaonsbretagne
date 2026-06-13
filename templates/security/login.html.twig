@@ -48,11 +48,11 @@
                         required
                     >
 
-                    <div class="login-password-wrapper">
-                        <label for="inputPassword" class="sr-only">
-                            Mot de passe
-                        </label>
+                    <label for="inputPassword" class="sr-only">
+                        Mot de passe
+                    </label>
 
+                    <div class="login-password-wrapper">
                         <input
                             type="password"
                             name="password"
@@ -86,7 +86,7 @@
                         value="{{ csrf_token('authenticate') }}"
                     >
 
-                    <label class="login-remember-me">
+                    <label class="login-remember-me ui-check">
                         <input type="checkbox" name="_remember_me">
                         Se souvenir de moi
                     </label>
@@ -197,7 +197,7 @@
                     </div>
 
                     <div class="login-form-group ui-field ui-field--auth">
-                        <div class="login-form-check">
+                        <div class="login-form-check ui-check">
                             {{ form_label(formRegister.benevole) }}
                             {{ form_widget(formRegister.benevole) }}
                         </div>
@@ -209,7 +209,7 @@
                         <div class="login-form-group ui-field ui-field--auth login-availability-group">
                             {{ form_label(formRegister.availabilitys) }}
 
-                            <div class="login-availability-options">
+                            <div class="login-availability-options ui-choice-grid">
                                 {{ form_widget(formRegister.availabilitys) }}
                             </div>
 
@@ -218,7 +218,7 @@
                     </div>
 
                     <div class="login-form-group ui-field ui-field--auth">
-                        <div class="login-form-check">
+                        <div class="login-form-check ui-check">
                             {{ form_label(formRegister.agreeTerms) }}
                             {{ form_widget(formRegister.agreeTerms) }}
                         </div>

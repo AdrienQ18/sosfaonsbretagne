@@ -36,6 +36,7 @@ class PreOrderPdfService
     public function generateInvoice(PreOrder $preOrder): string
     {
         // Si une facture existe déjà pour cette précommande, on retourne son chemin.
+        // Cela rend la génération rejouable depuis le webhook sans doublonner.
         $existingPath = $preOrder->getInvoicePdfPath();
 
         if ($existingPath && is_file($existingPath)) {
@@ -100,6 +101,7 @@ class PreOrderPdfService
         $dompdf->render();
 
         // Dossier privé dans lequel les factures sont stockées.
+        // Le dossier var/ n'est pas exposé directement par le serveur web.
         $directory = $this->projectDir . '/var/invoice';
 
         // Création du dossier s'il n'existe pas.
@@ -122,6 +124,8 @@ class PreOrderPdfService
         }
 
         // Mise à jour des informations de facture sur la précommande.
+        // Le flush reste volontairement dans le service appelant pour garder
+        // une transaction cohérente avec l'envoi des emails.
         $preOrder->setInvoiceReceiptNumber($invoiceNumber);
         $preOrder->setInvoicePdfPath($path);
         $preOrder->setInvoiceGeneratedAt(new \DateTimeImmutable());

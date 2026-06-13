@@ -52,6 +52,7 @@ class PreOrderMailerService
      */
     public function sendPaymentLink(PreOrder $preOrder): void
     {
+        // Ce lien est envoyé après validation admin, avant le paiement réel.
         // Email envoyé après validation administrative de la précommande.
         $email = (new TemplatedEmail())
             ->from(
@@ -77,6 +78,7 @@ class PreOrderMailerService
         PreOrder $preOrder,
         string $pdfPath
     ): void {
+        // L'appelant vérifie l'idempotence via invoiceEmailSentAt.
         // Email envoyé après paiement confirmé par HelloAsso.
         $email = (new TemplatedEmail())
             ->from(
@@ -133,6 +135,7 @@ class PreOrderMailerService
     public function sendPreOrderPaymentConfirmationNotificationToAssociation(
         PreOrder $preOrder
     ): void {
+        // L'appelant vérifie l'idempotence via associationNotifiedAt.
         // Notification interne envoyée après confirmation du paiement.
         $email = (new TemplatedEmail())
             ->from(

@@ -177,6 +177,7 @@ class DonationRepository extends ServiceEntityRepository
     public function getValidatedTotalAmount(array $filters): float
     {
         // On ignore volontairement le filtre de statut sélectionné.
+        // Le compteur admin doit toujours représenter l'argent réellement validé.
         unset($filters['status']);
 
         $queryBuilder = $this->createQueryBuilder('d')

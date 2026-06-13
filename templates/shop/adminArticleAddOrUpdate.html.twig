@@ -9,6 +9,10 @@
     | SOS Faons Bretagne
 {% endblock %}
 
+{% block meta_description %}
+    Interface privée d'ajout et de modification des articles boutique SOS Faons Bretagne.
+{% endblock %}
+
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
@@ -79,7 +83,7 @@
                 </div>
 
                 {% if formAddArticle.requiresDiameter is defined %}
-                    <div class="admin-article-form-checkbox">
+                    <div class="admin-article-form-checkbox ui-check">
                         {{ form_widget(formAddArticle.requiresDiameter) }}
                         {{ form_label(formAddArticle.requiresDiameter) }}
                     </div>
@@ -87,7 +91,7 @@
                 <div class="admin-article-form-actions">
                     <a
                         href="{{ path('admin_article_index') }}"
-                        class="admin-article-form-back-button ui-button ui-button--secondary"
+                        class="admin-article-form-back-button ui-button ui-button--cancel"
                         aria-label="Retour à la liste des articles"
                     >
                         Retour

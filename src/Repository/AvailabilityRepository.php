@@ -7,6 +7,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des disponibilités bénévoles.
+ *
+ * Les écrans admin utilisent les méthodes standard Doctrine.
+ *
  * @extends ServiceEntityRepository<Availability>
  */
 class AvailabilityRepository extends ServiceEntityRepository

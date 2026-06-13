@@ -4,6 +4,10 @@
     Modifier un utilisateur | SOS Faons Bretagne
 {% endblock %}
 
+{% block meta_description %}
+    Interface privée de modification d'un compte utilisateur SOS Faons Bretagne.
+{% endblock %}
+
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
@@ -85,13 +89,13 @@
                     {{ form_widget(formUser.actif) }}
                     {{ form_errors(formUser.actif) }}
                 </div>
-                <div class="admin-user-form-choice-group">
+                <div class="admin-user-form-choice-group ui-choice-grid">
                     {{ form_label(formUser.availabilitys) }}
                     {{ form_widget(formUser.availabilitys) }}
                     {{ form_errors(formUser.availabilitys) }}
                 </div>
                 {% if formUser.roles is defined %}
-                    <div class="admin-user-form-choice-group">
+                    <div class="admin-user-form-choice-group ui-choice-grid">
                         {{ form_label(formUser.roles) }}
                         {{ form_widget(formUser.roles) }}
                         {{ form_errors(formUser.roles) }}
@@ -100,7 +104,7 @@
                 <div class="admin-user-form-actions">
                     <a
                         href="{{ path('admin_userList') }}"
-                        class="admin-user-form-back-button ui-button ui-button--secondary"
+                        class="admin-user-form-back-button ui-button ui-button--cancel"
                         aria-label="Retour à la liste des utilisateurs"
                     >
                         Retour

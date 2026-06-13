@@ -2,6 +2,9 @@
 {% block title %}
     Administration des donations | SOS Faons Bretagne
 {% endblock %}
+{% block meta_description %}
+    Interface privée de suivi des donations et reçus fiscaux SOS Faons Bretagne.
+{% endblock %}
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
@@ -11,7 +14,7 @@
         <div class="admin-donation-container ui-container">
             <header class="admin-donation-header ui-header">
                 <h1>Administration des donations</h1>
-                <div class="admin-donation-total ui-card">
+                <div class="admin-donation-total ui-counter ui-card">
                     <span>Total des dons validés</span>
                     <strong>{{ totalValidatedAmount|number_format(2, ',', ' ') }} €</strong>
                 </div>
@@ -48,18 +51,18 @@
                         {{ form_widget(filterForm.companySiret) }}
                     </div>
                 </div>
-                <div class="admin-donation-actions">
+                <div class="admin-donation-actions ui-actions">
                     <button
                         type="button"
                         id="reset-filters"
-                        class="admin-donation-reset-button ui-button ui-button--secondary"
+                        class="admin-donation-reset-button ui-button ui-button--secondary ui-button--filter"
                         aria-label="Réinitialiser les filtres de recherche"
                     >
                         Réinitialiser
                     </button>
                     <a
                         href="{{ path('admin_donation_download_pdfs', app.request.query.all) }}"
-                        class="admin-donation-download-button ui-button ui-button--primary"
+                        class="admin-donation-download-button ui-button ui-button--primary ui-button--filter"
                         aria-label="Télécharger les PDF correspondant à la recherche"
                     >
                         Télécharger les reçus fiscaux
@@ -69,9 +72,9 @@
             </div>
             <div class="admin-donation-card ui-card">
 
-                <div class="admin-donation-table-wrapper">
-                    <table class="admin-donation-table">
-                        <caption class="admin-donation-sr-only">
+                <div class="admin-donation-table-wrapper ui-table-wrapper">
+                    <table class="admin-donation-table ui-table ui-table--1150">
+                        <caption class="admin-donation-sr-only ui-sr-only">
                             Liste des donations enregistrées
                         </caption>
                         <thead>
@@ -93,7 +96,7 @@
                         {% for donation in donations %}
                             <tr>
                                 <td>
-                                <span class="admin-donation-badge">
+                                <span class="admin-donation-badge ui-status">
                                     {% if donation.donorType.value == 'entreprise' %}
                                         Entreprise
                                     {% else %}
@@ -118,7 +121,7 @@
                                     {{ donation.fiscalReceiptNumber ?? 'Non généré' }}
                                 </td>
                                 <td>
-                                <span class="admin-donation-status admin-donation-status--{{ donation.status.value }}">
+                                <span class="admin-donation-status admin-donation-status--{{ donation.status.value }} ui-status{% if donation.status.value == 'donation_validee' %} ui-status--success{% elseif donation.status.value == 'donation_passee' %} ui-status--warning{% elseif donation.status.value == 'donation_refusee' %} ui-status--danger{% endif %}">
                                     {% if donation.status.value == 'donation_validee' %}
                                         Validé
                                     {% elseif donation.status.value == 'donation_passee' %}

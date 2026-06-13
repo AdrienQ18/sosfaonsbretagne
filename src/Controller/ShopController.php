@@ -103,6 +103,9 @@ final class ShopController extends AbstractController
         $cart = $session->get('cart', []);
 
         $itemFound = false;
+
+        // Le panier ne stocke que les données nécessaires en session.
+        // Les entités Article sont rechargées depuis la base à l'affichage.
         // Fusion des lignes identiques dans le panier.
         foreach ($cart as &$item) {
             if (
@@ -191,6 +194,8 @@ final class ShopController extends AbstractController
         if (isset($cart[$index])) {
             unset($cart[$index]);
 
+            // Réindexation indispensable : les index servent ensuite d'identifiant
+            // de ligne dans les routes de modification et de suppression.
             $cart = array_values($cart);
 
             $session->set('cart', $cart);
@@ -313,6 +318,8 @@ final class ShopController extends AbstractController
 
         $totalAmount = 0;
 
+        // On fige les prix dans les lignes de précommande pour conserver
+        // l'historique même si le prix d'un article change ensuite.
         foreach ($cart as $item) {
             $article = $articleRepository->find($item['article_id']);
 
@@ -350,6 +357,9 @@ final class ShopController extends AbstractController
 
         $entityManager->persist($preOrder);
         $entityManager->flush();
+
+        // Les emails sont envoyés après le flush afin d'avoir un numéro
+        // de précommande fiable dans les templates et les liens.
         $mailerService->sendPreOrderConfirmation($preOrder);
         $mailerService->sendPreOrderNotificationToAssociation($preOrder);
         $session->remove('cart');
@@ -365,6 +375,8 @@ final class ShopController extends AbstractController
         PaginatorInterface $paginator
     ): Response
     {
+        // La liste admin reprend le même modèle que les autres écrans :
+        // filtres en GET pour conserver les critères dans l'URL.
         $form = $this->createForm(PreOrderFilterType::class, null, [
             'method' => 'GET',
         ]);
@@ -403,6 +415,8 @@ final class ShopController extends AbstractController
     {
         $pdfPath = $preOrder->getInvoicePdfPath();
 
+        // La facture est générée hors de ce contrôleur : on vérifie donc
+        // explicitement que le chemin existe avant de l'exposer.
         if (!$pdfPath || !file_exists($pdfPath)) {
             throw $this->createNotFoundException('La facture est introuvable.');
         }
@@ -420,6 +434,8 @@ final class ShopController extends AbstractController
         PreOrderValidationService $preOrderValidationService
     ): Response
     {
+        // Toute la logique métier de validation est centralisée dans le service :
+        // changement de statut, génération du lien de paiement et notification.
         $preOrderValidationService->validate($preOrder);
 
         $this->addFlash('success', 'Précommande validée, lien de paiement envoyé.');
@@ -460,6 +476,7 @@ final class ShopController extends AbstractController
     ): Response
     {
 
+        // Une précommande déjà payée ne doit jamais recréer un checkout.
         if ($preOrder->getStatus() === PreOrderStatus::PAYEE) {
             $this->addFlash('success', 'Précommande déjà payée.');
 
@@ -468,6 +485,7 @@ final class ShopController extends AbstractController
 
         $paymentUrl = $helloAssoService->createPreOrderCheckout($preOrder);
 
+        // Le service peut enrichir la précommande avec des informations HelloAsso.
         $entityManager->flush();
 
         return $this->redirect($paymentUrl['redirectUrl']);
@@ -476,6 +494,8 @@ final class ShopController extends AbstractController
     #[Route('/pre-order/paiement/valider/{id}', name: 'pre_order_payment_success', methods: ['GET'])]
     public function preOrderPaymentSuccess(PreOrder $preOrder): Response
     {
+        // Comme pour les dons, cette page confirme le retour utilisateur.
+        // Le statut définitif reste piloté par le webhook HelloAsso.
         return $this->render('shop/preOrderSuccess.html.twig', [
             'preOrder' => $preOrder,
         ]);
@@ -524,6 +544,8 @@ final class ShopController extends AbstractController
         if ($formAddArticle->isSubmitted() && $formAddArticle->isValid()) {
             $file = $formAddArticle->get('image')->getData();
 
+            // En édition, l'ancien nom d'image est transmis à l'uploader pour
+            // permettre son remplacement propre si une nouvelle image est fournie.
             if ($file) {
                 $article->setImage($imageUploader->upload($file, 'shop', $article->getImage()));
             }

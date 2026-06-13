@@ -52,6 +52,8 @@ class EmailVerifier
             (string) $user->getEmail()
         );
 
+        // On conserve le contexte déjà présent dans l'email pour ne pas écraser
+        // d'éventuelles données ajoutées par le contrôleur appelant.
         // Récupération du contexte Twig existant.
         $context = $email->getContext();
 
@@ -95,6 +97,8 @@ class EmailVerifier
             (string) $user->getEmail()
         );
 
+        // La validation est persistée ici pour garder toute la logique email
+        // dans un seul service.
         // Activation définitive du compte utilisateur.
         $user->setIsVerified(true);
 

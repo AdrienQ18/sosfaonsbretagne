@@ -54,6 +54,8 @@ class ImageUploader
             . '/public/images/'
             . trim($directory, '/');
 
+        // Le répertoire cible est volontairement limité à public/images.
+        // Les contrôleurs ne transmettent que le sous-dossier métier.
         // Création automatique du dossier s'il n'existe pas.
         if (!is_dir($uploadDirectory)) {
             mkdir($uploadDirectory, 0777, true);
@@ -61,6 +63,8 @@ class ImageUploader
 
         // Suppression de l'ancienne image lors d'une mise à jour.
         if ($oldFileName) {
+            // On supprime avant conversion pour éviter d'avoir deux images
+            // actives pour la même entité en cas de remplacement.
             $this->delete($oldFileName, $directory);
         }
 
@@ -88,6 +92,7 @@ class ImageUploader
         $imagine = new Imagine();
 
         // Ouverture de l'image uploadée.
+        // Si le fichier n'est pas une image lisible, Imagine lèvera une exception.
         $image = $imagine->open(
             $uploadDirectory . '/' . $tempFileName
         );

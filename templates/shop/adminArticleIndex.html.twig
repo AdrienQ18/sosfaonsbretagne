@@ -4,6 +4,10 @@
     Administration des articles | SOS Faons Bretagne
 {% endblock %}
 
+{% block meta_description %}
+    Interface privée de gestion des articles de la boutique SOS Faons Bretagne.
+{% endblock %}
+
 {% block robots %}
     <meta name="robots" content="noindex, nofollow">
 {% endblock %}
@@ -32,7 +36,7 @@
                 </a>
             </header>
 
-            <section class="admin-article-grid">
+            <section class="admin-article-grid ui-grid ui-grid--3">
                 {% for article in articleList %}
                     <article class="admin-article-card ui-card">
 
@@ -76,7 +80,7 @@
                                     >
                                     <button
                                         type="submit"
-                                        class="admin-article-delete-button ui-button ui-button--danger"
+                                        class="admin-article-delete-button ui-button ui-button--delete ui-button--full"
                                     >
                                         Supprimer
                                     </button>

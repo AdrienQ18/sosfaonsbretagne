@@ -55,6 +55,8 @@ final class HelloAssoWebhookService
     public function handle(array $payload): array
     {
         // Les métadonnées permettent de retrouver l'entité métier concernée.
+        // Selon le type d'événement HelloAsso, elles peuvent être à la racine
+        // ou dans data.metadata.
         $metadata = $payload['metadata'] ?? $payload['data']['metadata'] ?? [];
 
         // Routage du webhook vers le traitement approprié.
@@ -102,6 +104,7 @@ final class HelloAssoWebhookService
             ];
         }
         // Seuls les événements Payment déclenchent les traitements métier.
+        // Les autres événements sont acquittés pour éviter des retries inutiles.
         if ($eventType !== 'Payment') {
             return [
                 'status' => 200,
@@ -127,6 +130,8 @@ final class HelloAssoWebhookService
         // Paiement accepté ou capturé.
         if (in_array($paymentState, ['Authorized', 'Paid'], true)) {
             try {
+                // Idempotence webhook : HelloAsso peut renvoyer le même événement.
+                // On ne repasse donc pas un don déjà validé par toute la chaîne.
                 if ($donation->getStatus() !== DonationStatus::DONATION_VALIDEE) {
                     $donation->setStatus(DonationStatus::DONATION_VALIDEE);
                     $this->entityManager->flush();
@@ -137,6 +142,7 @@ final class HelloAssoWebhookService
                     || !$pdfPath
                     || !is_file($pdfPath);
 
+                // On régénère seulement si le reçu manque ou si le fichier a disparu.
                 if ($needsReceipt) {
                     $pdfPath = $this->donationPdfService->generateFiscalReceipt($donation);
                     $this->entityManager->flush();
@@ -147,6 +153,8 @@ final class HelloAssoWebhookService
                     ]);
                 }
 
+                // Les dates d'envoi servent de garde-fou contre les doublons
+                // si HelloAsso rejoue le webhook.
                 if (!$donation->getReceiptEmailSentAt()) {
                     $this->donationMailerService->sendFiscalReceipt($donation, $pdfPath);
                     $donation->setReceiptEmailSentAt(new \DateTimeImmutable());
@@ -211,6 +219,8 @@ final class HelloAssoWebhookService
         if ($eventType === 'Order') {
             $preOrder = $this->preOrderRepository->find($preOrderId);
             if ($preOrder && !$preOrder->getHelloassoOrderId()) {
+                // L'id de commande HelloAsso est conservé pour faciliter
+                // les rapprochements avec l'espace HelloAsso.
                 $preOrder->setHelloassoOrderId((string)($payload['data']['id'] ?? ''));
                 $this->entityManager->flush();
             }
@@ -228,6 +238,8 @@ final class HelloAssoWebhookService
         }
 
         if ($eventType !== 'Payment') {
+            // Même stratégie que pour les dons : on acquitte les événements
+            // non utilisés afin de ne pas déclencher de nouvelles tentatives.
             return [
                 'status' => 200,
                 'message' => 'Event precommande ignore.',
@@ -260,6 +272,8 @@ final class HelloAssoWebhookService
          */
         if (in_array($paymentState, ['Authorized', 'Paid'], true)) {
             try {
+                // Idempotence webhook : une précommande déjà payée ne repasse pas
+                // par les traitements de validation.
                 if ($preOrder->getStatus() !== PreOrderStatus::PAYEE) {
                     $preOrder->setStatus(PreOrderStatus::PAYEE);
 
@@ -275,6 +289,7 @@ final class HelloAssoWebhookService
                     || !$pdfPath
                     || !is_file($pdfPath);
 
+                // Facture générée seulement si elle n'existe pas encore.
                 if ($needsInvoice) {
                     $pdfPath = $this->preOrderPdfService->generateInvoice($preOrder);
                     $this->entityManager->flush();
@@ -285,6 +300,8 @@ final class HelloAssoWebhookService
                     ]);
                 }
 
+                // Les champs *_SentAt et AssociationNotifiedAt rendent le traitement
+                // rejouable sans renvoyer plusieurs fois les mêmes emails.
                 if (!$preOrder->getInvoiceEmailSentAt()) {
                     $this->preOrderMailerService->sendPaymentConfirmation($preOrder, $pdfPath);
                     $preOrder->setInvoiceEmailSentAt(new \DateTimeImmutable());

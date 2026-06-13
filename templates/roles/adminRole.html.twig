@@ -16,29 +16,29 @@
 
 {% block body %}
 
-    <section class="role-page ui-page">
+    <section class="role-page admin-meta-page ui-page">
 
-        <div class="role-container ui-container">
+        <div class="role-container admin-meta-container ui-container">
 
-            <div class="role-header ui-header">
+            <div class="role-header admin-meta-header ui-header">
                 <h1>Gestion des rôles</h1>
                 <p>
                     Gérez les rôles attribuables aux utilisateurs du site.
                 </p>
             </div>
 
-            <div class="role-grid">
+            <div class="role-grid admin-meta-grid">
 
-                <section class="role-card role-list-card ui-card">
+                <section class="role-card role-list-card admin-meta-card ui-card">
 
-                    <div class="role-card-header">
+                    <div class="role-card-header admin-meta-card-header">
                         <h2>Rôles existants</h2>
                         <span>{{ roleList|length }} rôle(s)</span>
                     </div>
 
-                    <div class="role-table-wrapper">
+                    <div class="role-table-wrapper admin-meta-table-wrapper">
 
-                        <table class="role-table">
+                        <table class="role-table admin-meta-table">
 
                             <thead>
                             <tr>
@@ -54,18 +54,18 @@
                                 <tr>
 
                                     <td>
-                                    <span class="role-badge">
+                                    <span class="role-badge admin-meta-badge">
                                         {{ role.name }}
                                     </span>
                                     </td>
 
                                     <td>
 
-                                        <div class="role-actions">
+                                        <div class="role-actions admin-meta-actions">
 
                                             <a
                                                 href="{{ path('admin_roles_update', {id: role.id}) }}"
-                                                class="role-edit-link ui-button ui-button--primary"
+                                                class="role-edit-link admin-meta-edit-link ui-button ui-button--primary"
                                                 aria-label="Modifier le rôle {{ role.name }}"
                                             >
                                                 Modifier
@@ -83,7 +83,7 @@
                                                 >
                                                 <button
                                                     type="submit"
-                                                    class="role-delete-button ui-button ui-button--danger"
+                                                    class="role-delete-button admin-meta-delete-button ui-button ui-button--delete"
                                                     aria-label="Supprimer le rôle {{ role.name }}"
                                                 >
                                                     Supprimer
@@ -99,7 +99,7 @@
                             {% else %}
 
                                 <tr>
-                                    <td colspan="2" class="role-empty">
+                                    <td colspan="2" class="role-empty admin-meta-empty">
                                         Aucun rôle enregistré.
                                     </td>
                                 </tr>
@@ -114,7 +114,7 @@
 
                 </section>
 
-                <section class="role-card role-form-card ui-card">
+                <section class="role-card role-form-card admin-meta-card admin-meta-form-card ui-card">
 
                     <h2>
                         {% if isEdit %}
@@ -135,7 +135,7 @@
                     {{ form_start(formRole, {
                         attr: {
                             novalidate: 'novalidate',
-                            class: 'role-form'
+                            class: 'role-form admin-meta-form'
                         }
                     }) }}
 
@@ -156,7 +156,7 @@
 
                     <button
                         type="submit"
-                        class="role-submit-button ui-button ui-button--primary"
+                        class="role-submit-button admin-meta-submit-button ui-button ui-button--primary"
                     >
                         {% if isEdit %}
                             Modifier le rôle

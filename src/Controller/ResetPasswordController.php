@@ -216,7 +216,7 @@ class ResetPasswordController extends AbstractController
             ))
             ->to((string) $user->getEmail())
             ->subject('Réinitialisation de votre mot de passe')
-            ->htmlTemplate('reset_password/password_reset_email.html.twig')
+            ->htmlTemplate('emails/password/password_reset_email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
             ]);
@@ -243,7 +243,7 @@ class ResetPasswordController extends AbstractController
             ))
             ->to((string) $user->getEmail())
             ->subject('Votre mot de passe a été modifié')
-            ->htmlTemplate('emails/password_changed_notification.html.twig')
+            ->htmlTemplate('emails/password/password_changed_notification.html.twig')
             ->context([
                 'user' => $user,
             ]);
